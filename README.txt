@@ -63,6 +63,8 @@ Syntax files, Locale files and Settings:
 1. Using VS 2013 Express for compiling and fix some unsafe code.
 2. Update wxWidgets to 3.0
 3. Change name to MadEdit-Mod, starting version 0.1.1
+4. Add FreeBasic Syntax
+
 
 2014.01.26
 1. Added support for open file and go to #line by command line arguments, use "FileName*linnum".
