@@ -1295,4 +1295,8 @@ void DetectEncoding(const wxByte *text, int count, wxFontEncoding &enc)
     {
         enc = wxFONTENCODING_KOI8;
     }
+	else if (name.IsSameAs(wxT("IBM866")))
+	{
+		enc = wxFONTENCODING_CP866;
+	}
 }
