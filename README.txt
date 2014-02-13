@@ -59,6 +59,12 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.1.2
+1. Adding extra checking code for UTF8(From CodeBlocks)
+2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
+3. Add FreeBasic Syntax(wxMedit)
+
+  
 2014.02.13
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
