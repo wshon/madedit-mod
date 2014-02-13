@@ -62,6 +62,7 @@ Syntax files, Locale files and Settings:
 2014.02.13
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
+3. Release 0.1.2
 
 2014.02.05
 1. Using VS 2013 Express for compiling and fix some unsafe code.
