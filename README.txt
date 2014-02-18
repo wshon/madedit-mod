@@ -1,5 +1,5 @@
 			=================================
-					MadEdit v0.2.9 mod
+                               MadEdit v0.2.9 mod
 			=================================
 About:
 -----
@@ -59,11 +59,23 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.1.2
+1. Adding extra checking code for UTF8(From CodeBlocks)
+2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
+3. Add FreeBasic Syntax(wxMedit)
+
+  
+2014.02.13
+1. Adding extra checking code for UTF8(From CodeBlocks)
+2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
+3. Release 0.1.2
+
 2014.02.05
 1. Using VS 2013 Express for compiling and fix some unsafe code.
 2. Update wxWidgets to 3.0
-3. Change name to MadEdit-Mod, starting version 0.1.1
-4. Add FreeBasic Syntax
+3. Update boost to 1.55.0
+4. Change name to MadEdit-Mod, starting version 0.1.1
+5. Add FreeBasic Syntax
 
 
 2014.01.26

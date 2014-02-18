@@ -5177,7 +5177,7 @@ void MadEditFrame::OnHelpAbout(wxCommandEvent& event)
             wxLaunchDefaultBrowser(g_MadEdit_URL);
         }
 #else
-        wxLaunchDefaultBrowser(g_MadEdit_URL);
+		wxLaunchDefaultBrowser(g_MadEditPv_URL);
 #endif
     }
 }
