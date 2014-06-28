@@ -141,6 +141,7 @@ public:
 	void MadReplaceDialogActivate(wxActivateEvent& event);
 	void WxButtonReplaceAllClick(wxCommandEvent& event);
 	void WxCheckBoxSearchInSelectionClick(wxCommandEvent& event);
+    void MadReplaceDialog::PurgeRecentReplaceTexts();
 };
 
 extern MadReplaceDialog *g_ReplaceDialog;

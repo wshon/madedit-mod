@@ -250,6 +250,7 @@ public:
 #ifdef __WXMSW__
     void OnToolsFileAssociation(wxCommandEvent& event);
 #endif
+    void OnToolsPurgeHistories(wxCommandEvent& event);
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);
     void OnToolsConvertToMAC(wxCommandEvent& event);
@@ -320,6 +321,10 @@ protected:
 public:
     void ResetFindInFilesResults();
     void AddItemToFindInFilesResults(const wxString &text, size_t index, const wxString &filename, int pageid, const wxFileOffset &begpos, wxFileOffset &endpos);
+
+    void PurgeRecentFiles();
+    void PurgeRecentFonts();
+    void PurgeRecentEncodings();
 
 };
 
@@ -458,6 +463,7 @@ enum { // menu id
 #ifdef __WXMSW__
     menuFileAssociation,
 #endif
+    menuPurgeHistories,
     menuPlugins,
     menuByteOrderMark,
     menuToggleBOM,

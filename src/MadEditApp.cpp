@@ -397,7 +397,7 @@ bool MadEditApp::OnInit()
     }
 #endif
 
-    myFrame->Show(TRUE);
+    myFrame->Show(true);
 
 
 #if defined(__WXGTK__)

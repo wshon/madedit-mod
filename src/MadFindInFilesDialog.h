@@ -166,6 +166,9 @@ class MadFindInFilesDialog : public wxDialog
 		void MadFindInFilesDialogActivate(wxActivateEvent& event);
 		void WxCheckBoxEnableReplaceClick(wxCommandEvent& event);
 		void WxButtonActiveDirClick(wxCommandEvent& event);
+		void PurgeRecentFindDirs();
+		void PurgeRecentFindFilters();
+		void PurgeRecentFindExcludes();
 };
 
 extern MadFindInFilesDialog *g_FindInFilesDialog;

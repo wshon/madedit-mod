@@ -61,30 +61,30 @@ void MadAboutDialog::CreateGUIControls(void)
 
 	WxStaticBitmap1 = new wxStaticBitmap(this, ID_WXSTATICBITMAP1, wxNullBitmap, wxPoint(5, 5), wxSize(48, 48) );
 	WxStaticBitmap1->Enable(false);
-	WxStaticBitmap1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxStaticBitmap1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer4->Add(WxStaticBitmap1,0,wxALIGN_CENTER | wxALL,5);
 
 	WxStaticBitmap2 = new wxStaticBitmap(this, ID_WXSTATICBITMAP2, wxNullBitmap, wxPoint(5, 63), wxSize(48, 48) );
 	WxStaticBitmap2->Enable(false);
-	WxStaticBitmap2->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxStaticBitmap2->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer4->Add(WxStaticBitmap2,0,wxALIGN_CENTER | wxALL,5);
 
-	WxMemo1 = new wxTextCtrl(this, ID_WXMEMO1, _(""), wxPoint(70, 2), wxSize(350, 150), wxTE_READONLY | wxTE_AUTO_URL | wxTE_MULTILINE, wxDefaultValidator, _("WxMemo1"));
+	WxMemo1 = new wxTextCtrl(this, ID_WXMEMO1, wxT(""), wxPoint(70, 2), wxSize(350, 150), wxTE_READONLY | wxTE_AUTO_URL | wxTE_MULTILINE, wxDefaultValidator, wxT("WxMemo1"));
 	//WxMemo1->SetMaxLength(0);
 	WxMemo1->SetFocus();
 	WxMemo1->SetInsertionPointEnd();
-	WxMemo1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxMemo1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer2->Add(WxMemo1,0,wxALIGN_CENTER | wxALL,2);
 
 	WxBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_CENTER | wxALL, 3);
 
-	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(4, 4), wxSize(90, 30), 0, wxDefaultValidator, _("WxButtonOK"));
-	WxButtonOK->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(4, 4), wxSize(90, 30), 0, wxDefaultValidator, wxT("WxButtonOK"));
+	WxButtonOK->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer3->Add(WxButtonOK,0,wxALIGN_CENTER | wxALL,4);
 
-	WxButtonCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(102, 4), wxSize(90, 30), 0, wxDefaultValidator, _("WxButtonCancel"));
-	WxButtonCancel->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxButtonCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(102, 4), wxSize(90, 30), 0, wxDefaultValidator, wxT("WxButtonCancel"));
+	WxButtonCancel->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer3->Add(WxButtonCancel,0,wxALIGN_CENTER | wxALL,4);
 
 	SetTitle(_("About MadEdit"));

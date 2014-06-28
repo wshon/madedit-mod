@@ -19,6 +19,7 @@
 #ifdef __WXMSW__
 #include "MadFileAssociationDialog.h"
 #endif
+#include "MadPurgeHistoryDialog.h"
 #include "MadConvEncDialog.h"
 #include "MadWordCountDialog.h"
 #include "MadSortDialog.h"
@@ -139,7 +140,7 @@
 #endif
 
 
-wxString g_MadEdit_Version(wxT("MadEdit v0.2.9 mod 0.1.3"));
+wxString g_MadEdit_Version(wxT("MadEdit v0.2.9 mod 0.1.4"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
@@ -1171,6 +1172,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	#ifdef __WXMSW__
 	EVT_MENU(menuFileAssociation, MadEditFrame::OnToolsFileAssociation)
 	#endif
+	EVT_MENU(menuPurgeHistories, MadEditFrame::OnToolsPurgeHistories)
 	EVT_MENU(menuToggleBOM, MadEditFrame::OnToolsToggleBOM)
 	EVT_MENU(menuConvertToDOS, MadEditFrame::OnToolsConvertToDOS)
 	EVT_MENU(menuConvertToMAC, MadEditFrame::OnToolsConvertToMAC)
@@ -1510,6 +1512,7 @@ CommandData CommandTable[]=
 #ifdef __WXMSW__
     { 0,               1, menuFileAssociation,    wxT("menuFileAssociation"),    _("&File Type Associations..."),                    wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
 #endif
+    { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -4929,6 +4932,12 @@ void MadEditFrame::OnToolsFileAssociation(wxCommandEvent& event)
 }
 #endif
 
+void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
+{
+    MadPurgeHistoryDialog dlg(this);
+    dlg.ShowModal();
+}
+
 void MadEditFrame::OnToolsToggleBOM(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
@@ -5229,6 +5238,27 @@ void MadEditFrame::OnResetCurrResult(wxCommandEvent& event)
     {
     	g_MainFrame->ResetFindInFilesResults();
 	}
+}
+
+void MadEditFrame::PurgeRecentFiles()
+{
+    int n = (int) m_RecentFiles->GetCount();
+    for(int i=n-1; i>=0; --i)
+        m_RecentFiles->RemoveFileFromHistory((size_t)i);
+}
+
+void MadEditFrame::PurgeRecentFonts()
+{
+    int n = (int) m_RecentFonts->GetCount();
+    for(int i=n-1; i>=1; --i)
+        m_RecentFonts->RemoveFileFromHistory((size_t)i);
+}
+
+void MadEditFrame::PurgeRecentEncodings()
+{
+    int n = (int) m_RecentEncodings->GetCount();
+    for(int i=n-1; i>=1; --i)
+        m_RecentEncodings->RemoveFileFromHistory((size_t)i);
 }
 
 #if USE_GENERIC_TREECTRL

@@ -28,6 +28,8 @@
 ../src/MadFindInFilesDialog.h
 ../src/MadHighlightingDialog.cpp
 ../src/MadHighlightingDialog.h
+../src/MadPurgeHistoryDialog.cpp
+../src/MadPurgeHistoryDialog.h
 ../src/MadSearchDialog.cpp
 ../src/MadSearchDialog.h
 ../src/MadSortDialog.cpp

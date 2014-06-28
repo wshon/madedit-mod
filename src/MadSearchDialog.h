@@ -129,6 +129,7 @@ public:
     void WxButtonReplaceClick(wxCommandEvent& event);
     void WxCheckBoxSearchInSelectionClick(wxCommandEvent& event);
     void WxButtonCountClick(wxCommandEvent& event);
+    void PurgeRecentFindTexts();
 };
 
 extern MadSearchDialog *g_SearchDialog;
