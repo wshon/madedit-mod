@@ -60,6 +60,15 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+
+mod v0.1.4 2014.6.28
+1. Add clear history function(search/replace history, recent file/font history) from WMedit
+2. Update Simplifed/Traditional Chinese translation
+3. Partially upadate/add translation of Japanese/Russion? based on WMedit(Anyone can help on this?)
+
+mod v0.1.3 2014.6.23
+Nothing changed. Rebuid with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
+
 mod v0.1.2
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
