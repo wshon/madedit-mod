@@ -2264,7 +2264,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 	m_Config->Write(wxT("/MadEdit/WindowHeight"), y );
 #endif
 //------------------
-
+	//bool purgeHis = WxCheckBoxPurgeHistory->IsChecked();
     m_Config->SetPath(wxT("/RecentFiles"));
     m_RecentFiles->Save(*m_Config);
 

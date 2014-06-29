@@ -61,10 +61,11 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
 
-mod v0.1.4 2014.6.28
+mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
 2. Update Simplifed/Traditional Chinese translation
-3. Partially upadate/add translation of Japanese/Russion? based on WMedit(Anyone can help on this?)
+3. Partially upadate/add translation of Italian/Japanese/Spanish/Russion? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
+4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
 mod v0.1.3 2014.6.23
 Nothing changed. Rebuid with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
@@ -295,7 +296,7 @@ MadEdit is released under the GNU General Public License.
 Author:
 ------
 Alston Chen <madedit@gmail.com>
-
+Minggang Li <minggang.li@gmail.com>
 
 Links:
 -----

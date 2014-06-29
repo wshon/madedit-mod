@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: wxMEdit 2.9.7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-06-27 22:17+0800\n"
-"PO-Revision-Date: 2014-06-27 22:37+0800\n"
+"PO-Revision-Date: 2014-06-28 15:22+0800\n"
 "Last-Translator: Vincent_TW <wxmedit@gmail.com>\n"
 "Language-Team: wxMEdit <wxmedit@gmail.com>\n"
 "Language: zh_TW\n"
@@ -2254,9 +2254,8 @@ msgid "Search In &Selection"
 msgstr "只在選取資料中尋找(&S)"
 
 #: src/MadSearchDialog.cpp:146
-#, fuzzy
 msgid "Find &All"
-msgstr "尋找下一個(&N)"
+msgstr "尋找所有的(&A)"
 
 #: src/MadSearchDialog.cpp:150
 msgid "C&ount"
@@ -2271,9 +2270,8 @@ msgid "Search"
 msgstr "尋找"
 
 #: src/MadSearchDialog.cpp:351 src/MadSearchDialog.cpp:461
-#, fuzzy
 msgid "Passed the end of the file"
-msgstr "增加選取行的縮排"
+msgstr "經過了文件結尾"
 
 #: src/MadSearchDialog.cpp:361 src/MadSearchDialog.cpp:471
 msgid "Cannot find the matched string"
@@ -2288,19 +2286,16 @@ msgid "Do you want to find from begin of selection?"
 msgstr "要從選擇的開頭查找嗎？"
 
 #: src/MadSearchDialog.cpp:375
-#, fuzzy
 msgid "Do you want to find from begin of file?"
-msgstr "要儲存這個檔案嗎？"
+msgstr "要從文件開頭尋找嗎？"
 
 #: src/MadSearchDialog.cpp:484
-#, fuzzy
 msgid "Do you want to find from end of selection?"
-msgstr "要重新載入這個檔案嗎？"
+msgstr "要從選擇的末尾開始尋找嗎？"
 
 #: src/MadSearchDialog.cpp:485
-#, fuzzy
 msgid "Do you want to find from end of file?"
-msgstr "要儲存這個檔案嗎？"
+msgstr "要從文件結尾處開始尋找？"
 
 #: src/MadSearchDialog.cpp:825
 #, c-format
