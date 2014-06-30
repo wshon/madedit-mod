@@ -19,7 +19,6 @@
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
-
 const int BUFFER_SIZE = 1024 * 256;     // 256KB
 const int BUFFER_BITS = 18;
 const int BUFFER_MASK = BUFFER_SIZE - 1;
@@ -786,7 +785,9 @@ MadLines::MadLines(MadEdit *madedit)
     m_MadEdit = madedit;
     m_Syntax = madedit->m_Syntax;
     SetEncoding(madedit->m_Encoding);
-
+#ifdef DEBUG_LOG
+    wxLog::AddTraceMask(TRACE_MLINES);
+#endif
     // reserve one empty line
     Empty(false);
 

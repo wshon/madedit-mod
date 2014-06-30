@@ -17,6 +17,7 @@
 #ifndef WX_PRECOMP
 // Include your minimal set of headers here, or wx.h
 #include <wx/wx.h>
+#include <wx/log.h>
 #endif
 
 #include <wx/file.h>
@@ -238,7 +239,9 @@ typedef MadBlockVector::iterator MadBlockIterator;
 typedef vector < MadRowIndex >::iterator MadRowIndexIterator;
 
 class MadEncoding;
-
+#ifndef __WXDEBUG__
+#define  __WXDEBUG__
+#endif
 struct MadLine
 {
     MadBlockVector          m_Blocks;
@@ -293,8 +296,10 @@ struct MadLine
         while(true)
         {
             cnt=size;
+            //wxLogDebug(wxT("Before:m_size[%d], m_data[%p]"), biter->m_Size, biter->m_Data);
             if(pos+cnt > biter->m_Size) cnt=biter->m_Size-pos;
             biter->Get(pos, buf, cnt);
+            //wxLogDebug(wxT("After:m_size[%d], m_data[%p]"), biter->m_Size, biter->m_Data);
             if((size-=cnt)==0) break;
 
             pos=0;
