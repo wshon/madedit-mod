@@ -4,8 +4,8 @@ object frmNewForm: TfrmNewForm
   AutoScroll = False
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Purge Histories'
-  ClientHeight = 356
-  ClientWidth = 356
+  ClientHeight = 314
+  ClientWidth = 314
   Color = clBtnFace
   OldCreateOrder = True
   PopupMenu = DesignerPopup.Owner
@@ -29,39 +29,40 @@ object frmNewForm: TfrmNewForm
   Wx_BorderAlignment = []
   isAuimanagerAvailable = False
   PixelsPerInch = 96
-  TextHeight = 17
-  object WxBoxSizer1: TWxBoxSizer
+  TextHeight = 15
+  object WxStaticBoxSizer1: TWxStaticBoxSizer
     Left = 0
     Top = 0
-    Width = 356
-    Height = 356
+    Width = 314
+    Height = 314
     Align = alClient
     TabOrder = 0
     Orientation = wxVertical
-    Wx_Class = 'wxBoxSizer'
+    Wx_Class = 'wxStaticBoxSizer'
     Wx_ControlOrientation = wxControlVertical
-    Wx_IDName = 'ID_WXBOXSIZER1'
+    Wx_IDName = 'ID_WXSTATICBOXSIZER1'
     Wx_IDValue = 1053
+    Wx_Border = 2
     Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT]
-    object WxStaticBoxSizer1: TWxStaticBoxSizer
+    object WxBoxSizer1: TWxBoxSizer
       Left = 5
-      Top = 5
-      Width = 261
-      Height = 255
+      Top = 15
+      Width = 222
+      Height = 217
       TabOrder = 0
       Orientation = wxVertical
-      Wx_Class = 'wxStaticBoxSizer'
+      Wx_Class = 'wxBoxSizer'
       Wx_ControlOrientation = wxControlVertical
-      Wx_IDName = 'ID_WXSTATICBOXSIZER1'
+      Wx_IDName = 'ID_WXBOXSIZER1'
       Wx_IDValue = 1054
       Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT]
       object wxCheckBoxRecentFiles: TWxCheckBox
-        Left = 45
-        Top = 20
-        Width = 171
-        Height = 19
+        Left = 35
+        Top = 5
+        Width = 151
+        Height = 16
         Caption = 'Recent Files'
-        TabOrder = 1
+        TabOrder = 0
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -90,12 +91,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentFonts: TWxCheckBox
-        Left = 44
-        Top = 49
-        Width = 172
-        Height = 20
+        Left = 35
+        Top = 31
+        Width = 152
+        Height = 18
         Caption = 'Recent Fonts'
-        TabOrder = 2
+        TabOrder = 1
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -124,12 +125,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentEncodings: TWxCheckBox
-        Left = 35
-        Top = 79
-        Width = 193
-        Height = 19
+        Left = 26
+        Top = 59
+        Width = 170
+        Height = 16
         Caption = 'Recent Encodings'
-        TabOrder = 3
+        TabOrder = 2
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -158,12 +159,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentSearchedTexts: TWxCheckBox
-        Left = 29
-        Top = 108
-        Width = 202
-        Height = 20
+        Left = 22
+        Top = 85
+        Width = 178
+        Height = 18
         Caption = 'Recent Searched Texts'
-        TabOrder = 4
+        TabOrder = 3
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -192,12 +193,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentReplacedTexts: TWxCheckBox
-        Left = 30
-        Top = 138
-        Width = 200
-        Height = 19
+        Left = 22
+        Top = 113
+        Width = 177
+        Height = 17
         Caption = 'Recent Replaced Texts'
-        TabOrder = 5
+        TabOrder = 4
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -226,12 +227,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentSearchedDirectories: TWxCheckBox
-        Left = 21
-        Top = 167
-        Width = 218
-        Height = 19
+        Left = 15
+        Top = 140
+        Width = 192
+        Height = 17
         Caption = 'Recent Searched Directories'
-        TabOrder = 6
+        TabOrder = 5
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -260,10 +261,10 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxRecentSearchedFileFilters: TWxCheckBox
-        Left = 19
-        Top = 196
-        Width = 222
-        Height = 20
+        Left = 13
+        Top = 167
+        Width = 196
+        Height = 18
         Caption = 'Recent Searched File Filters'
         TabOrder = 7
         Wx_BGColor = clBlack
@@ -294,12 +295,12 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxCheckBoxRecentSearchedExcludeFilters: TWxCheckBox
-        Left = 10
-        Top = 226
-        Width = 241
-        Height = 19
+        Left = 5
+        Top = 195
+        Width = 212
+        Height = 17
         Caption = 'Recent Searched Exclude Filters'
-        TabOrder = 8
+        TabOrder = 6
         Wx_BGColor = clBlack
         Wx_CheckBoxStyle = []
         Wx_Class = 'wxCheckBox'
@@ -330,9 +331,9 @@ object frmNewForm: TfrmNewForm
     end
     object WxBoxSizer2: TWxBoxSizer
       Left = 31
-      Top = 270
-      Width = 190
-      Height = 38
+      Top = 232
+      Width = 170
+      Height = 35
       TabOrder = 1
       Wx_Class = 'wxBoxSizer'
       Wx_ControlOrientation = wxControlVertical
@@ -341,8 +342,8 @@ object frmNewForm: TfrmNewForm
       object WxButtonOK: TWxButton
         Left = 5
         Top = 5
-        Width = 85
-        Height = 28
+        Width = 75
+        Height = 25
         Caption = '&OK'
         TabOrder = 0
         EVT_BUTTON = 'WxButtonOKClick'
@@ -377,10 +378,10 @@ object frmNewForm: TfrmNewForm
         Wx_Floating_Y_Pos = 0
       end
       object wxButtonCancel: TWxButton
-        Left = 100
+        Left = 90
         Top = 5
-        Width = 85
-        Height = 28
+        Width = 75
+        Height = 25
         Caption = '&Cancel'
         TabOrder = 1
         EVT_BUTTON = 'wxButtonCancelClick'
