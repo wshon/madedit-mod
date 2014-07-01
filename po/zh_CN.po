@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: MadEdit 0.2.8\n"
+"Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-06-27 22:17+0800\n"
-"PO-Revision-Date: 2014-06-27 22:18+0800\n"
+"PO-Revision-Date: 2014-07-01 09:37+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -613,7 +613,7 @@ msgid ""
 "The file size is %s bytes.\n"
 "It may take long time and large memories to convert to Text/Column Mode."
 msgstr ""
-"要继续吗?\n"
+"要继续吗？\n"
 "这个文件的长度是 %s 字节，\n"
 "可能会花很多时间和内存在转换到文字/列块模式上。"
 
@@ -624,7 +624,7 @@ msgstr "十六进制模式转换到文字/列块模式"
 #: src/MadEdit/MadEditBasic.cpp:2262 src/MadEdit/MadEditBasic.cpp:2331
 #: src/MadEditFrame.cpp:2871
 msgid "The Parent Directory of this file does not exist:"
-msgstr "这个文件所属的目录不存在:"
+msgstr "这个文件所属的目录不存在："
 
 #: src/MadEdit/MadEditBasic.cpp:2351
 msgid "Cannot save this file:"
@@ -652,7 +652,7 @@ msgstr "这个文件被其它程序修改过了。"
 
 #: src/MadEdit/MadEditBasic.cpp:2479
 msgid "Do you want to reload it?"
-msgstr "要重载这个文件吗?"
+msgstr "要重载这个文件吗？"
 
 #: src/MadEdit/MadEditBasic.cpp:2715
 msgid "The input string is not a valid Hex-String:"
@@ -822,7 +822,7 @@ msgstr "&撤消"
 
 #: src/MadEditFrame.cpp:1245
 msgid "Undo the last action"
-msgstr "重复上一个动作"
+msgstr "撤销上一个动作"
 
 #: src/MadEditFrame.cpp:1247 src/MadEditFrame.cpp:1863
 msgid "&Redo"
@@ -830,7 +830,7 @@ msgstr "重做(&R)"
 
 #: src/MadEditFrame.cpp:1253
 msgid "Redo the previously undone action"
-msgstr "重做之前回复的动作"
+msgstr "重做之前撤销的动作"
 
 #: src/MadEditFrame.cpp:1256 src/MadEditFrame.cpp:1864
 msgid "Cu&t"
@@ -1049,7 +1049,7 @@ msgstr "将选取的文字转为全角字"
 #: src/MadEditFrame.cpp:1312 src/MadEditFrame.cpp:1898
 #: src/MadEditFrame.cpp:4057 src/MadEditFrame.cpp:4061
 msgid "To Fullwidth by Options..."
-msgstr "转成全角字(使用选项)..."
+msgstr "转成全角字（使用选项）..."
 
 #: src/MadEditFrame.cpp:1312
 msgid "Convert the selection to fullwidth by options"
@@ -1086,7 +1086,7 @@ msgstr "排序(&S)"
 
 #: src/MadEditFrame.cpp:1320 src/MadEditFrame.cpp:1906
 msgid "Sort Lines (&Ascending)"
-msgstr "排序文字行(升序)(&A)"
+msgstr "排序文字行（升序）(&A)"
 
 #: src/MadEditFrame.cpp:1320
 msgid "Sort the selected or all lines in ascending order"
@@ -1094,7 +1094,7 @@ msgstr "将选取的或全部文字行按升序方式排序"
 
 #: src/MadEditFrame.cpp:1321 src/MadEditFrame.cpp:1907
 msgid "Sort Lines (&Descending)"
-msgstr "排序文字行(降序)(&D)"
+msgstr "排序文字行（降序）(&D)"
 
 #: src/MadEditFrame.cpp:1321
 msgid "Sort the selected or all lines in descending order"
@@ -1102,7 +1102,7 @@ msgstr "将选取的或全部文字行按降序方式排序"
 
 #: src/MadEditFrame.cpp:1323 src/MadEditFrame.cpp:1909
 msgid "Sort Lines (A&scending, CaseSensitive)"
-msgstr "排序文字行(升序，区分大小写)(&S)"
+msgstr "排序文字行（升序，区分大小写）(&S)"
 
 #: src/MadEditFrame.cpp:1323
 msgid "Sort lines in ascending order and with case-sensitive"
@@ -1110,7 +1110,7 @@ msgstr "将文字行按升序及区分大小写方式排序"
 
 #: src/MadEditFrame.cpp:1324 src/MadEditFrame.cpp:1910
 msgid "Sort Lines (D&escending, CaseSensitive)"
-msgstr "排序文字行(降序，区分大小写)(&E)"
+msgstr "排序文字行（降序，区分大小写）(&E)"
 
 #: src/MadEditFrame.cpp:1324
 msgid "Sort lines in descending order and with case-sensitive"
@@ -1191,7 +1191,7 @@ msgstr "跳到某行(&G)..."
 
 #: src/MadEditFrame.cpp:1340
 msgid "Go to the specified line"
-msgstr "跳到想要的行数"
+msgstr "跳到指定的行"
 
 #: src/MadEditFrame.cpp:1341
 msgid "G&o To Position..."
@@ -1803,7 +1803,7 @@ msgstr "删除光标右侧的一个词"
 
 #: src/MadEditFrame.cpp:1602
 msgid "Toggle Insert/Overwrite Mode"
-msgstr "切换插入/覆写模式"
+msgstr "切换插入/覆盖模式"
 
 #: src/MadEditFrame.cpp:2139
 msgid "New File"
@@ -1952,7 +1952,7 @@ msgstr ""
 
 #: src/MadEditFrame.cpp:3634
 msgid "Previewing"
-msgstr "预览打印"
+msgstr "打印预览"
 
 #: src/MadEditFrame.cpp:3663
 msgid ""
@@ -2090,7 +2090,7 @@ msgstr "在编辑器中开启的文件"
 
 #: src/MadFindInFilesDialog.cpp:170
 msgid "Selected Directory:"
-msgstr "选择的目录:"
+msgstr "选择的目录："
 
 #: src/MadFindInFilesDialog.cpp:187
 msgid "File Filters:"
@@ -2102,7 +2102,7 @@ msgstr "文件排除条件："
 
 #: src/MadFindInFilesDialog.cpp:221
 msgid "File Encoding:"
-msgstr "文件编码:"
+msgstr "文件编码："
 
 #: src/MadFindInFilesDialog.cpp:230
 msgid "Include Subdirectories"
@@ -2353,19 +2353,19 @@ msgstr "%d 个字符串已被替换。"
 
 #: src/MadOptionsDialog.cpp:232
 msgid "General"
-msgstr "一般"
+msgstr "通用"
 
 #: src/MadOptionsDialog.cpp:246
 msgid "Language of User Interface (must restart MadEdit)"
-msgstr ""
+msgstr "用户界面语言（必须重启才生效）"
 
 #: src/MadOptionsDialog.cpp:253
 msgid "Single Instance (must restart MadEdit)"
-msgstr "只执行MadEdit一次，不要重复开启MadEdit (需要重新启动)"
+msgstr "只执行MadEdit一次，不要重复开启MadEdit（需要重新启动）"
 
 #: src/MadOptionsDialog.cpp:257
 msgid "Record caret movements in undo list"
-msgstr "将光标位置记录到「回复」列表中"
+msgstr "将光标位置移动记录到「撤销」列表中"
 
 #: src/MadOptionsDialog.cpp:268
 msgid "Max file size to load whole file into memory"
@@ -2400,7 +2400,7 @@ msgstr "编辑"
 
 #: src/MadOptionsDialog.cpp:325
 msgid "Max line length before Line-Wrap (must restart MadEdit)"
-msgstr "每行最大长度，超过会自动折行(需要重新启动)"
+msgstr "每行最大长度，超过会自动折行（需要重新启动）"
 
 #: src/MadOptionsDialog.cpp:336
 msgid "Columns of Wrap-By-Column"
