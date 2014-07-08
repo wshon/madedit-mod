@@ -104,6 +104,16 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	Center();
 	
 	////GUI Items Creation End
+
+	// connect to KeyDown event handler
+	wxCheckBoxRecentFiles->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentFonts->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentEncodings->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentSearchedTexts->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentReplacedTexts->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentSearchedDirectories->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxRecentSearchedFileFilters->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxCheckBoxRecentSearchedExcludeFilters->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 }
 
 void MadPurgeHistoryDialog::OnClose(wxCloseEvent& /*event*/)
