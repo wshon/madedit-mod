@@ -46,6 +46,7 @@ class MadPurgeHistoryDialog : public wxDialog
 		virtual ~MadPurgeHistoryDialog();
 		void WxButtonOKClick(wxCommandEvent& event);
 		void wxButtonCancelClick(wxCommandEvent& event);
+		void MadPurgeHistoryDialogKeyDown(wxKeyEvent& event);
 
 	private:
 		//Do not add custom control declarations between 

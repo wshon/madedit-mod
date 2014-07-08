@@ -30,6 +30,7 @@ BEGIN_EVENT_TABLE(MadPurgeHistoryDialog,wxDialog)
 	////Manual Code End
 	
 	EVT_CLOSE(MadPurgeHistoryDialog::OnClose)
+	EVT_KEY_DOWN(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown)
 	EVT_BUTTON(wxID_CANCEL,MadPurgeHistoryDialog::wxButtonCancelClick)
 	EVT_BUTTON(wxID_OK,MadPurgeHistoryDialog::WxButtonOKClick)
 END_EVENT_TABLE()
@@ -151,4 +152,55 @@ void MadPurgeHistoryDialog::wxButtonCancelClick(wxCommandEvent& event)
 {
 	// insert your code here
 	Destroy();
+}
+
+/*
+ * MadPurgeHistoryDialogKeyDown
+ */
+void MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown(wxKeyEvent& event)
+{
+	// insert your code here
+    int key=event.GetKeyCode();
+
+    switch(key)
+    {
+    case WXK_ESCAPE:
+        {
+            wxCommandEvent e;
+            this->wxButtonCancelClick(e);
+            return;
+        }
+    case WXK_RETURN:
+    case WXK_NUMPAD_ENTER:
+        if((wxButton*)this == this->WxButtonOK)
+        {
+            wxCommandEvent e;
+            this->WxButtonOKClick(e);
+            return; // no skip
+        }
+        break;
+    default:
+        break;
+    }
+
+    int flags=wxACCEL_NORMAL;
+    if(event.m_altDown) flags|=wxACCEL_ALT;
+    if(event.m_shiftDown) flags|=wxACCEL_SHIFT;
+    if(event.m_controlDown) flags|=wxACCEL_CTRL;
+
+    if('o' == key && wxACCEL_ALT == flags)
+    {
+        wxCommandEvent e;
+        this->WxButtonOKClick(e);
+        return; // no skip
+    }
+
+    if('c' == key && wxACCEL_ALT == flags)
+    {
+        wxCommandEvent e;
+        this->wxButtonCancelClick(e);
+        return; // no skip
+    }
+
+    event.Skip();
 }
