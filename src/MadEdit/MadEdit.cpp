@@ -739,6 +739,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
 {
     ++ms_Count;
 
+    m_mouse_in_window = false;
     m_VScrollBar=new wxScrollBar(this, ID_VSCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
     m_HScrollBar=new wxScrollBar(this, ID_HSCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_HORIZONTAL);
 
@@ -9419,6 +9420,12 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
 
+    if (!m_mouse_in_window)
+    {
+        evt.Skip();
+        return;
+    }
+
     ProcessCommand(ecMouseNotify);
 
     if(m_SingleLineMode && evt.m_x==m_LeftClickX && evt.m_y==m_LeftClickY)
@@ -10083,6 +10090,7 @@ void MadEdit::OnMouseWheel(wxMouseEvent &evt)
 void MadEdit::OnMouseEnterWindow(wxMouseEvent &evt)
 {
     UpdateCursor(evt.m_x, evt.m_y);
+    m_mouse_in_window = true;
     evt.Skip();
 }
 
@@ -10097,6 +10105,7 @@ void MadEdit::OnMouseLeaveWindow(wxMouseEvent &evt)
     {
         wxSetCursor(ArrowCursor); // scrollbar
     }
+    m_mouse_in_window = false; 
     evt.Skip();
 }
 

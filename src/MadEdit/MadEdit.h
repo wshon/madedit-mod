@@ -360,6 +360,7 @@ private:
     OnActivatePtr         m_OnActivate;
 
     wxMilliClock_t m_lastDoubleClick;
+    bool m_mouse_in_window;
 
 #ifdef __WXMSW__
     bool m_IsWin98;

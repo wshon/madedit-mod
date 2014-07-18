@@ -114,6 +114,8 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	wxCheckBoxRecentSearchedDirectories->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 	wxRecentSearchedFileFilters->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 	wxCheckBoxRecentSearchedExcludeFilters->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	WxButtonOK->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
+	wxButtonCancel->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 }
 
 void MadPurgeHistoryDialog::OnClose(wxCloseEvent& /*event*/)
@@ -182,12 +184,18 @@ void MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown(wxKeyEvent& event)
         }
     case WXK_RETURN:
     case WXK_NUMPAD_ENTER:
-        if((wxButton*)this == this->WxButtonOK)
+		if ((wxButton*)this != this->wxButtonCancel)
         {
             wxCommandEvent e;
             this->WxButtonOKClick(e);
             return; // no skip
         }
+		else
+		{
+            wxCommandEvent e;
+			this->wxButtonCancelClick(e);
+            return; // no skip
+		}
         break;
     default:
         break;
