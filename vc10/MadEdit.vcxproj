@@ -39,6 +39,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -51,12 +53,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(BOOST);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXWIN)contrib/include;$(BOOST);$(SolutionDir)\../minipython/Include;$(SolutionDir)\../minipython/PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;$(BOOST)stage/lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;wxmsw28ud_stc.lib;python27_d.lib;libboost_python-vc100-mt-sgyd-1_56.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,15 +72,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(BOOST);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXWIN)contrib/include;$(BOOST);$(SolutionDir)\../minipython/Include;$(SolutionDir)\../minipython/PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;$(BOOST)stage/lib;$(SolutionDir)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;wxmsw28u_stc.lib;python27.lib;libboost_python-vc100-mt-s-1_56.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -103,6 +106,7 @@
     <ClInclude Include="..\charset-detector\src\nsUniversalDetector.h" />
     <ClInclude Include="..\charset-detector\src\nsUTF8Prober.h" />
     <ClInclude Include="..\charset-detector\src\prmem.h" />
+    <ClInclude Include="..\src\EmbeddedPython.hpp" />
     <ClInclude Include="..\src\MadAboutDialog.h" />
     <ClInclude Include="..\src\MadCommand.h" />
     <ClInclude Include="..\src\MadConvEncDialog.h" />
@@ -123,9 +127,11 @@
     <ClInclude Include="..\src\MadFileAssociationDialog.h" />
     <ClInclude Include="..\src\MadFindInFilesDialog.h" />
     <ClInclude Include="..\src\MadHighlightingDialog.h" />
+    <ClInclude Include="..\src\MadMacroDlg.h" />
     <ClInclude Include="..\src\MadOptionsDialog.h" />
     <ClInclude Include="..\src\MadPrintout.h" />
     <ClInclude Include="..\src\MadPurgeHistoryDialog.h" />
+    <ClInclude Include="..\src\MadPython.hpp" />
     <ClInclude Include="..\src\MadReplaceDialog.h" />
     <ClInclude Include="..\src\MadSearchDialog.h" />
     <ClInclude Include="..\src\MadSortDialog.h" />
@@ -188,6 +194,7 @@
     <ClCompile Include="..\src\MadFileAssociationDialog.cpp" />
     <ClCompile Include="..\src\MadFindInFilesDialog.cpp" />
     <ClCompile Include="..\src\MadHighlightingDialog.cpp" />
+    <ClCompile Include="..\src\MadMacroDlg.cpp" />
     <ClCompile Include="..\src\MadOptionsDialog.cpp" />
     <ClCompile Include="..\src\MadPrintout.cpp" />
     <ClCompile Include="..\src\MadPurgeHistoryDialog.cpp" />

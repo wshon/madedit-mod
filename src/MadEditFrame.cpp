@@ -20,6 +20,7 @@
 #include "MadFileAssociationDialog.h"
 #endif
 #include "MadPurgeHistoryDialog.h"
+#include "MadMacroDlg.h"
 #include "MadConvEncDialog.h"
 #include "MadWordCountDialog.h"
 #include "MadSortDialog.h"
@@ -184,6 +185,7 @@ wxMenu *g_Menu_Tools_BOM = NULL;
 wxMenu *g_Menu_Tools_NewLineChar = NULL;
 wxMenu *g_Menu_Tools_InsertNewLineChar = NULL;
 wxMenu *g_Menu_Tools_ConvertChineseChar = NULL;
+wxMenu *g_Menu_Tools_MadMacro = NULL;
 
 wxArrayString g_FontNames;
 
@@ -1063,7 +1065,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
-	EVT_UPDATE_UI(menuNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsNewLineChar)
+	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
+	EVT_UPDATE_UI(menuRunTempMacro, MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro)
 	EVT_UPDATE_UI(menuInsertNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsInsertNewLineChar)
 	EVT_UPDATE_UI(menuConvertToDOS, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToMAC, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
@@ -1173,6 +1176,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuFileAssociation, MadEditFrame::OnToolsFileAssociation)
 	#endif
 	EVT_MENU(menuPurgeHistories, MadEditFrame::OnToolsPurgeHistories)
+	EVT_MENU(menuRunTempMacro, MadEditFrame::OnToolsRunTempMacro)
 	EVT_MENU(menuToggleBOM, MadEditFrame::OnToolsToggleBOM)
 	EVT_MENU(menuConvertToDOS, MadEditFrame::OnToolsConvertToDOS)
 	EVT_MENU(menuConvertToMAC, MadEditFrame::OnToolsConvertToMAC)
@@ -1513,6 +1517,8 @@ CommandData CommandTable[]=
     { 0,               1, menuFileAssociation,    wxT("menuFileAssociation"),    _("&File Type Associations..."),                    wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
 #endif
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
+    { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,        0},
+    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporay macro")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -1932,6 +1938,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_Tools_NewLineChar = new wxMenu((long)0);
     g_Menu_Tools_InsertNewLineChar = new wxMenu((long)0);
     g_Menu_Tools_ConvertChineseChar = new wxMenu((long)0);
+    g_Menu_Tools_MadMacro = new wxMenu((long)0);
     g_Menu_View_Font0 = new wxMenu((long)0);
     g_Menu_View_Font1 = new wxMenu((long)0);
     g_Menu_View_Font2 = new wxMenu((long)0);
@@ -3420,6 +3427,32 @@ void MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding(wxUpdateUIEvent& event)
 void MadEditFrame::OnUpdateUI_MenuWindow_CheckCount(wxUpdateUIEvent& event)
 {
     event.Enable(m_Notebook->GetPageCount()>=2);
+}
+
+void MadEditFrame::OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event)
+{
+    if(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly())
+    {
+        event.Enable(true);
+
+    }
+    else
+    {
+        event.Enable(false);
+    }
+}
+
+void MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event)
+{
+    if(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly())
+    {
+        event.Enable(true);
+
+    }
+    else
+    {
+        event.Enable(false);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -4935,6 +4968,12 @@ void MadEditFrame::OnToolsFileAssociation(wxCommandEvent& event)
 void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
 {
     MadPurgeHistoryDialog dlg(this);
+    dlg.ShowModal();
+}
+
+void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)
+{
+    MadMacroDlg dlg(this);
     dlg.ShowModal();
 }
 
