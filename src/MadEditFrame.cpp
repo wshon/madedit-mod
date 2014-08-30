@@ -141,7 +141,7 @@
 #endif
 
 
-wxString g_MadEdit_Version(wxT("MadEdit v0.2.9 mod 0.1.4"));
+wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
@@ -2286,6 +2286,12 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         g_SearchDialog->Show(false);
         m_Config->SetPath(wxT("/RecentFindText"));
         g_SearchDialog->m_RecentFindText->Save(*m_Config);
+        // add: gogo, 19.09.2009
+        g_SearchDialog->GetPosition( &x, &y );
+        m_Config->Write(wxT("/MadEdit/SearchWinLeft"), x );
+        m_Config->Write(wxT("/MadEdit/SearchWinTop"), y );
+        m_Config->Write(wxT("/MadEdit/SearchThrEndOfFile"), g_SearchDialog->WxCheckBoxSearchThrEndOfFile->GetValue());
+        //----------
     }
     if(g_ReplaceDialog!=NULL)
     {
@@ -2308,16 +2314,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_Config->Write(wxT("/MadEdit/SearchInSelection"), false);
     m_Config->Write(wxT("/MadEdit/SearchFrom"), wxEmptyString);
     m_Config->Write(wxT("/MadEdit/SearchTo"), wxEmptyString);
-
-    // add: gogo, 19.09.2009
-    if ( g_SearchDialog )
-    {
-        g_SearchDialog->GetPosition( &x, &y );
-        m_Config->Write(wxT("/MadEdit/SearchWinLeft"), x );
-        m_Config->Write(wxT("/MadEdit/SearchWinTop"), y );
-        m_Config->Write(wxT("/MadEdit/SearchThrEndOfFile"), g_SearchDialog->WxCheckBoxSearchThrEndOfFile->GetValue());
-    }
-    //----------
 
     delete m_RecentFiles;
     m_RecentFiles=NULL;
