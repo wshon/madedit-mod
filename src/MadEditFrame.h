@@ -152,6 +152,9 @@ public:
     void OnUpdateUI_MenuToolsConvertEncoding(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuWindow_CheckCount(wxUpdateUIEvent& event);
+    
+    void OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event);
 
     void OnFileNew(wxCommandEvent& event);
     void OnFileOpen(wxCommandEvent& event);
@@ -251,6 +254,8 @@ public:
     void OnToolsFileAssociation(wxCommandEvent& event);
 #endif
     void OnToolsPurgeHistories(wxCommandEvent& event);
+    void OnToolsRunTempMacro(wxCommandEvent& event);
+
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);
     void OnToolsConvertToMAC(wxCommandEvent& event);
@@ -464,6 +469,8 @@ enum { // menu id
     menuFileAssociation,
 #endif
     menuPurgeHistories,
+    menuMadMacro,
+    menuRunTempMacro,
     menuPlugins,
     menuByteOrderMark,
     menuToggleBOM,

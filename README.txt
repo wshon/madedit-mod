@@ -60,6 +60,9 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.1.5 alpha
+1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
+2. Embed minimized Python as Macro language(Only MS Windows supported currently)
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
