@@ -140,7 +140,7 @@
 #endif
 
 
-wxString g_MadEdit_Version(wxT("MadEdit v0.2.9 mod 0.1.4"));
+wxString g_MadEdit_Version(wxT("MadEdit v0.2.9 mod 0.1.5 alpha"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
