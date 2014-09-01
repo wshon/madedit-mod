@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <python.h>
 
 #define BOOST_PYTHON_STATIC_LIB
@@ -20,6 +21,21 @@ namespace mad_python
     class PyMadEdit
     {
         public:
+            PyMadEdit()
+            {
+                if(g_MainFrame) //Should be always true!!!
+                {
+                    if(!g_ActiveMadEdit)
+                    {
+                        // Simulate MadEditFrame::OnFileNew
+                        g_MainFrame->OpenFile(wxEmptyString, false);
+                        return;
+                    }
+
+                }
+                else
+                    throw std::runtime_error("No active main frame!");
+            }
             void GoToLine(int line)
             {
                 if(line > 0)
@@ -82,14 +98,11 @@ namespace mad_python
 
             mad_py::tuple GetTextFont(wxString &name, int &size)
             {
-                wxString name;
-                int size = 0;
                 g_ActiveMadEdit->GetTextFont(name, size);
+                return mad_py::make_tuple(name, size);
             }
             mad_py::tuple GetHexFont(wxString &name, int &size)
             {
-                wxString name;
-                int size = 0;
                 g_ActiveMadEdit->GetHexFont(name, size);
                 return mad_py::make_tuple(name, size);
             }
@@ -336,7 +349,7 @@ namespace mad_python
                 g_ActiveMadEdit->GetCaretPosition(line, subrow, column);
                 return mad_py::make_tuple(line, subrow, column);
             }
-            wxFileOffset GetCaretPosition()
+            wxFileOffset GetCaretPositionB()
             {
                 return g_ActiveMadEdit->GetCaretPosition();
             }
@@ -497,6 +510,15 @@ namespace mad_python
             void PasteFromClipboard()
             {
                 g_ActiveMadEdit->PasteFromClipboard();
+            }
+
+            void DndBegDrag()
+            {
+                g_ActiveMadEdit->DndBegDrag();
+            }
+            void DndDrop()
+            {
+                g_ActiveMadEdit->DndDrop();
             }
             bool CanPaste()
             {
@@ -752,6 +774,7 @@ namespace mad_python
                 g_ActiveMadEdit->WordCount(selection, wordCount, charCount, spaceCount, halfWidthCount, fullWidthCount, lineCount, detail);
             }
     };
+    //PyMadEdit * InitMadPython() { return new PyMadEdit();}
 }
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindTextNext_member_overloads, FindTextNext, 4, 6)
@@ -776,10 +799,10 @@ BOOST_PYTHON_MODULE(madpython)
     using namespace mad_python;
     using namespace mad_py;
 
-    class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.")
+    class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.", init<>())
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
-        .def("SetSyntax", &PyMadEdit::SetSyntax, "")
-        .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "")
+        .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
+        .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "Get syntax information currently used")
         .def("GetSyntaxTitle", &PyMadEdit::GetSyntaxTitle, return_value_policy<return_by_value>(), "")
         .def("ApplySyntaxAttributes", &PyMadEdit::ApplySyntaxAttributes, "")
         .def("LoadDefaultSyntaxScheme", &PyMadEdit::LoadDefaultSyntaxScheme, "")
@@ -846,7 +869,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("GetUCharType", &PyMadEdit::GetUCharType, "")
 
         .def("GetCaretPositionA", &PyMadEdit::GetCaretPositionA, return_value_policy<return_by_value>(), "")
-        .def("GetCaretPosition", &PyMadEdit::GetCaretPosition, return_value_policy<return_by_value>(), "")
+        .def("GetCaretPositionB", &PyMadEdit::GetCaretPositionB, return_value_policy<return_by_value>(), "")
         .def("GetFileName", &PyMadEdit::GetFileName, return_value_policy<return_by_value>(), "")
         .def("GetFileSize", &PyMadEdit::GetFileSize, return_value_policy<return_by_value>(), "")
         .def("IsSelected", &PyMadEdit::IsSelected, "")
@@ -881,6 +904,8 @@ BOOST_PYTHON_MODULE(madpython)
         .def("CutToClipboard", &PyMadEdit::CutToClipboard, "")
 
         .def("PasteFromClipboard", &PyMadEdit::PasteFromClipboard, "")
+        .def("DndBegDrag", &PyMadEdit::DndBegDrag, "")
+        .def("DndDrop", &PyMadEdit::DndDrop, "")
 
         .def("CanPaste", &PyMadEdit::CanPaste, "")
         .def("CanUndo", &PyMadEdit::CanUndo, return_value_policy<return_by_value>(), "")
@@ -942,7 +967,6 @@ BOOST_PYTHON_MODULE(madpython)
         .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("ws", "line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
 
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
-
         ;
 }
 
