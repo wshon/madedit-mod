@@ -686,11 +686,19 @@ MadSearchResult MadEdit::Search(/*IN_OUT*/MadCaretPos &beginpos, /*IN_OUT*/MadCa
     {
         try
         {
+            // Ugly patch for deadloop
+            ucs4_t bad_reg[3][2] =  {{'(',')'}, {'[',']'}, {'{','}'}};
+            for(int i = 0; i<3; ++i)
+            {
+                ucs4_t *tpuc = &(bad_reg[i][0]);
+                ucs4string bstr(tpuc, tpuc+2);
+                if(exprstr.find(bstr) != std::string::npos) throw regex_error(regex_constants::error_badbrace, "Empty (), [] or {}");
+            }
             expression=ucs4comp.compile(exprstr, opt);
         }
-        catch(regex_error)
+        catch(regex_error & e)
         {
-            wxMessageDialog dlg(this, wxString::Format(_("'%s' is not a valid regular expression."), text.c_str()),
+            wxMessageDialog dlg(this, wxString::Format(_("'%s' is not a valid regular expression.(Err:%s)"), text.c_str(), e.what()),
                                 wxT("MadEdit"), wxOK|wxICON_ERROR );
             dlg.ShowModal();
             return SR_EXPR_ERROR;
