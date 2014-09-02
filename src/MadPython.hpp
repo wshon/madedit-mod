@@ -1,3 +1,5 @@
+#ifndef __MADPYTHON__
+#define __MADPYTHON__
 #include <stdexcept>
 #include <python.h>
 
@@ -1037,3 +1039,4 @@ BOOST_PYTHON_MODULE(madpython)
         ;
 }
 
+#endif //__MADPYTHON__

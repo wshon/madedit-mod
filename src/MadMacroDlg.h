@@ -21,6 +21,8 @@
 #include <wx/sizer.h>
 #include <wx/dialog.h>
 
+class EmbeddedPython;
+class wxStreamToTextRedirector;
 ///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,6 +47,9 @@ class MadMacroDlg : public wxDialog
 		
 		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = wxDEFAULT_DIALOG_STYLE ); 
 		~MadMacroDlg();
+    private:
+        wxStreamToTextRedirector * m_redirect;
+        EmbeddedPython * m_py;
 	
 };
 

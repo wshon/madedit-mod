@@ -1,3 +1,6 @@
+#ifndef __EMBEDDEDPYTHON__
+#define __EMBEDDEDPYTHON__
+
 #include <python.h>
 
 #define BOOST_PYTHON_STATIC_LIB
@@ -197,4 +200,6 @@ private:
     py::object m_main_module;
     py::dict   m_main_global;
 };
+
+#endif //__EMBEDDEDPYTHON__
 

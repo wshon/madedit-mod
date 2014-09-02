@@ -29,7 +29,7 @@ wxChar* PythonWordlist2 =
     _T("RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 ")
     _T("STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY");
 
-MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style ), m_redirect(0), m_py(0)
 {
     this->SetSizeHints( wxDefaultSize, wxDefaultSize );
     
@@ -135,6 +135,9 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     // Connect Events
     m_run->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnRun ), NULL, this );
     m_close->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnClose ), NULL, this );
+
+    m_redirect = new wxStreamToTextRedirector((wxTextCtrl *)m_output);
+    m_py = new EmbeddedPython();
 }
 
 MadMacroDlg::~MadMacroDlg()
@@ -143,30 +146,19 @@ MadMacroDlg::~MadMacroDlg()
     m_run->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnRun ), NULL, this );
     m_close->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnClose ), NULL, this );
     
+    if(m_redirect) delete m_redirect;
+    if(m_py) delete m_py;
 }
 
 void MadMacroDlg::OnRun( wxCommandEvent& event )
 {
     wxString pystr = m_pymacro->GetText();
-    EmbeddedPython py; 
-    wxStreamToTextRedirector redirect((wxTextCtrl *)m_output);
-    //Py_Initialize();
 
-    //PyRun_SimpleString(pystr.mb_str());
-    //Py_Finalize();
-
-    //py.exec( "print \"Hello\\n\"" ); 
-	//py.exec( "print \"World\"" );
-    //std::cout<<"HHHHH"<<endl;
-    
-	py.exec( std::string(pystr.mb_str()));
-    // rise exception
-    //py.exec( "Hello\n" );
+	m_py->exec(std::string(pystr.mb_str()));
 
     event.Skip(); 
 }
 void MadMacroDlg::OnClose( wxCommandEvent& event ) 
 {
     Destroy();
-    //::PostMessage((HWND__ *)this->GetHandle(),WM_CLOSE,0,0);
 }
