@@ -130,7 +130,7 @@ public:
                 "import redirector\n"
                 "sys.stdout = redirector.stdout()\n"
                 "sys.stderr = redirector.stderr()\n"
-                "from madpython import MadPython";
+                "from madpython import MadEdit";
 
 #if 0
             /* FixMe: exception thrown, mmh - seems a bug in boost.python, see

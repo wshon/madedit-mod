@@ -9,8 +9,9 @@
 #include <string>
 #include <memory>
 
-#include "MadEditFrame.h"
+#include "MadEdit/MadEncoding.h"
 #include "MadEdit/MadEdit.h"
+#include "MadEditFrame.h"
 
 extern MadEdit *g_ActiveMadEdit;
 
@@ -604,12 +605,13 @@ namespace mad_python
             }
 
             // return the replaced count or SR_EXPR_ERROR
-            int ReplaceTextAll(const wxString &expr, const wxString &fmt,
+            int ReplaceTextAll(const char *expr, const char *fmt,
                                 bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                 vector<wxFileOffset> *pbegpos = NULL, vector<wxFileOffset> *pendpos = NULL,
                                 wxFileOffset rangeFrom = -1, wxFileOffset rangeTo = -1)
             {
-                return g_ActiveMadEdit->ReplaceTextAll(expr, fmt, bRegex, bCaseSensitive, bWholeWord, pbegpos, pendpos, rangeFrom, rangeTo);
+                wxString wxExpr(expr, wxConvLocal), wxFmt(fmt, wxConvLocal);
+                return g_ActiveMadEdit->ReplaceTextAll(wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, pbegpos, pendpos, rangeFrom, rangeTo);
             }
             int ReplaceHexAll(const wxString &expr, const wxString &fmt,
                                 vector<wxFileOffset> *pbegpos = NULL, vector<wxFileOffset> *pendpos = NULL,
