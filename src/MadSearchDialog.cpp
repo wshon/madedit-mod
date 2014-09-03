@@ -846,7 +846,6 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
     MadEdit *madedit=g_ActiveMadEdit;
 
     vector<wxFileOffset> begpos, endpos;
-    bool cont = true;
 
     // get all matched data in madedit
     wxString expr, fmt;
@@ -857,8 +856,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         m_RecentFindText->AddFileToHistory(expr);
         if(WxCheckBoxFindHex->GetValue())
         {
-            ok = madedit->FindHexAll(expr, false,
-                &begpos, &endpos);
+            ok = madedit->FindHexAll(expr, false, &begpos, &endpos);
         }
         else
         {
