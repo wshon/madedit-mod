@@ -1038,5 +1038,4 @@ BOOST_PYTHON_MODULE(madpython)
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         ;
 }
-
 #endif //__MADPYTHON__

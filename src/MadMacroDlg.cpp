@@ -29,7 +29,7 @@ wxChar* PythonWordlist2 =
     _T("RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 ")
     _T("STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY");
 
-MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style ), m_redirect(0), m_py(0)
+MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
     this->SetSizeHints( wxDefaultSize, wxDefaultSize );
     
@@ -135,9 +135,6 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     // Connect Events
     m_run->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnRun ), NULL, this );
     m_close->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnClose ), NULL, this );
-
-    m_redirect = new wxStreamToTextRedirector((wxTextCtrl *)m_output);
-    m_py = new EmbeddedPython();
 }
 
 MadMacroDlg::~MadMacroDlg()
@@ -145,16 +142,22 @@ MadMacroDlg::~MadMacroDlg()
     // Disconnect Events
     m_run->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnRun ), NULL, this );
     m_close->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnClose ), NULL, this );
-    
-    if(m_redirect) delete m_redirect;
-    if(m_py) delete m_py;
 }
 
 void MadMacroDlg::OnRun( wxCommandEvent& event )
 {
     wxString pystr = m_pymacro->GetText();
-
-	m_py->exec(std::string(pystr.mb_str()));
+    wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
+    if(!g_EmbeddedPython)
+        try
+        {
+            g_EmbeddedPython = new EmbeddedPython();
+            g_EmbeddedPython->exec(std::string(pystr.mb_str()));
+        }
+        catch(std::bad_alloc &)
+        {
+            wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+        }
 
     event.Skip(); 
 }
