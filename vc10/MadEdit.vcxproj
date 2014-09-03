@@ -171,6 +171,7 @@
     <ClCompile Include="..\charset-detector\src\nsSJISProber.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUniversalDetector.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUTF8Prober.cpp" />
+    <ClCompile Include="..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\src\MadAboutDialog.cpp" />
     <ClCompile Include="..\src\MadConvEncDialog.cpp" />
     <ClCompile Include="..\src\MadEditApp.cpp" />

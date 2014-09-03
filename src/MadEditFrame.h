@@ -155,6 +155,7 @@ public:
     
     void OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event);
 
     void OnFileNew(wxCommandEvent& event);
     void OnFileOpen(wxCommandEvent& event);
@@ -255,6 +256,7 @@ public:
 #endif
     void OnToolsPurgeHistories(wxCommandEvent& event);
     void OnToolsRunTempMacro(wxCommandEvent& event);
+    void OnToolsRunMacroFile(wxCommandEvent& event);
 
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);
@@ -471,6 +473,7 @@ enum { // menu id
     menuPurgeHistories,
     menuMadMacro,
     menuRunTempMacro,
+    menuRunMacroFile,
     menuPlugins,
     menuByteOrderMark,
     menuToggleBOM,

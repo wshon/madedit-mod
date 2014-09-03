@@ -142,31 +142,26 @@ MadMacroDlg::~MadMacroDlg()
     // Disconnect Events
     m_run->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnRun ), NULL, this );
     m_close->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MadMacroDlg::OnClose ), NULL, this );
-    
 }
 
 void MadMacroDlg::OnRun( wxCommandEvent& event )
 {
     wxString pystr = m_pymacro->GetText();
-    EmbeddedPython py; 
-    wxStreamToTextRedirector redirect((wxTextCtrl *)m_output);
-    //Py_Initialize();
-
-    //PyRun_SimpleString(pystr.mb_str());
-    //Py_Finalize();
-
-    //py.exec( "print \"Hello\\n\"" ); 
-	//py.exec( "print \"World\"" );
-    //std::cout<<"HHHHH"<<endl;
-    
-	py.exec( std::string(pystr.mb_str()));
-    // rise exception
-    //py.exec( "Hello\n" );
+    wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
+    if(!g_EmbeddedPython)
+        try
+        {
+            g_EmbeddedPython = new EmbeddedPython();
+            g_EmbeddedPython->exec(std::string(pystr.mb_str()));
+        }
+        catch(std::bad_alloc &)
+        {
+            wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+        }
 
     event.Skip(); 
 }
 void MadMacroDlg::OnClose( wxCommandEvent& event ) 
 {
     Destroy();
-    //::PostMessage((HWND__ *)this->GetHandle(),WM_CLOSE,0,0);
 }
