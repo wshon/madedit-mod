@@ -5026,7 +5026,7 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
     }
 
     static int filterIndex = 0;
-    wxString fileFilter = wxString(wxT("All files(*;*.*)|")) + wxFileSelectorDefaultWildcardStr + wxT("|Mad Macro (*.mpy)|*.mpy|");
+    wxString fileFilter = wxString(wxT("Mad Macro(*.mpy)|*.mpy|")) + wxFileSelectorDefaultWildcardStr + wxT("|All files(*;*.*)");
     wxFileDialog dlg(this, _("Open Mad Macro File"), dir, wxEmptyString, fileFilter,
 #if wxCHECK_VERSION(2,8,0)
     wxFD_OPEN );
