@@ -598,12 +598,12 @@ namespace mad_python
             }
 
             // search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-            mad_py::tuple FindTextNext(const std::string &text,
+            int FindTextNext(const std::string &text,
                                     bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                     int rangeFrom = -1, int rangeTo = -1)
             {
                 if(text.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxText(text.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
                 
@@ -611,65 +611,60 @@ namespace mad_python
                 return mad_py::make_tuple((int)from, (int)to);
             }
             // search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-             mad_py::tuple FindTextPrevious(const std::string &text,
+            int FindTextPrevious(const std::string &text,
                                         bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                         int rangeFrom = -1, int rangeTo = -1)
             {
                 if(text.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxText(text.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
                 
-                g_ActiveMadEdit->FindTextPrevious(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);                
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindTextPrevious(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);                
             }
 
             // search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-             mad_py::tuple FindHexNext(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
+            int FindHexNext(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
             {
                 if(hexstr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxHexExpr(hexstr.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->FindHexNext(wxHexExpr, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindHexNext(wxHexExpr, from, to);
             }
             // search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-             mad_py::tuple FindHexPrevious(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
+            int FindHexPrevious(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
             {
                 if(hexstr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxHexExpr(hexstr.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->FindHexPrevious(wxHexExpr, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindHexPrevious(wxHexExpr, from, to);
             }
 
             // replace the selected text that must match expr
-             mad_py::tuple ReplaceText(const std::string &expr, const std::string &fmt,
+            int ReplaceText(const std::string &expr, const std::string &fmt,
                                          bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                          int rangeFrom = -1, int rangeTo = -1)
             {
                 if(expr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return RR_EXPR_ERROR;
                 wxString wxExpr(expr.c_str(), wxConvLocal), wxFmt(fmt.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->ReplaceText(wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->ReplaceText(wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, from, to);
             }
-             mad_py::tuple ReplaceHex(const std::string &expr, const std::string &fmt,
+            int ReplaceHex(const std::string &expr, const std::string &fmt,
                                          int rangeFrom = -1, int rangeTo = -1)
             {
                 if(expr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return RR_EXPR_ERROR;
                 wxString wxExpr(expr.c_str(), wxConvLocal), wxFmt(fmt.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->ReplaceHex(wxExpr, wxFmt, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->ReplaceHex(wxExpr, wxFmt, from, to);
             }
 
             // return the replaced count or SR_EXPR_ERROR
