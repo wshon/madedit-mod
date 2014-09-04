@@ -146,7 +146,7 @@ wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
-EmbeddedPython * g_EmbeddedPython;
+EmbeddedPython * g_EmbeddedPython = 0;
 
 
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
@@ -5029,33 +5029,43 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
     wxString fileFilter = wxString(wxT("Mad Macro(*.mpy)|*.mpy|")) + wxFileSelectorDefaultWildcardStr + wxT("|All files(*;*.*)");
     wxFileDialog dlg(this, _("Open Mad Macro File"), dir, wxEmptyString, fileFilter,
 #if wxCHECK_VERSION(2,8,0)
-    wxFD_OPEN );
+        wxFD_OPEN );
 #else
-    wxOPEN );
+        wxOPEN );
 #endif
     dlg.SetFilterIndex(filterIndex);
     if (dlg.ShowModal()==wxID_OK)
     {
-        wxString filename = dlg.GetFilename();
+        wxString filename = dlg.GetPath();
 
-        wxFile scriptfile(filename, wxFile::read);
+        wxTextFile scriptfile(filename);
+        scriptfile.Open();
+
         if(scriptfile.IsOpened())
         {
-            wxFileOffset filesize=scriptfile.Length();
-            
             if(!g_EmbeddedPython)
+            {
                 try
                 {
-                    char * content = new char[filesize];
-                    scriptfile.Read((void*)content, filesize);
                     g_EmbeddedPython = new EmbeddedPython();
-                    g_EmbeddedPython->exec(std::string(content));
-                    delete []content;
                 }
                 catch(std::bad_alloc &)
                 {
                     wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
                 }
+            }
+            if(g_EmbeddedPython)
+            {
+                wxString str = scriptfile.GetFirstLine() + wxT("\n");
+
+                for ( ; !scriptfile.Eof();  )
+                {
+                    str << scriptfile.GetNextLine()<<wxT("\n");
+                }
+                if(str.IsNull()==false)
+                    g_EmbeddedPython->exec(std::string(str.mb_str()));
+
+            }
             scriptfile.Close();
         }
     }
