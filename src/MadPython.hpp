@@ -607,8 +607,8 @@ namespace mad_python
                 wxString wxText(text.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
                 
-                g_ActiveMadEdit->FindTextNext(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindTextNext(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);
+                
             }
             // search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
             int FindTextPrevious(const std::string &text,
