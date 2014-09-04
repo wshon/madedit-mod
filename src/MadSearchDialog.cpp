@@ -420,7 +420,7 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
         wxFileOffset selbeg = g_ActiveMadEdit->GetSelectionBeginPos();
 
         // moved here: gogo, 19.09.2009
-	   wxFileOffset caretpos = g_ActiveMadEdit->GetCaretPosition();
+        wxFileOffset caretpos = g_ActiveMadEdit->GetCaretPosition();
 
         wxFileOffset rangeFrom = -1, rangeTo = -1;
         if(WxCheckBoxSearchInSelection->IsChecked())
@@ -831,18 +831,12 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 {
     extern MadEdit *g_ActiveMadEdit;
     wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
-
-#ifdef SHOW_RESULT_COUNT
     int ResultCount=0;
-#endif
 
     if(g_ActiveMadEdit==NULL)
         return;
 
     //g_MainFrame->ResetFindInFilesResults();
-    g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
-    g_MainFrame->m_AuiManager.Update();
-
     MadEdit *madedit=g_ActiveMadEdit;
 
     vector<wxFileOffset> begpos, endpos;
@@ -911,24 +905,30 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 
                     fmt = loc +linetext;
                     g_MainFrame->AddItemToFindInFilesResults(fmt, idx, expr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                     ++ResultCount;
-#endif
                 }
                 while(++idx < count);
                 results->Thaw();
                 if(results->GetCount())
                 {
                     results->ExpandAll();
+                    g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
+                    g_MainFrame->m_AuiManager.Update();
                 }
             }
         }
     }
-#ifdef SHOW_RESULT_COUNT
-    wxString smsg;
-    smsg.Printf(_("%d results"), ResultCount);
-    wxMessageBox(smsg.c_str(), wxT("MadEdit"), wxOK);
-#endif
+
+    if(!ResultCount)
+    {
+        g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+    }
+    else
+    {
+        wxString smsg;
+        smsg.Printf(_("%d results"), ResultCount);
+        g_StatusBar->SetStatusText(smsg, 0 );
+    }
 }
 
 void MadSearchDialog::PurgeRecentFindTexts()

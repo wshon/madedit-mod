@@ -15,10 +15,10 @@
 #include "MadEdit/MadEdit.h"
 #include "MadEditFrame.h"
 
+extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
 
 namespace mad_py = ::boost::python;
-#define UNFINISH
 namespace mad_python
 {
     class PyMadEdit
@@ -690,18 +690,15 @@ namespace mad_python
             // return the found count or SR_EXPR_ERROR
             int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord)
             {
-#ifdef SHOW_RESULT_COUNT
                 int ResultCount=0;
-#endif
-
-               if(expr.empty())
+                if(expr.empty())
                     return -2;
                 wxString wxExpr(expr.c_str(), wxConvLocal), fmt;
                 vector<wxFileOffset> begpos, endpos;
                 MadEdit *madedit=g_ActiveMadEdit;
                 
                 wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
-             
+
                 int ok = madedit->FindTextAll(wxExpr, bRegex, bCaseSensitive, bWholeWord, false, &begpos, &endpos);
 
                 if(ok>=0)
@@ -747,27 +744,36 @@ namespace mad_python
 
                                 fmt = loc +linetext;
                                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                                 ++ResultCount;
-#endif
                             }
                             while(++idx < count);
                             results->Thaw();
                             if(results->GetCount())
                             {
                                 results->ExpandAll();
+                                g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
+                                g_MainFrame->m_AuiManager.Update();
                             }
                         }
                     }
+                }
+                
+                if(!ResultCount)
+                {
+                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+                }
+                else
+                {
+                    wxString smsg;
+                    smsg.Printf(_("%d results"), ResultCount);
+                    g_StatusBar->SetStatusText(smsg, 0 );
                 }
                 return ok;
             }
             int FindHexAll(const std::string &expr)
             {
-#ifdef SHOW_RESULT_COUNT
                 int ResultCount=0;
-#endif
-               if(expr.empty())
+                if(expr.empty())
                     return -2;
                 wxString wxExpr(expr.c_str(), wxConvLocal), fmt;
                 vector<wxFileOffset> begpos, endpos;
@@ -820,9 +826,7 @@ namespace mad_python
 
                                 fmt = loc +linetext;
                                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                                 ++ResultCount;
-#endif
                             }
                             while(++idx < count);
                             results->Thaw();
@@ -833,6 +837,18 @@ namespace mad_python
                         }
                     }
                 }
+                
+                if(!ResultCount)
+                {
+                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+                }
+                else
+                {
+                    wxString smsg;
+                    smsg.Printf(_("%d results"), ResultCount);
+                    g_StatusBar->SetStatusText(smsg, 0 );
+                }
+
                 return ok;
             }
             bool LoadFromFile(const std::string &filename, const wxString &encoding = wxEmptyString)

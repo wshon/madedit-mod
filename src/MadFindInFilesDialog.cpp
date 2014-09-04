@@ -31,6 +31,7 @@
 #include "../images/down.xpm"
 
 MadFindInFilesDialog *g_FindInFilesDialog=NULL;
+extern wxStatusBar *g_StatusBar;
 
 //----------------------------------------------------------------------------
 // MadFindInFilesDialog
@@ -610,9 +611,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
 {
     //wxLogNull nolog;
 
-#ifdef SHOW_RESULT_COUNT
     int ResultCount=0;
-#endif
 
     const int max=1000;
     fmtmsg1 = _("Found %d file(s) matched the filters...");
@@ -875,12 +874,16 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
 
                         fmt = loc +linetext;
                         g_MainFrame->AddItemToFindInFilesResults(fmt, idx, expr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                         ++ResultCount;
-#endif
                     }
                     while(++idx < count);
                     g_MainFrame->m_FindInFilesResults->Thaw();
+
+                    if(ResultCount)
+                    {
+                        g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
+                        g_MainFrame->m_AuiManager.Update();
+                    }
                 }
             }
         }
@@ -892,11 +895,16 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
     g_ProgressDialog=NULL;
     g_FileNameList.clear();
 
-#ifdef SHOW_RESULT_COUNT
-    wxString smsg;
-    smsg.Printf(_("%d results"), ResultCount);
-    wxMessageBox(smsg.c_str(), wxT("MadEdit"), wxOK);
-#endif
+    if(!ResultCount)
+    {
+        g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+    }
+    else
+    {
+        wxString smsg;
+        smsg.Printf(_("%d results"), ResultCount);
+        g_StatusBar->SetStatusText(smsg, 0 );
+    }
 }
 
 /*

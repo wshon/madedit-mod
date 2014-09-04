@@ -200,7 +200,9 @@ typedef __int64 ssize_t;
 #else
 typedef _W64 int ssize_t;
 #endif
+#ifndef HAVE_SSIZE_T
 #define HAVE_SSIZE_T 1
+#endif
 
 #if defined(MS_WIN32) && !defined(MS_WIN64)
 #ifdef _M_IX86
