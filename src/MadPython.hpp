@@ -851,12 +851,13 @@ namespace mad_python
 
                 return ok;
             }
-            bool LoadFromFile(const std::string &filename, const wxString &encoding = wxEmptyString)
+            bool LoadFromFile(const std::string &filename, const std::string &encoding=const std::string(""))
             {
                 if(filename.empty())
                     return false;
+                wxString wxEncoding(encoding.c_str(), wxConvLocal);
                 wxString wxFilename(filename.c_str(), wxConvLocal);
-                return g_ActiveMadEdit->LoadFromFile(wxFilename, encoding);
+                return g_ActiveMadEdit->LoadFromFile(wxFilename, wxEncoding);
             }
             bool SaveToFile(const std::string &filename)
             {
@@ -875,9 +876,10 @@ namespace mad_python
                 return g_ActiveMadEdit->ReloadByModificationTime();
             }
             // restore pos in Reload(), ConvertEncoding()
-            void RestorePosition(wxFileOffset pos, int toprow)
+            void RestorePosition(int pos, int toprow)
             {
-                g_ActiveMadEdit->RestorePosition(pos, toprow);
+                wxFileOffset wxPos = pos;
+                g_ActiveMadEdit->RestorePosition(wxPos, toprow);
             }
 
             // write back to the original FileName
@@ -905,12 +907,13 @@ namespace mad_python
                 g_ActiveMadEdit->GotoPreviousBookmark();
             }
             //----------
-            void ConvertEncoding(const std::string &newenc, MadConvertEncodingFlag flag)
+            void ConvertEncoding(const std::string &newenc, int flag)
             {
                 if(newenc.empty())
                     return;
+                MadConvertEncodingFlag mflag = (MadConvertEncodingFlag)flag;
                 wxString wxNewenc(newenc.c_str(), wxConvLocal);
-                g_ActiveMadEdit->ConvertEncoding(wxNewenc, flag);
+                g_ActiveMadEdit->ConvertEncoding(wxNewenc, mflag);
             }
             void ConvertChinese(MadConvertEncodingFlag flag)
             {
@@ -996,11 +999,18 @@ namespace mad_python
                 g_ActiveMadEdit->CopyAsHexString(withSpace);
             }
 
-            void WordCount(bool selection, int &wordCount, int &charCount, int &spaceCount,
-                           int &halfWidthCount, int &fullWidthCount, int &lineCount,
-                           wxArrayString *detail)
+            mad_py::tuple WordCount(bool selection)
             {
-                g_ActiveMadEdit->WordCount(selection, wordCount, charCount, spaceCount, halfWidthCount, fullWidthCount, lineCount, detail);
+                int words = 0, chars = 0, spaces = 0, lines = 0, halfwidths = 0, fullwidths = 0;
+                wxArrayString detail;
+                g_ActiveMadEdit->WordCount(selection, words, chars, spaces, halfwidths, fullwidths, lines, &detail);
+                wxString str;
+                for(size_t i=0;i<detail.Count();++i)
+                {
+                    str<<detail[i]<<wxT("\n");
+                }
+
+                return mad_py::make_tuple(words, chars, spaces, lines, halfwidths, fullwidths, std::string(str.mb_str()));
             }
     };
     //PyMadEdit * InitMadPython() { return new PyMadEdit();}
@@ -1169,7 +1179,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ConvertSpaceToTab", &PyMadEdit::ConvertSpaceToTab, "")
         .def("ConvertTabToSpace", &PyMadEdit::ConvertTabToSpace, "")
         .def("CopyAsHexString", &PyMadEdit::CopyAsHexString, "")
-        .def("WordCount", &PyMadEdit::WordCount, "")
+        .def("WordCount", &PyMadEdit::WordCount, return_value_policy<return_by_value>(), "")
         .def("SetFontA", &PyMadEdit::SetFontA, "Doc")
         .def("CopyToClipboardA", &PyMadEdit::CopyToClipboardA, "")
         .def("CopyToClipboardB", &PyMadEdit::CopyToClipboardB, "")
