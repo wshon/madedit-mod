@@ -63,6 +63,8 @@ Syntax files, Locale files and Settings:
 mod v0.1.5 alpha
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)
+3. Improve behaviour of Search and SearchInFiles
+4. Show search results on status bar
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit

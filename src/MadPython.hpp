@@ -15,10 +15,10 @@
 #include "MadEdit/MadEdit.h"
 #include "MadEditFrame.h"
 
+extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
 
 namespace mad_py = ::boost::python;
-#define UNFINISH
 namespace mad_python
 {
     class PyMadEdit
@@ -598,78 +598,73 @@ namespace mad_python
             }
 
             // search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-            mad_py::tuple FindTextNext(const std::string &text,
+            int FindTextNext(const std::string &text,
                                     bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                     int rangeFrom = -1, int rangeTo = -1)
             {
                 if(text.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxText(text.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
                 
-                g_ActiveMadEdit->FindTextNext(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindTextNext(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);
+                
             }
             // search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-             mad_py::tuple FindTextPrevious(const std::string &text,
+            int FindTextPrevious(const std::string &text,
                                         bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                         int rangeFrom = -1, int rangeTo = -1)
             {
                 if(text.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxText(text.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
                 
-                g_ActiveMadEdit->FindTextPrevious(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);                
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindTextPrevious(wxText, bRegex, bCaseSensitive, bWholeWord, from, to);                
             }
 
             // search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-             mad_py::tuple FindHexNext(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
+            int FindHexNext(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
             {
                 if(hexstr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxHexExpr(hexstr.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->FindHexNext(wxHexExpr, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindHexNext(wxHexExpr, from, to);
             }
             // search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-             mad_py::tuple FindHexPrevious(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
+            int FindHexPrevious(const std::string &hexstr, int rangeFrom = -1, int rangeTo = -1)
             {
                 if(hexstr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return SR_EXPR_ERROR;
                 wxString wxHexExpr(hexstr.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->FindHexPrevious(wxHexExpr, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->FindHexPrevious(wxHexExpr, from, to);
             }
 
             // replace the selected text that must match expr
-             mad_py::tuple ReplaceText(const std::string &expr, const std::string &fmt,
+            int ReplaceText(const std::string &expr, const std::string &fmt,
                                          bool bRegex, bool bCaseSensitive, bool bWholeWord,
                                          int rangeFrom = -1, int rangeTo = -1)
             {
                 if(expr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return RR_EXPR_ERROR;
                 wxString wxExpr(expr.c_str(), wxConvLocal), wxFmt(fmt.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->ReplaceText(wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->ReplaceText(wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, from, to);
             }
-             mad_py::tuple ReplaceHex(const std::string &expr, const std::string &fmt,
+            int ReplaceHex(const std::string &expr, const std::string &fmt,
                                          int rangeFrom = -1, int rangeTo = -1)
             {
                 if(expr.empty())
-                    return mad_py::make_tuple(-1, -1);
+                    return RR_EXPR_ERROR;
                 wxString wxExpr(expr.c_str(), wxConvLocal), wxFmt(fmt.c_str(), wxConvLocal);
                 wxFileOffset from = (wxFileOffset)rangeFrom, to = (wxFileOffset)rangeTo;
 
-                g_ActiveMadEdit->ReplaceHex(wxExpr, wxFmt, from, to);
-                return mad_py::make_tuple((int)from, (int)to);
+                return g_ActiveMadEdit->ReplaceHex(wxExpr, wxFmt, from, to);
             }
 
             // return the replaced count or SR_EXPR_ERROR
@@ -695,18 +690,15 @@ namespace mad_python
             // return the found count or SR_EXPR_ERROR
             int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord)
             {
-#ifdef SHOW_RESULT_COUNT
                 int ResultCount=0;
-#endif
-
-               if(expr.empty())
+                if(expr.empty())
                     return -2;
                 wxString wxExpr(expr.c_str(), wxConvLocal), fmt;
                 vector<wxFileOffset> begpos, endpos;
                 MadEdit *madedit=g_ActiveMadEdit;
                 
                 wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
-             
+
                 int ok = madedit->FindTextAll(wxExpr, bRegex, bCaseSensitive, bWholeWord, false, &begpos, &endpos);
 
                 if(ok>=0)
@@ -752,27 +744,36 @@ namespace mad_python
 
                                 fmt = loc +linetext;
                                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                                 ++ResultCount;
-#endif
                             }
                             while(++idx < count);
                             results->Thaw();
                             if(results->GetCount())
                             {
                                 results->ExpandAll();
+                                g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
+                                g_MainFrame->m_AuiManager.Update();
                             }
                         }
                     }
+                }
+                
+                if(!ResultCount)
+                {
+                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+                }
+                else
+                {
+                    wxString smsg;
+                    smsg.Printf(_("%d results"), ResultCount);
+                    g_StatusBar->SetStatusText(smsg, 0 );
                 }
                 return ok;
             }
             int FindHexAll(const std::string &expr)
             {
-#ifdef SHOW_RESULT_COUNT
                 int ResultCount=0;
-#endif
-               if(expr.empty())
+                if(expr.empty())
                     return -2;
                 wxString wxExpr(expr.c_str(), wxConvLocal), fmt;
                 vector<wxFileOffset> begpos, endpos;
@@ -825,9 +826,7 @@ namespace mad_python
 
                                 fmt = loc +linetext;
                                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-#ifdef SHOW_RESULT_COUNT
                                 ++ResultCount;
-#endif
                             }
                             while(++idx < count);
                             results->Thaw();
@@ -838,14 +837,27 @@ namespace mad_python
                         }
                     }
                 }
+                
+                if(!ResultCount)
+                {
+                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+                }
+                else
+                {
+                    wxString smsg;
+                    smsg.Printf(_("%d results"), ResultCount);
+                    g_StatusBar->SetStatusText(smsg, 0 );
+                }
+
                 return ok;
             }
-            bool LoadFromFile(const std::string &filename, const wxString &encoding = wxEmptyString)
+            bool LoadFromFile(const std::string &filename, const std::string &encoding=const std::string(""))
             {
                 if(filename.empty())
                     return false;
+                wxString wxEncoding(encoding.c_str(), wxConvLocal);
                 wxString wxFilename(filename.c_str(), wxConvLocal);
-                return g_ActiveMadEdit->LoadFromFile(wxFilename, encoding);
+                return g_ActiveMadEdit->LoadFromFile(wxFilename, wxEncoding);
             }
             bool SaveToFile(const std::string &filename)
             {
@@ -864,9 +876,10 @@ namespace mad_python
                 return g_ActiveMadEdit->ReloadByModificationTime();
             }
             // restore pos in Reload(), ConvertEncoding()
-            void RestorePosition(wxFileOffset pos, int toprow)
+            void RestorePosition(int pos, int toprow)
             {
-                g_ActiveMadEdit->RestorePosition(pos, toprow);
+                wxFileOffset wxPos = pos;
+                g_ActiveMadEdit->RestorePosition(wxPos, toprow);
             }
 
             // write back to the original FileName
@@ -894,12 +907,13 @@ namespace mad_python
                 g_ActiveMadEdit->GotoPreviousBookmark();
             }
             //----------
-            void ConvertEncoding(const std::string &newenc, MadConvertEncodingFlag flag)
+            void ConvertEncoding(const std::string &newenc, int flag)
             {
                 if(newenc.empty())
                     return;
+                MadConvertEncodingFlag mflag = (MadConvertEncodingFlag)flag;
                 wxString wxNewenc(newenc.c_str(), wxConvLocal);
-                g_ActiveMadEdit->ConvertEncoding(wxNewenc, flag);
+                g_ActiveMadEdit->ConvertEncoding(wxNewenc, mflag);
             }
             void ConvertChinese(MadConvertEncodingFlag flag)
             {
@@ -985,11 +999,18 @@ namespace mad_python
                 g_ActiveMadEdit->CopyAsHexString(withSpace);
             }
 
-            void WordCount(bool selection, int &wordCount, int &charCount, int &spaceCount,
-                           int &halfWidthCount, int &fullWidthCount, int &lineCount,
-                           wxArrayString *detail)
+            mad_py::tuple WordCount(bool selection)
             {
-                g_ActiveMadEdit->WordCount(selection, wordCount, charCount, spaceCount, halfWidthCount, fullWidthCount, lineCount, detail);
+                int words = 0, chars = 0, spaces = 0, lines = 0, halfwidths = 0, fullwidths = 0;
+                wxArrayString detail;
+                g_ActiveMadEdit->WordCount(selection, words, chars, spaces, halfwidths, fullwidths, lines, &detail);
+                wxString str;
+                for(size_t i=0;i<detail.Count();++i)
+                {
+                    str<<detail[i]<<wxT("\n");
+                }
+
+                return mad_py::make_tuple(words, chars, spaces, lines, halfwidths, fullwidths, std::string(str.mb_str()));
             }
     };
     //PyMadEdit * InitMadPython() { return new PyMadEdit();}
@@ -1158,7 +1179,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ConvertSpaceToTab", &PyMadEdit::ConvertSpaceToTab, "")
         .def("ConvertTabToSpace", &PyMadEdit::ConvertTabToSpace, "")
         .def("CopyAsHexString", &PyMadEdit::CopyAsHexString, "")
-        .def("WordCount", &PyMadEdit::WordCount, "")
+        .def("WordCount", &PyMadEdit::WordCount, return_value_policy<return_by_value>(), "")
         .def("SetFontA", &PyMadEdit::SetFontA, "Doc")
         .def("CopyToClipboardA", &PyMadEdit::CopyToClipboardA, "")
         .def("CopyToClipboardB", &PyMadEdit::CopyToClipboardB, "")
