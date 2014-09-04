@@ -147,17 +147,25 @@ MadMacroDlg::~MadMacroDlg()
 void MadMacroDlg::OnRun( wxCommandEvent& event )
 {
     wxString pystr = m_pymacro->GetText();
-    wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
-    if(!g_EmbeddedPython)
-        try
+    if(!pystr.IsEmpty())
+    {
+        if(!g_EmbeddedPython)
         {
-            g_EmbeddedPython = new EmbeddedPython();
+            try
+            {
+                g_EmbeddedPython = new EmbeddedPython();
+            }
+            catch(std::bad_alloc &)
+            {
+                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+            }
+        }
+        if(g_EmbeddedPython)
+        {
+            wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
             g_EmbeddedPython->exec(std::string(pystr.mb_str()));
         }
-        catch(std::bad_alloc &)
-        {
-            wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
-        }
+    }
 
     event.Skip(); 
 }
