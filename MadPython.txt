@@ -1,26 +1,40 @@
                         =================================
-                               MadEdit v0.2.9 mod
+                            MadPython for MadEdit Mod
                         =================================
-About:
------
+Backgroud:
+----------
 MadEdit is a cross-platform Text/Hex Editor written in C++ & wxWidgets.
 MadEdit supports many useful functions, e.g. SyntaxHighlightings, WordWraps, 
 Encodings, Column/Hex Modes, and a Plugin system(not work yet).
 In HexMode, MadEdit can open large files which size is up to 32GB (INT_MAX*16).
 
-MadPython is a minimized Python which is used as an embedded macro script for automation of MadEdit-Mod. The Python is based on the work of Adie(http://www.adintr.com/article/blog/embedpython_source.html) and was updated to Python 2.7.8. Lots of Python modules were removed to reduce the size of it. So, you may get errors while importing some of the standard modules. However, I don't think it's a problem for the purpose to use it as a macro script language.
+About:
+------
+MadPython is a minimized Python which is used as an embedded macro script for 
+automation of MadEdit-Mod. The Python is based on the work of Adie
+(http://www.adintr.com/article/blog/embedpython_source.html) and was updated 
+to Python 2.7.8. Lots of Python modules were removed to reduce the size of it. 
+So, you may get errors while importing some of the standard modules. However, 
+I don't think it's a problem for the purpose to use it as a macro script language.
 
 
-Below is the list of the functions supported by MadPython. It's not a good doc and it's to be improved. It's only for the advanced users to try and test. 
+Below is the list of the functions supported by MadPython. It's not a good doc 
+and it's to be improved. It's only for the advanced users to try and test.
 
-Simple examples
-1. Find all "abc" in current file, not using regular expression, case insensitive, not whole word match(Simulate the Find All of Find Dialog)
+Note: the locale of the MadPython should be the default locale of your system. 
+Don't support locale changing unless there was oustanding reason for the feature!
+
+Simple examples:
+----------------
+1. Find all "abc" in current file, not using regular expression, case insensitive, 
+not whole word match(Simulate the Find All of Find Dialog)
     me=MadEdit()  # Create a MadEdit object
     res = me.FindTextAll("a", False, False, False)
 
     print res #how many
 
-2. Replace "\r\n"(Dos/Windows) to "\n"(Unix) by regular expression, then replace double line feedings with single one
+2. Replace "\r\n"(Dos/Windows) to "\n"(Unix) by regular expression, then replace 
+double line feedings with single one
     me=MadEdit() # Create a MadEdit object
     res = me.ReplaceTextAll("\\r\\n", "\\n", True, False, False)
 
@@ -30,6 +44,8 @@ Simple examples
     me=MadEdit() # Create a MadEdit object
     me.GoToLine(10)
 
+Supported method list:
+----------------------
 void GoToLine(int line)
 void SetSyntax(const std::string &title)
 std::string GetSyntaxTitle()
@@ -220,6 +236,8 @@ void CopyAsHexString(bool withSpace)
 //(words, chars, spaces, lines, halfwidths, fullwidths, detailstr)
 mad_py::tuple WordCount(bool selection)
 
+
+
 Author:
 ------
 Alston Chen <madedit@gmail.com>
@@ -228,6 +246,7 @@ Minggang Li <minggang.li@gmail.com>
 Links:
 -----
 MadEdit: http://sourceforge.net/projects/madedit/
+MadEdit-Mod: http://sourceforge.net/projects/madedit-mod/
 wxWidgets: http://www.wxwidgets.org
 wxDevCpp: http://wxdsgn.sourceforge.net
 Boost: http://www.boost.org
