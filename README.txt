@@ -65,6 +65,8 @@ mod v0.1.5 alpha
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)
 3. Improve behaviour of Search and SearchInFiles
 4. Show search results on status bar
+5. Recoding and Playback(Todo)
+6. Save script/connected with shortcut(?)(Todo)
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
