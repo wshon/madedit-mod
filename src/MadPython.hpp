@@ -441,9 +441,9 @@ namespace mad_python
             {
                 return g_ActiveMadEdit->IsModified();
             }
-            time_t GetModificationTime()
+            long GetModificationTime()
             {
-                return g_ActiveMadEdit->GetModificationTime();
+                return (long)g_ActiveMadEdit->GetModificationTime();
             }
 
             void SetReadOnly(bool value)

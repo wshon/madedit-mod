@@ -1,6 +1,6 @@
-			=================================
+                        =================================
                                MadEdit v0.2.9 mod
-			=================================
+                        =================================
 About:
 -----
 MadEdit is a cross-platform Text/Hex Editor written in C++ & wxWidgets.
@@ -21,7 +21,7 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled
+      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommanded)
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
@@ -60,11 +60,15 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
-mod v0.1.5 alpha
+mod v0.1.5 alpha 2014.9.5
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)
 3. Improve behaviour of Search and SearchInFiles
 4. Show search results on status bar
+5. Recoding and Playback(Todo)
+6. Save script/connected with shortcut(?)(Todo)
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
@@ -306,6 +310,7 @@ Minggang Li <minggang.li@gmail.com>
 Links:
 -----
 MadEdit: http://sourceforge.net/projects/madedit/
+MadEdit-Mod: http://sourceforge.net/projects/madedit-mod/
 wxWidgets: http://www.wxwidgets.org
 wxDevCpp: http://wxdsgn.sourceforge.net
 Boost: http://www.boost.org
