@@ -61,6 +61,8 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
 mod v0.1.5 alpha
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)
 3. Improve behaviour of Search and SearchInFiles
