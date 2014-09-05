@@ -170,6 +170,9 @@ public:
     void OnFilePrint(wxCommandEvent& event);
     void OnFileRecentFile(wxCommandEvent& event);
     void OnFileExit(wxCommandEvent& event);
+	void OnCopyFilePath(wxCommandEvent& event);
+	void OnCopyFileName(wxCommandEvent& event);
+	void OnCopyFileDir(wxCommandEvent& event);
 
     void OnEditUndo(wxCommandEvent& event);
     void OnEditRedo(wxCommandEvent& event);
@@ -307,6 +310,7 @@ protected:
     void OnNotebookPageChanged(wxAuiNotebookEvent& event);
     void OnNotebookPageClosing(wxAuiNotebookEvent& event);
     void OnNotebookPageClosed(bool bZeroPage=false);//wxAuiNotebookEvent& event); //wxAUI doesn't support this event
+    void OnNotebookPageRightDown(wxAuiNotebookEvent& event);
 
     void OnSize(wxSizeEvent &evt);
     //void OnChar(wxKeyEvent& evt);
@@ -361,6 +365,9 @@ enum { // menu id
     menuSaveAll = 1100,
     menuReload,
     menuRecentFiles,
+    menuCopyFilePath,
+	menuCopyFileName,
+	menuCopyFileDir,
 
     // edit
     menuCutLine,

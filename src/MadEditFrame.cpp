@@ -157,6 +157,7 @@ wxStatusBar *g_StatusBar=NULL;
 bool g_CheckModTimeForReload=true;
 
 wxMenu *g_Menu_File = NULL;
+wxMenu *g_Menu_FilePop = NULL;
 wxMenu *g_Menu_Edit = NULL;
 wxMenu *g_Menu_EditPop = NULL;
 wxMenu *g_Menu_EditSubAdv = NULL;
@@ -984,6 +985,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_AUINOTEBOOK_PAGE_CHANGING(ID_NOTEBOOK, MadEditFrame::OnNotebookPageChanging)
 	EVT_AUINOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, MadEditFrame::OnNotebookPageChanged)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(ID_NOTEBOOK, MadEditFrame::OnNotebookPageClosing)
+	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(ID_NOTEBOOK, MadEditFrame::OnNotebookPageRightDown)
 	//EVT_AUINOTEBOOK_PAGE_CLOSE(ID_NOTEBOOK, MadEditFrame::OnNotebookPageClosed)
 	//EVT_CHAR(MadEditFrame::OnChar)
 	// file
@@ -1099,6 +1101,9 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuPrint, MadEditFrame::OnFilePrint)
 	EVT_MENU_RANGE(wxID_FILE1, wxID_FILE9, MadEditFrame::OnFileRecentFile)
 	EVT_MENU(menuExit, MadEditFrame::OnFileExit)
+	EVT_MENU(menuCopyFilePath, MadEditFrame::OnCopyFilePath)
+	EVT_MENU(menuCopyFileName, MadEditFrame::OnCopyFileName)
+	EVT_MENU(menuCopyFileDir, MadEditFrame::OnCopyFileDir)
 	// edit
 	EVT_MENU(menuUndo, MadEditFrame::OnEditUndo)
 	EVT_MENU(menuRedo, MadEditFrame::OnEditRedo)
@@ -1868,6 +1873,18 @@ void MadEditFrame::CreateGUIControls(void)
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
+    g_Menu_FilePop = new wxMenu((long)0);
+    g_Menu_FilePop->Append(menuSave,         _("&Save File"));
+    g_Menu_FilePop->Append(menuSaveAs,       _("Save &As..."));
+    g_Menu_FilePop->Append(menuReload,       _("&Reload File"));
+    g_Menu_FilePop->Append(menuClose,        _("&Close File"));
+    g_Menu_FilePop->Append(menuPrintPreview, _("Print Previe&w..."));
+    g_Menu_FilePop->Append(menuPrint,        _("&Print..."));
+    g_Menu_FilePop->AppendSeparator();
+    g_Menu_FilePop->Append(menuCopyFilePath,       _("Copy full path name"));
+    g_Menu_FilePop->Append(menuCopyFileName,       _("Copy full file name"));
+    g_Menu_FilePop->Append(menuCopyFileDir,        _("Copy directory name"));
+
     g_Menu_Edit = new wxMenu((long)0);
     g_Menu_EditPop = new wxMenu((long)0);
     g_Menu_EditPop->Append(menuUndo, _("&Undo"));
@@ -2559,6 +2576,13 @@ void MadEditFrame::OnNotebookPageClosed(bool bZeroPage)
         }
         g_ActiveMadEdit->ReloadByModificationTime();
     }
+}
+
+void MadEditFrame::OnNotebookPageRightDown(wxAuiNotebookEvent& event)
+{
+    int now=event.GetSelection();
+	SetPageFocus(now);
+	PopupMenu(g_Menu_FilePop);
 }
 
 void MadEditFrame::OnSize(wxSizeEvent &evt)
@@ -3805,6 +3829,33 @@ void MadEditFrame::OnFileRecentFile(wxCommandEvent& event)
 void MadEditFrame::OnFileExit(wxCommandEvent& event)
 {
     Close(false);
+}
+
+void MadEditFrame::OnCopyFilePath(wxCommandEvent& event)
+{
+    if (g_ActiveMadEdit)
+    {
+        wxString fullPath = g_ActiveMadEdit->GetFileName();
+        g_ActiveMadEdit->CopyToClipboard(fullPath);
+    }
+}
+
+void MadEditFrame::OnCopyFileName(wxCommandEvent& event)
+{
+    if (g_ActiveMadEdit)
+    {
+        wxFileName fileName(g_ActiveMadEdit->GetFileName());
+        g_ActiveMadEdit->CopyToClipboard(fileName.GetFullName());
+    }
+}
+
+void MadEditFrame::OnCopyFileDir(wxCommandEvent& event)
+{
+    if (g_ActiveMadEdit)
+    {
+        wxFileName fileName(g_ActiveMadEdit->GetFileName());
+        g_ActiveMadEdit->CopyToClipboard(fileName.GetPath());
+    }
 }
 
 void MadEditFrame::OnEditUndo(wxCommandEvent& event)
