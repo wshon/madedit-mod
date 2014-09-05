@@ -13,6 +13,23 @@ MadPython is a minimized Python which is used as an embedded macro script for au
 
 Below is the list of the functions supported by MadPython. It's not a good doc and it's to be improved. It's only for the advanced users to try and test. 
 
+Simple examples
+1. Find all "abc" in current file, not using regular expression, case insensitive, not whole word match(Simulate the Find All of Find Dialog)
+    me=MadEdit()  # Create a MadEdit object
+    res = me.FindTextAll("a", False, False, False)
+
+    print res #how many
+
+2. Replace "\r\n"(Dos/Windows) to "\n"(Unix) by regular expression, then replace double line feedings with single one
+    me=MadEdit() # Create a MadEdit object
+    res = me.ReplaceTextAll("\\r\\n", "\\n", True, False, False)
+
+    res = me.ReplaceTextAll("\\n\\n", "\\n", True, False, False)
+
+3. Move caret to line #10
+    me=MadEdit() # Create a MadEdit object
+    me.GoToLine(10)
+
 void GoToLine(int line)
 void SetSyntax(const std::string &title)
 std::string GetSyntaxTitle()
