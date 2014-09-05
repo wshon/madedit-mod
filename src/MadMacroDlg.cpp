@@ -17,17 +17,35 @@ enum
 
 // Python
 wxChar* PythonWordlist1 =
-    _T("and assert break class continue def del elif else except exec ")
-    _T("finally for from global if import in is lambda None not or pass ")
-    _T("print raise return try while yield");
+                _T("and assert break class continue def del elif else except exec finally for from global if import ")
+                _T("in is lambda None  not or pass print raise return try while yield __import__ abs basestring bool ")
+                _T("callable chr classmethod cmp compile complex delattr dict dir divmod enumerate ")
+                _T("eval execfile file filter float frozenset getattr globals ")
+                _T("hasattr hash help hex id input int isinstance issubclass ")
+                _T("iter len list locals long map max min object oct open ")
+                _T("ord pow property range raw_input reduce reload repr ")
+                _T("reversed round set setattr slice sorted staticmethod ")
+                _T("str sum super tuple type type unichr unicode vars xrange ")
+                _T("zip apply buffer coerce intern __dict__ Ellipsis False True NotImplemented ")
+                _T("__class__ __bases__ __name__ exception Exception StandardError ArithmeticError ")
+                _T("LookupError EnvironmentError AssertionError AttributeError EOFError FloatingPointError IOError ")
+                _T("ImportError IndexError KeyError KeyboardInterrupt MemoryError NameError NotImplementedError OSError ")
+                _T("OverflowError ReferenceError RuntimeError StopIteration SyntaxError SystemError SystemExit ")
+                _T("TypeError UnboundLocalError UnicodeError UnicodeEncodeError UnicodeDecodeError UnicodeTranslateError ValueError WindowsError ")
+                _T("ZeroDivisionError Warning UserWarning DeprecationWarning PendingDeprecationWarning SyntaxWarning RuntimeWarning FutureWarning");
 wxChar* PythonWordlist2 =
-    _T("ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON BEGIN ")
-    _T("BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS ")
-    _T("COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX ")
-    _T("DISCARDABLE EDITTEXT END EXSTYLE FONT GROUPBOX ICON LANGUAGE ")
-    _T("LISTBOX LTEXT MENU MENUEX MENUITEM MESSAGETABLE POPUP PUSHBUTTON ")
-    _T("RADIOBUTTON RCDATA RTEXT SCROLLBAR SEPARATOR SHIFT STATE3 ")
-    _T("STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY");
+                _T("self sys gc weakref fpectl atexit types UserDict UserList UserString  operator inspect traceback linecache pickle cPickle copy_reg shelve copy marshal warnings imp zipimport pkgutil ")
+                _T("modulefinder code codeop pprint repr new site user __builtin__ __main__ __future__ string re struct difflib fpformat StringIO cStringIO textwrap codecs encodings.idna unicodedata ")
+                _T("stringprep pydoc doctest unittest test test.test_support decimal math cmath random whrandom bisect collections heapq array sets itertools ConfigParser fileinput calendar cmd ")
+                _T("shlexos os.path dircache stat statcache statvfs filecmp subprocess popen2 datetime time sched mutex getpass curses curses.textpad curses.wrapper curses.ascii curses.panel getopt ")
+                _T("optparse tempfile errno glob fnmatch shutil locale gettext logging platform signal socket select thread threading dummy_thread dummy_threading Queue mmap anydbm dbhash whichdb ")
+                _T("bsddb dumbdbm zlib gzip bz2 zipfile tarfile readline rlcompleter posix pwd grp crypt dl dbm gdbm termios tty pty fcntl pipes posixfile resource nis syslog commands hotshot timeit ")
+                _T("webbrowser cgi cgitb urllib urllib2 httplib ftplib gopherlib poplib imaplib nntplib smtplib smtpd telnetlib urlparse  SocketServer BaseHTTPServer SimpleHTTPServer CGIHTTPServer ")
+                _T("cookielib Cookie xmlrpclib SimpleXMLRPCServer DocXMLRPCServer asyncore asynchat formatter email email.Message email.Parser email.Generator email.Header email.Charset email.Encoders ")
+                _T("email.Errors email.Utils email.Iterators mailcap mailbox mhlib mimetools mimetypes MimeWriter mimify multifile rfc822 base64 binascii binhex quopri uu xdrlib netrc robotparser csv ")
+                _T("HTMLParser sgmllib htmllib htmlentitydefs xml.parsers.expat xml.dom xml.dom.minidom xml.dom.pulldom xml.sax xml.sax.handler xml.sax.saxutils xml.sax.xmlreader xmllib audioop ")
+                _T("imageop aifc sunau wave chunk colorsys rgbimg imghdr sndhdr ossaudiodev hmac md5 sha Tkinter Tix ScrolledText turtle parser symbol token keyword tokenize tabnanny pyclbr py_compile ")
+                _T("compileall dis pickletools distutils");
 
 MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
 {
@@ -43,7 +61,7 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     m_pymacro->StyleSetForeground (wxSTC_STYLE_LINENUMBER, wxColour (75, 75, 75) );
     m_pymacro->StyleSetBackground (wxSTC_STYLE_LINENUMBER, wxColour (220, 220, 220));
     m_pymacro->SetMarginType (MARGIN_LINE_NUMBERS, wxSTC_MARGIN_NUMBER);
-    int font_size = 16;
+    int font_size = 14;
     wxFont font (font_size, wxMODERN, wxNORMAL, wxNORMAL);
     m_pymacro->StyleSetFont(wxSTC_STYLE_DEFAULT,font);
     // default fonts for all styles!
@@ -95,7 +113,7 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     // ---- End of code folding part
 
     m_pymacro->SetWrapMode (wxSTC_WRAP_WORD); // other choice is wxSCI_WRAP_NONE
-
+#if 0
     m_pymacro->StyleSetForeground (wxSTC_P_STRING,            wxColour(150,0,0));
     //m_pymacro->StyleSetForeground (wxSTC_P_PREPROCESSOR,      wxColour(165,105,0));
     m_pymacro->StyleSetForeground (wxSTC_P_IDENTIFIER,        wxColour(40,0,60));
@@ -111,6 +129,27 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     m_pymacro->StyleSetBold(wxSTC_P_WORD, true);
     m_pymacro->StyleSetBold(wxSTC_P_WORD2, true);
     //m_pymacro->StyleSetBold(wxSTC_P_COMMENTDOCKEYWORD, true);
+#endif
+    m_pymacro->StyleSetSpec(wxSTC_STYLE_LINENUMBER, wxT("back:#E0E0E0,face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_STYLE_CONTROLCHAR, wxT("face:Courier"));
+    m_pymacro->StyleSetSpec(wxSTC_STYLE_BRACELIGHT, wxT("fore:#0000FF,back:#FFFF88"));
+    m_pymacro->StyleSetSpec(wxSTC_STYLE_BRACEBAD, wxT("fore:#FF0000,back:#FFFF88"));
+
+    m_pymacro->StyleSetSpec(wxSTC_P_DEFAULT, wxT("face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_P_COMMENTLINE, wxT("fore:#007F00,face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_P_NUMBER, wxT("fore:#0000C0,face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_P_STRING, wxT("fore:#7F007F,face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_P_CHARACTER, wxT("fore:#7F007F,face:Monospace"));
+    m_pymacro->StyleSetSpec(wxSTC_P_WORD, wxT("fore:#00007F,bold"));
+    m_pymacro->StyleSetSpec(wxSTC_P_WORD2, wxT("fore:#00007F,italic,bold"));
+    m_pymacro->StyleSetSpec(wxSTC_P_TRIPLE, wxT("fore:#7F0000"));
+    m_pymacro->StyleSetSpec(wxSTC_P_TRIPLEDOUBLE, wxT("fore:#000033,back:#FFFFE8"));
+    m_pymacro->StyleSetSpec(wxSTC_P_DEFNAME, wxT("fore:#007F7F,bold"));
+    m_pymacro->StyleSetSpec(wxSTC_P_CLASSNAME, wxT("fore:#C00000,italic,bold"));
+    m_pymacro->StyleSetSpec(wxSTC_P_OPERATOR, wxT(""));
+    m_pymacro->StyleSetSpec(wxSTC_P_IDENTIFIER, wxT(""));
+    m_pymacro->StyleSetSpec(wxSTC_P_COMMENTBLOCK, wxT("fore:#7F7F7F"));
+    m_pymacro->StyleSetSpec(wxSTC_P_STRINGEOL, wxT("fore:#000000,face:Monospace,back:#E0C0E0,eolfilled"));
 
     // a sample list of keywords, I haven't included them all to keep it short...
     m_pymacro->SetKeyWords(0, PythonWordlist1);
