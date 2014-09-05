@@ -851,7 +851,7 @@ namespace mad_python
 
                 return ok;
             }
-            bool LoadFromFile(const std::string &filename, const std::string &encoding=const std::string(""))
+            bool LoadFromFile(const std::string &filename, const std::string &encoding=std::string(""))
             {
                 if(filename.empty())
                     return false;

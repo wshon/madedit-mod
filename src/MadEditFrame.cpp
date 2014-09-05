@@ -141,7 +141,6 @@
     #define GetAccelFromString(x) wxGetAccelFromString(x)
 #endif
 
-
 wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));

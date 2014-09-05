@@ -51,15 +51,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(BOOST);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXWIN)\contrib\include;$(BOOST);$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;$(BOOST)\stage\lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comctl32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;wxmsw28ud_stc.lib;python27_d.lib;libboost_python-vc120-mt-sgyd-1_56.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile />
   </ItemDefinitionGroup>
@@ -71,14 +71,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(BOOST);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc;$(WXWIN)\contrib\include;$(BOOST);$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;..\libpng;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;..\libpng;$(BOOST)\stage\lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;wxmsw28u_stc.lib;python27.lib;libboost_python-vc120-mt-s-1_56.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>
@@ -128,6 +128,7 @@
     <ClInclude Include="..\src\MadFileAssociationDialog.h" />
     <ClInclude Include="..\src\MadFindInFilesDialog.h" />
     <ClInclude Include="..\src\MadHighlightingDialog.h" />
+    <ClInclude Include="..\src\MadMacroDlg.h" />
     <ClInclude Include="..\src\MadOptionsDialog.h" />
     <ClInclude Include="..\src\MadPrintout.h" />
     <ClInclude Include="..\src\MadPurgeHistoryDialog.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="..\charset-detector\src\nsSJISProber.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUniversalDetector.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUTF8Prober.cpp" />
+    <ClCompile Include="..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\src\MadAboutDialog.cpp" />
     <ClCompile Include="..\src\MadConvEncDialog.cpp" />
     <ClCompile Include="..\src\MadEditApp.cpp" />
@@ -193,6 +195,7 @@
     <ClCompile Include="..\src\MadFileAssociationDialog.cpp" />
     <ClCompile Include="..\src\MadFindInFilesDialog.cpp" />
     <ClCompile Include="..\src\MadHighlightingDialog.cpp" />
+    <ClCompile Include="..\src\MadMacroDlg.cpp" />
     <ClCompile Include="..\src\MadOptionsDialog.cpp" />
     <ClCompile Include="..\src\MadPrintout.cpp" />
     <ClCompile Include="..\src\MadPurgeHistoryDialog.cpp" />

@@ -177,6 +177,9 @@
     <ClInclude Include="..\src\MadPurgeHistoryDialog.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MadMacroDlg.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\MadAboutDialog.cpp">
@@ -339,6 +342,12 @@
       <Filter>Source files\charset-detector</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MadPurgeHistoryDialog.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MadMacroDlg.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EmbeddedPython.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
