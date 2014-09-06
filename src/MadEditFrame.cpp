@@ -996,6 +996,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuReload, MadEditFrame::OnUpdateUI_MenuFileReload)
 	EVT_UPDATE_UI(menuClose, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuCloseAll, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
+	EVT_UPDATE_UI(menuCloseAllButThis, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuPrintPreview, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuPrint, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuRecentFiles, MadEditFrame::OnUpdateUI_MenuFileRecentFiles)
@@ -1096,6 +1097,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuReload, MadEditFrame::OnFileReload)
 	EVT_MENU(menuClose, MadEditFrame::OnFileClose)
 	EVT_MENU(menuCloseAll, MadEditFrame::OnFileCloseAll)
+	EVT_MENU(menuCloseAllButThis, MadEditFrame::OnFileCloseAllButThis)
 	EVT_MENU(menuPageSetup, MadEditFrame::OnFilePageSetup)
 	EVT_MENU(menuPrintPreview, MadEditFrame::OnFilePrintPreview)
 	EVT_MENU(menuPrint, MadEditFrame::OnFilePrint)
@@ -1244,6 +1246,7 @@ CommandData CommandTable[]=
     { 0, 1, 0,                0,                       0,                      0,                   wxITEM_SEPARATOR, -1,                0,                        0},
     { 0, 1, menuClose,        wxT("menuClose"),        _("&Close File"),       wxT("Ctrl-F4"),      wxITEM_NORMAL,    fileclose_xpm_idx, 0,                        _("Close the file")},
     { 0, 1, menuCloseAll,     wxT("menuCloseAll"),     _("C&lose All"),        wxT(""),             wxITEM_NORMAL,    closeall_xpm_idx,  0,                        _("Close all files")},
+    { 0, 1, menuCloseAllButThis,     wxT("menuCloseAllButThis"), _("Close All But This"), wxT(""),  wxITEM_NORMAL,    -1,                0,                        _("Close all files but this")},
     { 0, 1, 0,                0,                       0,                      0,                   wxITEM_SEPARATOR, -1,                0,                        0},
     { 0, 1, menuPageSetup,    wxT("menuPageSetup"),    _("Page Set&up..."),    wxT(""),             wxITEM_NORMAL,    -1,                0,                        _("Setup the pages for printing")},
     { 0, 1, menuPrintPreview, wxT("menuPrintPreview"), _("Print Previe&w..."), wxT(""),             wxITEM_NORMAL,    preview_xpm_idx,   0,                        _("Preview the result of printing")},
@@ -1879,6 +1882,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_FilePop->Append(menuReload,       _("&Reload File"));
     g_Menu_FilePop->Append(menuClose,        _("&Close File"));
 	g_Menu_FilePop->Append(menuCloseAll,     _("C&lose All"));
+	g_Menu_FilePop->Append(menuCloseAllButThis,     _("Close All BUT This"));
     g_Menu_FilePop->Append(menuPrintPreview, _("Print Previe&w..."));
     g_Menu_FilePop->Append(menuPrint,        _("&Print..."));
     g_Menu_FilePop->AppendSeparator();
@@ -3676,6 +3680,23 @@ void MadEditFrame::OnFileCloseAll(wxCommandEvent& event)
         OnEditSelectionChanged(NULL);
         OnEditStatusChanged(NULL);
     }
+}
+
+void MadEditFrame::OnFileCloseAllButThis(wxCommandEvent& event)
+{
+	wxWindow * thisWin = m_Notebook->GetPage(m_Notebook->GetSelection());
+
+	m_Notebook->SetSelection(0);
+	while (m_Notebook->GetPageCount() > 1)
+	{
+		int idx = m_Notebook->GetSelection();
+		if (thisWin != m_Notebook->GetPage(idx))
+		{
+			CloseFile(idx);
+		}
+		else
+			m_Notebook->AdvanceSelection(false);
+	}
 }
 
 void MadEditFrame::OnFilePageSetup(wxCommandEvent& event)
