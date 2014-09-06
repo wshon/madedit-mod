@@ -1878,6 +1878,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_FilePop->Append(menuSaveAs,       _("Save &As..."));
     g_Menu_FilePop->Append(menuReload,       _("&Reload File"));
     g_Menu_FilePop->Append(menuClose,        _("&Close File"));
+	g_Menu_FilePop->Append(menuCloseAll,     _("C&lose All"));
     g_Menu_FilePop->Append(menuPrintPreview, _("Print Previe&w..."));
     g_Menu_FilePop->Append(menuPrint,        _("&Print..."));
     g_Menu_FilePop->AppendSeparator();

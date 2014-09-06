@@ -64,11 +64,12 @@ mod v0.1.5 alpha 2014.9.5
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
-2. Embed minimized Python as Macro language(Only MS Windows supported currently)
+2. Embed minimized Python as Macro language(Only MS Windows supported currently)[Tools->Macros]
 3. Improve behaviour of Search and SearchInFiles
 4. Show search results on status bar
 5. Recoding and Playback(Todo)
 6. Save script/connected with shortcut(?)(Todo)
+7. Right click on file tab supported
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
