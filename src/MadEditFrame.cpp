@@ -1530,7 +1530,7 @@ CommandData CommandTable[]=
 #endif
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
     { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,        0},
-    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporay macro")},
+    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporary macro")},
     { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Run MacroScript"),                               wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run saved macro script")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},

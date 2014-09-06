@@ -229,7 +229,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxNoteBookPage1 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE1, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxNotebook1->AddPage(WxNoteBookPage1, wxT("General"));
+	WxNotebook1->AddPage(WxNoteBookPage1, _("General"));
 
 	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	WxNoteBookPage1->SetSizer(WxBoxSizer3);
@@ -309,7 +309,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxNoteBookPage2 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage2->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxNotebook1->AddPage(WxNoteBookPage2, wxT("Edit"));
+	WxNotebook1->AddPage(WxNoteBookPage2, _("Edit"));
 
 	WxBoxSizer8 = new wxBoxSizer(wxVERTICAL);
 	WxNoteBookPage2->SetSizer(WxBoxSizer8);
@@ -418,7 +418,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxNoteBookPage3 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage3->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxNotebook1->AddPage(WxNoteBookPage3, wxT("Print"));
+	WxNotebook1->AddPage(WxNoteBookPage3, _("Print"));
 
 	WxBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
 	WxNoteBookPage3->SetSizer(WxBoxSizer14);
@@ -427,7 +427,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer15 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer14->Add(WxBoxSizer15, 0, wxALIGN_LEFT | wxALL, 2);
 
-	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(WxNoteBookPage3, wxID_ANY, wxT("Text Mode"));
+	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(WxNoteBookPage3, wxID_ANY, _("Text Mode"));
 	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
 	WxBoxSizer15->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALL, 4);
 
@@ -451,14 +451,14 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxCheckBoxPrintSpaceChar->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer1->Add(WxCheckBoxPrintSpaceChar, 0, wxALIGN_LEFT | wxALL, 1);
 
-	wxStaticBox* WxStaticBoxSizer2_StaticBoxObj = new wxStaticBox(WxNoteBookPage3, wxID_ANY, wxT("Hex Mode"));
+	wxStaticBox* WxStaticBoxSizer2_StaticBoxObj = new wxStaticBox(WxNoteBookPage3, wxID_ANY, _("Hex Mode"));
 	WxStaticBoxSizer2 = new wxStaticBoxSizer(WxStaticBoxSizer2_StaticBoxObj, wxHORIZONTAL);
 	WxBoxSizer15->Add(WxStaticBoxSizer2, 0, wxALIGN_LEFT | wxALL, 4);
 
 	wxArrayString arrayStringFor_WxRadioBoxPrintOffset;
-	arrayStringFor_WxRadioBoxPrintOffset.Add(wxT("None"));
-	arrayStringFor_WxRadioBoxPrintOffset.Add(wxT("First Page Only"));
-	arrayStringFor_WxRadioBoxPrintOffset.Add(wxT("Every Page"));
+	arrayStringFor_WxRadioBoxPrintOffset.Add(_("None"));
+	arrayStringFor_WxRadioBoxPrintOffset.Add(_("First Page Only"));
+	arrayStringFor_WxRadioBoxPrintOffset.Add(_("Every Page"));
 	WxRadioBoxPrintOffset = new wxRadioBox(WxNoteBookPage3, ID_WXRADIOBOXPRINTOFFSET, _("Print Offset Header"), wxPoint(6, 16), wxSize(150, 130), arrayStringFor_WxRadioBoxPrintOffset, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxPrintOffset"));
 	WxRadioBoxPrintOffset->SetSelection(0);
 	WxRadioBoxPrintOffset->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
@@ -494,7 +494,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText8->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxFlexGridSizer1->Add(WxStaticText8, 0, wxALIGN_RIGHT | wxALL, 2);
 
-	WxEditHeaderCenter = new wxTextCtrl(WxNoteBookPage3, ID_WXEDITHEADERCENTER, _(""), wxPoint(44, 30), wxSize(240, 21), 0, wxDefaultValidator, wxT("WxEditHeaderCenter"));
+	WxEditHeaderCenter = new wxTextCtrl(WxNoteBookPage3, ID_WXEDITHEADERCENTER, wxT(""), wxPoint(44, 30), wxSize(240, 21), 0, wxDefaultValidator, wxT("WxEditHeaderCenter"));
 	WxEditHeaderCenter->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxFlexGridSizer1->Add(WxEditHeaderCenter, 0, 0 | wxALL, 2);
 
@@ -563,7 +563,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxNoteBookPage4 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE4, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage4->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxNotebook1->AddPage(WxNoteBookPage4, wxT("Keys"));
+	WxNotebook1->AddPage(WxNoteBookPage4, _("Keys"));
 
 	WxBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
 	WxNoteBookPage4->SetSizer(WxBoxSizer18);
