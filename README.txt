@@ -69,7 +69,7 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 4. Show search results on status bar
 5. Recoding and Playback(Todo)
 6. Save script/connected with shortcut(?)(Todo)
-7. Right click on file tab supported
+7. Right click on file tab supported(Alpha 2)
 
 mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
