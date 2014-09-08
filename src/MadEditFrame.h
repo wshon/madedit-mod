@@ -15,7 +15,6 @@
 #ifndef WX_PRECOMP
         #include <wx/wx.h>
 #endif
-#include <queue>
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -25,6 +24,7 @@
 #include <wx/statusbr.h>
 ////Header Include End
 
+#include <wx/arrstr.h>
 #include <wx/frame.h>
 #include <wx/docview.h>
 #include <wx/fileconf.h>
@@ -350,7 +350,7 @@ private:
 	enum MadMacroMode
 	{ emMacroStopped=0, emMacroRecoding, emMacroRunning };
 	MadMacroMode m_MadMacroStatus;
-	std::queue<std::string> m_MadMacroScripts;
+	wxArrayString m_MadMacroScripts;
 public:
 	MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
 	bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
@@ -359,20 +359,9 @@ public:
 	void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
 	void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
 	void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
-	void AddMacroScript(std::string & script) {m_MadMacroScripts.push(script);}
-	bool HasRecordedScript() {return (!m_MadMacroScripts.empty());}
-	void GetRecordedScripts(std::string & scripts)
-	{
-		std::string medit("medit");
-		if (!m_MadMacroScripts.empty())
-		{
-			// Firstly
-			scripts += medit+std::string(" = MadEdit()\n\n");
-			while(!m_MadMacroScripts.empty())
-				scripts += m_MadMacroScripts.front();
-				m_MadMacroScripts.pop();
-		}
-	}
+	void AddMacroScript(wxString & script) {m_MadMacroScripts.Add(script);}
+	bool HasRecordedScript() {return (!m_MadMacroScripts.IsEmpty());}
+	wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
 };
 
 enum { // menu id

@@ -60,7 +60,7 @@ using std::list;
 #endif
 
 static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr);
-
+extern void RecordAsMadMacro(wxString& script);
 MadKeyBindings MadEdit::ms_KeyBindings;
 
 const int HexModeMaxColumns = 78;
@@ -74,7 +74,7 @@ extern const ucs4_t HexHeader[78] =
 };
 
 static wxCursor ArrowCursor, IBeamCursor, DragCopyCursor, DragMoveCursor;
-
+extern void RecordAsMadMacro(wxString& script);
 //==================================================
 
 class MadDataObject : public wxDataObjectSimple
@@ -7214,9 +7214,9 @@ void MadEdit::FindBracePairUnderCaretPos()
 
 }
 
-
 void MadEdit::ProcessCommand(MadEditCommand command)
 {
+    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
 #ifdef __WXMSW__
     if(m_Win98LeadByte>=0 && m_ProcessWin98LeadByte)
     {

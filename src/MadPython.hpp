@@ -39,6 +39,11 @@ namespace mad_python
                 else
                     throw std::runtime_error("No active main frame!");
             }
+            void ProcessCommand(int command)
+            {
+                return g_ActiveMadEdit->ProcessCommand(command);
+            }
+
             void GoToLine(int line)
             {
                 if(line > 0)
@@ -1037,6 +1042,7 @@ BOOST_PYTHON_MODULE(madpython)
     using namespace mad_py;
 
     class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.", init<>())
+        .def("ProcessCommand", &PyMadEdit::ProcessCommand, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
         .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "Get syntax information currently used")

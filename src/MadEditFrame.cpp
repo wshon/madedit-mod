@@ -158,7 +158,6 @@ wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
 EmbeddedPython * g_EmbeddedPython = 0;
 
-
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
 
 MadEditFrame *g_MainFrame=NULL;
@@ -212,6 +211,16 @@ int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 #endif
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
+
+inline void RecordAsMadMacro(wxString& script)
+{
+    if(g_MainFrame && g_ActiveMadEdit)
+        g_MainFrame->AddMacroScript(script);
+}
+
+#define RECORD_AS_MADMACRO() RecordAsMadMacro(wxString(wxT(__FUNCTION__))+wxT("()"))
+#define RECORD_AS_MADMACRO_ARGS(args) RecordAsMadMacro(wxString(wxT(__FUNCTION__)) + wxT("(")\
+                wxString::Format(args) + wxT(")"));
 
 //---------------------------------------------------------------------------
 
@@ -3969,77 +3978,92 @@ void MadEditFrame::OnCopyFileDir(wxCommandEvent& event)
 
 void MadEditFrame::OnEditUndo(wxCommandEvent& event)
 {
-    if(g_ActiveMadEdit) g_ActiveMadEdit->Undo();
+    if(g_ActiveMadEdit)
+    {
+        g_ActiveMadEdit->Undo();
+        RECORD_AS_MADMACRO();
+    }
 }
 
 void MadEditFrame::OnEditRedo(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("Redo()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->Redo();
 }
 
 void MadEditFrame::OnEditCut(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("CutToClipboard()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->CutToClipboard();
 }
 
 void MadEditFrame::OnEditCopy(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("CopyToClipboard()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->CopyToClipboard();
 }
 
 void MadEditFrame::OnEditPaste(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("PasteFromClipboard()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->PasteFromClipboard();
 }
 
 void MadEditFrame::OnEditDelete(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("Delete()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->Delete();
 }
 
 void MadEditFrame::OnEditCutLine(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("CutLine()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->CutLine();
 }
 
 void MadEditFrame::OnEditDeleteLine(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("DeleteLine()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->DeleteLine();
 }
 
 void MadEditFrame::OnEditSelectAll(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("DeleteLine()"));
     if(g_ActiveMadEdit) g_ActiveMadEdit->SelectAll();
 }
 
 void MadEditFrame::OnEditInsertTabChar(wxCommandEvent& event)
 {
-    if(g_ActiveMadEdit==NULL) return;
-    g_ActiveMadEdit->InsertTabChar();
+    RecordAsMadMacro(wxT("InsertTabChar()"));
+    if(g_ActiveMadEdit) g_ActiveMadEdit->InsertTabChar();
 }
 
 void MadEditFrame::OnEditInsertDateTime(wxCommandEvent& event)
 {
-    if(g_ActiveMadEdit==NULL) return;
-    g_ActiveMadEdit->InsertDateTime();
+    RecordAsMadMacro(wxT("InsertDateTime()"));
+    if(g_ActiveMadEdit) g_ActiveMadEdit->InsertDateTime();
 }
 
 // add: gogo, 21.09.2009
 //
 void MadEditFrame::OnEditToggleBookmark(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("SetBookmark()"));
     if ( g_ActiveMadEdit )
         g_ActiveMadEdit->SetBookmark();
 }
 
 void MadEditFrame::OnEditGotoNextBookmark(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("GotoNextBookmark()"));
     if ( g_ActiveMadEdit )
         g_ActiveMadEdit->GotoNextBookmark();
 }
 
 void MadEditFrame::OnEditGotoPreviousBookmark(wxCommandEvent& event)
 {
+    RecordAsMadMacro(wxT("GotoPreviousBookmark()"));
     if ( g_ActiveMadEdit )
         g_ActiveMadEdit->GotoPreviousBookmark();
 }
@@ -4052,6 +4076,7 @@ void MadEditFrame::OnEditSortAscending(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfAscending, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), sfAscending, begin, end));
     }
 }
 
@@ -4062,6 +4087,7 @@ void MadEditFrame::OnEditSortDescending(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfDescending, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), sfDescending, begin, end);
     }
 }
 
@@ -4072,6 +4098,7 @@ void MadEditFrame::OnEditSortAscendingCase(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfAscending|sfCaseSensitive, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), sfAscending|sfCaseSensitive, begin, end);
     }
 }
 
@@ -4082,6 +4109,7 @@ void MadEditFrame::OnEditSortDescendingCase(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfDescending|sfCaseSensitive, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), sfDescending|sfCaseSensitive, begin, end);
     }
 }
 
@@ -4109,6 +4137,7 @@ void MadEditFrame::OnEditSortByOptions(wxCommandEvent& event)
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
 
         g_ActiveMadEdit->SortLines(flags, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), flags, begin, end);
     }
 }
 
@@ -4157,6 +4186,7 @@ void MadEditFrame::OnEditSortOptions(wxCommandEvent& event)
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
 
         g_ActiveMadEdit->SortLines(flags, begin, end);
+        RecordAsMadMacro(wxString::Format(wxT("SortLines(%d, %d, %d)"), flags, begin, end);
     }
 
     m_Config->SetPath(oldpath);
@@ -5233,6 +5263,7 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
 void MadEditFrame::OnToolsStartRecMacro(wxCommandEvent& event)
 {
     SetMacroRecording();
+    m_MadMacroScripts.Empty();
 }
 
 void MadEditFrame::OnToolsStopRecMacro(wxCommandEvent& event)
@@ -5248,6 +5279,51 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
 
 void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
 {
+    wxString dir;
+    if(m_RecentFiles->GetCount())
+    {
+        wxFileName filename(m_RecentFiles->GetHistoryFile(0));
+        dir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
+    }
+
+    static int filterIndex = 0;
+    wxString fileFilter = wxString(wxT("Mad Macro(*.mpy)|*.mpy|")) + wxFileSelectorDefaultWildcardStr + wxT("|All files(*;*.*)");
+    wxFileDialog dlg(this, _("Open Mad Macro File"), dir, wxEmptyString, fileFilter,
+#if wxCHECK_VERSION(2,8,0)
+        wxFD_OPEN );
+#else
+        wxOPEN );
+#endif
+    dlg.SetFilterIndex(filterIndex);
+    if (dlg.ShowModal()==wxID_OK)
+    {
+        wxString filename = dlg.GetPath();
+
+        wxTextFile scriptfile(filename);
+        if(scriptfile.Exists())
+        {
+            if(wxNO==wxMessageBox(wxString::Format(_("Do you want to overwrite %s"), filename.c_str()), _("Warning"), wxICON_WARNING|wxYES_NO))
+                return;
+            scriptfile.Open();
+        }
+        else
+            scriptfile.Create();
+
+        if(scriptfile.IsOpened())
+        {
+            scriptfile.Clear();
+			size_t total = m_MadMacroScripts.GetCount();
+            wxString medit(wxT("medit."));
+            if (total)
+            {
+				scriptfile.AddLine(wxT("medit = MadEdit()"));
+                for(size_t i = 0; i < total; ++i)
+                    scriptfile.AddLine(medit+m_MadMacroScripts[i]);
+            }
+            scriptfile.Close();
+        }
+    }
+
 }
 
 void MadEditFrame::OnToolsToggleBOM(wxCommandEvent& event)
