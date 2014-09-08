@@ -40,6 +40,7 @@ sh	syntax_sh.syn
 
 py	syntax_python.syn
 python	syntax_python.syn
+mpy	syntax_python.syn
 
 pl	syntax_perl.syn
 perl	syntax_perl.syn

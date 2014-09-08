@@ -5,6 +5,7 @@
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 #include <wx/textctrl.h>
+#include "MadEditFrame.h"
 #include "MadMacroDlg.h"
 #include "EmbeddedPython.hpp"
 
@@ -202,7 +203,9 @@ void MadMacroDlg::OnRun( wxCommandEvent& event )
         if(g_EmbeddedPython)
         {
             wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
+            g_MainFrame->SetMacroRunning();
             g_EmbeddedPython->exec(std::string(pystr.mb_str()));
+            g_MainFrame->SetMacroStopped();
         }
     }
 

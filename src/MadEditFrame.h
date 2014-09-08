@@ -15,6 +15,7 @@
 #ifndef WX_PRECOMP
         #include <wx/wx.h>
 #endif
+#include <queue>
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -156,6 +157,10 @@ public:
     void OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event);
+	void OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event);
+	void OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event);
+	void OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event);
+	void OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event);
 
     void OnFileNew(wxCommandEvent& event);
     void OnFileOpen(wxCommandEvent& event);
@@ -261,6 +266,10 @@ public:
     void OnToolsPurgeHistories(wxCommandEvent& event);
     void OnToolsRunTempMacro(wxCommandEvent& event);
     void OnToolsRunMacroFile(wxCommandEvent& event);
+	void OnToolsStartRecMacro(wxCommandEvent& event);
+	void OnToolsStopRecMacro(wxCommandEvent& event);
+	void OnToolsPlayRecMacro(wxCommandEvent& event);
+	void OnToolsSaveRecMacro(wxCommandEvent& event);
 
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);
@@ -337,7 +346,33 @@ public:
     void PurgeRecentFiles();
     void PurgeRecentFonts();
     void PurgeRecentEncodings();
-
+private:
+	enum MadMacroMode
+	{ emMacroStopped=0, emMacroRecoding, emMacroRunning };
+	MadMacroMode m_MadMacroStatus;
+	std::queue<std::string> m_MadMacroScripts;
+public:
+	MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
+	bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
+	bool IsMacroRecording() {return (m_MadMacroStatus == emMacroRecoding);}
+	bool IsMacroStopped() {return (m_MadMacroStatus == emMacroStopped);}
+	void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
+	void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
+	void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
+	void AddMacroScript(std::string & script) {m_MadMacroScripts.push(script);}
+	bool HasRecordedScript() {return (!m_MadMacroScripts.empty());}
+	void GetRecordedScripts(std::string & scripts)
+	{
+		std::string medit("medit");
+		if (!m_MadMacroScripts.empty())
+		{
+			// Firstly
+			scripts += medit+std::string(" = MadEdit()\n\n");
+			while(!m_MadMacroScripts.empty())
+				scripts += m_MadMacroScripts.front();
+				m_MadMacroScripts.pop();
+		}
+	}
 };
 
 enum { // menu id
@@ -483,6 +518,10 @@ enum { // menu id
     menuMadMacro,
     menuRunTempMacro,
     menuRunMacroFile,
+    menuStartRecMacro,
+    menuStopRecMacro,
+    menuPlayRecMacro,
+    menuSaveRecMacro,
     menuPlugins,
     menuByteOrderMark,
     menuToggleBOM,
