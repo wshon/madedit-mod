@@ -215,3 +215,9 @@ void MadMacroDlg::OnClose( wxCommandEvent& event )
 {
     Destroy();
 }
+
+void MadMacroDlg::SetPyScript(wxString & pyscript)
+{
+    m_pymacro->SetText(pyscript);
+}
+

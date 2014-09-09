@@ -24,7 +24,7 @@
 extern wxStatusBar *g_StatusBar;   // add: gogo, 19.09.2009
 
 MadSearchDialog *g_SearchDialog=NULL;
-
+extern void RecordAsMadMacro(wxString& script);
 //----------------------------------------------------------------------------
 // MadSearchDialog
 //----------------------------------------------------------------------------
@@ -328,6 +328,7 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
             if(WxCheckBoxFindHex->GetValue())
             {
                 sr=g_ActiveMadEdit->FindHexNext(text, rangeFrom, rangeTo);
+                RecordAsMadMacro(wxString::Format(wxT("FindHexNext(%s, %d, %d)"), text, rangeFrom, rangeTo));
             }
             else
             {
@@ -336,6 +337,10 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                     WxCheckBoxCaseSensitive->GetValue(),
                     WxCheckBoxWholeWord->GetValue(),
                     rangeFrom, rangeTo);
+                RecordAsMadMacro(wxString::Format(wxT("FindTextNext(%s, %s, %s, %s, %d, %d)"), text,
+                            WxCheckBoxRegex->GetValue(),
+                            WxCheckBoxCaseSensitive->GetValue(),
+                            WxCheckBoxWholeWord->GetValue(), rangeFrom, rangeTo));
             }
 
             if(sr != SR_NO)
@@ -384,7 +389,9 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
             }
             rangeFrom = WxCheckBoxSearchInSelection->IsChecked()? m_SearchFrom : 0;
             if(WxCheckBoxSearchInSelection->IsChecked())
+            {
                 g_ActiveMadEdit->SetSelection(m_SearchFrom, m_SearchTo);
+            }
         }
     }
 
@@ -438,6 +445,7 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
             if(WxCheckBoxFindHex->GetValue())
             {
                 sr=g_ActiveMadEdit->FindHexPrevious(text, rangeTo, rangeFrom);
+                RecordAsMadMacro(wxString::Format(wxT("FindHexPrevious(%s, %d, %d)"), text, rangeFrom, rangeTo));
             }
             else
             {
@@ -446,6 +454,10 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
                     WxCheckBoxCaseSensitive->GetValue(),
                     WxCheckBoxWholeWord->GetValue(),
                     rangeTo, rangeFrom);
+                RecordAsMadMacro(wxString::Format(wxT("FindTextPrevious(%s, %s, %s, %s, %d, %d)"), text,
+                            WxCheckBoxRegex->GetValue(),
+                            WxCheckBoxCaseSensitive->GetValue(),
+                            WxCheckBoxWholeWord->GetValue(), rangeFrom, rangeTo));
             }
 
             if(sr!=SR_NO)
@@ -851,6 +863,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         if(WxCheckBoxFindHex->GetValue())
         {
             ok = madedit->FindHexAll(expr, false, &begpos, &endpos);
+            RecordAsMadMacro(wxString::Format(wxT("FindHexAll(%s)"), expr));
         }
         else
         {
@@ -860,6 +873,10 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                 WxCheckBoxWholeWord->GetValue(),
                 false,
                 &begpos, &endpos);
+            RecordAsMadMacro(wxString::Format(wxT("FindTextAll(%s, %s, %s, %s)"), expr,
+                            WxCheckBoxRegex->GetValue()?"True":"False",
+                            WxCheckBoxCaseSensitive->GetValue()?"True":"False",
+                            WxCheckBoxWholeWord->GetValue()?"True":"False"));
         }
 
         if(ok<0) return;
