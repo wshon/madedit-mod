@@ -4715,6 +4715,7 @@ void MadEditFrame::OnSearchGoToLine(wxCommandEvent& event)
     if(!str.IsEmpty() && str.ToLong(&line, base))
     {
         g_ActiveMadEdit->GoToLine(line);
+        RecordAsMadMacro(wxString::Format(wxT("GoToLine(%d)"), line));
     }
 }
 
@@ -4732,6 +4733,7 @@ void MadEditFrame::OnSearchGoToPosition(wxCommandEvent& event)
         if(StrToInt64(str, pos))
         {
             g_ActiveMadEdit->SetCaretPosition(pos);
+            RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d)"), pos));
         }
     }
 }
@@ -4741,12 +4743,14 @@ void MadEditFrame::OnSearchGoToLeftBrace(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->GoToLeftBrace();
+    RecordAsMadMacro(wxString(wxT("GoToLeftBrace()")));
 }
 void MadEditFrame::OnSearchGoToRightBrace(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->GoToRightBrace();
+    RecordAsMadMacro(wxString(wxT("GoToWriteBrace()")));
 }
 
 
@@ -4757,6 +4761,7 @@ void MadEditFrame::OnViewEncoding(wxCommandEvent& event)
     int idx=event.GetId()-menuEncoding1;
     wxString enc=MadEncoding::GetEncodingName(idx);
     g_ActiveMadEdit->SetEncoding(enc);
+    RecordAsMadMacro(wxString(wxT("SetEncoding("))+enc+wx(")"));
 
     wxString str=wxString(wxT('['))+ enc + wxT("] ")+ wxGetTranslation(MadEncoding::GetEncodingDescription(idx).c_str());
     m_RecentEncodings->AddFileToHistory(str);
@@ -4780,6 +4785,7 @@ void MadEditFrame::OnViewRecentEncoding(wxCommandEvent& event)
         {
             wxString enc = tkz.GetNextToken();
             g_ActiveMadEdit->SetEncoding(enc);
+            RecordAsMadMacro(wxString(wxT("SetEncoding("))+enc+wx(")"));
 
             m_RecentEncodings->AddFileToHistory(str);
 
@@ -4799,6 +4805,7 @@ void MadEditFrame::OnViewSyntax(wxCommandEvent& event)
     int idx=event.GetId()-menuSyntax1;
     wxString title=MadSyntax::GetSyntaxTitle(idx);
     g_ActiveMadEdit->SetSyntax(title);
+    RecordAsMadMacro(wxString(wxT("SetSyntax("))+enc+wx(")"));
 }
 
 void MadEditFrame::OnViewFontName(wxCommandEvent& event)
@@ -5397,7 +5404,10 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
             scriptfile.Open();
         }
         else
+        {
             scriptfile.Create();
+            scriptfile.Open();
+        }
 
         if(scriptfile.IsOpened())
         {
@@ -5421,24 +5431,28 @@ void MadEditFrame::OnToolsToggleBOM(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ToggleBOM();
+    RecordAsMadMacro(wxString(wxT("ToggleBOM()")));
 }
 void MadEditFrame::OnToolsConvertToDOS(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltDOS);
+    RecordAsMadMacro(wxString::Format(wxT("ConvertNewLineType(%d)"), nltDOS));
 }
 void MadEditFrame::OnToolsConvertToMAC(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltMAC);
+    RecordAsMadMacro(wxString::Format(wxT("ConvertNewLineType(%d)"), nltMAC));
 }
 void MadEditFrame::OnToolsConvertToUNIX(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltUNIX);
+    RecordAsMadMacro(wxString::Format(wxT("ConvertNewLineType(%d)"), nltUNIX));
 }
 
 void MadEditFrame::OnToolsInsertDOS(wxCommandEvent& event)
@@ -5446,18 +5460,21 @@ void MadEditFrame::OnToolsInsertDOS(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltDOS);
+    RecordAsMadMacro(wxString::Format(wxT("SetInsertNewLineType(%d)"), nltDOS));
 }
 void MadEditFrame::OnToolsInsertMAC(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltMAC);
+    RecordAsMadMacro(wxString::Format(wxT("SetInsertNewLineType(%d)"), nltMAC));
 }
 void MadEditFrame::OnToolsInsertUNIX(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltUNIX);
+    RecordAsMadMacro(wxString::Format(wxT("SetInsertNewLineType(%d)"), nltUNIX));
 }
 
 
