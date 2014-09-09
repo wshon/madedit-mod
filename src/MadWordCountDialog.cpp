@@ -20,7 +20,7 @@
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
-
+extern void RecordAsMadMacro(wxString& script);
 //----------------------------------------------------------------------------
 // MadWordCountDialog
 //----------------------------------------------------------------------------
@@ -159,6 +159,7 @@ void MadWordCountDialog::CreateGUIControls(void)
     int words, chars, spaces, lines, halfwidths, fullwidths;
     wxArrayString detail;
     g_ActiveMadEdit->WordCount(g_ActiveMadEdit->IsSelected(), words, chars, spaces, halfwidths, fullwidths, lines, &detail);
+    RecordAsMadMacro(wxString::Format(wxT("WordCount(%s)"), g_ActiveMadEdit->IsSelected()?"True":"False"));
 
     if(g_ActiveMadEdit->IsSelected())
     {

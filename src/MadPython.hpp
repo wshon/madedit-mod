@@ -955,9 +955,9 @@ namespace mad_python
                 wxString wxNewenc(newenc.c_str(), wxConvLocal);
                 g_ActiveMadEdit->ConvertEncoding(wxNewenc, mflag);
             }
-            void ConvertChinese(MadConvertEncodingFlag flag)
+            void ConvertChineseA(int flag)
             {
-                g_ActiveMadEdit->ConvertChinese(flag);
+				g_ActiveMadEdit->ConvertChinese((MadConvertEncodingFlag)flag);
             }
 
             bool HasBOM()
@@ -1052,6 +1052,7 @@ namespace mad_python
 
                 return mad_py::make_tuple(words, chars, spaces, lines, halfwidths, fullwidths, std::string(str.mb_str()));
             }
+
     };
     //PyMadEdit * InitMadPython() { return new PyMadEdit();}
 }
@@ -1204,7 +1205,6 @@ BOOST_PYTHON_MODULE(madpython)
         .def("GotoNextBookmark", &PyMadEdit::GotoNextBookmark, "")
         .def("GotoPreviousBookmark", &PyMadEdit::GotoPreviousBookmark, "")
         .def("ConvertEncoding", &PyMadEdit::ConvertEncoding, "")
-        .def("ConvertChinese", &PyMadEdit::ConvertChinese, "")
         .def("HasBOM", &PyMadEdit::HasBOM, "")
         .def("ToggleBOM", &PyMadEdit::ToggleBOM, "")
         .def("IncreaseDecreaseIndent", &PyMadEdit::IncreaseDecreaseIndent, "")
@@ -1225,6 +1225,12 @@ BOOST_PYTHON_MODULE(madpython)
         .def("SetFontA", &PyMadEdit::SetFontA, "Doc")
         .def("CopyToClipboardA", &PyMadEdit::CopyToClipboardA, "")
         .def("CopyToClipboardB", &PyMadEdit::CopyToClipboardB, "")
+		.def("ScrollLineUp", &PyMadEdit::ScrollLineUp, "")
+		.def("ScrollLineDown", &PyMadEdit::ScrollLineDown, "")
+		.def("ScrollPageUp", &PyMadEdit::ScrollPageUp, "")
+		.def("ScrollPageDown", &PyMadEdit::ScrollPageDown, "")
+		.def("ScrollLeft", &PyMadEdit::ScrollLeft, "")
+		.def("ScrollRight", &PyMadEdit::ScrollRight, "")
         .def("FindTextNext", &PyMadEdit::FindTextNext, FindTextNext_member_overloads( args("text", "bRegex", "bCaseSensitive", "bWholeWord", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])
 
         .def("FindTextPrevious", &PyMadEdit::FindTextPrevious, FindTextPrevious_member_overloads( args("text", "bRegex", "bCaseSensitive", "bWholeWord", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])
