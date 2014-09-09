@@ -32,6 +32,11 @@
 
 enum { ID_VSCROLLBAR=19876, ID_HSCROLLBAR };
 
+namespace mad_python
+{
+    class PyMadEdit;
+}
+
 class MadEdit;
 class MadSearchDialog;
 
@@ -1019,6 +1024,7 @@ public: // utility functions
 
     bool StringToHex(wxString ws, vector<wxByte> &hex);
     friend class MadSearchDialog;
+    friend class mad_python::PyMadEdit;
 };
 
 wxString FixUTF8ToWCS(const wxString &str);

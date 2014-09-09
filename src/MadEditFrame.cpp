@@ -215,7 +215,10 @@ wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 inline void RecordAsMadMacro(wxString& script)
 {
     if(g_MainFrame && g_ActiveMadEdit)
-        g_MainFrame->AddMacroScript(script);
+    {
+        if(g_MainFrame->IsMacroRecording())
+            g_MainFrame->AddMacroScript(script);
+    }
 }
 
 #define RECORD_AS_MADMACRO() RecordAsMadMacro(wxString(wxT(__FUNCTION__))+wxT("()"))
@@ -3529,56 +3532,27 @@ void MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && IsMacroStopped())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit != NULL && !IsMacroRunning());
+    event.Check(g_ActiveMadEdit && IsMacroRecording());
 }
 
 void MadEditFrame::OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && IsMacroRecording())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit != NULL && IsMacroRecording());
+    event.Check(false);
 }
 
 void MadEditFrame::OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && IsMacroStopped() && HasRecordedScript())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit && IsMacroStopped() && HasRecordedScript());
+    event.Check(g_ActiveMadEdit && IsMacroRunning());
 }
 
 void MadEditFrame::OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && IsMacroStopped() && HasRecordedScript())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit != NULL && IsMacroStopped() && HasRecordedScript());
+    event.Check(false);
 }
-
 
 void MadEditFrame::OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event)
 {
@@ -5388,8 +5362,8 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
             dlg.SetPyScript(pyscript);
             SetMacroRunning();
             dlg.ShowModal();
-            SetMacroStopped();
         }
+        SetMacroStopped();
     }
 }
 

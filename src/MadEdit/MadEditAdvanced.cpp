@@ -743,7 +743,6 @@ void MadEdit::CommentUncomment(bool comment)
     if(sc) DoStatusChanged();
 }
 
-
 void MadEdit::ToUpperCase()
 {
     if(IsReadOnly() || !m_Selection)

@@ -3658,6 +3658,8 @@ void MadEdit::SetSelection(wxFileOffset beginpos, wxFileOffset endpos, bool bCar
     {
         m_UndoBuffer->Add(oldCaretPos, m_CaretPos.pos);
     }
+    
+    RecordAsMadMacro(wxString::Format(wxT("SetSelection(%d, %d, %s)"), beginpos, endpos, bCaretAtBeginPos?"True":"False"));
 }
 
 wxFileOffset MadEdit::GetColumnSelection(wxString *ws)
@@ -7216,7 +7218,6 @@ void MadEdit::FindBracePairUnderCaretPos()
 
 void MadEdit::ProcessCommand(MadEditCommand command)
 {
-    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
 #ifdef __WXMSW__
     if(m_Win98LeadByte>=0 && m_ProcessWin98LeadByte)
     {
@@ -7246,47 +7247,86 @@ void MadEdit::ProcessCommand(MadEditCommand command)
     switch (command)
     {
     case ecHighlightWords:
-        HighlightWords();
+        {
+            HighlightWords();
+            RecordAsMadMacro(wxString(wxT("HighlightWords()")));
+        }
         break;
     case ecSelectAll:
-        SelectAll();
+        {
+            SelectAll();
+            RecordAsMadMacro(wxString(wxT("SelectAll()")));
+        }
         break;
 
     case ecCut:
-        CutToClipboard();
+        {
+            CutToClipboard();
+            RecordAsMadMacro(wxString(wxT("CutToClipboard()")));
+        }
         break;
     case ecCopy:
-        CopyToClipboard();
+        {
+            CopyToClipboard();
+            RecordAsMadMacro(wxString(wxT("CopyToClipboard()")));
+        }
         break;
     case ecPaste:
-        PasteFromClipboard();
+        {
+            PasteFromClipboard();
+            RecordAsMadMacro(wxString(wxT("PasteFromClipboard()")));
+        }
         break;
 
     case ecTextMode:
-        SetEditMode(emTextMode);
+        {
+            SetEditMode(emTextMode);
+            RecordAsMadMacro(wxString::Format(wxT("SetEditMode(%d)"), emTextMode));
+        }
         break;
     case ecColumnMode:
-        SetEditMode(emColumnMode);
+        {
+            SetEditMode(emColumnMode);
+            RecordAsMadMacro(wxString::Format(wxT("SetEditMode(%d)"), emColumnMode));
+        }
         break;
     case ecHexMode:
-        SetEditMode(emHexMode);
+        {
+            SetEditMode(emHexMode);
+            RecordAsMadMacro(wxString::Format(wxT("SetEditMode(%d)"), emHexMode));
+        }
         break;
 
     case ecNoWrap:
-        SetWordWrapMode(wwmNoWrap);
+        {
+            SetWordWrapMode(wwmNoWrap);
+            RecordAsMadMacro(wxString::Format(wxT("SetWordWrapMode(%d)"), wwmNoWrap));
+        }
         break;
     case ecWrapByWindow:
-        SetWordWrapMode(wwmWrapByWindow);
+        {
+            SetWordWrapMode(wwmWrapByWindow);
+            RecordAsMadMacro(wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByWindow));
+        }
         break;
     case ecWrapByColumn:
-        SetWordWrapMode(wwmWrapByColumn);
+        {
+            SetWordWrapMode(wwmWrapByColumn);
+            RecordAsMadMacro(wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByColumn));
+        }
         break;
 
     case ecUndo:
-        Undo();
+        {
+            Undo();
+            RecordAsMadMacro(wxString(wxT("Undo()")));
+        }
         break;
     case ecRedo:
-        Redo();
+        {
+            Redo();
+            RecordAsMadMacro(wxString(wxT("Redo()")));
+        }
         break;
 
     case ecScrollLineUp:
@@ -7298,6 +7338,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollLineUp()")));
         }
         break;
     case ecScrollLineDown:
@@ -7309,6 +7350,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollLineDown()")));
         }
         break;
     case ecScrollPageUp:
@@ -7320,6 +7362,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollPageUp()")));
         }
         break;
     case ecScrollPageDown:
@@ -7331,6 +7374,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollPageDown()")));
         }
         break;
     case ecScrollLeft:
@@ -7342,6 +7386,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollLeft()")));
         }
         break;
     case ecScrollRight:
@@ -7353,26 +7398,43 @@ void MadEdit::ProcessCommand(MadEditCommand command)
             Refresh(false);
 
             NewAutoCompleteRightChar=m_AutoCompleteRightChar;
+            RecordAsMadMacro(wxString(wxT("ScrollRight()")));
         }
         break;
         
     case ecToUpperCase:
-        ToUpperCase();
+        {
+            ToUpperCase();
+            RecordAsMadMacro(wxString(wxT("ToUpperCase()")));
+        }
         break;
     case ecToLowerCase:
-        ToLowerCase();
+        {
+            ToLowerCase();
+            RecordAsMadMacro(wxString(wxT("ToLowerCase()")));
+        }
         break;
     case ecInvertCase:
-        InvertCase();
+        {
+            InvertCase();
+            RecordAsMadMacro(wxString(wxT("InvertCase()")));
+        }
         break;
     case ecToHalfWidth:
-        ToHalfWidth();
+        {
+            ToHalfWidth();
+            RecordAsMadMacro(wxString(wxT("ToHalfWidth()")));
+        }
         break;
     case ecToFullWidth:
-        ToFullWidth();
+        {
+            ToFullWidth();
+            RecordAsMadMacro(wxString(wxT("ToFullWidth()")));
+        }
         break;
 
     default:
+        RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
         if(m_EditMode != emHexMode)
         {
             if(bSel)
