@@ -74,7 +74,6 @@ extern const ucs4_t HexHeader[78] =
 };
 
 static wxCursor ArrowCursor, IBeamCursor, DragCopyCursor, DragMoveCursor;
-extern void RecordAsMadMacro(wxString& script);
 //==================================================
 
 class MadDataObject : public wxDataObjectSimple
@@ -3545,9 +3544,6 @@ void MadEdit::EndUpdateSelection(bool bSelection)
 
         m_RepaintSelection = true;
         Refresh(false);
-        
-        if(m_Selection)
-            RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
     }
 }
 

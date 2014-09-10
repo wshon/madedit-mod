@@ -60,6 +60,23 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.1.5 alpha 4 2014.9.10
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+New to alpha 3
+Fixed known issue: SetCaretPosition would get wrong selection beginning pos and duplicated SetCaretPosition
+
+mod v0.1.5 alpha 3 2014.9.10
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+New to alpha 2
+1. Fixed Assertion on wxEVT_MOUSE_CAPTURE_LOST
+2. Record/Stop/Playpack/SaveMacro is done(Known issue: SetCaretPosition would get wrong selection beginning 
+pos and duplicated SetCaretPosition). Not well tested.
+3. Added more apis
+4. Updated MadPython.txt
+5. Add syntax support for MadMacro(.mpy)
+6. Updated translation for Simplified Chinese.
+7. SaveRecord Icon is to be updated.
+
 mod v0.1.5 alpha 2014.9.5
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 

@@ -46,6 +46,14 @@ double line feedings with single one
 
 Supported method list:
 ----------------------
+void ProcessCommand(int command)
+void InsertWChar(int key)
+void ScrollLineUp()
+void ScrollLineDown()
+void ScrollPageUp()
+void ScrollPageDown()
+void ScrollLeft()
+void ScrollRight()
 void GoToLine(int line)
 void SetSyntax(const std::string &title)
 std::string GetSyntaxTitle()
@@ -59,11 +67,8 @@ bool GetRecordCaretMovements()
 void SetRecordCaretMovements(bool value)
 void SetTextFont(const std::string &name, int size, bool forceReset)
 void SetHexFont(const std::string &name, int size, bool forceReset)
-//(name, size)
 mad_py::tuple GetTextFont()
-//(name, size)
 mad_py::tuple GetHexFont()
-//(name, size)
 mad_py::tuple GetFontNameSize()
 void SetFontA(const std::string &name, int size)
 void SetFixedWidthMode(bool mode)
@@ -114,9 +119,7 @@ int GetMaxWordWrapWidth()
 int GetUCharWidth(ucs4_t uc)
 int GetHexUCharWidth(ucs4_t uc)
 int GetUCharType(ucs4_t uc)
-
 // all are zero-based
-//(line, subrow, column)
 mad_py::tuple GetCaretPositionA()
 int GetCaretPositionB()
 std::string GetFileName()
@@ -126,7 +129,6 @@ int GetSelectionSize()
 int GetSelectionBeginPos()
 int GetSelectionEndPos()
 // return -1 for no selection
-//(beginline, endline)
 mad_py::tuple GetSelectionLineId()
 int GetLineCount()
 void ConvertNewLineType(MadNewLineType type)
@@ -197,7 +199,7 @@ int ReplaceHexAll(const std::string &expr, const std::string &fmt,
 // return the found count or SR_EXPR_ERROR
 int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord)
 int FindHexAll(const std::string &expr)
-bool LoadFromFile(const std::string &filename, const std::string &encoding=const std::string(""))
+bool LoadFromFile(const std::string &filename, const std::string &encoding=std::string(""))
 bool SaveToFile(const std::string &filename)
 bool Reload()
 // if the file is modified by another app, reload it.
@@ -212,7 +214,7 @@ void SetBookmark()
 void GotoNextBookmark()
 void GotoPreviousBookmark()
 void ConvertEncoding(const std::string &newenc, int flag)
-void ConvertChinese(MadConvertEncodingFlag flag)
+void ConvertChineseA(int flag)
 bool HasBOM()
 void ToggleBOM()
 void IncreaseDecreaseIndent(bool incIndent)
@@ -233,9 +235,7 @@ void ConvertNewLineToWordWrap()
 void ConvertSpaceToTab()
 void ConvertTabToSpace()
 void CopyAsHexString(bool withSpace)
-//(words, chars, spaces, lines, halfwidths, fullwidths, detailstr)
 mad_py::tuple WordCount(bool selection)
-
 
 
 Author:

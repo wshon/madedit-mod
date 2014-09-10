@@ -351,6 +351,7 @@ private:
 	{ emMacroStopped=0, emMacroRecoding, emMacroRunning };
 	MadMacroMode m_MadMacroStatus;
 	wxArrayString m_MadMacroScripts;
+	int m_LastSelBeg, m_LastSelEnd;
 public:
 	MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
 	bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
@@ -359,8 +360,17 @@ public:
 	void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
 	void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
 	void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
-	void AddMacroScript(wxString & script) {m_MadMacroScripts.Add(script);}
-	bool HasRecordedScript() {return (!m_MadMacroScripts.IsEmpty());}
+	void AddMacroScript(wxString & script, int caretPos = 0, int selBeg = -1, int selEnd = -1)
+	{
+		if(((selBeg != -1) && (selEnd != -1)) && (selBeg != m_LastSelBeg || selEnd != m_LastSelEnd))
+		{
+			m_LastSelBeg = selBeg;
+			m_LastSelEnd = selEnd;
+			m_MadMacroScripts.Add(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), caretPos, m_LastSelBeg, m_LastSelEnd));
+		}
+		m_MadMacroScripts.Add(script);
+	}
+	bool HasRecordedScript() {return (m_MadMacroScripts.GetCount()>2);}
 	wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
 };
 

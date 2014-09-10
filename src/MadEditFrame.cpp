@@ -152,7 +152,7 @@
     #define GetAccelFromString(x) wxGetAccelFromString(x)
 #endif
 
-wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha"));
+wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha 4"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
@@ -217,12 +217,10 @@ inline void RecordAsMadMacro(wxString& script)
     if(g_MainFrame && g_ActiveMadEdit)
     {
         if(g_MainFrame->IsMacroRecording())
-            g_MainFrame->AddMacroScript(script);
+            g_MainFrame->AddMacroScript(script, (int)g_ActiveMadEdit->GetCaretPosition()
+                , (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
     }
 }
-
-#define RECORD_AS_MADMACRO() RecordAsMadMacro(wxString(wxT(__FUNCTION__))+wxT("()"))
-#define RECORD_AS_MADMACRO_ARGS(args) RecordAsMadMacro(wxString(wxT(__FUNCTION__)) + args)
 
 //---------------------------------------------------------------------------
 
@@ -1563,7 +1561,7 @@ CommandData CommandTable[]=
     { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporary macro")},
     { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Run MacroScript"),                               wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run saved macro script")},
     { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_CHECK,    record_xpm_idx,  0,                    _("Start Recording")},
-    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Save Recording"),                                wxT(""),       wxITEM_CHECK,    stop_xpm_idx,    0,                    _("Stop Recording")},
+    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_CHECK,    stop_xpm_idx,    0,                    _("Stop Recording")},
     { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_CHECK,    play_xpm_idx,    0,                    _("Playback")},
     { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro"),                 wxT(""),       wxITEM_CHECK,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
@@ -1769,6 +1767,8 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
 
     m_PageClosing=false;
     m_MadMacroStatus = emMacroStopped;
+    m_LastSelBeg = -1;
+    m_LastSelEnd = -1;
     g_MainFrame=this;
 }
 

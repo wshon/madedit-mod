@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-07 20:49+0800\n"
-"PO-Revision-Date: 2014-09-07 20:51+0800\n"
+"POT-Creation-Date: 2014-09-10 19:40+0800\n"
+"PO-Revision-Date: 2014-09-10 19:47+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.6.9\n"
 
-#: ../src/MadEdit/MadEditAdvanced.cpp:1650
+#: ../src/MadEdit/MadEditAdvanced.cpp:1649
 msgid "Invalid Unicode Characters"
 msgstr "不正确的 Unicode 字符"
 
@@ -38,7 +38,7 @@ msgid "Hex Mode to Text/Column Mode"
 msgstr "十六进制模式转换到文字/列块模式"
 
 #: ../src/MadEdit/MadEditBasic.cpp:2262 ../src/MadEdit/MadEditBasic.cpp:2331
-#: ../src/MadEditFrame.cpp:2908
+#: ../src/MadEditFrame.cpp:2953
 msgid "The Parent Directory of this file does not exist:"
 msgstr "这个文件所属的目录不存在："
 
@@ -54,7 +54,7 @@ msgstr "要保存这个文件吗？"
 msgid "Save File As"
 msgstr "另存为"
 
-#: ../src/MadEdit/MadEditBasic.cpp:2395 ../src/MadEditFrame.cpp:2175
+#: ../src/MadEdit/MadEditBasic.cpp:2395 ../src/MadEditFrame.cpp:2215
 msgid "Save File"
 msgstr "保存文件"
 
@@ -97,1317 +97,1337 @@ msgstr "'%s' 不是正确的正规表示式。"
 msgid "The format of '%s' is invalid."
 msgstr "'%s' 的格式不正确。"
 
-#: ../src/MadEditFrame.cpp:760
+#: ../src/MadEditFrame.cpp:782
 msgid "Ln:"
 msgstr "行："
 
-#: ../src/MadEditFrame.cpp:763
+#: ../src/MadEditFrame.cpp:785
 msgid "Sub:"
 msgstr "次行："
 
-#: ../src/MadEditFrame.cpp:766
+#: ../src/MadEditFrame.cpp:788
 msgid "Col:"
 msgstr "列："
 
-#: ../src/MadEditFrame.cpp:767
+#: ../src/MadEditFrame.cpp:789
 msgid "CharPos:"
 msgstr "字符位置："
 
-#: ../src/MadEditFrame.cpp:768
+#: ../src/MadEditFrame.cpp:790
 msgid "SelSize:"
 msgstr "选取长度："
 
-#: ../src/MadEditFrame.cpp:881
+#: ../src/MadEditFrame.cpp:903
 msgid "ReadOnly"
 msgstr "只读"
 
-#: ../src/MadEditFrame.cpp:891
+#: ../src/MadEditFrame.cpp:913
 msgid "INS"
 msgstr "插入"
 
-#: ../src/MadEditFrame.cpp:896
+#: ../src/MadEditFrame.cpp:918
 msgid "OVR"
 msgstr "覆盖"
 
-#: ../src/MadEditFrame.cpp:1237
+#: ../src/MadEditFrame.cpp:1267
 msgid "&File"
 msgstr "文件(&F)"
 
-#: ../src/MadEditFrame.cpp:1238
+#: ../src/MadEditFrame.cpp:1268
 msgid "&New File"
 msgstr "新建文件(&N)"
 
-#: ../src/MadEditFrame.cpp:1238
+#: ../src/MadEditFrame.cpp:1268
 msgid "Create a new file"
 msgstr "建立新文件"
 
-#: ../src/MadEditFrame.cpp:1239
+#: ../src/MadEditFrame.cpp:1269
 msgid "&Open File..."
 msgstr "打开文件(&O)..."
 
-#: ../src/MadEditFrame.cpp:1239
+#: ../src/MadEditFrame.cpp:1269
 msgid "Open an existing file"
 msgstr "打开已有文件"
 
-#: ../src/MadEditFrame.cpp:1241 ../src/MadEditFrame.cpp:1880
+#: ../src/MadEditFrame.cpp:1271 ../src/MadEditFrame.cpp:1920
 msgid "&Save File"
 msgstr "保存(&S)"
 
-#: ../src/MadEditFrame.cpp:1241
+#: ../src/MadEditFrame.cpp:1271
 msgid "Save the file"
 msgstr "保存文件"
 
-#: ../src/MadEditFrame.cpp:1242 ../src/MadEditFrame.cpp:1881
+#: ../src/MadEditFrame.cpp:1272 ../src/MadEditFrame.cpp:1921
 msgid "Save &As..."
 msgstr "另存为(&A)..."
 
-#: ../src/MadEditFrame.cpp:1242
+#: ../src/MadEditFrame.cpp:1272
 msgid "Save the file with a new name"
 msgstr "以另外的新文件名保存"
 
-#: ../src/MadEditFrame.cpp:1243
+#: ../src/MadEditFrame.cpp:1273
 msgid "Sa&ve All"
 msgstr "保存所有文件(&V)"
 
-#: ../src/MadEditFrame.cpp:1243
+#: ../src/MadEditFrame.cpp:1273
 msgid "Save all files"
 msgstr "保存全部的文件"
 
-#: ../src/MadEditFrame.cpp:1245 ../src/MadEditFrame.cpp:1882
+#: ../src/MadEditFrame.cpp:1275 ../src/MadEditFrame.cpp:1922
 msgid "&Reload File"
 msgstr "重载文件(&R)"
 
-#: ../src/MadEditFrame.cpp:1245
+#: ../src/MadEditFrame.cpp:1275
 msgid "Reload the file"
 msgstr "重新载入文件"
 
-#: ../src/MadEditFrame.cpp:1247 ../src/MadEditFrame.cpp:1883
+#: ../src/MadEditFrame.cpp:1277 ../src/MadEditFrame.cpp:1923
 msgid "&Close File"
 msgstr "关闭文件(&C)"
 
-#: ../src/MadEditFrame.cpp:1247
+#: ../src/MadEditFrame.cpp:1277
 msgid "Close the file"
 msgstr "关闭文件"
 
-#: ../src/MadEditFrame.cpp:1248 ../src/MadEditFrame.cpp:1884
+#: ../src/MadEditFrame.cpp:1278 ../src/MadEditFrame.cpp:1924
 msgid "C&lose All"
 msgstr "关闭所有文件(&L)"
 
-#: ../src/MadEditFrame.cpp:1248
+#: ../src/MadEditFrame.cpp:1278
 msgid "Close all files"
 msgstr "关闭所有文件"
 
-#: ../src/MadEditFrame.cpp:1249
+#: ../src/MadEditFrame.cpp:1279
 msgid "Close All But This"
 msgstr "关闭除当前文件外的所有文件"
 
-#: ../src/MadEditFrame.cpp:1249
+#: ../src/MadEditFrame.cpp:1279
 msgid "Close all files but this"
 msgstr "关闭除当前文件外的所有文件"
 
-#: ../src/MadEditFrame.cpp:1251
+#: ../src/MadEditFrame.cpp:1281
 msgid "Page Set&up..."
 msgstr "页面设置(&U)..."
 
-#: ../src/MadEditFrame.cpp:1251
+#: ../src/MadEditFrame.cpp:1281
 msgid "Setup the pages for printing"
 msgstr "设置打印时的页面格式"
 
-#: ../src/MadEditFrame.cpp:1252 ../src/MadEditFrame.cpp:1886
+#: ../src/MadEditFrame.cpp:1282 ../src/MadEditFrame.cpp:1926
 msgid "Print Previe&w..."
 msgstr "预览打印(&W)..."
 
-#: ../src/MadEditFrame.cpp:1252
+#: ../src/MadEditFrame.cpp:1282
 msgid "Preview the result of printing"
 msgstr "预先浏览打印的结果"
 
-#: ../src/MadEditFrame.cpp:1253 ../src/MadEditFrame.cpp:1887
+#: ../src/MadEditFrame.cpp:1283 ../src/MadEditFrame.cpp:1927
 msgid "&Print..."
 msgstr "打印(&P)..."
 
-#: ../src/MadEditFrame.cpp:1253
+#: ../src/MadEditFrame.cpp:1283
 msgid "Print the file"
 msgstr "打印文件"
 
-#: ../src/MadEditFrame.cpp:1255 ../src/MadPurgeHistoryDialog.cpp:65
+#: ../src/MadEditFrame.cpp:1285 ../src/MadPurgeHistoryDialog.cpp:65
 msgid "Recent Files"
 msgstr "最近开启的文件"
 
-#: ../src/MadEditFrame.cpp:1257
+#: ../src/MadEditFrame.cpp:1287
 msgid "E&xit"
 msgstr "退出(&X)"
 
-#: ../src/MadEditFrame.cpp:1257
+#: ../src/MadEditFrame.cpp:1287
 msgid "Quit MadEdit"
 msgstr "离开 MadEdit"
 
-#: ../src/MadEditFrame.cpp:1260
+#: ../src/MadEditFrame.cpp:1290
 msgid "&Edit"
 msgstr "编辑(&E)"
 
-#: ../src/MadEditFrame.cpp:1261 ../src/MadEditFrame.cpp:1895
+#: ../src/MadEditFrame.cpp:1291 ../src/MadEditFrame.cpp:1935
 msgid "&Undo"
 msgstr "&撤消"
 
-#: ../src/MadEditFrame.cpp:1261
+#: ../src/MadEditFrame.cpp:1291
 msgid "Undo the last action"
 msgstr "撤销上一个动作"
 
-#: ../src/MadEditFrame.cpp:1263 ../src/MadEditFrame.cpp:1896
+#: ../src/MadEditFrame.cpp:1293 ../src/MadEditFrame.cpp:1936
 msgid "&Redo"
 msgstr "重做(&R)"
 
-#: ../src/MadEditFrame.cpp:1269
+#: ../src/MadEditFrame.cpp:1299
 msgid "Redo the previously undone action"
 msgstr "重做之前撤销的动作"
 
-#: ../src/MadEditFrame.cpp:1272 ../src/MadEditFrame.cpp:1897
+#: ../src/MadEditFrame.cpp:1302 ../src/MadEditFrame.cpp:1937
 msgid "Cu&t"
 msgstr "剪切(&T)"
 
-#: ../src/MadEditFrame.cpp:1272
+#: ../src/MadEditFrame.cpp:1302
 msgid "Cut the selection and put it on the Clipboard"
 msgstr "剪切选取的数据并贴到剪贴簿中"
 
-#: ../src/MadEditFrame.cpp:1273 ../src/MadEditFrame.cpp:1898
+#: ../src/MadEditFrame.cpp:1303 ../src/MadEditFrame.cpp:1938
 msgid "&Copy"
 msgstr "复制(&C)"
 
-#: ../src/MadEditFrame.cpp:1273
+#: ../src/MadEditFrame.cpp:1303
 msgid "Copy the selection and put it on the Clipboard"
 msgstr "复制选取的数据到剪贴簿中"
 
-#: ../src/MadEditFrame.cpp:1274 ../src/MadEditFrame.cpp:1899
+#: ../src/MadEditFrame.cpp:1304 ../src/MadEditFrame.cpp:1939
 msgid "&Paste"
 msgstr "粘贴(&P)"
 
-#: ../src/MadEditFrame.cpp:1274
+#: ../src/MadEditFrame.cpp:1304
 msgid "Insert data from the Clipboard"
 msgstr "将剪贴簿中的数据插入到文件中"
 
-#: ../src/MadEditFrame.cpp:1275 ../src/MadEditFrame.cpp:1900
+#: ../src/MadEditFrame.cpp:1305 ../src/MadEditFrame.cpp:1940
 #: ../src/MadHighlightingDialog.cpp:242
 msgid "&Delete"
 msgstr "删除(&D)"
 
-#: ../src/MadEditFrame.cpp:1275
+#: ../src/MadEditFrame.cpp:1305
 msgid "Delete data"
 msgstr "删除数据"
 
-#: ../src/MadEditFrame.cpp:1277 ../src/MadEditFrame.cpp:1902
+#: ../src/MadEditFrame.cpp:1307 ../src/MadEditFrame.cpp:1942
 msgid "Cut L&ine"
 msgstr "剪切整行(&I)"
 
-#: ../src/MadEditFrame.cpp:1277
+#: ../src/MadEditFrame.cpp:1307
 msgid "Cut the selected lines and put it on the Clipboard"
 msgstr "剪切选取行并贴到剪贴簿中"
 
-#: ../src/MadEditFrame.cpp:1279 ../src/MadEditFrame.cpp:1903
+#: ../src/MadEditFrame.cpp:1309 ../src/MadEditFrame.cpp:1943
 msgid "Delete &Line"
 msgstr "删除整行(&L)"
 
-#: ../src/MadEditFrame.cpp:1285
+#: ../src/MadEditFrame.cpp:1315
 msgid "Delete the selected lines"
 msgstr "删除选取行"
 
-#: ../src/MadEditFrame.cpp:1288 ../src/MadEditFrame.cpp:1905
+#: ../src/MadEditFrame.cpp:1318 ../src/MadEditFrame.cpp:1945
 msgid "Select &All"
 msgstr "选取全部(&A)"
 
-#: ../src/MadEditFrame.cpp:1288
+#: ../src/MadEditFrame.cpp:1318
 msgid "Select all data"
 msgstr "选取全部的资料"
 
-#: ../src/MadEditFrame.cpp:1291 ../src/MadEditFrame.cpp:1907
+#: ../src/MadEditFrame.cpp:1321 ../src/MadEditFrame.cpp:1947
 msgid "Insert Ta&b Char"
 msgstr "插入定位(Ta&b)字符"
 
-#: ../src/MadEditFrame.cpp:1297
+#: ../src/MadEditFrame.cpp:1327
 msgid "Insert a Tab char at current position"
 msgstr "插入定位(Tab)字符到现在的位置"
 
-#: ../src/MadEditFrame.cpp:1299 ../src/MadEditFrame.cpp:1908
+#: ../src/MadEditFrame.cpp:1329 ../src/MadEditFrame.cpp:1948
 msgid "Insert Dat&e and Time"
 msgstr "插入日期与时间(&E)"
 
-#: ../src/MadEditFrame.cpp:1299
+#: ../src/MadEditFrame.cpp:1329
 msgid "Insert date and time at current position"
 msgstr "插入日期与时间到现在的位置"
 
-#: ../src/MadEditFrame.cpp:1303
+#: ../src/MadEditFrame.cpp:1333
 msgid "Toggle/Remove Bookmark "
 msgstr "放置/删除书签"
 
-#: ../src/MadEditFrame.cpp:1303
+#: ../src/MadEditFrame.cpp:1333
 msgid "Toggle Bookmark at current line"
 msgstr "在当前行放置书签"
 
-#: ../src/MadEditFrame.cpp:1304
+#: ../src/MadEditFrame.cpp:1334
 msgid "Go To Next Bookmark"
 msgstr "到下一个书签"
 
-#: ../src/MadEditFrame.cpp:1304
+#: ../src/MadEditFrame.cpp:1334
 msgid "Go to the next bookmark"
 msgstr "到下一个书签"
 
-#: ../src/MadEditFrame.cpp:1305
+#: ../src/MadEditFrame.cpp:1335
 msgid "Go To Previous Bookmark"
 msgstr "到上一个书签"
 
-#: ../src/MadEditFrame.cpp:1305
+#: ../src/MadEditFrame.cpp:1335
 msgid "Go to the previous bookmark"
 msgstr "到上一个书签"
 
-#: ../src/MadEditFrame.cpp:1308 ../src/MadEditFrame.cpp:1937
+#: ../src/MadEditFrame.cpp:1338 ../src/MadEditFrame.cpp:1977
 msgid "Ad&vanced"
 msgstr "高级(&V)"
 
-#: ../src/MadEditFrame.cpp:1309 ../src/MadEditFrame.cpp:1912
+#: ../src/MadEditFrame.cpp:1339 ../src/MadEditFrame.cpp:1952
 msgid "Copy As &Hex String"
 msgstr "复制为十六进制字符串(&H)"
 
-#: ../src/MadEditFrame.cpp:1309
+#: ../src/MadEditFrame.cpp:1339
 msgid "Copy the selection as hex-string"
 msgstr "将选取数据复制为十六进制字符串"
 
-#: ../src/MadEditFrame.cpp:1310 ../src/MadEditFrame.cpp:1913
+#: ../src/MadEditFrame.cpp:1340 ../src/MadEditFrame.cpp:1953
 msgid "Copy As He&x String with Space"
 msgstr "复制为十六进制字符串(含空格符)(&X)"
 
-#: ../src/MadEditFrame.cpp:1310
+#: ../src/MadEditFrame.cpp:1340
 msgid "Copy the selection as hex-string with space"
 msgstr "将选取数据复制为含空格符的十六进制字符串"
 
-#: ../src/MadEditFrame.cpp:1312 ../src/MadEditFrame.cpp:1915
+#: ../src/MadEditFrame.cpp:1342 ../src/MadEditFrame.cpp:1955
 msgid "&Increase Indent"
 msgstr "增加缩进(&I)"
 
-#: ../src/MadEditFrame.cpp:1312
+#: ../src/MadEditFrame.cpp:1342
 msgid "Increase the indent of seleted lines"
 msgstr "增加选取行的缩进"
 
-#: ../src/MadEditFrame.cpp:1313 ../src/MadEditFrame.cpp:1916
+#: ../src/MadEditFrame.cpp:1343 ../src/MadEditFrame.cpp:1956
 msgid "&Decrease Indent"
 msgstr "减少缩进(&D)"
 
-#: ../src/MadEditFrame.cpp:1313
+#: ../src/MadEditFrame.cpp:1343
 msgid "Decrease the indent of seleted lines"
 msgstr "减少选取行的缩进"
 
-#: ../src/MadEditFrame.cpp:1315 ../src/MadEditFrame.cpp:1918
+#: ../src/MadEditFrame.cpp:1345 ../src/MadEditFrame.cpp:1958
 msgid "&Comment"
 msgstr "注释(&C)"
 
-#: ../src/MadEditFrame.cpp:1315
+#: ../src/MadEditFrame.cpp:1345
 msgid "Comment out the selected lines"
 msgstr "注释所选取的行"
 
-#: ../src/MadEditFrame.cpp:1316 ../src/MadEditFrame.cpp:1919
+#: ../src/MadEditFrame.cpp:1346 ../src/MadEditFrame.cpp:1959
 msgid "&Uncomment"
 msgstr "取消注释(&U)"
 
-#: ../src/MadEditFrame.cpp:1316
+#: ../src/MadEditFrame.cpp:1346
 msgid "Uncomment the selected lines"
 msgstr "将选取行的注释取消"
 
-#: ../src/MadEditFrame.cpp:1318 ../src/MadEditFrame.cpp:1921
+#: ../src/MadEditFrame.cpp:1348 ../src/MadEditFrame.cpp:1961
 msgid "WordWraps To NewLine Chars"
 msgstr "自动折行转成换行字符"
 
-#: ../src/MadEditFrame.cpp:1318
+#: ../src/MadEditFrame.cpp:1348
 msgid "Convert WordWraps to NewLine chars in the file or selection"
 msgstr "将文件或所选取文字中的自动折行转成换行字符"
 
-#: ../src/MadEditFrame.cpp:1319 ../src/MadEditFrame.cpp:1922
+#: ../src/MadEditFrame.cpp:1349 ../src/MadEditFrame.cpp:1962
 msgid "NewLine Chars To WordWraps"
 msgstr "换行字符转成自动折行"
 
-#: ../src/MadEditFrame.cpp:1319
+#: ../src/MadEditFrame.cpp:1349
 msgid "Convert NewLine chars to WordWraps in the selection"
 msgstr "将所选取文字中的换行字符转成自动折行"
 
-#: ../src/MadEditFrame.cpp:1321 ../src/MadEditFrame.cpp:1924
+#: ../src/MadEditFrame.cpp:1351 ../src/MadEditFrame.cpp:1964
 msgid "To U&pperCase"
 msgstr "转成大写(&U)"
 
-#: ../src/MadEditFrame.cpp:1321
+#: ../src/MadEditFrame.cpp:1351
 msgid "Convert the selection to uppercase"
 msgstr "将选取的文字转为大写"
 
-#: ../src/MadEditFrame.cpp:1322 ../src/MadEditFrame.cpp:1925
+#: ../src/MadEditFrame.cpp:1352 ../src/MadEditFrame.cpp:1965
 msgid "To L&owerCase"
 msgstr "转成小写(&O)"
 
-#: ../src/MadEditFrame.cpp:1322
+#: ../src/MadEditFrame.cpp:1352
 msgid "Convert the selection to lowercase"
 msgstr "将选取的文字转为小写"
 
-#: ../src/MadEditFrame.cpp:1323 ../src/MadEditFrame.cpp:1926
+#: ../src/MadEditFrame.cpp:1353 ../src/MadEditFrame.cpp:1966
 msgid "Inver&t Case"
 msgstr "大小写互换(&T)"
 
-#: ../src/MadEditFrame.cpp:1323
+#: ../src/MadEditFrame.cpp:1353
 msgid "Invert the case of the selection"
 msgstr "将选取文字的大小写互换"
 
-#: ../src/MadEditFrame.cpp:1325 ../src/MadEditFrame.cpp:1928
+#: ../src/MadEditFrame.cpp:1355 ../src/MadEditFrame.cpp:1968
 msgid "To H&alfwidth"
 msgstr "转成半角字"
 
-#: ../src/MadEditFrame.cpp:1325
+#: ../src/MadEditFrame.cpp:1355
 msgid "Convert the selection to halfwidth"
 msgstr "将选取的文字转为半角字"
 
-#: ../src/MadEditFrame.cpp:1326 ../src/MadEditFrame.cpp:1929
-#: ../src/MadEditFrame.cpp:4153 ../src/MadEditFrame.cpp:4157
+#: ../src/MadEditFrame.cpp:1356 ../src/MadEditFrame.cpp:1969
+#: ../src/MadEditFrame.cpp:4327 ../src/MadEditFrame.cpp:4331
 msgid "To Halfwidth by Options..."
 msgstr "转成半角字(使用选项)..."
 
-#: ../src/MadEditFrame.cpp:1326
+#: ../src/MadEditFrame.cpp:1356
 msgid "Convert the selection to halfwidth by options"
 msgstr "将选取的文字转为半角字(使用选项)"
 
-#: ../src/MadEditFrame.cpp:1327 ../src/MadEditFrame.cpp:1930
+#: ../src/MadEditFrame.cpp:1357 ../src/MadEditFrame.cpp:1970
 msgid "To &Fullwidth"
 msgstr "转成全角字"
 
-#: ../src/MadEditFrame.cpp:1327
+#: ../src/MadEditFrame.cpp:1357
 msgid "Convert the selection to fullwidth"
 msgstr "将选取的文字转为全角字"
 
-#: ../src/MadEditFrame.cpp:1328 ../src/MadEditFrame.cpp:1931
-#: ../src/MadEditFrame.cpp:4201 ../src/MadEditFrame.cpp:4205
+#: ../src/MadEditFrame.cpp:1358 ../src/MadEditFrame.cpp:1971
+#: ../src/MadEditFrame.cpp:4381 ../src/MadEditFrame.cpp:4385
 msgid "To Fullwidth by Options..."
 msgstr "转成全角字（使用选项）..."
 
-#: ../src/MadEditFrame.cpp:1328
+#: ../src/MadEditFrame.cpp:1358
 msgid "Convert the selection to fullwidth by options"
 msgstr "将选取的文字转为全角字(使用选项)"
 
-#: ../src/MadEditFrame.cpp:1330 ../src/MadEditFrame.cpp:1933
+#: ../src/MadEditFrame.cpp:1360 ../src/MadEditFrame.cpp:1973
 msgid "Tab Chars To Space Chars"
 msgstr "定位(Tab)字符转为空格符"
 
-#: ../src/MadEditFrame.cpp:1330
+#: ../src/MadEditFrame.cpp:1360
 msgid "Convert Tab chars to Space chars in the selection"
 msgstr "将选取文字中的定位(Tab)字符转为空格符"
 
-#: ../src/MadEditFrame.cpp:1331 ../src/MadEditFrame.cpp:1934
+#: ../src/MadEditFrame.cpp:1361 ../src/MadEditFrame.cpp:1974
 msgid "Space Chars To Tab Chars"
 msgstr "空格符转为定位(Tab)字符"
 
-#: ../src/MadEditFrame.cpp:1331
+#: ../src/MadEditFrame.cpp:1361
 msgid "Convert Space chars to Tab chars in the selection"
 msgstr "将选取文字中的空格符转为定位(Tab)字符"
 
-#: ../src/MadEditFrame.cpp:1333 ../src/MadEditFrame.cpp:1936
+#: ../src/MadEditFrame.cpp:1363 ../src/MadEditFrame.cpp:1976
 msgid "Tri&m Trailing Spaces"
 msgstr "删除行尾空格(&M)"
 
-#: ../src/MadEditFrame.cpp:1333
+#: ../src/MadEditFrame.cpp:1363
 msgid "Trim trailing spaces at the end of lines"
 msgstr "删除每行最后的空格"
 
-#: ../src/MadEditFrame.cpp:1335 ../src/MadEditFrame.cpp:1947
+#: ../src/MadEditFrame.cpp:1365 ../src/MadEditFrame.cpp:1987
 #: ../src/MadSortDialog.cpp:89
 msgid "&Sort"
 msgstr "排序(&S)"
 
-#: ../src/MadEditFrame.cpp:1336 ../src/MadEditFrame.cpp:1939
+#: ../src/MadEditFrame.cpp:1366 ../src/MadEditFrame.cpp:1979
 msgid "Sort Lines (&Ascending)"
 msgstr "排序文字行（升序）(&A)"
 
-#: ../src/MadEditFrame.cpp:1336
+#: ../src/MadEditFrame.cpp:1366
 msgid "Sort the selected or all lines in ascending order"
 msgstr "将选取的或全部文字行按升序方式排序"
 
-#: ../src/MadEditFrame.cpp:1337 ../src/MadEditFrame.cpp:1940
+#: ../src/MadEditFrame.cpp:1367 ../src/MadEditFrame.cpp:1980
 msgid "Sort Lines (&Descending)"
 msgstr "排序文字行（降序）(&D)"
 
-#: ../src/MadEditFrame.cpp:1337
+#: ../src/MadEditFrame.cpp:1367
 msgid "Sort the selected or all lines in descending order"
 msgstr "将选取的或全部文字行按降序方式排序"
 
-#: ../src/MadEditFrame.cpp:1339 ../src/MadEditFrame.cpp:1942
+#: ../src/MadEditFrame.cpp:1369 ../src/MadEditFrame.cpp:1982
 msgid "Sort Lines (A&scending, CaseSensitive)"
 msgstr "排序文字行（升序，区分大小写）(&S)"
 
-#: ../src/MadEditFrame.cpp:1339
+#: ../src/MadEditFrame.cpp:1369
 msgid "Sort lines in ascending order and with case-sensitive"
 msgstr "将文字行按升序及区分大小写方式排序"
 
-#: ../src/MadEditFrame.cpp:1340 ../src/MadEditFrame.cpp:1943
+#: ../src/MadEditFrame.cpp:1370 ../src/MadEditFrame.cpp:1983
 msgid "Sort Lines (D&escending, CaseSensitive)"
 msgstr "排序文字行（降序，区分大小写）(&E)"
 
-#: ../src/MadEditFrame.cpp:1340
+#: ../src/MadEditFrame.cpp:1370
 msgid "Sort lines in descending order and with case-sensitive"
 msgstr "将文字行按降序及区分大小写方式排序"
 
-#: ../src/MadEditFrame.cpp:1342 ../src/MadEditFrame.cpp:1945
+#: ../src/MadEditFrame.cpp:1372 ../src/MadEditFrame.cpp:1985
 msgid "Sort Lines by &Current Options"
 msgstr "使用设置的选项来排序(&C)"
 
-#: ../src/MadEditFrame.cpp:1342
+#: ../src/MadEditFrame.cpp:1372
 msgid "Sort the selected or all lines by using current options"
 msgstr "使用设置的选项来排序文字行"
 
-#: ../src/MadEditFrame.cpp:1343 ../src/MadEditFrame.cpp:1946
+#: ../src/MadEditFrame.cpp:1373 ../src/MadEditFrame.cpp:1986
 msgid "Sort &Options..."
 msgstr "排序选项(&O)..."
 
-#: ../src/MadEditFrame.cpp:1343
+#: ../src/MadEditFrame.cpp:1373
 msgid "Set the sort options"
 msgstr "设置排序选项"
 
-#: ../src/MadEditFrame.cpp:1346
+#: ../src/MadEditFrame.cpp:1376
 msgid "&Search"
 msgstr "查找(&S)"
 
-#: ../src/MadEditFrame.cpp:1347
+#: ../src/MadEditFrame.cpp:1377
 msgid "&Find..."
 msgstr "查找(&F)..."
 
-#: ../src/MadEditFrame.cpp:1347
+#: ../src/MadEditFrame.cpp:1377
 msgid "Find a string"
 msgstr "查找字符串"
 
-#: ../src/MadEditFrame.cpp:1348 ../src/MadSearchDialog.cpp:138
+#: ../src/MadEditFrame.cpp:1378 ../src/MadSearchDialog.cpp:138
 #: ../src/MadReplaceDialog.cpp:128
 msgid "Find &Next"
 msgstr "查找下一个(&N)"
 
-#: ../src/MadEditFrame.cpp:1348
+#: ../src/MadEditFrame.cpp:1378
 msgid "Find next occurrence"
 msgstr "到字符串下一个出现的地方"
 
-#: ../src/MadEditFrame.cpp:1349 ../src/MadSearchDialog.cpp:142
+#: ../src/MadEditFrame.cpp:1379 ../src/MadSearchDialog.cpp:142
 msgid "Find &Previous"
 msgstr "查找上一个(&P)"
 
-#: ../src/MadEditFrame.cpp:1349
+#: ../src/MadEditFrame.cpp:1379
 msgid "Find previous occurrence"
 msgstr "到字符串上一个出现的地方"
 
-#: ../src/MadEditFrame.cpp:1351
+#: ../src/MadEditFrame.cpp:1381
 msgid "&Replace..."
 msgstr "替换(&R)..."
 
-#: ../src/MadEditFrame.cpp:1351
+#: ../src/MadEditFrame.cpp:1381
 msgid "Replace a string"
 msgstr "替换字符串"
 
-#: ../src/MadEditFrame.cpp:1353
+#: ../src/MadEditFrame.cpp:1383
 msgid "Fin&d/Replace in Files..."
 msgstr "多文件查找/替换(&D)..."
 
-#: ../src/MadEditFrame.cpp:1353
+#: ../src/MadEditFrame.cpp:1383
 msgid "Find or replace a string in files"
 msgstr "在多个文件中查找或替换数据"
 
-#: ../src/MadEditFrame.cpp:1354
+#: ../src/MadEditFrame.cpp:1384
 msgid "&Show/Hide the Results of Find/Replace in Files"
 msgstr "显示或隐藏多个文件查找/替换的结果(&S)"
 
-#: ../src/MadEditFrame.cpp:1354
+#: ../src/MadEditFrame.cpp:1384
 msgid "Show or hide the results of find or replace a string in files"
 msgstr "显示或隐藏多个文件查找/替换的结果"
 
-#: ../src/MadEditFrame.cpp:1356
+#: ../src/MadEditFrame.cpp:1386
 msgid "&Go To Line..."
 msgstr "跳到某行(&G)..."
 
-#: ../src/MadEditFrame.cpp:1356
+#: ../src/MadEditFrame.cpp:1386
 msgid "Go to the specified line"
 msgstr "跳到指定的行"
 
-#: ../src/MadEditFrame.cpp:1357
+#: ../src/MadEditFrame.cpp:1387
 msgid "G&o To Position..."
 msgstr "跳到文件位置(&O)..."
 
-#: ../src/MadEditFrame.cpp:1357
+#: ../src/MadEditFrame.cpp:1387
 msgid "Go to the specified position"
 msgstr "跳到指定的位置"
 
-#: ../src/MadEditFrame.cpp:1359
+#: ../src/MadEditFrame.cpp:1389
 msgid "Go To L&eft Brace"
 msgstr "跳到左括号(&E)"
 
-#: ../src/MadEditFrame.cpp:1359
+#: ../src/MadEditFrame.cpp:1389
 msgid "Go to left brace"
 msgstr "跳到左括号"
 
-#: ../src/MadEditFrame.cpp:1360
+#: ../src/MadEditFrame.cpp:1390
 msgid "Go To R&ight Brace"
 msgstr "跳到右括号(&I)"
 
-#: ../src/MadEditFrame.cpp:1360
+#: ../src/MadEditFrame.cpp:1390
 msgid "Go to right brace"
 msgstr "跳到右括号"
 
-#: ../src/MadEditFrame.cpp:1363
+#: ../src/MadEditFrame.cpp:1393
 msgid "&View"
 msgstr "查看(&V)"
 
-#: ../src/MadEditFrame.cpp:1364 ../src/MadEditFrame.cpp:3219
-#: ../src/MadEditFrame.cpp:3226
+#: ../src/MadEditFrame.cpp:1394 ../src/MadEditFrame.cpp:3264
+#: ../src/MadEditFrame.cpp:3271
 msgid "Encoding: "
 msgstr "编码："
 
-#: ../src/MadEditFrame.cpp:1365
+#: ../src/MadEditFrame.cpp:1395
 msgid "All Encodings"
 msgstr "所有的编码"
 
-#: ../src/MadEditFrame.cpp:1367 ../src/MadEditFrame.cpp:3235
-#: ../src/MadEditFrame.cpp:3240
+#: ../src/MadEditFrame.cpp:1397 ../src/MadEditFrame.cpp:3280
+#: ../src/MadEditFrame.cpp:3285
 msgid "Syntax Type: "
 msgstr "语法类型："
 
-#: ../src/MadEditFrame.cpp:1369 ../src/MadEditFrame.cpp:3252
-#: ../src/MadEditFrame.cpp:3257
+#: ../src/MadEditFrame.cpp:1399 ../src/MadEditFrame.cpp:3297
+#: ../src/MadEditFrame.cpp:3302
 msgid "Font Name: "
 msgstr "字型名称："
 
-#: ../src/MadEditFrame.cpp:1370
+#: ../src/MadEditFrame.cpp:1400
 msgid "[@]"
 msgstr "[@]"
 
-#: ../src/MadEditFrame.cpp:1371
+#: ../src/MadEditFrame.cpp:1401
 msgid "[ABCDE]"
 msgstr "[ABCDE]"
 
-#: ../src/MadEditFrame.cpp:1372
+#: ../src/MadEditFrame.cpp:1402
 msgid "[FGHIJ]"
 msgstr "[FGHIJ]"
 
-#: ../src/MadEditFrame.cpp:1373
+#: ../src/MadEditFrame.cpp:1403
 msgid "[KLMNO]"
 msgstr "[KLMNO]"
 
-#: ../src/MadEditFrame.cpp:1374
+#: ../src/MadEditFrame.cpp:1404
 msgid "[PQRST]"
 msgstr "[PQRST]"
 
-#: ../src/MadEditFrame.cpp:1375
+#: ../src/MadEditFrame.cpp:1405
 msgid "[UVWXYZ]"
 msgstr "[UVWXYZ]"
 
-#: ../src/MadEditFrame.cpp:1376
+#: ../src/MadEditFrame.cpp:1406
 msgid "[other]"
 msgstr "[其它]"
 
-#: ../src/MadEditFrame.cpp:1378 ../src/MadEditFrame.cpp:3268
-#: ../src/MadEditFrame.cpp:3273
+#: ../src/MadEditFrame.cpp:1408 ../src/MadEditFrame.cpp:3313
+#: ../src/MadEditFrame.cpp:3318
 msgid "Font Size: "
 msgstr "字号："
 
-#: ../src/MadEditFrame.cpp:1379
+#: ../src/MadEditFrame.cpp:1409
 msgid "Set font point-size"
 msgstr "设置字号"
 
-#: ../src/MadEditFrame.cpp:1452
+#: ../src/MadEditFrame.cpp:1482
 msgid "Set Font..."
 msgstr "设置字体..."
 
-#: ../src/MadEditFrame.cpp:1452
+#: ../src/MadEditFrame.cpp:1482
 msgid "Change font settings"
 msgstr "改变字体设置"
 
-#: ../src/MadEditFrame.cpp:1453
+#: ../src/MadEditFrame.cpp:1483
 msgid "&Fixed Width Mode"
 msgstr "固定宽度模式(&F)"
 
-#: ../src/MadEditFrame.cpp:1453
+#: ../src/MadEditFrame.cpp:1483
 msgid "Set/Unset the font with Fixed Width"
 msgstr "设置或取消字型为固定的宽度"
 
-#: ../src/MadEditFrame.cpp:1456 ../src/MadEditFrame.cpp:3292
-#: ../src/MadEditFrame.cpp:3297
+#: ../src/MadEditFrame.cpp:1486 ../src/MadEditFrame.cpp:3337
+#: ../src/MadEditFrame.cpp:3342
 msgid "Tab Column: "
 msgstr "定位(Tab)字符的长度："
 
-#: ../src/MadEditFrame.cpp:1457
+#: ../src/MadEditFrame.cpp:1487
 msgid "Set column of Tab char"
 msgstr "设置定位(Tab)字符的长度"
 
-#: ../src/MadEditFrame.cpp:1475 ../src/MadEditFrame.cpp:3306
-#: ../src/MadEditFrame.cpp:3311
+#: ../src/MadEditFrame.cpp:1505 ../src/MadEditFrame.cpp:3351
+#: ../src/MadEditFrame.cpp:3356
 msgid "Line Spacing: "
 msgstr "行间距："
 
-#: ../src/MadEditFrame.cpp:1476
+#: ../src/MadEditFrame.cpp:1506
 msgid "Set line spacing"
 msgstr "设置行间距"
 
-#: ../src/MadEditFrame.cpp:1509
+#: ../src/MadEditFrame.cpp:1539
 msgid "&No Wrap"
 msgstr "不使用折行(&N)"
 
-#: ../src/MadEditFrame.cpp:1509
+#: ../src/MadEditFrame.cpp:1539
 msgid "Do not wrap lines"
 msgstr "取消折行"
 
-#: ../src/MadEditFrame.cpp:1510
+#: ../src/MadEditFrame.cpp:1540
 msgid "Wrap By &Window"
 msgstr "按窗口宽度折行(&W)"
 
-#: ../src/MadEditFrame.cpp:1510
+#: ../src/MadEditFrame.cpp:1540
 msgid "Wrap the lines by the window width"
 msgstr "按窗口的宽度来折行"
 
-#: ../src/MadEditFrame.cpp:1511
+#: ../src/MadEditFrame.cpp:1541
 msgid "Wrap By Column"
 msgstr "按最大长度折行"
 
-#: ../src/MadEditFrame.cpp:1511
+#: ../src/MadEditFrame.cpp:1541
 msgid "Wrap the lines by the specified Max Columns"
 msgstr "按设置的最大长度来折行"
 
-#: ../src/MadEditFrame.cpp:1513
+#: ../src/MadEditFrame.cpp:1543
 msgid "&Display Line Number"
 msgstr "显示行号(&D)"
 
-#: ../src/MadEditFrame.cpp:1513
+#: ../src/MadEditFrame.cpp:1543
 msgid "Display the Line Numbers"
 msgstr "显示行号"
 
-#: ../src/MadEditFrame.cpp:1514
+#: ../src/MadEditFrame.cpp:1544
 msgid "Show End Of Line"
 msgstr "显示每行结尾符号"
 
-#: ../src/MadEditFrame.cpp:1514
+#: ../src/MadEditFrame.cpp:1544
 msgid "Show the sign of EndOfLine"
 msgstr "显示每行结尾符号"
 
-#: ../src/MadEditFrame.cpp:1515
+#: ../src/MadEditFrame.cpp:1545
 msgid "Show Tab Char"
 msgstr "显示定位(Tab)字符"
 
-#: ../src/MadEditFrame.cpp:1515
+#: ../src/MadEditFrame.cpp:1545
 msgid "Show the sign of Tab char"
 msgstr "显示定位(Tab)字符"
 
-#: ../src/MadEditFrame.cpp:1516
+#: ../src/MadEditFrame.cpp:1546
 msgid "Show Space Char"
 msgstr "显示空格符"
 
-#: ../src/MadEditFrame.cpp:1516
+#: ../src/MadEditFrame.cpp:1546
 msgid "Show the sign of Space char"
 msgstr "显示空格符"
 
-#: ../src/MadEditFrame.cpp:1517
+#: ../src/MadEditFrame.cpp:1547
 msgid "Mark Active Line"
 msgstr "标示所在行"
 
-#: ../src/MadEditFrame.cpp:1517
+#: ../src/MadEditFrame.cpp:1547
 msgid "Mark the current line"
 msgstr "标示所在行"
 
-#: ../src/MadEditFrame.cpp:1518
+#: ../src/MadEditFrame.cpp:1548
 msgid "Mark Brace Pair"
 msgstr "标示括号"
 
-#: ../src/MadEditFrame.cpp:1518
+#: ../src/MadEditFrame.cpp:1548
 msgid "Mark the BracePair under the caret"
 msgstr "标示光标所在处的括号"
 
-#: ../src/MadEditFrame.cpp:1520
+#: ../src/MadEditFrame.cpp:1550
 msgid "&Text Mode"
 msgstr "普通文字模式(&T)"
 
-#: ../src/MadEditFrame.cpp:1520
+#: ../src/MadEditFrame.cpp:1550
 msgid "Change the editing mode to Text-Mode"
 msgstr "改变编辑模式为一般文字模式"
 
-#: ../src/MadEditFrame.cpp:1521
+#: ../src/MadEditFrame.cpp:1551
 msgid "&Column Mode"
 msgstr "列块模式(&C)"
 
-#: ../src/MadEditFrame.cpp:1521
+#: ../src/MadEditFrame.cpp:1551
 msgid "Change the editing mode to Column-Mode"
 msgstr "改变编辑模式为列块模式"
 
-#: ../src/MadEditFrame.cpp:1522
+#: ../src/MadEditFrame.cpp:1552
 msgid "&Hex Mode"
 msgstr "十六进制模式(&H)"
 
-#: ../src/MadEditFrame.cpp:1522
+#: ../src/MadEditFrame.cpp:1552
 msgid "Change the editing mode to Hex-Mode"
 msgstr "改变编辑模式为十六进制模式"
 
-#: ../src/MadEditFrame.cpp:1525
+#: ../src/MadEditFrame.cpp:1555
 msgid "&Tools"
 msgstr "工具(&T)"
 
-#: ../src/MadEditFrame.cpp:1526
+#: ../src/MadEditFrame.cpp:1556
 msgid "&Options..."
 msgstr "选项(&O)..."
 
-#: ../src/MadEditFrame.cpp:1526
+#: ../src/MadEditFrame.cpp:1556
 msgid "Change the configuration"
 msgstr "改变设置"
 
-#: ../src/MadEditFrame.cpp:1527
+#: ../src/MadEditFrame.cpp:1557
 msgid "&Syntax Highlighting Settings..."
 msgstr "语法高亮设置(&S)..."
 
-#: ../src/MadEditFrame.cpp:1527
+#: ../src/MadEditFrame.cpp:1557
 msgid "Change syntax highlighting settings"
 msgstr "改变语法高亮设置"
 
-#: ../src/MadEditFrame.cpp:1529
+#: ../src/MadEditFrame.cpp:1559
 msgid "&File Type Associations..."
 msgstr "文件关联(&F)..."
 
-#: ../src/MadEditFrame.cpp:1529 ../src/MadEditFrame.cpp:1531
+#: ../src/MadEditFrame.cpp:1559
 msgid "Change file type associations"
 msgstr "改变文件关联设置"
 
-#: ../src/MadEditFrame.cpp:1531
+#: ../src/MadEditFrame.cpp:1561
 msgid "&Purge Histories..."
 msgstr "清除历史记录(&P)"
 
-#: ../src/MadEditFrame.cpp:1532
+#: ../src/MadEditFrame.cpp:1561
+msgid "Clearing out your history"
+msgstr "清除历史信息"
+
+#: ../src/MadEditFrame.cpp:1562
 msgid "&Macros"
 msgstr "宏(&M)"
 
-#: ../src/MadEditFrame.cpp:1533
+#: ../src/MadEditFrame.cpp:1563
 msgid "Run TemporayMacro"
 msgstr "运行临时宏语句"
 
-#: ../src/MadEditFrame.cpp:1533
+#: ../src/MadEditFrame.cpp:1563
 msgid "Run temporary macro"
 msgstr "运行临时宏语句"
 
-#: ../src/MadEditFrame.cpp:1534
+#: ../src/MadEditFrame.cpp:1564
 msgid "Run MacroScript"
 msgstr "运行临时的宏脚本文件"
 
-#: ../src/MadEditFrame.cpp:1534
+#: ../src/MadEditFrame.cpp:1564
 msgid "Run saved macro script"
 msgstr "运行保存过的宏脚本"
 
-#: ../src/MadEditFrame.cpp:1536 ../src/MadEditFrame.cpp:3388
+#: ../src/MadEditFrame.cpp:1565 ../src/MadEditFrame.cpp:2246
+msgid "Start Recording"
+msgstr "开始录制宏"
+
+#: ../src/MadEditFrame.cpp:1566 ../src/MadEditFrame.cpp:2247
+msgid "Stop Recording"
+msgstr "停止录制宏"
+
+#: ../src/MadEditFrame.cpp:1567 ../src/MadEditFrame.cpp:2248
+msgid "Playback"
+msgstr "回放"
+
+#: ../src/MadEditFrame.cpp:1568 ../src/MadEditFrame.cpp:2249
+msgid "Save Currently Recorded Macro"
+msgstr "保存当前录制的宏"
+
+#: ../src/MadEditFrame.cpp:1570 ../src/MadEditFrame.cpp:3433
 msgid "Has Unicode BOM (Byte-Order Mark)"
 msgstr "有 Unicode BOM (Byte-Order Mark)"
 
-#: ../src/MadEditFrame.cpp:1537
+#: ../src/MadEditFrame.cpp:1571
 msgid "Add/Remove BOM"
 msgstr "插入/删除 BOM"
 
-#: ../src/MadEditFrame.cpp:1537
+#: ../src/MadEditFrame.cpp:1571
 msgid "Add/Remove Unicode BOM"
 msgstr "插入/删除 Unicode BOM"
 
-#: ../src/MadEditFrame.cpp:1539 ../src/MadEditFrame.cpp:3403
+#: ../src/MadEditFrame.cpp:1573 ../src/MadEditFrame.cpp:3448
 msgid "NewLine Char (File Format): "
 msgstr "换行字符(文件格式): "
 
-#: ../src/MadEditFrame.cpp:1540
+#: ../src/MadEditFrame.cpp:1574
 msgid "Convert To CRLF/0D0A (&DOS)"
 msgstr "转换到 CRLF/0D0A (&DOS)"
 
-#: ../src/MadEditFrame.cpp:1540
+#: ../src/MadEditFrame.cpp:1574
 msgid "Convert the file format to DOS format"
 msgstr "转换文件格式为 DOS 的格式"
 
-#: ../src/MadEditFrame.cpp:1541
+#: ../src/MadEditFrame.cpp:1575
 msgid "Convert To CR/0D (&MAC)"
 msgstr "转换到 CR/0D (&MAC)"
 
-#: ../src/MadEditFrame.cpp:1541
+#: ../src/MadEditFrame.cpp:1575
 msgid "Convert the file format to MAC format"
 msgstr "转换文件格式为 MAC 的格式"
 
-#: ../src/MadEditFrame.cpp:1542
+#: ../src/MadEditFrame.cpp:1576
 msgid "Convert To LF/0A (&UNIX)"
 msgstr "转换到 LF/0A (&UNIX)"
 
-#: ../src/MadEditFrame.cpp:1542
+#: ../src/MadEditFrame.cpp:1576
 msgid "Convert the file format to UNIX format"
 msgstr "转换文件格式为 UNIX 的格式"
 
-#: ../src/MadEditFrame.cpp:1543 ../src/MadEditFrame.cpp:3425
+#: ../src/MadEditFrame.cpp:1577 ../src/MadEditFrame.cpp:3470
 msgid "Press Enter to Insert NewLine Char: "
 msgstr "按Enter插入的换行字符: "
 
-#: ../src/MadEditFrame.cpp:1544
+#: ../src/MadEditFrame.cpp:1578
 msgid "Insert CRLF/0D0A (&DOS)"
 msgstr "插入 CRLF/0D0A (&DOS)"
 
-#: ../src/MadEditFrame.cpp:1544
+#: ../src/MadEditFrame.cpp:1578
 msgid "Insert CR&LF chars when pressing Enter key"
 msgstr "按 Enter 键时插入 CR&LF 字符"
 
-#: ../src/MadEditFrame.cpp:1545
+#: ../src/MadEditFrame.cpp:1579
 msgid "Insert CR/0D (&MAC)"
 msgstr "插入 CR/0D (&MAC)"
 
-#: ../src/MadEditFrame.cpp:1545
+#: ../src/MadEditFrame.cpp:1579
 msgid "Insert CR char when pressing Enter key"
 msgstr "按 Enter 键时插入 CR 字符"
 
-#: ../src/MadEditFrame.cpp:1546
+#: ../src/MadEditFrame.cpp:1580
 msgid "Insert LF/0A (&UNIX)"
 msgstr "插入 LF/0A (&UNIX)"
 
-#: ../src/MadEditFrame.cpp:1546
+#: ../src/MadEditFrame.cpp:1580
 msgid "Insert LF char when pressing Enter key"
 msgstr "按 Enter 键时插入 LF 字符"
 
-#: ../src/MadEditFrame.cpp:1548
+#: ../src/MadEditFrame.cpp:1582
 msgid "Convert File &Encoding..."
 msgstr "转换文件编码(&E)..."
 
-#: ../src/MadEditFrame.cpp:1548
+#: ../src/MadEditFrame.cpp:1582
 msgid "Convert to the specified encoding"
 msgstr "转换到指定的编码"
 
-#: ../src/MadEditFrame.cpp:1550
+#: ../src/MadEditFrame.cpp:1584
 msgid "Convert &Chinese Char"
 msgstr "转换中文字符(&C)"
 
-#: ../src/MadEditFrame.cpp:1551
+#: ../src/MadEditFrame.cpp:1585
 msgid "File: Simplified Chinese to &Traditional Chinese"
 msgstr "文件：简体中文 => 繁体中文(&T)"
 
-#: ../src/MadEditFrame.cpp:1551
+#: ../src/MadEditFrame.cpp:1585
 msgid ""
 "Convert simplified Chinese chars to traditional Chinese chars in the file"
 msgstr "把文件中的简体字转换成繁体字"
 
-#: ../src/MadEditFrame.cpp:1552
+#: ../src/MadEditFrame.cpp:1586
 msgid "File: Traditional Chinese to &Simplified Chinese"
 msgstr "文件：繁体中文 => 简体中文(&S)"
 
-#: ../src/MadEditFrame.cpp:1552
+#: ../src/MadEditFrame.cpp:1586
 msgid ""
 "Convert traditional Chinese chars to simplified Chinese chars in the file"
 msgstr "把文件中的繁体字转换成简体字"
 
-#: ../src/MadEditFrame.cpp:1553
+#: ../src/MadEditFrame.cpp:1587
 msgid "File: Japanese Kanji to Tr&aditional Chinese"
 msgstr "文件：日文汉字 => 繁体中文(&A)"
 
-#: ../src/MadEditFrame.cpp:1553
+#: ../src/MadEditFrame.cpp:1587
 msgid "Convert Japanese Kanji to traditional Chinese chars in the file"
 msgstr "把文件中的日文汉字转换成繁体字"
 
-#: ../src/MadEditFrame.cpp:1554
+#: ../src/MadEditFrame.cpp:1588
 msgid "File: Japanese Kanji to Si&mplified Chinese"
 msgstr "文件：日文汉字 => 简体中文(&M)"
 
-#: ../src/MadEditFrame.cpp:1554
+#: ../src/MadEditFrame.cpp:1588
 msgid "Convert Japanese Kanji to simplified Chinese chars in the file"
 msgstr "把文件中的日文汉字转换成简体字"
 
-#: ../src/MadEditFrame.cpp:1555
+#: ../src/MadEditFrame.cpp:1589
 msgid "File: Chinese to &Japanese Kanji"
 msgstr "文件：中文字 => 日文汉字(&J)"
 
-#: ../src/MadEditFrame.cpp:1555
+#: ../src/MadEditFrame.cpp:1589
 msgid "Convert Chinese chars to Japanese Kanji in the file"
 msgstr "把文件中的中文字转换成日文汉字"
 
-#: ../src/MadEditFrame.cpp:1557
+#: ../src/MadEditFrame.cpp:1591
 msgid "Clipboard: Simplified Chinese to T&raditional Chinese"
 msgstr "剪贴板：简体中文 => 繁体中文(&R)"
 
-#: ../src/MadEditFrame.cpp:1557
+#: ../src/MadEditFrame.cpp:1591
 msgid ""
 "Convert simplified Chinese chars to traditional Chinese chars in the "
 "clipboard"
 msgstr "把剪贴板中的简体字转换成繁体字"
 
-#: ../src/MadEditFrame.cpp:1558
+#: ../src/MadEditFrame.cpp:1592
 msgid "Clipboard: Traditional Chinese to S&implified Chinese"
 msgstr "剪贴板：繁体中文 => 简体中文(&I)"
 
-#: ../src/MadEditFrame.cpp:1558
+#: ../src/MadEditFrame.cpp:1592
 msgid ""
 "Convert traditional Chinese chars to simplified Chinese chars in the "
 "clipboard"
 msgstr "把剪贴板中的繁体字转换成简体字"
 
-#: ../src/MadEditFrame.cpp:1559
+#: ../src/MadEditFrame.cpp:1593
 msgid "Clipboard: Japanese Kanji to Tra&ditional Chinese"
 msgstr "剪贴板：日文汉字 => 繁体中文(&D)"
 
-#: ../src/MadEditFrame.cpp:1559
+#: ../src/MadEditFrame.cpp:1593
 msgid "Convert Japanese Kanji to traditional Chinese chars in the clipboard"
 msgstr "把剪贴板中的日文汉字转换成繁体字"
 
-#: ../src/MadEditFrame.cpp:1560
+#: ../src/MadEditFrame.cpp:1594
 msgid "Clipboard: Japanese Kanji to Sim&plified Chinese"
 msgstr "剪贴板：日文汉字 => 简体中文(&P)"
 
-#: ../src/MadEditFrame.cpp:1560
+#: ../src/MadEditFrame.cpp:1594
 msgid "Convert Japanese Kanji to simplified Chinese chars in the clipboard"
 msgstr "把剪贴板中的日文汉字转换成简体字"
 
-#: ../src/MadEditFrame.cpp:1561
+#: ../src/MadEditFrame.cpp:1595
 msgid "Clipboard: Chinese to Japanese &Kanji"
 msgstr "剪贴板： 中文字 => 日文汉字(&K)"
 
-#: ../src/MadEditFrame.cpp:1561
+#: ../src/MadEditFrame.cpp:1595
 msgid "Convert Chinese chars to Japanese Kanji in the clipboard"
 msgstr "把剪贴板中的中文字转换成日文汉字"
 
-#: ../src/MadEditFrame.cpp:1563
+#: ../src/MadEditFrame.cpp:1597
 msgid "&Word Count"
 msgstr "字数统计(&W)"
 
-#: ../src/MadEditFrame.cpp:1563
+#: ../src/MadEditFrame.cpp:1597
 msgid "Count the words and chars of the file or selection"
 msgstr "统计文件或选取文字的字数"
 
-#: ../src/MadEditFrame.cpp:1566
+#: ../src/MadEditFrame.cpp:1600
 msgid "&Window"
 msgstr "窗口(&W)"
 
-#: ../src/MadEditFrame.cpp:1567
+#: ../src/MadEditFrame.cpp:1601
 msgid "&Toggle Window"
 msgstr "跳到上一个窗口(&T)"
 
-#: ../src/MadEditFrame.cpp:1567
+#: ../src/MadEditFrame.cpp:1601
 msgid "Switch to the previous active window"
 msgstr "跳到前一次开启的窗口"
 
-#: ../src/MadEditFrame.cpp:1568
+#: ../src/MadEditFrame.cpp:1602
 msgid "&Previous Window"
 msgstr "前一个窗口(&P)"
 
-#: ../src/MadEditFrame.cpp:1568
+#: ../src/MadEditFrame.cpp:1602
 msgid "Activate the previous window"
 msgstr "跳到前一个窗口"
 
-#: ../src/MadEditFrame.cpp:1569
+#: ../src/MadEditFrame.cpp:1603
 msgid "&Next Window"
 msgstr "后一个窗口(&T)"
 
-#: ../src/MadEditFrame.cpp:1569
+#: ../src/MadEditFrame.cpp:1603
 msgid "Activate the next window"
 msgstr "跳到后一个窗口"
 
-#: ../src/MadEditFrame.cpp:1572
+#: ../src/MadEditFrame.cpp:1606
 msgid "&Help"
 msgstr "帮助(&H)"
 
-#: ../src/MadEditFrame.cpp:1573
+#: ../src/MadEditFrame.cpp:1607
 msgid "&About MadEdit..."
 msgstr "关于 MadEdit (&A)..."
 
-#: ../src/MadEditFrame.cpp:1577
+#: ../src/MadEditFrame.cpp:1611
 msgid "Move caret left one char"
 msgstr "光标向左移动一字符"
 
-#: ../src/MadEditFrame.cpp:1578
+#: ../src/MadEditFrame.cpp:1612
 msgid "Move caret right one char"
 msgstr "光标向右移动一字符"
 
-#: ../src/MadEditFrame.cpp:1579
+#: ../src/MadEditFrame.cpp:1613
 msgid "Move caret up one line"
 msgstr "光标向上移动一行"
 
-#: ../src/MadEditFrame.cpp:1580
+#: ../src/MadEditFrame.cpp:1614
 msgid "Move caret down one line"
 msgstr "光标向下移动一行"
 
-#: ../src/MadEditFrame.cpp:1581
+#: ../src/MadEditFrame.cpp:1615
 msgid "Go to begin of line"
 msgstr "跳到行的开头"
 
-#: ../src/MadEditFrame.cpp:1582
+#: ../src/MadEditFrame.cpp:1616
 msgid "Go to end of line"
 msgstr "跳到行的结尾"
 
-#: ../src/MadEditFrame.cpp:1583
+#: ../src/MadEditFrame.cpp:1617
 msgid "Go to begin of document"
 msgstr "跳到文件的开头"
 
-#: ../src/MadEditFrame.cpp:1584
+#: ../src/MadEditFrame.cpp:1618
 msgid "Go to end of document"
 msgstr "跳到文件的结尾"
 
-#: ../src/MadEditFrame.cpp:1585
+#: ../src/MadEditFrame.cpp:1619
 msgid "Go to previous page"
 msgstr "跳到上一页"
 
-#: ../src/MadEditFrame.cpp:1586
+#: ../src/MadEditFrame.cpp:1620
 msgid "Go to next page"
 msgstr "跳到下一页"
 
-#: ../src/MadEditFrame.cpp:1587
+#: ../src/MadEditFrame.cpp:1621
 msgid "Go to previous word"
 msgstr "跳到上一个字"
 
-#: ../src/MadEditFrame.cpp:1588
+#: ../src/MadEditFrame.cpp:1622
 msgid "Go to next word"
 msgstr "跳到下一个字"
 
-#: ../src/MadEditFrame.cpp:1590
+#: ../src/MadEditFrame.cpp:1624
 msgid "Move caret left one char and select"
 msgstr "光标向左移动一字符并选取"
 
-#: ../src/MadEditFrame.cpp:1591
+#: ../src/MadEditFrame.cpp:1625
 msgid "Move caret right one char and select"
 msgstr "光标向右移动一字符并选取"
 
-#: ../src/MadEditFrame.cpp:1592
+#: ../src/MadEditFrame.cpp:1626
 msgid "Move caret up one line and select"
 msgstr "光标向上移动一行并选取"
 
-#: ../src/MadEditFrame.cpp:1593
+#: ../src/MadEditFrame.cpp:1627
 msgid "Move caret down one line and select"
 msgstr "光标向下移动一行并选取"
 
-#: ../src/MadEditFrame.cpp:1594
+#: ../src/MadEditFrame.cpp:1628
 msgid "Go to begin of line and select"
 msgstr "跳到行的开头并选取"
 
-#: ../src/MadEditFrame.cpp:1595
+#: ../src/MadEditFrame.cpp:1629
 msgid "Go to end of line and select"
 msgstr "跳到行的结尾并选取"
 
-#: ../src/MadEditFrame.cpp:1596
+#: ../src/MadEditFrame.cpp:1630
 msgid "Go to begin of document and select"
 msgstr "跳到文件的开头并选取"
 
-#: ../src/MadEditFrame.cpp:1597
+#: ../src/MadEditFrame.cpp:1631
 msgid "Go to end of document and select"
 msgstr "跳到文件的结尾并选取"
 
-#: ../src/MadEditFrame.cpp:1598
+#: ../src/MadEditFrame.cpp:1632
 msgid "Go to previous page and select"
 msgstr "跳到上一页并选取"
 
-#: ../src/MadEditFrame.cpp:1599
+#: ../src/MadEditFrame.cpp:1633
 msgid "Go to next page and select"
 msgstr "跳到下一页并选取"
 
-#: ../src/MadEditFrame.cpp:1600
+#: ../src/MadEditFrame.cpp:1634
 msgid "Go to previous word and select"
 msgstr "跳到上一个字并选取"
 
-#: ../src/MadEditFrame.cpp:1601
+#: ../src/MadEditFrame.cpp:1635
 msgid "Go to next word and select"
 msgstr "跳到下一个字并选取"
 
-#: ../src/MadEditFrame.cpp:1602
+#: ../src/MadEditFrame.cpp:1636
 msgid "Go to left brace and select"
 msgstr "跳到左括号并选取"
 
-#: ../src/MadEditFrame.cpp:1603
+#: ../src/MadEditFrame.cpp:1637
 msgid "Go to right brace and select"
 msgstr "跳到右括号并选取"
 
-#: ../src/MadEditFrame.cpp:1605
+#: ../src/MadEditFrame.cpp:1639
 msgid "Scroll text up one line"
 msgstr "向上滚动一行"
 
-#: ../src/MadEditFrame.cpp:1606
+#: ../src/MadEditFrame.cpp:1640
 msgid "Scroll text down one line"
 msgstr "向下滚动一行"
 
-#: ../src/MadEditFrame.cpp:1607
+#: ../src/MadEditFrame.cpp:1641
 msgid "Scroll text up one page"
 msgstr "向上滚动一页"
 
-#: ../src/MadEditFrame.cpp:1608
+#: ../src/MadEditFrame.cpp:1642
 msgid "Scroll text down one page"
 msgstr "向下滚动一页"
 
-#: ../src/MadEditFrame.cpp:1609
+#: ../src/MadEditFrame.cpp:1643
 msgid "Scroll text left"
 msgstr "向左滚动"
 
-#: ../src/MadEditFrame.cpp:1610
+#: ../src/MadEditFrame.cpp:1644
 msgid "Scroll text right"
 msgstr "向右滚动"
 
-#: ../src/MadEditFrame.cpp:1612
+#: ../src/MadEditFrame.cpp:1646
 msgid "Insert one NewLine char"
 msgstr "插入换行字符"
 
-#: ../src/MadEditFrame.cpp:1613
+#: ../src/MadEditFrame.cpp:1647
 msgid "Insert one NewLine char without indentation"
 msgstr "插入换行字元但不自动缩进"
 
-#: ../src/MadEditFrame.cpp:1614
+#: ../src/MadEditFrame.cpp:1648
 msgid "Insert one Tab char or indent lines"
 msgstr "插入定位字符或增加缩进"
 
-#: ../src/MadEditFrame.cpp:1615
+#: ../src/MadEditFrame.cpp:1649
 msgid "Delete one char to the left of the caret"
 msgstr "删除光标左边的字符"
 
-#: ../src/MadEditFrame.cpp:1618
+#: ../src/MadEditFrame.cpp:1652
 msgid "Delete a word left from the caret"
 msgstr "删除光标左侧的一个词"
 
-#: ../src/MadEditFrame.cpp:1619
+#: ../src/MadEditFrame.cpp:1653
 msgid "Delete a word right from the caret"
 msgstr "删除光标右侧的一个词"
 
-#: ../src/MadEditFrame.cpp:1621
+#: ../src/MadEditFrame.cpp:1655
 msgid "Toggle Insert/Overwrite Mode"
 msgstr "切换插入/覆盖模式"
 
-#: ../src/MadEditFrame.cpp:1885
+#: ../src/MadEditFrame.cpp:1925
 msgid "Close All BUT This"
 msgstr "关闭除了当前文件外的所有文件"
 
-#: ../src/MadEditFrame.cpp:1889
+#: ../src/MadEditFrame.cpp:1929
 msgid "Copy full path name"
 msgstr "拷贝文件全路径"
 
-#: ../src/MadEditFrame.cpp:1890
+#: ../src/MadEditFrame.cpp:1930
 msgid "Copy full file name"
 msgstr "拷贝当前文件名"
 
-#: ../src/MadEditFrame.cpp:1891
+#: ../src/MadEditFrame.cpp:1931
 msgid "Copy directory name"
 msgstr "拷贝文件所在的目录名"
 
-#: ../src/MadEditFrame.cpp:2173
+#: ../src/MadEditFrame.cpp:2213
 msgid "New File"
 msgstr "新建文件"
 
-#: ../src/MadEditFrame.cpp:2174 ../src/MadEditFrame.cpp:3543
+#: ../src/MadEditFrame.cpp:2214 ../src/MadEditFrame.cpp:3612
 msgid "Open File"
 msgstr "打开文件"
 
-#: ../src/MadEditFrame.cpp:2176
+#: ../src/MadEditFrame.cpp:2216
 msgid "Save All Files"
 msgstr "保存全部的文件"
 
-#: ../src/MadEditFrame.cpp:2177
+#: ../src/MadEditFrame.cpp:2217
 msgid "Close File"
 msgstr "关闭文件"
 
-#: ../src/MadEditFrame.cpp:2178
+#: ../src/MadEditFrame.cpp:2218
 msgid "Close All Files"
 msgstr "关闭全部的文件"
 
-#: ../src/MadEditFrame.cpp:2180
+#: ../src/MadEditFrame.cpp:2220
 msgid "Undo"
 msgstr "撤消"
 
-#: ../src/MadEditFrame.cpp:2181
+#: ../src/MadEditFrame.cpp:2221
 msgid "Redo"
 msgstr "重做"
 
-#: ../src/MadEditFrame.cpp:2183
+#: ../src/MadEditFrame.cpp:2223
 msgid "Cut"
 msgstr "剪切"
 
-#: ../src/MadEditFrame.cpp:2184
+#: ../src/MadEditFrame.cpp:2224
 msgid "Copy"
 msgstr "复制"
 
-#: ../src/MadEditFrame.cpp:2185
+#: ../src/MadEditFrame.cpp:2225
 msgid "Paste"
 msgstr "粘贴"
 
-#: ../src/MadEditFrame.cpp:2187
+#: ../src/MadEditFrame.cpp:2227
 msgid "Increase Indent"
 msgstr "增加缩进"
 
-#: ../src/MadEditFrame.cpp:2188
+#: ../src/MadEditFrame.cpp:2228
 msgid "Decrease Indent"
 msgstr "减少缩进"
 
-#: ../src/MadEditFrame.cpp:2190
+#: ../src/MadEditFrame.cpp:2230
 msgid "Comment"
 msgstr "注释"
 
-#: ../src/MadEditFrame.cpp:2191
+#: ../src/MadEditFrame.cpp:2231
 msgid "Uncomment"
 msgstr "取消注释"
 
-#: ../src/MadEditFrame.cpp:2193
+#: ../src/MadEditFrame.cpp:2233
 msgid "Find"
 msgstr "查找"
 
-#: ../src/MadEditFrame.cpp:2194 ../src/MadSearchDialog.cpp:377
+#: ../src/MadEditFrame.cpp:2234 ../src/MadSearchDialog.cpp:382
 msgid "Find Next"
 msgstr "查找下一个"
 
-#: ../src/MadEditFrame.cpp:2195 ../src/MadSearchDialog.cpp:487
+#: ../src/MadEditFrame.cpp:2235 ../src/MadSearchDialog.cpp:499
 msgid "Find Previous"
 msgstr "查找上一个"
 
-#: ../src/MadEditFrame.cpp:2196 ../src/MadReplaceDialog.cpp:147
+#: ../src/MadEditFrame.cpp:2236 ../src/MadReplaceDialog.cpp:147
 msgid "Replace"
 msgstr "替换"
 
-#: ../src/MadEditFrame.cpp:2198
+#: ../src/MadEditFrame.cpp:2238
 msgid "No Line Wrap"
 msgstr "取消折行"
 
-#: ../src/MadEditFrame.cpp:2199
+#: ../src/MadEditFrame.cpp:2239
 msgid "Wrap Lines by Window"
 msgstr "按窗口折行"
 
-#: ../src/MadEditFrame.cpp:2200
+#: ../src/MadEditFrame.cpp:2240
 msgid "Wrap Lines by Max Columns"
 msgstr "按最大长度折行"
 
-#: ../src/MadEditFrame.cpp:2202 ../src/MadOptionsDialog.cpp:430
+#: ../src/MadEditFrame.cpp:2242 ../src/MadOptionsDialog.cpp:430
 msgid "Text Mode"
 msgstr "文字模式"
 
-#: ../src/MadEditFrame.cpp:2203
+#: ../src/MadEditFrame.cpp:2243
 msgid "Column Mode"
 msgstr "列块模式"
 
-#: ../src/MadEditFrame.cpp:2204 ../src/MadOptionsDialog.cpp:454
+#: ../src/MadEditFrame.cpp:2244 ../src/MadOptionsDialog.cpp:454
 msgid "Hex Mode"
 msgstr "十六进制模式"
 
-#: ../src/MadEditFrame.cpp:2223
+#: ../src/MadEditFrame.cpp:2268
 msgid "Find/Replace in Files Results"
 msgstr "多文件查找/替换的结果"
 
-#: ../src/MadEditFrame.cpp:2231
+#: ../src/MadEditFrame.cpp:2276
 msgid "Information Window"
 msgstr "信息窗口"
 
-#: ../src/MadEditFrame.cpp:2838
+#: ../src/MadEditFrame.cpp:2883
 #, c-format
 msgid "NoName%d"
 msgstr "未命名%d"
 
-#: ../src/MadEditFrame.cpp:2889
+#: ../src/MadEditFrame.cpp:2934
 msgid "This is a Directory:"
 msgstr "这是个目录："
 
-#: ../src/MadEditFrame.cpp:2898
+#: ../src/MadEditFrame.cpp:2943
 msgid "This file does not exist:"
 msgstr "这个文件不存在："
 
-#: ../src/MadEditFrame.cpp:2916
+#: ../src/MadEditFrame.cpp:2961
 msgid "Cannot access this file:"
 msgstr "无法存取这个文件："
 
-#: ../src/MadEditFrame.cpp:2961
+#: ../src/MadEditFrame.cpp:3006
 msgid "Cannot load this file:"
 msgstr "无法载入这个文件："
 
-#: ../src/MadEditFrame.cpp:3226 ../src/MadEditFrame.cpp:3240
-#: ../src/MadEditFrame.cpp:3257 ../src/MadEditFrame.cpp:3273
-#: ../src/MadEditFrame.cpp:3297 ../src/MadEditFrame.cpp:3311
-#: ../src/MadEditFrame.cpp:3420 ../src/MadEditFrame.cpp:3442
+#: ../src/MadEditFrame.cpp:3271 ../src/MadEditFrame.cpp:3285
+#: ../src/MadEditFrame.cpp:3302 ../src/MadEditFrame.cpp:3318
+#: ../src/MadEditFrame.cpp:3342 ../src/MadEditFrame.cpp:3356
+#: ../src/MadEditFrame.cpp:3465 ../src/MadEditFrame.cpp:3487
 #: ../src/MadOptionsDialog.cpp:459 ../src/MadConvEncDialog.cpp:85
 msgid "None"
 msgstr "无"
 
-#: ../src/MadEditFrame.cpp:3392 ../src/MadEditFrame.cpp:3398
+#: ../src/MadEditFrame.cpp:3437 ../src/MadEditFrame.cpp:3443
 msgid "Has No Unicode BOM (Byte-Order Mark)"
 msgstr "没有 Unicode BOM (Byte-Order Mark)"
 
-#: ../src/MadEditFrame.cpp:3751
+#: ../src/MadEditFrame.cpp:3820
 msgid ""
 "There was a problem previewing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -1415,15 +1435,15 @@ msgstr ""
 "在预览打印时发生问题。\n"
 "或许是打印机没有设置正确？"
 
-#: ../src/MadEditFrame.cpp:3751
+#: ../src/MadEditFrame.cpp:3820
 msgid "Previewing"
 msgstr "打印预览"
 
-#: ../src/MadEditFrame.cpp:3755
+#: ../src/MadEditFrame.cpp:3824
 msgid "MadEdit Print Preview"
 msgstr "MadEdit预览打印"
 
-#: ../src/MadEditFrame.cpp:3780
+#: ../src/MadEditFrame.cpp:3849
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -1431,56 +1451,65 @@ msgstr ""
 "在打印时发生问题。\n"
 "或许是打印机没有设置正确？"
 
-#: ../src/MadEditFrame.cpp:3780
+#: ../src/MadEditFrame.cpp:3849
 msgid "Printing"
 msgstr "打印中"
 
-#: ../src/MadEditFrame.cpp:4149 ../src/MadEditFrame.cpp:4197
+#: ../src/MadEditFrame.cpp:4323 ../src/MadEditFrame.cpp:4377
 msgid "ASCII characters"
 msgstr "ASCII 字符"
 
-#: ../src/MadEditFrame.cpp:4149 ../src/MadEditFrame.cpp:4197
+#: ../src/MadEditFrame.cpp:4323 ../src/MadEditFrame.cpp:4377
 msgid "Japanese characters"
 msgstr "日文"
 
-#: ../src/MadEditFrame.cpp:4150 ../src/MadEditFrame.cpp:4198
+#: ../src/MadEditFrame.cpp:4324 ../src/MadEditFrame.cpp:4378
 msgid "Korean characters"
 msgstr "韩文"
 
-#: ../src/MadEditFrame.cpp:4150 ../src/MadEditFrame.cpp:4198
+#: ../src/MadEditFrame.cpp:4324 ../src/MadEditFrame.cpp:4378
 msgid "other characters"
 msgstr "其他文字"
 
-#: ../src/MadEditFrame.cpp:4153 ../src/MadEditFrame.cpp:4157
-#: ../src/MadEditFrame.cpp:4201 ../src/MadEditFrame.cpp:4205
+#: ../src/MadEditFrame.cpp:4327 ../src/MadEditFrame.cpp:4331
+#: ../src/MadEditFrame.cpp:4381 ../src/MadEditFrame.cpp:4385
 msgid "Choose the characters you want to convert:"
 msgstr "选择想转换的文字："
 
-#: ../src/MadEditFrame.cpp:4509
+#: ../src/MadEditFrame.cpp:4702
 msgid "Line Number: (you can input HexNumber: 0xNNN)"
 msgstr "行数：（可以输入16进位数字: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:4509
+#: ../src/MadEditFrame.cpp:4702
 msgid "Go To Line"
 msgstr "跳到此行"
 
-#: ../src/MadEditFrame.cpp:4533
+#: ../src/MadEditFrame.cpp:4727
 msgid "Position: (you can input HexNumber: 0xNNN)"
 msgstr "文件位置：（可以输入16进位数字: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:4533
+#: ../src/MadEditFrame.cpp:4727
 msgid "Go To Position"
 msgstr "跳到文件位置"
 
-#: ../src/MadEditFrame.cpp:5102
+#: ../src/MadEditFrame.cpp:5302 ../src/MadEditFrame.cpp:5403
 msgid "Open Mad Macro File"
 msgstr "打开MadPython宏文件"
 
-#: ../src/MadEditFrame.cpp:5126
+#: ../src/MadEditFrame.cpp:5326
 msgid "Memory allocation failed"
 msgstr "分配内存失败"
 
-#: ../src/MadEditFrame.cpp:5363
+#: ../src/MadEditFrame.cpp:5417
+#, c-format
+msgid "Do you want to overwrite %s"
+msgstr "要覆盖%s吗？"
+
+#: ../src/MadEditFrame.cpp:5417
+msgid "Warning"
+msgstr "警告"
+
+#: ../src/MadEditFrame.cpp:5689
 msgid "Press OK to visit our HomePage."
 msgstr "按「确定」可以浏览我们的主页。"
 
@@ -1612,31 +1641,31 @@ msgstr "选择的目录不存在。"
 msgid "Processing %d of %d files..."
 msgstr "第 %d 个文件处理中（共有 %d 个）... "
 
-#: ../src/MadFindInFilesDialog.cpp:867 ../src/MadSearchDialog.cpp:898
-#: ../src/MadPython.hpp:737 ../src/MadPython.hpp:819
+#: ../src/MadFindInFilesDialog.cpp:867 ../src/MadSearchDialog.cpp:915
+#: ../src/MadPython.hpp:776 ../src/MadPython.hpp:858
 #, c-format
 msgid "Line(%d): "
 msgstr "行（%d）："
 
-#: ../src/MadFindInFilesDialog.cpp:871 ../src/MadSearchDialog.cpp:902
-#: ../src/MadPython.hpp:741 ../src/MadPython.hpp:823
+#: ../src/MadFindInFilesDialog.cpp:871 ../src/MadSearchDialog.cpp:919
+#: ../src/MadPython.hpp:780 ../src/MadPython.hpp:862
 #, c-format
 msgid "Offset(%s): "
 msgstr "位置（%s）："
 
-#: ../src/MadFindInFilesDialog.cpp:872 ../src/MadSearchDialog.cpp:903
-#: ../src/MadPython.hpp:742 ../src/MadPython.hpp:824
+#: ../src/MadFindInFilesDialog.cpp:872 ../src/MadSearchDialog.cpp:920
+#: ../src/MadPython.hpp:781 ../src/MadPython.hpp:863
 msgid "Binary file matches"
 msgstr "二进制数据匹配（相同）"
 
-#: ../src/MadFindInFilesDialog.cpp:900 ../src/MadSearchDialog.cpp:361
-#: ../src/MadSearchDialog.cpp:471 ../src/MadSearchDialog.cpp:924
-#: ../src/MadPython.hpp:763 ../src/MadPython.hpp:843
+#: ../src/MadFindInFilesDialog.cpp:900 ../src/MadSearchDialog.cpp:366
+#: ../src/MadSearchDialog.cpp:483 ../src/MadSearchDialog.cpp:941
+#: ../src/MadPython.hpp:802 ../src/MadPython.hpp:882
 msgid "Cannot find the matched string"
 msgstr "找不到匹配的字符串"
 
-#: ../src/MadFindInFilesDialog.cpp:905 ../src/MadSearchDialog.cpp:929
-#: ../src/MadPython.hpp:768 ../src/MadPython.hpp:848
+#: ../src/MadFindInFilesDialog.cpp:905 ../src/MadSearchDialog.cpp:946
+#: ../src/MadPython.hpp:807 ../src/MadPython.hpp:887
 #, c-format
 msgid "%d results"
 msgstr "%d 个结果"
@@ -1757,31 +1786,31 @@ msgstr "替换(&R) >>"
 msgid "Search"
 msgstr "查找"
 
-#: ../src/MadSearchDialog.cpp:351 ../src/MadSearchDialog.cpp:461
+#: ../src/MadSearchDialog.cpp:356 ../src/MadSearchDialog.cpp:473
 msgid "Passed the end of the file"
 msgstr "已经过了文件末尾"
 
-#: ../src/MadSearchDialog.cpp:371 ../src/MadSearchDialog.cpp:481
+#: ../src/MadSearchDialog.cpp:376 ../src/MadSearchDialog.cpp:493
 msgid "Cannot find the matched string."
 msgstr "找不到符合的字符串。"
 
-#: ../src/MadSearchDialog.cpp:374
+#: ../src/MadSearchDialog.cpp:379
 msgid "Do you want to find from begin of selection?"
 msgstr "要从所选取数据的开头重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:375
+#: ../src/MadSearchDialog.cpp:380
 msgid "Do you want to find from begin of file?"
 msgstr "要从文件的开头重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:484
+#: ../src/MadSearchDialog.cpp:496
 msgid "Do you want to find from end of selection?"
 msgstr "要从所选取数据的結尾重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:485
+#: ../src/MadSearchDialog.cpp:497
 msgid "Do you want to find from end of file?"
 msgstr "要从文件的結尾重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:825
+#: ../src/MadSearchDialog.cpp:837
 #, c-format
 msgid "'%s' was found %d times."
 msgstr "'%s' 找到 %d 次。"
@@ -1818,7 +1847,7 @@ msgstr "排序选项"
 msgid "Replace &All"
 msgstr "替换全部(&A)"
 
-#: ../src/MadReplaceDialog.cpp:567
+#: ../src/MadReplaceDialog.cpp:572
 msgid ""
 "Cannot find the matched string.\n"
 "Replace is finished."
@@ -1826,11 +1855,11 @@ msgstr ""
 "找不到符合的字符串。\n"
 "「替换」结束。"
 
-#: ../src/MadReplaceDialog.cpp:634
+#: ../src/MadReplaceDialog.cpp:644
 msgid "Cannot find any matched string."
 msgstr "找不到符合的字符串。"
 
-#: ../src/MadReplaceDialog.cpp:636
+#: ../src/MadReplaceDialog.cpp:646
 #, c-format
 msgid "%d string(s) were replaced."
 msgstr "%d 个字符串已被替换。"
@@ -2289,7 +2318,7 @@ msgstr "关闭(&C)"
 msgid "Word Count"
 msgstr "统计字数"
 
-#: ../src/MadWordCountDialog.cpp:165
+#: ../src/MadWordCountDialog.cpp:166
 msgid "Word Count (Selected Text)"
 msgstr "统计字数 (所选取的文字)"
 
