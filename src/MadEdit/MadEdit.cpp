@@ -10196,7 +10196,7 @@ void MadEdit::OnMouseCaptureLost(wxMouseCaptureLostEvent &evt)
     m_MouseAtHexTextArea=false;
     m_DragDrop = false;
     m_DragCopyFlag = false;//default move
-    evt.Skip();
+    //evt.Skip();
 }
 
 
