@@ -3496,8 +3496,6 @@ void MadEdit::BeginUpdateSelection()
 
     if(int(m_CaretPos.rowid) > m_SelLastRow)
         m_SelLastRow = m_CaretPos.rowid;
-    //RecordAsMadMacro(wxString(wxT("BeginUpdateSelection(%s)")));
-    RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
 }
 
 void MadEdit::EndUpdateSelection(bool bSelection)
@@ -3547,9 +3545,9 @@ void MadEdit::EndUpdateSelection(bool bSelection)
 
         m_RepaintSelection = true;
         Refresh(false);
-        RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
-        //if(GetSelectionBeginPos() != -1 && GetSelectionEndPos() != -1)
-        //    RecordAsMadMacro(wxString::Format(wxT("SetSelection(%d, %d, False)"), GetSelectionBeginPos(), GetSelectionEndPos()));
+        
+        if(m_Selection)
+            RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
     }
 }
 
@@ -3663,8 +3661,6 @@ void MadEdit::SetSelection(wxFileOffset beginpos, wxFileOffset endpos, bool bCar
     {
         m_UndoBuffer->Add(oldCaretPos, m_CaretPos.pos);
     }
-    
-    RecordAsMadMacro(wxString::Format(wxT("SetSelection(%d, %d, %s)"), beginpos, endpos, bCaretAtBeginPos?"True":"False"));
 }
 
 wxFileOffset MadEdit::GetColumnSelection(wxString *ws)
@@ -7549,7 +7545,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 if((command != ecIncreaseIndent) && (command != ecDecreaseIndent) &&
                     (command != ecComment) && (command != ecUncomment))
                 {
-                    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
+                    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(0x%X)"), command));
                 }
                 switch(command)
                 {

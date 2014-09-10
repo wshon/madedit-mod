@@ -5357,7 +5357,8 @@ void MadEditFrame::OnToolsStartRecMacro(wxCommandEvent& event)
         m_MadMacroScripts.Empty();
         {
             int caretPos = (int)g_ActiveMadEdit->GetCaretPosition();
-            AddMacroScript(wxString::Format(wxT("SetCaretPosition(%d)  #Restore caret position"), caretPos));
+            AddMacroScript(wxString::Format(wxT("#Restore caret position")));
+            AddMacroScript(wxString::Format(wxT("SetCaretPosition(%d)"), caretPos));
         }
     }
 }
@@ -5373,17 +5374,18 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
     {
         size_t total = m_MadMacroScripts.GetCount();
         wxString medit(wxT("medit.")), pyscript;
-        if (total>1) // Ignore the restore caret line
+        if (total>2) // Ignore the restore caret line and the comments
         {
             MadMacroDlg dlg(this);
-            pyscript = wxString(wxT("#Create MadEdit Object for active edit\nmedit = MadEdit()\n"));
-            for(size_t i = 0; i < total; ++i)
+            pyscript = wxString(wxT("#Create MadEdit Object for active edit\nmedit = MadEdit()\n\n"));
+            pyscript += m_MadMacroScripts[0]+wxT("\n");
+            for(size_t i = 1; i < total; ++i)
                 pyscript += (medit+m_MadMacroScripts[i]+wxT("\n"));
             dlg.SetPyScript(pyscript);
             SetMacroRunning();
             dlg.ShowModal();
+            SetMacroStopped();
         }
-        SetMacroStopped();
     }
 }
 
@@ -5431,9 +5433,17 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
             {
                 scriptfile.AddLine(wxT("#Create MadEdit Object for active edit"));
                 scriptfile.AddLine(wxT("medit = MadEdit()"));
-                for(size_t i = 0; i < total; ++i)
+                scriptfile.AddLine(wxT(""));
+                scriptfile.AddLine(m_MadMacroScripts[0]);
+                scriptfile.AddLine(wxT(""));
+                for(size_t i = 1; i < total; ++i)
                     scriptfile.AddLine(medit+m_MadMacroScripts[i]);
-            }
+#ifdef __WXMAC__
+                scriptfile.Write(wxTextFileType_Mac);
+#else
+                scriptfile.Write(wxTextFileType_Unix);
+#endif           
+             }
             scriptfile.Close();
         }
     }

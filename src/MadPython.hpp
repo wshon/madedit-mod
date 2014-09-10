@@ -78,23 +78,6 @@ namespace mad_python
                 g_ActiveMadEdit->ProcessCommand(ecScrollRight);
             }
 
-            void BeginUpdateSelection()
-            {
-                g_ActiveMadEdit->BeginUpdateSelection();
-            }
-            void UpdateSelectionPos()
-            {
-                g_ActiveMadEdit->UpdateSelectionPos();
-            }
-            void EndUpdateSelection(bool bSelection)
-            {
-                g_ActiveMadEdit->EndUpdateSelection(bSelection);
-            }
-            void SetSelection(int beginpos, int endpos, bool bCaretAtBeginPos = false)
-            {
-                g_ActiveMadEdit->SetSelection(beginpos, endpos, bCaretAtBeginPos);
-            }
-            
             void GoToLine(int line)
             {
                 if(line > 0)
@@ -1087,7 +1070,6 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ToFullWidth_member_overloads, ToFullWidth
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(SetCaretPosition_member_overloads, SetCaretPosition, 1, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetLine_member_overloads, GetLine, 2, 4)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetText_member_overloads, GetText, 0, 1)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(SetSelection_member_overloads, SetSelection, 2, 3)
 
 BOOST_PYTHON_MODULE(madpython)
 {
@@ -1097,9 +1079,6 @@ BOOST_PYTHON_MODULE(madpython)
     class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.", init<>())
         .def("ProcessCommand", &PyMadEdit::ProcessCommand, "")
         .def("InsertWChar", &PyMadEdit::InsertWChar, "")
-        .def("BeginUpdateSelection", &PyMadEdit::BeginUpdateSelection, "")
-        .def("UpdateSelectionPos", &PyMadEdit::UpdateSelectionPos, "")
-        .def("EndUpdateSelection", &PyMadEdit::EndUpdateSelection, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
         .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "Get syntax information currently used")
@@ -1269,7 +1248,6 @@ BOOST_PYTHON_MODULE(madpython)
         .def("SetCaretPosition", &PyMadEdit::SetCaretPosition, SetCaretPosition_member_overloads( args("pos", "selbeg", "selend"), "Doc string" ))
         .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("ws", "line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
-        .def("SetSelection", &PyMadEdit::SetSelection, SetSelection_member_overloads( args("beginpos", "endpos", "bCaretAtBeginPos"), "Doc string" ))
         ;
 }
 #endif //__MADPYTHON__
