@@ -159,7 +159,7 @@ void MadWordCountDialog::CreateGUIControls(void)
     int words, chars, spaces, lines, halfwidths, fullwidths;
     wxArrayString detail;
     g_ActiveMadEdit->WordCount(g_ActiveMadEdit->IsSelected(), words, chars, spaces, halfwidths, fullwidths, lines, &detail);
-    RecordAsMadMacro(wxString::Format(wxT("WordCount(%s)"), g_ActiveMadEdit->IsSelected()?"True":"False"));
+    RecordAsMadMacro(wxString::Format(wxT("WordCount(%s)"), g_ActiveMadEdit->IsSelected()?wxT("True"):wxT("False")));
 
     if(g_ActiveMadEdit->IsSelected())
     {

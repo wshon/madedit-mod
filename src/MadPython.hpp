@@ -44,6 +44,10 @@ namespace mad_python
                 return g_ActiveMadEdit->ProcessCommand(command);
             }
 
+            void InsertWChar(int key)
+            {
+                return g_ActiveMadEdit->ProcessCommand(key);
+            }
             void ScrollLineUp()
             {
                 g_ActiveMadEdit->ProcessCommand(ecScrollLineUp);
@@ -74,6 +78,18 @@ namespace mad_python
                 g_ActiveMadEdit->ProcessCommand(ecScrollRight);
             }
 
+            void BeginUpdateSelection()
+            {
+                g_ActiveMadEdit->BeginUpdateSelection();
+            }
+            void UpdateSelectionPos()
+            {
+                g_ActiveMadEdit->UpdateSelectionPos();
+            }
+            void EndUpdateSelection(bool bSelection)
+            {
+                g_ActiveMadEdit->EndUpdateSelection(bSelection);
+            }
             void SetSelection(int beginpos, int endpos, bool bCaretAtBeginPos = false)
             {
                 g_ActiveMadEdit->SetSelection(beginpos, endpos, bCaretAtBeginPos);
@@ -957,7 +973,7 @@ namespace mad_python
             }
             void ConvertChineseA(int flag)
             {
-				g_ActiveMadEdit->ConvertChinese((MadConvertEncodingFlag)flag);
+                g_ActiveMadEdit->ConvertChinese((MadConvertEncodingFlag)flag);
             }
 
             bool HasBOM()
@@ -1080,6 +1096,10 @@ BOOST_PYTHON_MODULE(madpython)
 
     class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.", init<>())
         .def("ProcessCommand", &PyMadEdit::ProcessCommand, "")
+        .def("InsertWChar", &PyMadEdit::InsertWChar, "")
+        .def("BeginUpdateSelection", &PyMadEdit::BeginUpdateSelection, "")
+        .def("UpdateSelectionPos", &PyMadEdit::UpdateSelectionPos, "")
+        .def("EndUpdateSelection", &PyMadEdit::EndUpdateSelection, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
         .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "Get syntax information currently used")
@@ -1225,12 +1245,12 @@ BOOST_PYTHON_MODULE(madpython)
         .def("SetFontA", &PyMadEdit::SetFontA, "Doc")
         .def("CopyToClipboardA", &PyMadEdit::CopyToClipboardA, "")
         .def("CopyToClipboardB", &PyMadEdit::CopyToClipboardB, "")
-		.def("ScrollLineUp", &PyMadEdit::ScrollLineUp, "")
-		.def("ScrollLineDown", &PyMadEdit::ScrollLineDown, "")
-		.def("ScrollPageUp", &PyMadEdit::ScrollPageUp, "")
-		.def("ScrollPageDown", &PyMadEdit::ScrollPageDown, "")
-		.def("ScrollLeft", &PyMadEdit::ScrollLeft, "")
-		.def("ScrollRight", &PyMadEdit::ScrollRight, "")
+        .def("ScrollLineUp", &PyMadEdit::ScrollLineUp, "")
+        .def("ScrollLineDown", &PyMadEdit::ScrollLineDown, "")
+        .def("ScrollPageUp", &PyMadEdit::ScrollPageUp, "")
+        .def("ScrollPageDown", &PyMadEdit::ScrollPageDown, "")
+        .def("ScrollLeft", &PyMadEdit::ScrollLeft, "")
+        .def("ScrollRight", &PyMadEdit::ScrollRight, "")
         .def("FindTextNext", &PyMadEdit::FindTextNext, FindTextNext_member_overloads( args("text", "bRegex", "bCaseSensitive", "bWholeWord", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])
 
         .def("FindTextPrevious", &PyMadEdit::FindTextPrevious, FindTextPrevious_member_overloads( args("text", "bRegex", "bCaseSensitive", "bWholeWord", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])

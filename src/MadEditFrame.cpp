@@ -156,7 +156,7 @@ wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
-EmbeddedPython * g_EmbeddedPython = 0;
+EmbeddedPython *g_EmbeddedPython = 0;
 
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
 
@@ -4345,8 +4345,8 @@ void MadEditFrame::OnEditToHalfWidthByOptions(wxCommandEvent& event)
             }
         }
         g_ActiveMadEdit->ToHalfWidth(ascii, japanese, korean, other);
-        RecordAsMadMacro(wxString::Format(wxT("ToHalfWidth(%s, %s, %s)"), ascii?"True":"False",
-            japanese?"True":"False", korean?"True":"False", other?"True":"False"));
+        RecordAsMadMacro(wxString::Format(wxT("ToHalfWidth(%s, %s, %s)"), ascii?wxT("True"):wxT("False"),
+            japanese?wxT("True"):wxT("False"), korean?wxT("True"):wxT("False"), other?wxT("True"):wxT("False")));
     }
 }
 
@@ -4399,8 +4399,8 @@ void MadEditFrame::OnEditToFullWidthByOptions(wxCommandEvent& event)
             }
         }
         g_ActiveMadEdit->ToFullWidth(ascii, japanese, korean, other);
-        RecordAsMadMacro(wxString::Format(wxT("ToFullWidth(%s, %s, %s)"), ascii?"True":"False",
-            japanese?"True":"False", korean?"True":"False", other?"True":"False"));
+        RecordAsMadMacro(wxString::Format(wxT("ToFullWidth(%s, %s, %s)"), ascii?wxT("True"):wxT("False"),
+            japanese?wxT("True"):wxT("False"), korean?wxT("True"):wxT("False"), other?wxT("True"):wxT("False")));
     }
 }
 
@@ -5335,8 +5335,14 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
                     str << scriptfile.GetNextLine()<<wxT("\n");
                 }
                 if(str.IsNull()==false)
-                    g_EmbeddedPython->exec(std::string(str.mb_str()));
-
+                {
+                    MadMacroDlg dlg(this);
+                    dlg.SetPyScript(str);
+                    SetMacroRunning();
+                    dlg.ShowModal();
+                    SetMacroStopped();
+                    //g_EmbeddedPython->exec(std::string(str.mb_str()));
+                }
             }
             scriptfile.Close();
         }
@@ -5345,8 +5351,15 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
 
 void MadEditFrame::OnToolsStartRecMacro(wxCommandEvent& event)
 {
-    SetMacroRecording();
-    m_MadMacroScripts.Empty();
+    if(g_ActiveMadEdit)
+    {
+        SetMacroRecording();
+        m_MadMacroScripts.Empty();
+        {
+            int caretPos = (int)g_ActiveMadEdit->GetCaretPosition();
+            AddMacroScript(wxString::Format(wxT("SetCaretPosition(%d)  #Restore caret position"), caretPos));
+        }
+    }
 }
 
 void MadEditFrame::OnToolsStopRecMacro(wxCommandEvent& event)
@@ -5358,12 +5371,12 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit!=NULL)
     {
-        MadMacroDlg dlg(this);
         size_t total = m_MadMacroScripts.GetCount();
         wxString medit(wxT("medit.")), pyscript;
-        if (total)
+        if (total>1) // Ignore the restore caret line
         {
-            pyscript = (wxT("medit = MadEdit()\n"));
+            MadMacroDlg dlg(this);
+            pyscript = wxString(wxT("#Create MadEdit Object for active edit\nmedit = MadEdit()\n"));
             for(size_t i = 0; i < total; ++i)
                 pyscript += (medit+m_MadMacroScripts[i]+wxT("\n"));
             dlg.SetPyScript(pyscript);
@@ -5416,6 +5429,7 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
             wxString medit(wxT("medit."));
             if (total)
             {
+                scriptfile.AddLine(wxT("#Create MadEdit Object for active edit"));
                 scriptfile.AddLine(wxT("medit = MadEdit()"));
                 for(size_t i = 0; i < total; ++i)
                     scriptfile.AddLine(medit+m_MadMacroScripts[i]);

@@ -328,7 +328,7 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
             if(WxCheckBoxFindHex->GetValue())
             {
                 sr=g_ActiveMadEdit->FindHexNext(text, rangeFrom, rangeTo);
-                RecordAsMadMacro(wxString::Format(wxT("FindHexNext(%s, %d, %d)"), text, rangeFrom, rangeTo));
+                RecordAsMadMacro(wxString::Format(wxT("FindHexNext(\"%s\", %d, %d)"), text, rangeFrom, rangeTo));
             }
             else
             {
@@ -337,10 +337,10 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                     WxCheckBoxCaseSensitive->GetValue(),
                     WxCheckBoxWholeWord->GetValue(),
                     rangeFrom, rangeTo);
-                RecordAsMadMacro(wxString::Format(wxT("FindTextNext(%s, %s, %s, %s, %d, %d)"), text,
-                            WxCheckBoxRegex->GetValue(),
-                            WxCheckBoxCaseSensitive->GetValue(),
-                            WxCheckBoxWholeWord->GetValue(), rangeFrom, rangeTo));
+                RecordAsMadMacro(wxString::Format(wxT("FindTextNext(\"%s\", %s, %s, %s, %d, %d)"), text,
+                            WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
             }
 
             if(sr != SR_NO)
@@ -445,7 +445,7 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
             if(WxCheckBoxFindHex->GetValue())
             {
                 sr=g_ActiveMadEdit->FindHexPrevious(text, rangeTo, rangeFrom);
-                RecordAsMadMacro(wxString::Format(wxT("FindHexPrevious(%s, %d, %d)"), text, rangeFrom, rangeTo));
+                RecordAsMadMacro(wxString::Format(wxT("FindHexPrevious(\"%s\", %d, %d)"), text, rangeFrom, rangeTo));
             }
             else
             {
@@ -454,10 +454,10 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
                     WxCheckBoxCaseSensitive->GetValue(),
                     WxCheckBoxWholeWord->GetValue(),
                     rangeTo, rangeFrom);
-                RecordAsMadMacro(wxString::Format(wxT("FindTextPrevious(%s, %s, %s, %s, %d, %d)"), text,
-                            WxCheckBoxRegex->GetValue(),
-                            WxCheckBoxCaseSensitive->GetValue(),
-                            WxCheckBoxWholeWord->GetValue(), rangeFrom, rangeTo));
+                RecordAsMadMacro(wxString::Format(wxT("FindTextPrevious(\"%s\", %s, %s, %s, %d, %d)"), text,
+                            WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
             }
 
             if(sr!=SR_NO)
@@ -863,7 +863,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         if(WxCheckBoxFindHex->GetValue())
         {
             ok = madedit->FindHexAll(expr, false, &begpos, &endpos);
-            RecordAsMadMacro(wxString::Format(wxT("FindHexAll(%s)"), expr));
+            RecordAsMadMacro(wxString::Format(wxT("FindHexAll(\"%s\")"), expr));
         }
         else
         {
@@ -873,10 +873,10 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                 WxCheckBoxWholeWord->GetValue(),
                 false,
                 &begpos, &endpos);
-            RecordAsMadMacro(wxString::Format(wxT("FindTextAll(%s, %s, %s, %s)"), expr,
-                            WxCheckBoxRegex->GetValue()?"True":"False",
-                            WxCheckBoxCaseSensitive->GetValue()?"True":"False",
-                            WxCheckBoxWholeWord->GetValue()?"True":"False"));
+            RecordAsMadMacro(wxString::Format(wxT("FindTextAll(\"%s\", %s, %s, %s)"), expr,
+                            WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
+                            WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False")));
         }
 
         if(ok<0) return;

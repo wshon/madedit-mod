@@ -1557,6 +1557,7 @@ void MadEdit::UpdateSelectionPos()
             }
         }
     }
+    //RecordAsMadMacro(wxString(wxT("UpdateSelectionPos()")));
 }
 
 //===========================================================================
@@ -3495,7 +3496,8 @@ void MadEdit::BeginUpdateSelection()
 
     if(int(m_CaretPos.rowid) > m_SelLastRow)
         m_SelLastRow = m_CaretPos.rowid;
-
+    //RecordAsMadMacro(wxString(wxT("BeginUpdateSelection(%s)")));
+    RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
 }
 
 void MadEdit::EndUpdateSelection(bool bSelection)
@@ -3545,6 +3547,9 @@ void MadEdit::EndUpdateSelection(bool bSelection)
 
         m_RepaintSelection = true;
         Refresh(false);
+        RecordAsMadMacro(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), m_CaretPos.pos, m_SelectionBegin->pos, m_SelectionEnd->pos));
+        //if(GetSelectionBeginPos() != -1 && GetSelectionEndPos() != -1)
+        //    RecordAsMadMacro(wxString::Format(wxT("SetSelection(%d, %d, False)"), GetSelectionBeginPos(), GetSelectionEndPos()));
     }
 }
 
@@ -7434,7 +7439,6 @@ void MadEdit::ProcessCommand(MadEditCommand command)
         break;
 
     default:
-        RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
         if(m_EditMode != emHexMode)
         {
             if(bSel)
@@ -7442,6 +7446,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
 
             if(command >= ecCharFirst && command <= ecCharLast)
             {
+                RecordAsMadMacro(wxString::Format(wxT("InsertWChar(%d)"), command));
                 ucs4_t uc=command;
                 
                 // check for AutoCompletePair
@@ -7541,6 +7546,11 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 }
             }
             else
+                if((command != ecIncreaseIndent) && (command != ecDecreaseIndent) &&
+                    (command != ecComment) && (command != ecUncomment))
+                {
+                    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(%d)"), command));
+                }
                 switch(command)
                 {
                 case ecLeft:
@@ -8314,17 +8324,29 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                     break;
 
                 case ecIncreaseIndent:
-                    IncreaseDecreaseIndent(true);
+                    {
+                        RecordAsMadMacro(wxString(wxT("IncreaseDecreaseIndent(True)")));
+                        IncreaseDecreaseIndent(true);
+                    }
                     break;
                 case ecDecreaseIndent:
-                    IncreaseDecreaseIndent(false);
+                    {
+                        RecordAsMadMacro(wxString(wxT("IncreaseDecreaseIndent(False)")));
+                        IncreaseDecreaseIndent(false);
+                    }
                     break;
 
                 case ecComment:
-                    CommentUncomment(true);
+                    {
+                        RecordAsMadMacro(wxString(wxT("CommentUncomment(True)")));
+                        CommentUncomment(true);
+                    }
                     break;
                 case ecUncomment:
-                    CommentUncomment(false);
+                    {
+                        RecordAsMadMacro(wxString(wxT("CommentUncomment(False)")));
+                        CommentUncomment(false);
+                    }
                     break;
 
                 case ecInsertTabChar:
