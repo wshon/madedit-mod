@@ -61,6 +61,7 @@ using std::list;
 
 static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr);
 extern void RecordAsMadMacro(wxString& script);
+extern void FromCmdToString(wxString &cmdStr, int madCmd);
 MadKeyBindings MadEdit::ms_KeyBindings;
 
 const int HexModeMaxColumns = 78;
@@ -7438,7 +7439,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
 
             if(command >= ecCharFirst && command <= ecCharLast)
             {
-                RecordAsMadMacro(wxString::Format(wxT("InsertWChar(%d)"), command));
+                RecordAsMadMacro(wxString::Format(wxT("InsertWChar(%d) #'%c'"), command, command));
                 ucs4_t uc=command;
                 
                 // check for AutoCompletePair
@@ -7541,7 +7542,10 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 if((command != ecIncreaseIndent) && (command != ecDecreaseIndent) &&
                     (command != ecComment) && (command != ecUncomment))
                 {
-                    RecordAsMadMacro(wxString::Format(wxT("ProcessCommand(0x%X)"), command));
+                    wxString cmdStr(wxT("ProcessCommand("));
+                    FromCmdToString(cmdStr, command);
+                    cmdStr<<wxT(")");                        
+                    RecordAsMadMacro(cmdStr);
                 }
                 switch(command)
                 {

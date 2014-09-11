@@ -13,10 +13,252 @@
 
 #include "MadEdit/MadEncoding.h"
 #include "MadEdit/MadEdit.h"
+#include "MadEdit/MadEditCommand.h"
+
 #include "MadEditFrame.h"
 
 extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
+
+// Ugly bigger switch than bigger map
+void FromCmdToString(wxString &cmdStr, int madCmd)
+{
+    switch(madCmd)
+    {
+        case ecCharFirst:
+            cmdStr<<(wxT("MadEditCommand.CharFirst"));
+            break;
+        case ecCharLast:
+            cmdStr<<(wxT("MadEditCommand.CharLast"));
+            break;
+        case ecCaretCommandFirst:
+            cmdStr<<(wxT("MadEditCommand.CaretCommandFirst"));
+            break;
+        case ecLeft:
+            cmdStr<<(wxT("MadEditCommand.Left"));
+            break;
+        case ecRight:
+            cmdStr<<(wxT("MadEditCommand.Right"));
+            break;
+        case ecUp:
+            cmdStr<<(wxT("MadEditCommand.Up"));
+            break;
+        case ecDown:
+            cmdStr<<(wxT("MadEditCommand.Down"));
+            break;
+        case ecBeginLine:
+            cmdStr<<(wxT("MadEditCommand.BeginLine"));
+            break;
+        case ecEndLine:
+            cmdStr<<(wxT("MadEditCommand.EndLine"));
+            break;
+        case ecBeginDoc:
+            cmdStr<<(wxT("MadEditCommand.BeginDoc"));
+            break;
+        case ecEndDoc:
+            cmdStr<<(wxT("MadEditCommand.EndDoc"));
+            break;
+        case ecPrevPage:
+            cmdStr<<(wxT("MadEditCommand.PrevPage"));
+            break;
+        case ecNextPage:
+            cmdStr<<(wxT("MadEditCommand.NextPage"));
+            break;
+        case ecPrevWord:
+            cmdStr<<(wxT("MadEditCommand.PrevWord"));
+            break;
+        case ecNextWord:
+            cmdStr<<(wxT("MadEditCommand.NextWord"));
+            break;
+        case ecLeftBrace:
+            cmdStr<<(wxT("MadEditCommand.LeftBrace"));
+            break;
+        case ecRightBrace:
+            cmdStr<<(wxT("MadEditCommand.RightBrace"));
+            break;
+        case ecCaretCommandLast:
+            cmdStr<<(wxT("MadEditCommand.CaretCommandLast"));
+            break;
+        case ecSelCommandFirst:
+            cmdStr<<(wxT("MadEditCommand.SelCommandFirst"));
+            break;
+        case ecSelLeft:
+            cmdStr<<(wxT("MadEditCommand.SelLeft"));
+            break;
+        case ecSelRight:
+            cmdStr<<(wxT("MadEditCommand.SelRight"));
+            break;
+        case ecSelUp:
+            cmdStr<<(wxT("MadEditCommand.SelUp"));
+            break;
+        case ecSelDown:
+            cmdStr<<(wxT("MadEditCommand.SelDown"));
+            break;
+        case ecSelBeginLine:
+            cmdStr<<(wxT("MadEditCommand.SelBeginLine"));
+            break;
+        case ecSelEndLine:
+            cmdStr<<(wxT("MadEditCommand.SelEndLine"));
+            break;
+        case ecSelBeginDoc:
+            cmdStr<<(wxT("MadEditCommand.SelBeginDoc"));
+            break;
+        case ecSelEndDoc:
+            cmdStr<<(wxT("MadEditCommand.SelEndDoc"));
+            break;
+        case ecSelPrevPage:
+            cmdStr<<(wxT("MadEditCommand.SelPrevPage"));
+            break;
+        case ecSelNextPage:
+            cmdStr<<(wxT("MadEditCommand.SelNextPage"));
+            break;
+        case ecSelPrevWord:
+            cmdStr<<(wxT("MadEditCommand.SelPrevWord"));
+            break;
+        case ecSelNextWord:
+            cmdStr<<(wxT("MadEditCommand.SelNextWord"));
+            break;
+        case ecSelLeftBrace:
+            cmdStr<<(wxT("MadEditCommand.SelLeftBrace"));
+            break;
+        case ecSelRightBrace:
+            cmdStr<<(wxT("MadEditCommand.SelRightBrace"));
+            break;
+        case ecSelCommandLast:
+            cmdStr<<(wxT("MadEditCommand.SelCommandLast"));
+            break;
+        case ecHighlightWords:
+            cmdStr<<(wxT("MadEditCommand.HighlightWords"));
+            break;
+        case ecSelectAll:
+            cmdStr<<(wxT("MadEditCommand.SelectAll"));
+            break;
+        case ecScrollLineUp:
+            cmdStr<<(wxT("MadEditCommand.ScrollLineUp"));
+            break;
+        case ecScrollLineDown:
+            cmdStr<<(wxT("MadEditCommand.ScrollLineDown"));
+            break;
+        case ecScrollPageUp:
+            cmdStr<<(wxT("MadEditCommand.ScrollPageUp"));
+            break;
+        case ecScrollPageDown:
+            cmdStr<<(wxT("MadEditCommand.ScrollPageDown"));
+            break;
+        case ecScrollLeft:
+            cmdStr<<(wxT("MadEditCommand.ScrollLeft"));
+            break;
+        case ecScrollRight:
+            cmdStr<<(wxT("MadEditCommand.ScrollRight"));
+            break;
+        case ecReturn:
+            cmdStr<<(wxT("MadEditCommand.Return"));
+            break;
+        case ecReturnNoIndent:
+            cmdStr<<(wxT("MadEditCommand.ReturnNoIndent"));
+            break;
+        case ecTab:
+            cmdStr<<(wxT("MadEditCommand.Tab"));
+            break;
+        case ecInsertTabChar:
+            cmdStr<<(wxT("MadEditCommand.InsertTabChar"));
+            break;
+        case ecDelete:
+            cmdStr<<(wxT("MadEditCommand.Delete"));
+            break;
+        case ecBackSpace:
+            cmdStr<<(wxT("MadEditCommand.BackSpace"));
+            break;
+        case ecDelPrevWord:
+            cmdStr<<(wxT("MadEditCommand.DelPrevWord"));
+            break;
+        case ecDelNextWord:
+            cmdStr<<(wxT("MadEditCommand.DelNextWord"));
+            break;
+        case ecCutLine:
+            cmdStr<<(wxT("MadEditCommand.CutLine"));
+            break;
+        case ecDeleteLine:
+            cmdStr<<(wxT("MadEditCommand.DeleteLine"));
+            break;
+        case ecUndo:
+            cmdStr<<(wxT("MadEditCommand.Undo"));
+            break;
+        case ecRedo:
+            cmdStr<<(wxT("MadEditCommand.Redo"));
+            break;
+        case ecCut:
+            cmdStr<<(wxT("MadEditCommand.Cut"));
+            break;
+        case ecCopy:
+            cmdStr<<(wxT("MadEditCommand.Copy"));
+            break;
+        case ecPaste:
+            cmdStr<<(wxT("MadEditCommand.Paste"));
+            break;
+        case ecToggleInsertMode:
+            cmdStr<<(wxT("MadEditCommand.ToggleInsertMode"));
+            break;
+        case ecTextMode:
+            cmdStr<<(wxT("MadEditCommand.TextMode"));
+            break;
+        case ecColumnMode:
+            cmdStr<<(wxT("MadEditCommand.ColumnMode"));
+            break;
+        case ecHexMode:
+            cmdStr<<(wxT("MadEditCommand.HexMode"));
+            break;
+        case ecNoWrap:
+            cmdStr<<(wxT("MadEditCommand.NoWrap"));
+            break;
+        case ecWrapByWindow:
+            cmdStr<<(wxT("MadEditCommand.WrapByWindow"));
+            break;
+        case ecWrapByColumn:
+            cmdStr<<(wxT("MadEditCommand.WrapByColumn"));
+            break;
+        case ecToggleWindow:
+            cmdStr<<(wxT("MadEditCommand.ToggleWindow"));
+            break;
+        case ecIncreaseIndent:
+            cmdStr<<(wxT("MadEditCommand.IncreaseIndent"));
+            break;
+        case ecDecreaseIndent:
+            cmdStr<<(wxT("MadEditCommand.DecreaseIndent"));
+            break;
+        case ecComment:
+            cmdStr<<(wxT("MadEditCommand.Comment"));
+            break;
+        case ecUncomment:
+            cmdStr<<(wxT("MadEditCommand.Uncomment"));
+            break;
+        case ecToUpperCase:
+            cmdStr<<(wxT("MadEditCommand.ToUpperCase"));
+            break;
+        case ecToLowerCase:
+            cmdStr<<(wxT("MadEditCommand.ToLowerCase"));
+            break;
+        case ecInvertCase:
+            cmdStr<<(wxT("MadEditCommand.InvertCase"));
+            break;
+        case ecToHalfWidth:
+            cmdStr<<(wxT("MadEditCommand.ToHalfWidth"));
+            break;
+        case ecToFullWidth:
+            cmdStr<<(wxT("MadEditCommand.ToFullWidth"));
+            break;
+        case ecInsertDateTime:
+            cmdStr<<(wxT("MadEditCommand.InsertDateTime"));
+            break;
+        case ecMouseNotify:
+            cmdStr<<(wxT("MadEditCommand.MouseNotify"));
+            break;
+    
+        default:
+            cmdStr<<(wxT("MadEditCommand.None)"));
+            break;
+    }
+}
 
 namespace mad_py = ::boost::python;
 namespace mad_python
@@ -1248,6 +1490,85 @@ BOOST_PYTHON_MODULE(madpython)
         .def("SetCaretPosition", &PyMadEdit::SetCaretPosition, SetCaretPosition_member_overloads( args("pos", "selbeg", "selend"), "Doc string" ))
         .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("ws", "line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
+        ;
+    enum_<MadEditCmd>("MadEditCommand")
+        .value("None", ecNone)
+        .value("CharFirst", ecCharFirst)
+        .value("CharLast", ecCharLast)
+        .value("CaretCommandFirst", ecCaretCommandFirst)
+        .value("Left", ecLeft)
+        .value("Right", ecRight)
+        .value("Up", ecUp)
+        .value("Down", ecDown)
+        .value("BeginLine", ecBeginLine)
+        .value("EndLine", ecEndLine)
+        .value("BeginDoc", ecBeginDoc)
+        .value("EndDoc", ecEndDoc)
+        .value("PrevPage", ecPrevPage)
+        .value("NextPage", ecNextPage)
+        .value("PrevWord", ecPrevWord)
+        .value("NextWord", ecNextWord)
+        .value("LeftBrace", ecLeftBrace)
+        .value("RightBrace", ecRightBrace)
+        .value("CaretCommandLast", ecCaretCommandLast)
+        .value("SelCommandFirst", ecSelCommandFirst)
+        .value("SelLeft", ecSelLeft)
+        .value("SelRight", ecSelRight)
+        .value("SelUp", ecSelUp)
+        .value("SelDown", ecSelDown)
+        .value("SelBeginLine", ecSelBeginLine)
+        .value("SelEndLine", ecSelEndLine)
+        .value("SelBeginDoc", ecSelBeginDoc)
+        .value("SelEndDoc", ecSelEndDoc)
+        .value("SelPrevPage", ecSelPrevPage)
+        .value("SelNextPage", ecSelNextPage)
+        .value("SelPrevWord", ecSelPrevWord)
+        .value("SelNextWord", ecSelNextWord)
+        .value("SelLeftBrace", ecSelLeftBrace)
+        .value("SelRightBrace", ecSelRightBrace)
+        .value("SelCommandLast", ecSelCommandLast)
+        .value("HighlightWords", ecHighlightWords)
+        .value("SelectAll", ecSelectAll)
+        .value("ScrollLineUp", ecScrollLineUp)
+        .value("ScrollLineDown", ecScrollLineDown)
+        .value("ScrollPageUp", ecScrollPageUp)
+        .value("ScrollPageDown", ecScrollPageDown)
+        .value("ScrollLeft", ecScrollLeft)
+        .value("ScrollRight", ecScrollRight)
+        .value("Return", ecReturn)
+        .value("ReturnNoIndent", ecReturnNoIndent)
+        .value("Tab", ecTab)
+        .value("InsertTabChar", ecInsertTabChar)
+        .value("Delete", ecDelete)
+        .value("BackSpace", ecBackSpace)
+        .value("DelPrevWord", ecDelPrevWord)
+        .value("DelNextWord", ecDelNextWord)
+        .value("CutLine", ecCutLine)
+        .value("DeleteLine", ecDeleteLine)
+        .value("Undo", ecUndo)
+        .value("Redo", ecRedo)
+        .value("Cut", ecCut)
+        .value("Copy", ecCopy)
+        .value("Paste", ecPaste)
+        .value("ToggleInsertMode", ecToggleInsertMode)
+        .value("TextMode", ecTextMode)
+        .value("ColumnMode", ecColumnMode)
+        .value("HexMode", ecHexMode)
+        .value("NoWrap", ecNoWrap)
+        .value("WrapByWindow", ecWrapByWindow)
+        .value("WrapByColumn", ecWrapByColumn)
+        .value("ToggleWindow", ecToggleWindow)
+        .value("IncreaseIndent", ecIncreaseIndent)
+        .value("DecreaseIndent", ecDecreaseIndent)
+        .value("Comment", ecComment)
+        .value("Uncomment", ecUncomment)
+        .value("ToUpperCase", ecToUpperCase)
+        .value("ToLowerCase", ecToLowerCase)
+        .value("InvertCase", ecInvertCase)
+        .value("ToHalfWidth", ecToHalfWidth)
+        .value("ToFullWidth", ecToFullWidth)
+        .value("InsertDateTime", ecInsertDateTime)
+        .value("MouseNotify", ecMouseNotify)
         ;
 }
 #endif //__MADPYTHON__

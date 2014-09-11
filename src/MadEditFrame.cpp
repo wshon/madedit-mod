@@ -1559,11 +1559,11 @@ CommandData CommandTable[]=
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Clearing out your history")},
     { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,        0},
     { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporary macro")},
-    { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Run MacroScript"),                               wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run saved macro script")},
+    { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                      wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run saved macro script")},
     { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_CHECK,    record_xpm_idx,  0,                    _("Start Recording")},
     { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_CHECK,    stop_xpm_idx,    0,                    _("Stop Recording")},
     { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_CHECK,    play_xpm_idx,    0,                    _("Playback")},
-    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro"),                 wxT(""),       wxITEM_CHECK,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
+    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_CHECK,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -5767,8 +5767,8 @@ void MadEditFrame::OnResetCurrResult(wxCommandEvent& event)
 {
     if (g_ActiveMadEdit)
     {
-    	g_MainFrame->ResetFindInFilesResults();
-	}
+        g_MainFrame->ResetFindInFilesResults();
+    }
 }
 
 void MadEditFrame::PurgeRecentFiles()

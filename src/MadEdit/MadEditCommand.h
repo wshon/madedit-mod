@@ -27,7 +27,7 @@
 using std::vector;
 using std::list;
 
-enum //MadEditCommand
+enum MadEditCmd//MadEditCommand
 {
     ecNone = 0,
 
