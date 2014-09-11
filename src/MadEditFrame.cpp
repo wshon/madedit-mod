@@ -138,8 +138,10 @@
 #include "../images/Mad_16x15.xpm"
 #define Mad_16x15_xpm_idx (hexmode_xpm_idx+1)
 
+#include "../images/runscript.xpm"
+#define runscript_xpm_idx (Mad_16x15_xpm_idx+1)
 #include "../images/record.xpm"
-#define record_xpm_idx (Mad_16x15_xpm_idx+1)
+#define record_xpm_idx (runscript_xpm_idx+1)
 #include "../images/stop.xpm"
 #define stop_xpm_idx (record_xpm_idx+1)
 #include "../images/play.xpm"
@@ -1564,12 +1566,12 @@ CommandData CommandTable[]=
 #endif
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Clearing out your history")},
     { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,           0},
-    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporary macro")},
+    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    runscript_xpm_idx, 0,                 _("Run temporary macro")},
     { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                     wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Load saved macro script")},
-    { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_NORMAL,    record_xpm_idx,  0,                    _("Start Recording")},
-    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_NORMAL,    stop_xpm_idx,    0,                    _("Stop Recording")},
-    { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                    _("Playback")},
-    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
+    { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_NORMAL,    record_xpm_idx,  0,                   _("Start Recording")},
+    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_NORMAL,    stop_xpm_idx,    0,                   _("Stop Recording")},
+    { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                   _("Playback")},
+    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                   _("Save Currently Recorded Macro")},
     { 0,               2, menuMadScriptList,      wxT("menuMadScriptList"),      _("Local Script List"),                             wxT(""),       wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacroScripts,    0},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
@@ -1915,6 +1917,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(columnmode_xpm));
     m_ImageList->Add(wxBitmap(hexmode_xpm));
     m_ImageList->Add(wxBitmap(Mad_16x15_xpm));
+    m_ImageList->Add(wxBitmap(runscript_xpm));
     m_ImageList->Add(wxBitmap(record_xpm));
     m_ImageList->Add(wxBitmap(stop_xpm));
     m_ImageList->Add(wxBitmap(playback_xpm));
@@ -2272,10 +2275,11 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Column Mode") );
     WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Hex Mode") );
     WxToolBar1->AddSeparator();
+    WxToolBar1->AddTool(menuRunTempMacro,  _T("RunTempMacro"),  m_ImageList->GetBitmap(runscript_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Run Temporary Macro") );
     WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Start Recording") );
-    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Stop Recording") );
-    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Playback") );
-    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Save Currently Recorded Macro") );
+    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Stop Recording") );
+    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Playback") );
+    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Save Currently Recorded Macro") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);

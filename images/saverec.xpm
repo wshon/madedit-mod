@@ -3,7 +3,7 @@ static const char *saverec_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 15 179 2",
 "z. c #E3DECE",
-"   c none",
+"   c None",
 "I  c #DED7C4",
 "W. c #EDE6D3",
 "v. c #DED7C6",
