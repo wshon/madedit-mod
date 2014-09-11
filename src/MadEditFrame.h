@@ -157,10 +157,11 @@ public:
     void OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event);
-	void OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event);
-	void OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event);
-	void OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event);
-	void OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MadScriptList(wxUpdateUIEvent& event);
 
     void OnFileNew(wxCommandEvent& event);
     void OnFileOpen(wxCommandEvent& event);
@@ -176,9 +177,9 @@ public:
     void OnFilePrint(wxCommandEvent& event);
     void OnFileRecentFile(wxCommandEvent& event);
     void OnFileExit(wxCommandEvent& event);
-	void OnCopyFilePath(wxCommandEvent& event);
-	void OnCopyFileName(wxCommandEvent& event);
-	void OnCopyFileDir(wxCommandEvent& event);
+    void OnCopyFilePath(wxCommandEvent& event);
+    void OnCopyFileName(wxCommandEvent& event);
+    void OnCopyFileDir(wxCommandEvent& event);
 
     void OnEditUndo(wxCommandEvent& event);
     void OnEditRedo(wxCommandEvent& event);
@@ -266,10 +267,11 @@ public:
     void OnToolsPurgeHistories(wxCommandEvent& event);
     void OnToolsRunTempMacro(wxCommandEvent& event);
     void OnToolsRunMacroFile(wxCommandEvent& event);
-	void OnToolsStartRecMacro(wxCommandEvent& event);
-	void OnToolsStopRecMacro(wxCommandEvent& event);
-	void OnToolsPlayRecMacro(wxCommandEvent& event);
-	void OnToolsSaveRecMacro(wxCommandEvent& event);
+    void OnToolsStartRecMacro(wxCommandEvent& event);
+    void OnToolsStopRecMacro(wxCommandEvent& event);
+    void OnToolsPlayRecMacro(wxCommandEvent& event);
+    void OnToolsSaveRecMacro(wxCommandEvent& event);
+    void OnToolsMadScriptList(wxCommandEvent& event);
 
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);
@@ -299,7 +301,7 @@ public:
 
     void OnCopyCurrResult(wxCommandEvent& event);
     void OnCopyAllResults(wxCommandEvent& event);
-	void OnResetCurrResult(wxCommandEvent& event);
+    void OnResetCurrResult(wxCommandEvent& event);
 private:
     bool m_PageClosing; // prevent from reentry of CloseFile(), OnNotebookPageClosing()
 public:
@@ -316,7 +318,7 @@ protected:
     void MadEditFrameClose(wxCloseEvent& event);
     void CreateGUIControls(void);
 
-	void OnNotebookPageChanging(wxAuiNotebookEvent& event);
+    void OnNotebookPageChanging(wxAuiNotebookEvent& event);
     void OnNotebookPageChanged(wxAuiNotebookEvent& event);
     void OnNotebookPageClosing(wxAuiNotebookEvent& event);
     void OnNotebookPageClosed(bool bZeroPage=false);//wxAuiNotebookEvent& event); //wxAUI doesn't support this event
@@ -347,31 +349,31 @@ public:
     void PurgeRecentFonts();
     void PurgeRecentEncodings();
 private:
-	enum MadMacroMode
-	{ emMacroStopped=0, emMacroRecoding, emMacroRunning };
-	MadMacroMode m_MadMacroStatus;
-	wxArrayString m_MadMacroScripts;
-	int m_LastSelBeg, m_LastSelEnd;
+    enum MadMacroMode
+    { emMacroStopped=0, emMacroRecoding, emMacroRunning };
+    MadMacroMode m_MadMacroStatus;
+    wxArrayString m_MadMacroScripts;
+    int m_LastSelBeg, m_LastSelEnd;
 public:
-	MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
-	bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
-	bool IsMacroRecording() {return (m_MadMacroStatus == emMacroRecoding);}
-	bool IsMacroStopped() {return (m_MadMacroStatus == emMacroStopped);}
-	void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
-	void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
-	void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
-	void AddMacroScript(wxString & script, int caretPos = 0, int selBeg = -1, int selEnd = -1)
-	{
-		if(((selBeg != -1) && (selEnd != -1)) && (selBeg != m_LastSelBeg || selEnd != m_LastSelEnd))
-		{
-			m_LastSelBeg = selBeg;
-			m_LastSelEnd = selEnd;
-			m_MadMacroScripts.Add(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), caretPos, m_LastSelBeg, m_LastSelEnd));
-		}
-		m_MadMacroScripts.Add(script);
-	}
-	bool HasRecordedScript() {return (m_MadMacroScripts.GetCount()>2);}
-	wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
+    MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
+    bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
+    bool IsMacroRecording() {return (m_MadMacroStatus == emMacroRecoding);}
+    bool IsMacroStopped() {return (m_MadMacroStatus == emMacroStopped);}
+    void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
+    void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
+    void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
+    void AddMacroScript(wxString & script, int caretPos = 0, int selBeg = -1, int selEnd = -1)
+    {
+        if(((selBeg != -1) && (selEnd != -1)) && (selBeg != m_LastSelBeg || selEnd != m_LastSelEnd))
+        {
+            m_LastSelBeg = selBeg;
+            m_LastSelEnd = selEnd;
+            m_MadMacroScripts.Add(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), caretPos, m_LastSelBeg, m_LastSelEnd));
+        }
+        m_MadMacroScripts.Add(script);
+    }
+    bool HasRecordedScript() {return (m_MadMacroScripts.GetCount()>2);}
+    wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
 };
 
 enum { // menu id
@@ -401,9 +403,9 @@ enum { // menu id
     menuReload,
     menuRecentFiles,
     menuCopyFilePath,
-	menuCopyFileName,
-	menuCopyFileDir,
-	menuCloseAllButThis,
+    menuCopyFileName,
+    menuCopyFileDir,
+    menuCloseAllButThis,
 
     // edit
     menuCutLine,
@@ -521,6 +523,9 @@ enum { // menu id
     menuStopRecMacro,
     menuPlayRecMacro,
     menuSaveRecMacro,
+    menuMadScriptList,
+    menuMadScrip1,
+    menuMadScrip1000 = menuMadScrip1+999, //1000 scripts, enough?
     menuPlugins,
     menuByteOrderMark,
     menuToggleBOM,

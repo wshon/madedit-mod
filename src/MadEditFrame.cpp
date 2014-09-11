@@ -36,6 +36,8 @@
 #include <wx/tokenzr.h>
 #include <wx/fontenum.h>
 #include <wx/filename.h>
+#include <wx/filefn.h>
+#include <wx/dir.h>
 #include <wx/fontdlg.h>
 #include <wx/textdlg.h>
 #include <wx/msgdlg.h>
@@ -199,6 +201,8 @@ wxMenu *g_Menu_Tools_NewLineChar = NULL;
 wxMenu *g_Menu_Tools_InsertNewLineChar = NULL;
 wxMenu *g_Menu_Tools_ConvertChineseChar = NULL;
 wxMenu *g_Menu_Tools_MadMacro = NULL;
+wxMenu *g_Menu_Tools_MadMacroScripts = NULL;
+
 
 wxArrayString g_FontNames;
 
@@ -1097,6 +1101,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuStopRecMacro, MadEditFrame::OnUpdateUI_StopRecMacro)
 	EVT_UPDATE_UI(menuPlayRecMacro, MadEditFrame::OnUpdateUI_PlayRecMacro)
 	EVT_UPDATE_UI(menuSaveRecMacro, MadEditFrame::OnUpdateUI_SaveRecMacro)
+	EVT_UPDATE_UI(menuMadScriptList, MadEditFrame::OnUpdateUI_MadScriptList)
 	EVT_UPDATE_UI(menuInsertNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsInsertNewLineChar)
 	EVT_UPDATE_UI(menuConvertToDOS, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToMAC, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
@@ -1216,6 +1221,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuStopRecMacro, MadEditFrame::OnToolsStopRecMacro)
 	EVT_MENU(menuPlayRecMacro, MadEditFrame::OnToolsPlayRecMacro)
 	EVT_MENU(menuSaveRecMacro, MadEditFrame::OnToolsSaveRecMacro)
+	EVT_MENU_RANGE(menuMadScrip1, menuMadScrip1000, MadEditFrame::OnToolsMadScriptList)
 	EVT_MENU(menuToggleBOM, MadEditFrame::OnToolsToggleBOM)
 	EVT_MENU(menuConvertToDOS, MadEditFrame::OnToolsConvertToDOS)
 	EVT_MENU(menuConvertToMAC, MadEditFrame::OnToolsConvertToMAC)
@@ -1557,13 +1563,14 @@ CommandData CommandTable[]=
     { 0,               1, menuFileAssociation,    wxT("menuFileAssociation"),    _("&File Type Associations..."),                    wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
 #endif
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Clearing out your history")},
-    { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,        0},
+    { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,           0},
     { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run temporary macro")},
-    { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                      wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Run saved macro script")},
-    { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_CHECK,    record_xpm_idx,  0,                    _("Start Recording")},
-    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_CHECK,    stop_xpm_idx,    0,                    _("Stop Recording")},
-    { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_CHECK,    play_xpm_idx,    0,                    _("Playback")},
-    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_CHECK,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
+    { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                     wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Load saved macro script")},
+    { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_NORMAL,    record_xpm_idx,  0,                    _("Start Recording")},
+    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_NORMAL,    stop_xpm_idx,    0,                    _("Stop Recording")},
+    { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                    _("Playback")},
+    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                    _("Save Currently Recorded Macro")},
+    { 0,               2, menuMadScriptList,      wxT("menuMadScriptList"),      _("Local Script List"),                             wxT(""),       wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacroScripts,    0},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -1921,8 +1928,8 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_FilePop->Append(menuSaveAs,       _("Save &As..."));
     g_Menu_FilePop->Append(menuReload,       _("&Reload File"));
     g_Menu_FilePop->Append(menuClose,        _("&Close File"));
-	g_Menu_FilePop->Append(menuCloseAll,     _("C&lose All"));
-	g_Menu_FilePop->Append(menuCloseAllButThis,     _("Close All BUT This"));
+    g_Menu_FilePop->Append(menuCloseAll,     _("C&lose All"));
+    g_Menu_FilePop->Append(menuCloseAllButThis,     _("Close All BUT This"));
     g_Menu_FilePop->Append(menuPrintPreview, _("Print Previe&w..."));
     g_Menu_FilePop->Append(menuPrint,        _("&Print..."));
     g_Menu_FilePop->AppendSeparator();
@@ -2006,6 +2013,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_Tools_InsertNewLineChar = new wxMenu((long)0);
     g_Menu_Tools_ConvertChineseChar = new wxMenu((long)0);
     g_Menu_Tools_MadMacro = new wxMenu((long)0);
+    g_Menu_Tools_MadMacroScripts = new wxMenu((long)0);
     g_Menu_View_Font0 = new wxMenu((long)0);
     g_Menu_View_Font1 = new wxMenu((long)0);
     g_Menu_View_Font2 = new wxMenu((long)0);
@@ -2102,7 +2110,28 @@ void MadEditFrame::CreateGUIControls(void)
             g_Menu_View_Syntax->Append(menuSyntax1+int(i), MadSyntax::GetSyntaxTitle(i));
         }
     }
+    {
+        // enum all madpython files under scripts
+        wxString scriptsLibDir = g_MadEditAppDir + wxT("scripts/"), filename;
+        if(wxDirExists(scriptsLibDir))
+        {
+            wxDir dir(scriptsLibDir);
+     
+            bool cont = dir.GetFirst(&filename, wxT("*.mpy"), wxDIR_FILES);
+            size_t i=0;
+            while(cont)
+            {
+                filename = scriptsLibDir + filename;
+                wxFileName fn(filename);
+                wxString name=fn.GetName();
 
+                g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1+int(i), fn.GetName());
+                ++i;
+
+                cont = dir.GetNext(&filename);
+            }
+        }
+    }
     {
         MadFontEnumerator fontenumerator;
         fontenumerator.EnumerateFacenames(); // get all fontnames
@@ -2244,9 +2273,9 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Hex Mode") );
     WxToolBar1->AddSeparator();
     WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Start Recording") );
-    WxToolBar1->AddTool(menuStopRecMacro, _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Stop Recording") );
-    WxToolBar1->AddTool(menuPlayRecMacro, _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Playback") );
-    WxToolBar1->AddTool(menuSaveRecMacro, _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Save Currently Recorded Macro") );
+    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Stop Recording") );
+    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Playback") );
+    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Save Currently Recorded Macro") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);
@@ -3506,65 +3535,42 @@ void MadEditFrame::OnUpdateUI_MenuWindow_CheckCount(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly());
 }
 
 void MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly())
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly());
 }
 
 void MadEditFrame::OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && !IsMacroRunning());
-    event.Check(g_ActiveMadEdit && IsMacroRecording());
 }
 
 void MadEditFrame::OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && IsMacroRecording());
-    event.Check(false);
 }
 
 void MadEditFrame::OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit && IsMacroStopped() && HasRecordedScript());
-    event.Check(g_ActiveMadEdit && IsMacroRunning());
 }
 
 void MadEditFrame::OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && IsMacroStopped() && HasRecordedScript());
-    event.Check(false);
+}
+
+void MadEditFrame::OnUpdateUI_MadScriptList(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit != NULL);
 }
 
 void MadEditFrame::OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event)
 {
-    if(g_ActiveMadEdit)
-    {
-        event.Enable(true);
-
-    }
-    else
-    {
-        event.Enable(false);
-    }
+    event.Enable(g_ActiveMadEdit != NULL);
 }
 //---------------------------------------------------------------------------
 
@@ -5315,34 +5321,19 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
 
         if(scriptfile.IsOpened())
         {
-            if(!g_EmbeddedPython)
-            {
-                try
-                {
-                    g_EmbeddedPython = new EmbeddedPython();
-                }
-                catch(std::bad_alloc &)
-                {
-                    wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
-                }
-            }
-            if(g_EmbeddedPython)
-            {
-                wxString str = scriptfile.GetFirstLine() + wxT("\n");
+            wxString str = scriptfile.GetFirstLine() + wxT("\n");
 
-                for ( ; !scriptfile.Eof();  )
-                {
-                    str << scriptfile.GetNextLine()<<wxT("\n");
-                }
-                if(str.IsNull()==false)
-                {
-                    MadMacroDlg dlg(this);
-                    dlg.SetPyScript(str);
-                    SetMacroRunning();
-                    dlg.ShowModal();
-                    SetMacroStopped();
-                    //g_EmbeddedPython->exec(std::string(str.mb_str()));
-                }
+            for ( ; !scriptfile.Eof();  )
+            {
+                str << scriptfile.GetNextLine()<<wxT("\n");
+            }
+            if(str.IsNull()==false)
+            {
+                MadMacroDlg dlg(this);
+                dlg.SetPyScript(str);
+                SetMacroRunning();
+                dlg.ShowModal();
+                SetMacroStopped();
             }
             scriptfile.Close();
         }
@@ -5447,7 +5438,46 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
             scriptfile.Close();
         }
     }
+}
 
+void MadEditFrame::OnToolsMadScriptList(wxCommandEvent& event)
+{
+    wxString filename = g_MadEditAppDir + wxT("scripts/");
+
+    int menuId = event.GetId();
+    filename += g_Menu_Tools_MadMacroScripts->GetLabelText(menuId) + wxT(".mpy");
+
+    wxTextFile scriptfile(filename);
+    scriptfile.Open();
+
+    if(scriptfile.IsOpened())
+    {
+        if(!g_EmbeddedPython)
+        {
+            try
+            {
+                g_EmbeddedPython = new EmbeddedPython();
+            }
+            catch(std::bad_alloc &)
+            {
+                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+            }
+        }
+        if(g_EmbeddedPython)
+        {
+            wxString str = scriptfile.GetFirstLine() + wxT("\n");
+
+            for ( ; !scriptfile.Eof();  )
+            {
+                str << scriptfile.GetNextLine()<<wxT("\n");
+            }
+            if(str.IsNull()==false)
+            {
+                g_EmbeddedPython->exec(std::string(str.mb_str()));
+            }
+        }
+        scriptfile.Close();
+    }
 }
 
 void MadEditFrame::OnToolsToggleBOM(wxCommandEvent& event)
