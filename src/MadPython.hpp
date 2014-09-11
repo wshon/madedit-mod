@@ -283,12 +283,19 @@ namespace mad_python
             }
             void ProcessCommand(int command)
             {
-                return g_ActiveMadEdit->ProcessCommand(command);
+                g_ActiveMadEdit->ProcessCommand(command);
             }
 
             void InsertWChar(int key)
             {
-                return g_ActiveMadEdit->ProcessCommand(key);
+                g_ActiveMadEdit->ProcessCommand(key);
+            }
+            void InsertStr(const std::string &str)
+            {
+                wxString wxStr(str.c_str(), wxConvLocal);
+                size_t len = wxStr.Length();
+                for(size_t i = 0; i<len; ++i)
+                    g_ActiveMadEdit->ProcessCommand(int(wxStr[i]));
             }
             void ScrollLineUp()
             {
@@ -333,36 +340,28 @@ namespace mad_python
                 wxString wxTitle(title.c_str(), wxConvLocal);
                 g_ActiveMadEdit->SetSyntax(wxTitle);
             }
-            MadSyntax* GetSyntax()
-            {
-                return g_ActiveMadEdit->GetSyntax();
-            }
-            std::string GetSyntaxTitle()
+            const std::string GetSyntaxTitle()
             {
                 wxString title = g_ActiveMadEdit->GetSyntaxTitle();
                 return std::string(title.mb_str());
-            }
-            void ApplySyntaxAttributes(MadSyntax *syn, bool matchTitle)
-            {
-                g_ActiveMadEdit->ApplySyntaxAttributes(syn, matchTitle);
             }
             void LoadDefaultSyntaxScheme()
             {
                 g_ActiveMadEdit->LoadDefaultSyntaxScheme();
             }
-            void SetEncoding(const wxString &encname)
+            void SetEncoding(const std::string &encname)
             {
                 if(encname.empty())
                     return;
                 wxString wxEncname(encname.c_str(), wxConvLocal);
                 g_ActiveMadEdit->SetEncoding(wxEncname);
             }
-            std::string GetEncodingName()
+            const std::string GetEncodingName()
             {
                 wxString desc = g_ActiveMadEdit->GetEncodingName();
                 return std::string(desc.mb_str());
             }
-            std::string GetEncodingDescription()
+            const std::string GetEncodingDescription()
             {
                 wxString desc = g_ActiveMadEdit->GetEncodingDescription();
                 return std::string(desc.mb_str());
@@ -453,9 +452,9 @@ namespace mad_python
                 return g_ActiveMadEdit->GetLineSpacing();
             }
 
-            void SetEditMode(MadEditMode mode)
+            void SetEditMode(int mode)
             {
-                g_ActiveMadEdit->SetEditMode(mode);
+                g_ActiveMadEdit->SetEditMode((MadEditMode)mode);
             }
 
             int GetEditMode()
@@ -503,9 +502,9 @@ namespace mad_python
                 return g_ActiveMadEdit->GetWantTab();
             }
 
-            void SetWordWrapMode(MadWordWrapMode mode)
+            void SetWordWrapMode(int mode)
             {
-                g_ActiveMadEdit->SetWordWrapMode(mode);
+                g_ActiveMadEdit->SetWordWrapMode((MadWordWrapMode)mode);
             }
             int GetWordWrapMode()
             {
@@ -599,9 +598,9 @@ namespace mad_python
                 return g_ActiveMadEdit->GetInsertMode();
             }
 
-            void SetCaretType(MadCaretType type)
+            void SetCaretType(int type)
             {
-                g_ActiveMadEdit->SetCaretType(type);
+                g_ActiveMadEdit->SetCaretType((MadCaretType)type);
             }
 
             bool GetMouseSelectToCopy()
@@ -634,17 +633,17 @@ namespace mad_python
             {
                 return g_ActiveMadEdit->GetMaxWordWrapWidth();
             }
-            int GetUCharWidth(ucs4_t uc)
+            int GetUCharWidth(int uc)
             {
-                return g_ActiveMadEdit->GetUCharWidth(uc);
+                return g_ActiveMadEdit->GetUCharWidth((ucs4_t)uc);
             }
-            int GetHexUCharWidth(ucs4_t uc)
+            int GetHexUCharWidth(int uc)
             {
-                return g_ActiveMadEdit->GetHexUCharWidth(uc);
+                return g_ActiveMadEdit->GetHexUCharWidth((ucs4_t)uc);
             }
-            int GetUCharType(ucs4_t uc)
+            int GetUCharType(int uc)
             {
-                return g_ActiveMadEdit->GetUCharType(uc);
+                return g_ActiveMadEdit->GetUCharType((ucs4_t)uc);
             }
 
             // all are zero-based
@@ -659,7 +658,7 @@ namespace mad_python
             {
                 return (int)g_ActiveMadEdit->GetCaretPosition();
             }
-            std::string GetFileName()
+            const std::string GetFileName()
             {
                 wxString name = g_ActiveMadEdit->GetFileName();
                 return std::string(name.mb_str());
@@ -699,13 +698,13 @@ namespace mad_python
                 return g_ActiveMadEdit->GetLineCount();
             }
 
-            void ConvertNewLineType(MadNewLineType type)
+            void ConvertNewLineType(int type)
             {
-                g_ActiveMadEdit->ConvertNewLineType(type);
+                g_ActiveMadEdit->ConvertNewLineType((MadNewLineType)type);
             }
-            void SetInsertNewLineType(MadNewLineType type)
+            void SetInsertNewLineType(int type)
             {
-                g_ActiveMadEdit->SetInsertNewLineType(type);
+				g_ActiveMadEdit->SetInsertNewLineType((MadNewLineType)type);
             }
 
             int GetNewLineType()
@@ -740,13 +739,13 @@ namespace mad_python
                 return g_ActiveMadEdit->IsTextFile();
             }
 
-            std::string GetSelText()
+            const std::string GetSelText()
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
                 return std::string(ws.mb_str());
             }
-            std::string GetText(bool ignoreBOM = true)
+            const std::string GetText(bool ignoreBOM = true)
             {
                 wxString ws;
                 g_ActiveMadEdit->GetText(ws, ignoreBOM);
@@ -763,23 +762,29 @@ namespace mad_python
 
             // line: zero based
             // return true for full line, false for partial line
-            bool GetLine(wxString &ws, int line, size_t maxlen = 0, bool ignoreBOM = true)
+            mad_py::tuple GetLine(int line, size_t maxlen = 0, bool ignoreBOM = true)
             {
-                return g_ActiveMadEdit->GetLine(ws, line, maxlen, ignoreBOM);
+                wxString wxWs;
+                bool ret = g_ActiveMadEdit->GetLine(wxWs, line, maxlen, ignoreBOM);
+                return mad_py::make_tuple(std::string(wxWs.mb_str()), ret);
             }
-            int GetLineByPos(const wxFileOffset &pos)
+            int GetLineByPos(int pos)
             {
                 return g_ActiveMadEdit->GetLineByPos(pos);
             }
 
-            void GetSelHexString(wxString &ws, bool withSpace)
+            const std::string GetSelHexString(bool withSpace)
             {
-                g_ActiveMadEdit->GetSelHexString(ws, withSpace);
+                wxString wxWs;
+                g_ActiveMadEdit->GetSelHexString(wxWs, withSpace);
+                return std::string(wxWs.mb_str());
             }
 
-            void GetWordFromCaretPos(wxString &ws)
+            const std::string GetWordFromCaretPos()
             {
-                g_ActiveMadEdit->GetWordFromCaretPos(ws);
+                wxString wxWs;
+                g_ActiveMadEdit->GetWordFromCaretPos(wxWs);
+                return std::string(wxWs.mb_str());
             }
 
             void Delete()
@@ -837,7 +842,7 @@ namespace mad_python
             {
                 return g_ActiveMadEdit->CanPaste();
             }
-            void CopyToClipboardB(std::string &txt)
+            void CopyToClipboardB(const std::string &txt)
             {
                 wxString text(txt.c_str(), wxConvLocal);
                 g_ActiveMadEdit->CopyToClipboard(text);
@@ -1310,7 +1315,7 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(LoadFromFile_member_overloads, LoadFromFi
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ToHalfWidth_member_overloads, ToHalfWidth, 0, 4)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ToFullWidth_member_overloads, ToFullWidth, 0, 4)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(SetCaretPosition_member_overloads, SetCaretPosition, 1, 3)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetLine_member_overloads, GetLine, 2, 4)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetLine_member_overloads, GetLine, 1, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetText_member_overloads, GetText, 0, 1)
 
 BOOST_PYTHON_MODULE(madpython)
@@ -1321,11 +1326,10 @@ BOOST_PYTHON_MODULE(madpython)
     class_<PyMadEdit>("MadEdit", "This class is a collection of wrapper functions of MadEdit.", init<>())
         .def("ProcessCommand", &PyMadEdit::ProcessCommand, "")
         .def("InsertWChar", &PyMadEdit::InsertWChar, "")
+        .def("InsertStr", &PyMadEdit::InsertStr, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
-        .def("GetSyntax", &PyMadEdit::GetSyntax, return_value_policy<reference_existing_object>(), "Get syntax information currently used")
         .def("GetSyntaxTitle", &PyMadEdit::GetSyntaxTitle, return_value_policy<return_by_value>(), "")
-        .def("ApplySyntaxAttributes", &PyMadEdit::ApplySyntaxAttributes, "")
         .def("LoadDefaultSyntaxScheme", &PyMadEdit::LoadDefaultSyntaxScheme, "")
         .def("SetEncoding", &PyMadEdit::SetEncoding, "")
         .def("GetEncodingName", &PyMadEdit::GetEncodingName, return_value_policy<return_by_value>(), "")
@@ -1411,7 +1415,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("SetText", &PyMadEdit::SetText, "")
         .def("GetLineByPos", &PyMadEdit::GetLineByPos, "")
         .def("GetSelHexString", &PyMadEdit::GetSelHexString, "")
-        .def("GetWordFromCaretPos", &PyMadEdit::GetWordFromCaretPos, "")
+        .def("GetWordFromCaretPos", &PyMadEdit::GetWordFromCaretPos, return_value_policy<return_by_value>(), "")
 
         .def("Delete", &PyMadEdit::Delete, "")
         .def("CutLine", &PyMadEdit::CutLine, "")
@@ -1488,7 +1492,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ToHalfWidth", &PyMadEdit::ToHalfWidth, ToHalfWidth_member_overloads( args("ascii", "japanese", "korean", "other"), "Doc string" ))
         .def("ToFullWidth", &PyMadEdit::ToFullWidth, ToFullWidth_member_overloads( args("ascii", "japanese", "korean", "other"), "Doc string" ))
         .def("SetCaretPosition", &PyMadEdit::SetCaretPosition, SetCaretPosition_member_overloads( args("pos", "selbeg", "selend"), "Doc string" ))
-        .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("ws", "line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
+        .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         ;
     enum_<MadEditCmd>("MadEditCommand")

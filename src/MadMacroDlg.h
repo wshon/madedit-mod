@@ -45,7 +45,7 @@ class MadMacroDlg : public wxDialog
 	
 	public:
 		
-		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = wxDEFAULT_DIALOG_STYLE ); 
+		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ); 
 		~MadMacroDlg();
 		void SetPyScript(wxString & pyscript);
 };

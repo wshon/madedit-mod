@@ -156,7 +156,7 @@
     #define GetAccelFromString(x) wxGetAccelFromString(x)
 #endif
 
-wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 alpha 4"));
+wxString g_MadEdit_Version(wxT("MadEdit mod 0.1.5 Beta"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
@@ -2120,15 +2120,30 @@ void MadEditFrame::CreateGUIControls(void)
         {
             wxDir dir(scriptsLibDir);
      
-            bool cont = dir.GetFirst(&filename, wxT("*.mpy"), wxDIR_FILES);
+            wxString hlp_prefix(wxT("####"));
             size_t i=0;
+			bool hasHelp = false;
+            bool cont = dir.GetFirst(&filename, wxT("*.mpy"), wxDIR_FILES);
             while(cont)
             {
                 filename = scriptsLibDir + filename;
+                wxString help, firstLine;
                 wxFileName fn(filename);
-                wxString name=fn.GetName();
 
-                g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1+int(i), fn.GetName());
+                wxTextFile scriptfile(filename);
+
+                scriptfile.Open();
+				hasHelp = false;
+                if(scriptfile.IsOpened())
+                {
+					firstLine = scriptfile.GetFirstLine();
+					hasHelp = firstLine.StartsWith(hlp_prefix, &help);
+				}
+
+				if (hasHelp)
+					g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName(), help);
+				else
+					g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName());
                 ++i;
 
                 cont = dir.GetNext(&filename);
@@ -2275,11 +2290,11 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Column Mode") );
     WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Hex Mode") );
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuRunTempMacro,  _T("RunTempMacro"),  m_ImageList->GetBitmap(runscript_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Run Temporary Macro") );
+    WxToolBar1->AddTool(menuRunTempMacro,  _T("RunTempMacro"),  m_ImageList->GetBitmap(runscript_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Run Temporary Macro") );
     WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Start Recording") );
-    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Stop Recording") );
-    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Playback") );
-    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Save Currently Recorded Macro") );
+    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Stop Recording") );
+    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Playback") );
+    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);
@@ -3544,7 +3559,7 @@ void MadEditFrame::OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly());
+    event.Enable(g_ActiveMadEdit != NULL);
 }
 
 void MadEditFrame::OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event)
@@ -5294,8 +5309,10 @@ void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
 
 void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)
 {
+    int id = m_Notebook->GetSelection();
     MadMacroDlg dlg(this);
     dlg.ShowModal();
+    m_Notebook->SetSelection(id);
 }
 
 void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)

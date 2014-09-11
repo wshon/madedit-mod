@@ -60,6 +60,16 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.1.5 beta 2014.9.10
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+New to alpha 4
+1. Add new image for Run TempMacro
+2. Change the MadMacro dialog to resizable
+3. Use scripts/ as the local script library directory. The scripts(*.mpy) under the directory would be
+listed on the menu.
+4. Use "####" in the first line of the script as help string of the script which would be shown at the
+status bar
+
 mod v0.1.5 alpha 4 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 3
