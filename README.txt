@@ -79,6 +79,7 @@ New to alpha 4
 listed on the menu.
 4. Use "####" as prefix of help string for the script in the first line of the script which would be shown at the
 status bar
+6. Remove and add new APIs in MadPython
 
 mod v0.1.5 alpha 4 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython

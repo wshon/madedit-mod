@@ -157,7 +157,7 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     m_pymacro->SetKeyWords(1, PythonWordlist2);
     bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
 
-    m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0|wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS );
+    m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER|wxWANTS_CHARS );
     bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
     
     m_run = new wxButton( this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -197,11 +197,13 @@ void MadMacroDlg::OnRun( wxCommandEvent& event )
             }
             catch(std::bad_alloc &)
             {
-                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR);
+                g_EmbeddedPython = 0;
             }
         }
         if(g_EmbeddedPython)
         {
+            m_output->Clear();
             wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
             g_MainFrame->SetMacroRunning();
             g_EmbeddedPython->exec(std::string(pystr.mb_str()));

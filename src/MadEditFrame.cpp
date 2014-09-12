@@ -5354,9 +5354,7 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
             {
                 MadMacroDlg dlg(this);
                 dlg.SetPyScript(str);
-                SetMacroRunning();
                 dlg.ShowModal();
-                SetMacroStopped();
             }
             scriptfile.Close();
         }
@@ -5396,9 +5394,7 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
             for(size_t i = 1; i < total; ++i)
                 pyscript += (medit+m_MadMacroScripts[i]+wxT("\n"));
             dlg.SetPyScript(pyscript);
-            SetMacroRunning();
             dlg.ShowModal();
-            SetMacroStopped();
         }
     }
 }
