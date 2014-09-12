@@ -60,14 +60,24 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
-mod v0.1.5 beta 2014.9.10
+mod v0.2.0 beta 2014.9.12
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+New to beta 1
+1. Replace the ugly code for single instance support with the IPC of wxWidgets
+2. Change the version number to 0.2.0 because of #1, which would not work with 0.1.x as Single Instance.
+3. Fixed critical issue issue introduced by supporting record macro in ProcessCommand(!)
+4. Fixed issue of extra script because of Search/Replace dialog using MadEdit as TextEdit
+5. Fixed issue of updating StartRecord on Toolbar
+6. Fixed issue of duplicated Find/Replace generated
+
+mod v0.1.5 beta 2014.9.11
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 4
 1. Add new image for Run TempMacro
 2. Change the MadMacro dialog to resizable
 3. Use scripts/ as the local script library directory. The scripts(*.mpy) under the directory would be
 listed on the menu.
-4. Use "####" in the first line of the script as help string of the script which would be shown at the
+4. Use "####" as prefix of help string for the script in the first line of the script which would be shown at the
 status bar
 
 mod v0.1.5 alpha 4 2014.9.10

@@ -687,12 +687,17 @@ MadSearchResult MadEdit::Search(/*IN_OUT*/MadCaretPos &beginpos, /*IN_OUT*/MadCa
         try
         {
             // Ugly patch for deadloop
-            ucs4_t bad_reg[3][2] =  {{'(',')'}, {'[',']'}, {'{','}'}};
+            ucs4_t bad_reg[3][2] =  {{'(',')'}, {'[',']'}, {'{','}'}}, transChar = '\\';
             for(int i = 0; i<3; ++i)
             {
                 ucs4_t *tpuc = &(bad_reg[i][0]);
                 ucs4string bstr(tpuc, tpuc+2);
-                if(exprstr.find(bstr) != std::string::npos) throw regex_error(regex_constants::error_badbrace, "Empty (), [] or {}");
+                ucs4string::size_type n = exprstr.find(bstr);
+                if(n != ucs4string::npos)
+                {
+                    if(n != 0 && (exprstr.at(n-1) != transChar ))
+                        throw regex_error(regex_constants::error_badbrace, "Empty (), [] or {}");
+                }
             }
             expression=ucs4comp.compile(exprstr, opt);
         }

@@ -15,6 +15,7 @@
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
+#include <wx/snglinst.h>
 
 IMPLEMENT_APP(MadEditApp)
 
@@ -59,6 +60,9 @@ int g_LanguageValue[]=
     wxLANGUAGE_RUSSIAN,
 };
 extern const size_t g_LanguageCount = sizeof(g_LanguageValue)/sizeof(int);
+//wxIMPLEMENT_APP(MadEditApp);
+const wxString g_MadServerStr = wxT("MadMainApp");
+const wxString g_MadTopicStr = wxT("single-instance");
 
 #ifdef __WXGTK__
 
@@ -145,7 +149,6 @@ void send_message(Window madedit_win, const wxString &msg)
 
 #endif
 
-
 void DeleteConfig()
 {
     if(g_DoNotSaveSettings==false)
@@ -176,12 +179,57 @@ void DeleteConfig()
     wxFileConfig::Set(NULL);
 }
 
+wxConnectionBase *MadAppSrv::OnAcceptConnection(const wxString& topic)
+{
+    if (topic.Lower() == g_MadTopicStr)
+    {
+        // Check that there are no modal dialogs active
+        wxWindowList::Node* node = wxTopLevelWindows.GetFirst();
+        while (node)
+        {
+            wxDialog* dialog = wxDynamicCast(node->GetData(), wxDialog);
+            if (dialog && dialog->IsModal())
+            {
+                return NULL;
+            }
+            node = node->GetNext();
+        }
+        return new MadAppConn();
+    }
+    else
+        return NULL;
+}
+
+// Opens a file passed from another instance
+bool MadAppConn::OnExecute(const wxString& WXUNUSED(topic), wxChar *data, int WXUNUSED(size), wxIPCFormat WXUNUSED(format))
+{
+    MadEditFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), MadEditFrame);
+    wxString filename(data);
+    if (filename.IsEmpty())
+    {
+        // Just raise the main window
+        if (frame)
+        {
+            frame->Restore();    // for minimized frame
+            frame->Raise();
+        }
+    }
+    else
+    {
+        // Check if the filename is already open,
+        // and raise that instead.
+        OnReceiveMessage(filename.c_str(), (filename.size()+1)*sizeof(wxChar));
+    }
+    return true;
+}
+
 bool MadEditApp::OnInit()
 {
     wxFileName filename(GetExecutablePath());
     filename.MakeAbsolute();
     g_MadEditAppDir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
-
+    
+    m_SigleAppChecker = 0;
 #ifdef __WXMSW__
     g_MadEditHomeDir=g_MadEditAppDir;
 #else //linux: ~/.madedit
@@ -195,7 +243,6 @@ bool MadEditApp::OnInit()
 
     //wxLogMessage(g_MadEditAppDir);
     //wxLogMessage(g_MadEditHomeDir);
-
 
     // parse commandline to filenames, every file is with a trailing char '|', ex: filename1|filename2|
     wxString filenames;
@@ -221,6 +268,48 @@ bool MadEditApp::OnInit()
     if(bSingleInstance)
     {
         // check SingleInstance and send filenames to previous MadEdit
+        wxString name = wxString::Format(wxT("MadEdit-%s"), wxGetUserId().GetData());
+
+        m_SigleAppChecker = new wxSingleInstanceChecker(name);
+        // If using a single instance, use IPC to
+        // communicate with the other instance
+        if (!m_SigleAppChecker->IsAnotherRunning())
+        {
+            // Create a new server
+            m_AppServer = new MadAppSrv;
+            if ( !m_AppServer->Create(g_MadServerStr))
+            {
+                wxLogDebug(_("Failed to create an IPC service."));
+            }
+        }
+        else
+        {
+            wxLogNull logNull;
+            // OK, there IS another one running, so try to connect to it
+            // and send it any filename before exiting.
+            MadAppClnt* client = new MadAppClnt;
+            // ignored under DDE, host name in TCP/IP based classes
+            wxString hostName = wxT("localhost");
+            // Create the connection
+            wxConnectionBase* connection = client->MakeConnection(hostName, g_MadServerStr, g_MadTopicStr);
+            if (connection)
+            {
+                // Ask the other instance to open a file or raise itself
+                connection->Execute(filenames);
+                connection->Disconnect();
+                delete connection;
+            }
+            else
+            {
+                wxMessageBox(_("Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry."),
+                    wxT("MadEdit"), wxICON_INFORMATION|wxOK);
+            }
+            g_DoNotSaveSettings = true;
+            DeleteConfig();
+            delete client;
+            return false;
+        }
+#if 0
 #ifdef __WXMSW__
         g_Mutex = CreateMutex(NULL, true, wxT("MadEdit_App"));
         if(GetLastError() == ERROR_ALREADY_EXISTS)
@@ -285,11 +374,11 @@ bool MadEditApp::OnInit()
             }
         }
 #elif defined(__WXGTK__)
-        g_Display=GDK_DISPLAY();
-        g_MadEdit_atom = XInternAtom(g_Display, "g_MadEdit_atom", False);
-        Window madedit_win;
+        //g_Display=GDK_DISPLAY();
+        //g_MadEdit_atom = XInternAtom(g_Display, "g_MadEdit_atom", False);
+        //Window madedit_win;
 
-        if ((madedit_win=XGetSelectionOwner(g_Display, g_MadEdit_atom))!=None)
+        //if ((madedit_win=XGetSelectionOwner(g_Display, g_MadEdit_atom))!=None)
         {
             send_message(madedit_win, filenames);
 
@@ -297,6 +386,7 @@ bool MadEditApp::OnInit()
             DeleteConfig();
             return false;
         }
+#endif
 #endif
     }
 
@@ -314,7 +404,6 @@ bool MadEditApp::OnInit()
         }
     }
 #endif
-
 
     // init locale
     wxString strlang;
@@ -444,5 +533,10 @@ bool MadEditApp::OnInit()
 int MadEditApp::OnExit()
 {
     // save settings in FrameClose();
+    if(m_SigleAppChecker)
+        delete m_SigleAppChecker;
+    if(m_AppServer)
+        delete m_AppServer;
+    
     return 0;
 }
