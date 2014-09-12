@@ -172,6 +172,8 @@ public:
     void OnFileClose(wxCommandEvent& event);
     void OnFileCloseAll(wxCommandEvent& event);
     void OnFileCloseAllButThis(wxCommandEvent& event);
+    void OnFileCloseAllToTheLeft(wxCommandEvent& event);
+    void OnFileCloseAllToTheRight(wxCommandEvent& event);
     void OnFilePageSetup(wxCommandEvent& event);
     void OnFilePrintPreview(wxCommandEvent& event);
     void OnFilePrint(wxCommandEvent& event);
@@ -406,6 +408,8 @@ enum { // menu id
     menuCopyFileName,
     menuCopyFileDir,
     menuCloseAllButThis,
+    menuCloseAllToTheLeft,
+    menuCloseAllToTheRight,
 
     // edit
     menuCutLine,

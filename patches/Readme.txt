@@ -1,0 +1,1 @@
+http://trac.wxwidgets.org/attachment/ticket/10848/

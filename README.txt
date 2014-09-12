@@ -62,13 +62,15 @@ Syntax files, Locale files and Settings:
 
 mod v0.2.0 beta 2014.9.12
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
-New to beta 1
+New to 0.1.5 beta
 1. Replace the ugly code for single instance support with the IPC of wxWidgets
 2. Change the version number to 0.2.0 because of #1, which would not work with 0.1.x as Single Instance.
 3. Fixed critical issue issue introduced by supporting record macro in ProcessCommand(!)
 4. Fixed issue of extra script because of Search/Replace dialog using MadEdit as TextEdit
 5. Fixed issue of updating StartRecord on Toolbar
 6. Fixed issue of duplicated Find/Replace generated
+7. Fixed issue of loading script with unicode characters, eg, unicode in comments
+8. Update translation of Simplified Chinese
 
 mod v0.1.5 beta 2014.9.11
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython

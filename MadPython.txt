@@ -44,10 +44,10 @@ double line feedings with single one
     me=MadEdit() # Create a MadEdit object
     me.GoToLine(10)
 
-4. Insert 10 "A"s at current caret position
+4. Insert 10 "A"s at current caret position(Or use InsertStr for unicode string----python only has string)
     me=MadEdit() # Create a MadEdit object
     for i in range(10):
-        me.InsertWChar(65)
+        me.InsertWChar(65) # Or me.InsertStr('A') or me.InsertStr("A")
 
 Supported method list:
 ----------------------
