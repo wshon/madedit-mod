@@ -224,8 +224,8 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
     {
         if(g_MainFrame->IsMacroRecording())
         {
-            g_MainFrame->AddMacroScript(script, (int)g_ActiveMadEdit->GetCaretPosition()
-                , (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
+            g_MainFrame->AddMacroScript(script, (int)g_ActiveMadEdit->GetCaretPosition(),
+                (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
         }
     }
 }
@@ -1938,11 +1938,13 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_FilePop->Append(menuSave,         _("&Save File"));
     g_Menu_FilePop->Append(menuSaveAs,       _("Save &As..."));
     g_Menu_FilePop->Append(menuReload,       _("&Reload File"));
+    g_Menu_FilePop->AppendSeparator();
     g_Menu_FilePop->Append(menuClose,        _("&Close File"));
     g_Menu_FilePop->Append(menuCloseAll,     _("C&lose All"));
     g_Menu_FilePop->Append(menuCloseAllButThis,    _("Close All BUT This"));
     g_Menu_FilePop->Append(menuCloseAllToTheLeft,  _("Close All To The Left"));
     g_Menu_FilePop->Append(menuCloseAllToTheRight, _("Close All To The Right"));
+    g_Menu_FilePop->AppendSeparator();    
     g_Menu_FilePop->Append(menuPrintPreview, _("Print Previe&w..."));
     g_Menu_FilePop->Append(menuPrint,        _("&Print..."));
     g_Menu_FilePop->AppendSeparator();
@@ -4964,6 +4966,10 @@ void MadEditFrame::OnViewFixedWidthMode(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetFixedWidthMode(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetFixedWidthMode(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetFixedWidthMode(False)")));
 }
 
 void MadEditFrame::OnViewTabColumn(wxCommandEvent& event)
@@ -4972,6 +4978,7 @@ void MadEditFrame::OnViewTabColumn(wxCommandEvent& event)
 
     int col=event.GetId()-menuTabColumn1 +1;
     g_ActiveMadEdit->SetTabColumns(col);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetTabColumns(%d)"), col));
 }
 
 void MadEditFrame::OnViewLineSpacing(wxCommandEvent& event)
@@ -4980,6 +4987,7 @@ void MadEditFrame::OnViewLineSpacing(wxCommandEvent& event)
 
     int ls=(event.GetId()-menuLineSpacing100)*5 + 100;
     g_ActiveMadEdit->SetLineSpacing(ls);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetLineSpacing(%d)"), ls));
 }
 
 void MadEditFrame::OnViewNoWrap(wxCommandEvent& event)
@@ -4987,18 +4995,21 @@ void MadEditFrame::OnViewNoWrap(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetWordWrapMode(wwmNoWrap);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetWordWrapMode(MadWordWrapMode.NoWrap)")));
 }
 void MadEditFrame::OnViewWrapByWindow(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetWordWrapMode(wwmWrapByWindow);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetWordWrapMode(MadWordWrapMode.WrapByWindow)")));
 }
 void MadEditFrame::OnViewWrapByColumn(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetWordWrapMode(wwmWrapByColumn);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetWordWrapMode(MadWordWrapMode.WrapByColumn)")));
 }
 
 void MadEditFrame::OnViewDisplayLineNumber(wxCommandEvent& event)
@@ -5006,36 +5017,62 @@ void MadEditFrame::OnViewDisplayLineNumber(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetDisplayLineNumber(event.IsChecked());
+    
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayLineNumber(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayLineNumber(False)")));
 }
 void MadEditFrame::OnViewShowEndOfLine(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetShowEndOfLine(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowEndOfLine(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowEndOfLine(False)")));
 }
+
 void MadEditFrame::OnViewShowTabChar(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetShowTabChar(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowTabChar(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowTabChar(False)")));
 }
 void MadEditFrame::OnViewShowSpaceChar(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetShowSpaceChar(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(False)")));
 }
 void MadEditFrame::OnViewMarkActiveLine(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetMarkActiveLine(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetMarkActiveLine(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetMarkActiveLine(False)")));
 }
 void MadEditFrame::OnViewMarkBracePair(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetMarkBracePair(event.IsChecked());
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetMarkBracePair(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetMarkBracePair(False)")));
 }
 
 void MadEditFrame::OnViewTextMode(wxCommandEvent& event)
@@ -5043,18 +5080,22 @@ void MadEditFrame::OnViewTextMode(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetEditMode(emTextMode);
+    
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.TextMode)")));
 }
 void MadEditFrame::OnViewColumnMode(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetEditMode(emColumnMode);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.ColumnMode)")));
 }
 void MadEditFrame::OnViewHexMode(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetEditMode(emHexMode);
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.HexMode)")));
 }
 
 
@@ -5546,21 +5587,21 @@ void MadEditFrame::OnToolsConvertToDOS(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltDOS);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertNewLineType(%d)"), nltDOS));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertNewLineType(MadNewLineType.Dos)")));
 }
 void MadEditFrame::OnToolsConvertToMAC(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltMAC);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertNewLineType(%d)"), nltMAC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertNewLineType(MadNewLineType.MAC)")));
 }
 void MadEditFrame::OnToolsConvertToUNIX(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->ConvertNewLineType(nltUNIX);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertNewLineType(%d)"), nltUNIX));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertNewLineType(MadNewLineType.UNIX)")));
 }
 
 void MadEditFrame::OnToolsInsertDOS(wxCommandEvent& event)
@@ -5568,21 +5609,21 @@ void MadEditFrame::OnToolsInsertDOS(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltDOS);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetInsertNewLineType(%d)"), nltDOS));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetInsertNewLineType(MadNewLineType.DOS)")));
 }
 void MadEditFrame::OnToolsInsertMAC(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltMAC);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetInsertNewLineType(%d)"), nltMAC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetInsertNewLineType(MadNewLineType.MAC)")));
 }
 void MadEditFrame::OnToolsInsertUNIX(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
 
     g_ActiveMadEdit->SetInsertNewLineType(nltUNIX);
-    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetInsertNewLineType(%d)"), nltUNIX));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetInsertNewLineType(MadNewLineType.UNIX)")));
 }
 
 
@@ -5617,35 +5658,35 @@ void MadEditFrame::OnToolsSimp2TradChinese(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     g_ActiveMadEdit->ConvertChinese(cefSC2TC);
-    //RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertChinese(%d)"), cefSC2TC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertChineseA(MadConvertEncodingFlag.SC2TC)")));
 }
 
 void MadEditFrame::OnToolsTrad2SimpChinese(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     g_ActiveMadEdit->ConvertChinese(cefTC2SC);
-    //RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertChinese(%d)"), cefTC2SC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertChineseA(MadConvertEncodingFlag.TC2SC)")));
 }
 
 void MadEditFrame::OnToolsKanji2TradChinese(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     g_ActiveMadEdit->ConvertChinese(cefJK2TC);
-    //RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertChinese(%d)"), cefJK2TC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertChineseA(MadConvertEncodingFlag.JK2TC)")));
 }
 
 void MadEditFrame::OnToolsKanji2SimpChinese(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     g_ActiveMadEdit->ConvertChinese(cefJK2SC);
-    //RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertChinese(%d)"), cefJK2SC));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertChineseA(MadConvertEncodingFlag.JK2SC)")));
 }
 
 void MadEditFrame::OnToolsChinese2Kanji(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     g_ActiveMadEdit->ConvertChinese(cefC2JK);
-    //RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertChinese(%d)"), cefC2JK));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ConvertChineseA(MadConvertEncodingFlag.C2JK)")));
 }
 
 void MadEditFrame::OnToolsSimp2TradClipboard(wxCommandEvent& event)

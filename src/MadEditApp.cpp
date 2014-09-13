@@ -492,7 +492,7 @@ bool MadEditApp::OnInit()
 
     myFrame->Show(true);
 
-
+#if 0
 #if defined(__WXGTK__)
     if(bSingleInstance)
     {
@@ -507,7 +507,7 @@ bool MadEditApp::OnInit()
         gdk_window_add_filter(NULL, my_gdk_filter, NULL);
     }
 #endif
-
+#endif
     // reload files previously opened
     wxString files;
     cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);

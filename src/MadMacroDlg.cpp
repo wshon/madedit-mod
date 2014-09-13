@@ -156,8 +156,9 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     m_pymacro->SetKeyWords(0, PythonWordlist1);
     m_pymacro->SetKeyWords(1, PythonWordlist2);
     bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
+    m_pymacro->SetText(wxString(wxT("#Create MadEdit Object for active edit\nmedit = MadEdit()\n\n")));
 
-    m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER|wxWANTS_CHARS );
+    m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER|wxWANTS_CHARS );
     bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
     
     m_run = new wxButton( this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );

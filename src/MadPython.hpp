@@ -329,8 +329,7 @@ namespace mad_python
 
             void GoToLine(int line)
             {
-                if(line > 0)
-                    g_ActiveMadEdit->GoToLine(line);
+                g_ActiveMadEdit->GoToLine(line);
             }
             
             void SetSyntax(const std::string &title)
@@ -1450,6 +1449,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("GotoNextBookmark", &PyMadEdit::GotoNextBookmark, "")
         .def("GotoPreviousBookmark", &PyMadEdit::GotoPreviousBookmark, "")
         .def("ConvertEncoding", &PyMadEdit::ConvertEncoding, "")
+        .def("ConvertChineseA", &PyMadEdit::ConvertChineseA, "")
         .def("HasBOM", &PyMadEdit::HasBOM, "")
         .def("ToggleBOM", &PyMadEdit::ToggleBOM, "")
         .def("IncreaseDecreaseIndent", &PyMadEdit::IncreaseDecreaseIndent, "")
@@ -1573,6 +1573,39 @@ BOOST_PYTHON_MODULE(madpython)
         .value("ToFullWidth", ecToFullWidth)
         .value("InsertDateTime", ecInsertDateTime)
         .value("MouseNotify", ecMouseNotify)
+        ;
+    enum_<MadWordWrapMode>("MadWordWrapMode")
+        .value("NoWrap", wwmNoWrap)
+        .value("WrapByWindow", wwmWrapByWindow)
+        .value("WrapByColumn", wwmWrapByColumn)
+        ;
+
+    enum_<MadEditMode>("MadEditMode")
+        .value("TextMode", emTextMode)
+        .value("ColumnMode", emColumnMode)
+        .value("HexMode", emHexMode)
+        ;
+
+    enum_<MadCaretType>("MadCaretType")
+        .value("VerticalLine", ctVerticalLine)
+        .value("HorizontalLine", ctHorizontalLine)
+        .value("Block", ctBlock)
+        ;
+
+    enum_<MadNewLineType>("MadNewLineType")
+        .value("Default", nltDefault)
+        .value("DOS", nltDOS) /*0D0A*/ 
+        .value("UNIX", nltUNIX) /*0A*/ 
+        .value("MAC", nltMAC) /*0D*/
+        ;
+
+    enum_<MadConvertEncodingFlag>("MadConvertEncodingFlag")
+        .value("None", cefNone)
+        .value("SC2TC", cefSC2TC)// Simplified Chinese  ==> Traditional Chinese
+        .value("TC2SC", cefTC2SC)// Traditional Chinese ==> Simplified Chinese
+        .value("JK2TC", cefJK2TC)// Japanese Kanji      ==> Traditional Chinese
+        .value("JK2SC", cefJK2SC)// Japanese Kanji      ==> Simplified Chinese
+        .value("C2JK", cefC2JK)  // Trad&Simp Chinese   ==> Japanese Kanji
         ;
 }
 #endif //__MADPYTHON__

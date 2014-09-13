@@ -687,7 +687,7 @@ MadSearchResult MadEdit::Search(/*IN_OUT*/MadCaretPos &beginpos, /*IN_OUT*/MadCa
         try
         {
             // Ugly patch for deadloop
-            ucs4_t bad_reg[3][2] =  {{'(',')'}, {'[',']'}, {'{','}'}}, transChar = '\\';
+            ucs4_t bad_reg[3][3] =  {{'(',')', 0}, {'[',']', 0}, {'{','}', 0}}, transChar = '\\';
             for(int i = 0; i<3; ++i)
             {
                 ucs4_t *tpuc = &(bad_reg[i][0]);
@@ -695,15 +695,15 @@ MadSearchResult MadEdit::Search(/*IN_OUT*/MadCaretPos &beginpos, /*IN_OUT*/MadCa
                 ucs4string::size_type n = exprstr.find(bstr);
                 if(n != ucs4string::npos)
                 {
-                    if(n != 0 && (exprstr.at(n-1) != transChar ))
+                    if(n==0 || (n != 0 && (exprstr.at(n-1) != transChar)))
                         throw regex_error(regex_constants::error_badbrace, "Empty (), [] or {}");
                 }
             }
             expression=ucs4comp.compile(exprstr, opt);
         }
-        catch(regex_error & e)
+        catch(regex_error &)
         {
-            wxMessageDialog dlg(this, wxString::Format(_("'%s' is not a valid regular expression.(Err:%s)"), text.c_str(), e.what()),
+            wxMessageDialog dlg(this, wxString::Format(_("'%s' is not a valid regular expression.(Or empty (), [] or {})"), text.c_str()),
                                 wxT("MadEdit"), wxOK|wxICON_ERROR );
             dlg.ShowModal();
             return SR_EXPR_ERROR;
