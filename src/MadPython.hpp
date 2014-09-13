@@ -691,6 +691,10 @@ namespace mad_python
                 g_ActiveMadEdit->GetSelectionLineId(beginline, endline);
                 return mad_py::make_tuple(beginline, endline);
             }
+            void SetSelection(int beginpos, wxFileOffset endpos, bool bCaretAtBeginPos = false)
+            {
+                g_ActiveMadEdit->SetSelection((wxFileOffset)beginpos, (wxFileOffset)endpos, bCaretAtBeginPos);
+            }
 
             int GetLineCount()
             {
@@ -1316,6 +1320,8 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ToFullWidth_member_overloads, ToFullWidth
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(SetCaretPosition_member_overloads, SetCaretPosition, 1, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetLine_member_overloads, GetLine, 1, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(GetText_member_overloads, GetText, 0, 1)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(SetSelection_member_overloads, SetSelection, 2, 3) 
+
 
 BOOST_PYTHON_MODULE(madpython)
 {
@@ -1493,6 +1499,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ToFullWidth", &PyMadEdit::ToFullWidth, ToFullWidth_member_overloads( args("ascii", "japanese", "korean", "other"), "Doc string" ))
         .def("SetCaretPosition", &PyMadEdit::SetCaretPosition, SetCaretPosition_member_overloads( args("pos", "selbeg", "selend"), "Doc string" ))
         .def("GetLine", &PyMadEdit::GetLine, GetLine_member_overloads( args("line", "maxlen", "ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
+        .def("SetSelection", &PyMadEdit::SetSelection, SetSelection_member_overloads( args("beginpos", "endpos", "bCaretAtBeginPos"), "Doc string" ))
         .def("GetText", &PyMadEdit::GetText, GetText_member_overloads( args("ignoreBOM"), "Doc string" )[return_value_policy<return_by_value>()])
         ;
     enum_<MadEditCmd>("MadEditCommand")

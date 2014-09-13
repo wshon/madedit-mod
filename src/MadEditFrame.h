@@ -370,7 +370,7 @@ public:
         {
             m_LastSelBeg = selBeg;
             m_LastSelEnd = selEnd;
-            m_MadMacroScripts.Add(wxString::Format(wxT("SetCaretPosition(%d, %d, %d)"), caretPos, m_LastSelBeg, m_LastSelEnd));
+            m_MadMacroScripts.Add(wxString::Format(wxT("SetSelection(%d, %d, True)"), m_LastSelBeg, m_LastSelEnd));
         }
         m_MadMacroScripts.Add(script);
     }
