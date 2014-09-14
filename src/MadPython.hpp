@@ -331,6 +331,13 @@ namespace mad_python
             {
                 g_ActiveMadEdit->GoToLine(line);
             }
+
+            void GoToLineColumn(int line, int column)
+            {
+                g_ActiveMadEdit->GoToLine(line);
+                for(int col = 0; col < (column-1); ++col) // no validate for input
+                    g_ActiveMadEdit->ProcessCommand(ecRight);
+            }
             
             void SetSyntax(const std::string &title)
             {
@@ -1333,6 +1340,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("InsertWChar", &PyMadEdit::InsertWChar, "")
         .def("InsertStr", &PyMadEdit::InsertStr, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
+        .def("GoToLineColumn", &PyMadEdit::GoToLineColumn, "Go To Line, Column of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
         .def("GetSyntaxTitle", &PyMadEdit::GetSyntaxTitle, return_value_policy<return_by_value>(), "")
         .def("LoadDefaultSyntaxScheme", &PyMadEdit::LoadDefaultSyntaxScheme, "")

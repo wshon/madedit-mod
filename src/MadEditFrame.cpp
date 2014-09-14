@@ -156,7 +156,7 @@
     #define GetAccelFromString(x) wxGetAccelFromString(x)
 #endif
 
-wxString g_MadEdit_Version(wxT("MadEdit mod 0.2.0"));
+wxString g_MadEdit_Version(wxT("MadEdit mod 0.2.0 beta 3"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditPv_URL(wxT("http://code.google.com/p/madedit-pv/"));
 
@@ -5391,6 +5391,35 @@ void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)
     MadMacroDlg dlg(this);
     dlg.ShowModal();
     m_Notebook->SetSelection(id);
+    //MadMacroDlg dlg(this);
+    //dlg.Show();
+    //dlg.SetFocus();
+    //dlg.Raise();
+    //m_Notebook->SetSelection(id);
+    #if 0
+	wxString title = g_ActiveMadEdit->GetFileName();
+    if(g_ActiveMadEdit!=NULL)
+    {
+        g_ActiveMadEdit->SetFocus();
+
+        if(g_ActiveMadEdit->IsModified() && title[title.Len()-1]!=wxT('*'))
+            title += wxT('*');
+
+        SetTitle(wxString(wxT("MadEdit - ["))+ title +wxString(wxT("] ")));
+
+        wxFileOffset pos = g_ActiveMadEdit->GetCaretPosition();
+        g_ActiveMadEdit->SetCaretPosition(pos);
+
+        OnEditSelectionChanged(g_ActiveMadEdit);
+        OnEditStatusChanged(g_ActiveMadEdit);
+
+
+        if(g_CheckModTimeForReload)
+        {
+            g_ActiveMadEdit->ReloadByModificationTime();
+        }
+    }
+    #endif
 }
 
 void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)

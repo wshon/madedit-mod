@@ -4,7 +4,7 @@
 About:
 -----
 MadEdit is a cross-platform Text/Hex Editor written in C++ & wxWidgets.
-MadEdit supports many useful functions, e.g. SyntaxHighlightings, WordWraps, 
+MadEdit supports many useful functions, e.g. SyntaxHighlightings, WordWraps,
 Encodings, Column/Hex Modes, and a Plugin system(not work yet).
 In HexMode, MadEdit can open large files which size is up to 32GB (INT_MAX*16).
 
@@ -33,32 +33,48 @@ B. MS Windows (__WXMSW__):
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
 
-P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD, 
+P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
       or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
 P.S.2: Since MadEdit v0.2.2, Xpressive is attached in MadEdit sources package.
+
+P.S.3 wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
+
 
 Syntax files, Locale files and Settings:
 ---------------------------------------
   Syntax files: in the path $(MadEditConfigPath)/syntax/
   Locale files: in the path $(MadEditConfigPath)/locale/
-  
+
   $(MadEditConfigPath) are the one of below paths:
     1. MadEdit execution file directory : Windows and Linux
     2. $(HOME)/.madedit/ : Linux
     3. /usr/share/madedit/ : Linux
-  
-  If MadEdit does not find any files in those paths, 
+
+  If MadEdit does not find any files in those paths,
   MadEdit can also execute standalone by using default settings.
-  
+
   If you are under Win98, you must get unicows.dll from MS's website:
   http://www.microsoft.com/downloads/details.aspx?FamilyId=73BA7BD7-ED06-4F0D-80A4-2A7EEAEE17E2&displaylang=en
-  
+
   When quit MadEdit, MadEdit will save the settings to:
     1. $(HOME)/.madedit/madedit.cfg: Linux
     2. $(MadEdit execution file directory)/MadEdit.cfg: Windows
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
+
+mod v0.2.0 beta 3
+Known issue: Caret would not show after run script. Workaroud: switch back and forth between files
+1. Fixed MadPython insert char issue in column mode
+2. Change behave while string has illegal zero. ie. change 0x00(NUL) to 0x2400 uncode NUL.
+
+mod v0.2.0 beta 2
+Known issue: MadPython not work well in column mode, eg. insert char in column mode
+1. Fixed wxAUIBook bug with patch(http://trac.wxwidgets.org/attachment/ticket/10848/)
+2. Add Close All To The Left/Right feature
+3. Add default sting in MadMacroDlg, say, medit = MadEdit()
+4. Fixed hang issue caused by empty (), [] and {} in regluar expression
+5. More missed commands was recorded, eg, SetEditMode
 
 mod v0.2.0 beta 2014.9.12
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
@@ -92,7 +108,7 @@ mod v0.1.5 alpha 3 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 2
 1. Fixed Assertion on wxEVT_MOUSE_CAPTURE_LOST
-2. Record/Stop/Playpack/SaveMacro is done(Known issue: SetCaretPosition would get wrong selection beginning 
+2. Record/Stop/Playpack/SaveMacro is done(Known issue: SetCaretPosition would get wrong selection beginning
 pos and duplicated SetCaretPosition). Not well tested.
 3. Added more apis
 4. Updated MadPython.txt
@@ -125,7 +141,7 @@ mod v0.1.2
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
 3. Add FreeBasic Syntax(wxMedit)
 
-  
+
 2014.02.13
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
@@ -142,7 +158,7 @@ mod v0.1.2
 2014.01.26
 1. Added support for open file and go to #line by command line arguments, use "FileName*linnum".
    '*' can not be used as filename in all OS for it's a wildcard char.
-   This feature can be used for multiple files open function in Madedit, eg. 
+   This feature can be used for multiple files open function in Madedit, eg.
    "FileName1*linnum1|FileName2*linnum2|FileName3*linnum3|..."
 
 2012.07.05
@@ -293,7 +309,7 @@ v0.1.7:
 
 v0.1.6:
 1.fixed that cannot search U+10000~U+10FFFF ucs4 char under win32.
-2.added Increase&Decrease Indent functions. 
+2.added Increase&Decrease Indent functions.
 When select multi-lines and press 'Tab' will Inc-Indent, and press 'Shift-Tab' will Dec-Indent.
 
 v0.1.5:

@@ -1643,6 +1643,7 @@ void MadEdit::CopyToClipboard()
 #endif
                 else
                 {
+                    if(!uc) uc = 0x2400; // change 0x00(NUL) to 0x2400 uncode NUL
                     ws<<wxChar(uc);
                     pos += ucqueue.front().second;
                     ucqueue.clear();
