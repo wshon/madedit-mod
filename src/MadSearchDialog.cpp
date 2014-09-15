@@ -25,6 +25,8 @@ extern wxStatusBar *g_StatusBar;   // add: gogo, 19.09.2009
 
 MadSearchDialog *g_SearchDialog=NULL;
 extern void RecordAsMadMacro(MadEdit *, wxString&);
+extern MadEdit *g_ActiveMadEdit;
+
 //----------------------------------------------------------------------------
 // MadSearchDialog
 //----------------------------------------------------------------------------
@@ -283,6 +285,8 @@ void MadSearchDialog::MadSearchDialogClose(wxCloseEvent& event)
 void MadSearchDialog::WxButtonCloseClick(wxCommandEvent& event)
 {
     Show(false);
+    if(g_ActiveMadEdit!=NULL)
+        g_ActiveMadEdit->Refresh(false);
 }
 
 /*
@@ -290,11 +294,6 @@ void MadSearchDialog::WxButtonCloseClick(wxCommandEvent& event)
  */
 void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
 {
-    extern MadEdit *g_ActiveMadEdit;
-
-    if(g_ActiveMadEdit==NULL)
-        return;
-
     // add: gogo, 19.09.2009
     g_StatusBar->SetStatusText( wxEmptyString, 0 );
     bool ThrEndOfFile = false;

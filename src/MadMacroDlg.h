@@ -8,14 +8,6 @@
 #ifndef __MADMACRODLG_H__
 #define __MADMACRODLG_H__
 
-#include <wx/artprov.h>
-#include <wx/xrc/xmlres.h>
-#include <wx/stc/stc.h>
-#include <wx/gdicmn.h>
-#include <wx/font.h>
-#include <wx/colour.h>
-#include <wx/settings.h>
-#include <wx/string.h>
 #include <wx/richtext/richtextctrl.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
@@ -23,7 +15,12 @@
 
 class EmbeddedPython;
 class wxStreamToTextRedirector;
+class MadEdit;
 ///////////////////////////////////////////////////////////////////////////
+////Dialog Style Start
+#undef MadMacroDlg_STYLE
+#define MadMacroDlg_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX
+////Dialog Style End
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MadMacroDlg
@@ -31,23 +28,35 @@ class wxStreamToTextRedirector;
 class MadMacroDlg : public wxDialog 
 {
 	private:
-	
+		DECLARE_EVENT_TABLE()
 	protected:
-		wxStyledTextCtrl* m_pymacro;
+		MadEdit* m_pymacro;
 		wxRichTextCtrl* m_output;
 		wxButton* m_run;
 		wxButton* m_close;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnRun( wxCommandEvent& event );
-		virtual void OnClose( wxCommandEvent& event ) ;
+		void MadMacroDlgClose(wxCloseEvent& event);
+		void OnRunClick( wxCommandEvent& event );
+		void OnCloseClick( wxCommandEvent& event ) ;
 		
 	
 	public:
-		
-		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER ); 
-		~MadMacroDlg();
+			enum {
+////GUI Enum Control ID Start
+			ID_WXBUTTONCLOSE = 13,
+			ID_WXBUTTONRUN = 12,
+
+////GUI Enum Control ID End
+            ID_MADEDIT=1500,
+
+   ID_DUMMY_VALUE_ //Dont Delete this DummyValue
+   }; //End of Enum
+		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("MadEdit Macro"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = MadMacroDlg_STYLE ); 
+		virtual ~MadMacroDlg();
 		void SetPyScript(wxString & pyscript);
 };
+
+extern MadMacroDlg * g_MadMacroDlg;
 
 #endif //__MADMACRODLG_H__

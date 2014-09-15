@@ -18,6 +18,7 @@
 #include "../images/down.xpm"
 
 MadReplaceDialog *g_ReplaceDialog=NULL;
+extern MadEdit *g_ActiveMadEdit;
 extern void RecordAsMadMacro(MadEdit *, wxString&);
 //----------------------------------------------------------------------------
 // MadReplaceDialog
@@ -274,6 +275,9 @@ void MadReplaceDialog::MadReplaceDialogClose(wxCloseEvent& event)
 void MadReplaceDialog::WxButtonCloseClick(wxCommandEvent& event)
 {
     Show(false);
+
+    if(g_ActiveMadEdit!=NULL)
+        g_ActiveMadEdit->Refresh(false);
 }
 
 /*
@@ -516,8 +520,6 @@ void MadReplaceDialog::OnRecentReplaceText(wxCommandEvent& event)
  */
 void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
 {
-    extern MadEdit *g_ActiveMadEdit;
-
     if(g_ActiveMadEdit==NULL)
         return;
 

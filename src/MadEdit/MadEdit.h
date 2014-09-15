@@ -757,6 +757,8 @@ public: // basic functions
         {
 #ifdef __WXMSW__
             return nltDOS;
+#elif __WXMAC__
+			return nltMAC;
 #else
             return nltUNIX;
 #endif
@@ -770,6 +772,8 @@ public: // basic functions
         {
 #ifdef __WXMSW__
             return nltDOS;
+#elif __WXMAC__
+			return nltMAC;
 #else
             return nltUNIX;
 #endif

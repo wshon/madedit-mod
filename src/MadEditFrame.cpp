@@ -5387,39 +5387,15 @@ void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
 
 void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)
 {
-    int id = m_Notebook->GetSelection();
-    MadMacroDlg dlg(this);
-    dlg.ShowModal();
-    m_Notebook->SetSelection(id);
-    //MadMacroDlg dlg(this);
-    //dlg.Show();
-    //dlg.SetFocus();
-    //dlg.Raise();
-    //m_Notebook->SetSelection(id);
-    #if 0
-	wxString title = g_ActiveMadEdit->GetFileName();
-    if(g_ActiveMadEdit!=NULL)
+    if(g_MadMacroDlg == NULL)
     {
-        g_ActiveMadEdit->SetFocus();
-
-        if(g_ActiveMadEdit->IsModified() && title[title.Len()-1]!=wxT('*'))
-            title += wxT('*');
-
-        SetTitle(wxString(wxT("MadEdit - ["))+ title +wxString(wxT("] ")));
-
-        wxFileOffset pos = g_ActiveMadEdit->GetCaretPosition();
-        g_ActiveMadEdit->SetCaretPosition(pos);
-
-        OnEditSelectionChanged(g_ActiveMadEdit);
-        OnEditStatusChanged(g_ActiveMadEdit);
-
-
-        if(g_CheckModTimeForReload)
-        {
-            g_ActiveMadEdit->ReloadByModificationTime();
-        }
+        g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
     }
-    #endif
+    g_MadMacroDlg->ShowModal();
+    if(g_ActiveMadEdit)
+    {
+        g_ActiveMadEdit->Refresh(false);
+    }
 }
 
 void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
@@ -5457,9 +5433,17 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
             }
             if(str.IsNull()==false)
             {
-                MadMacroDlg dlg(this);
-                dlg.SetPyScript(str);
-                dlg.ShowModal();
+                if(g_MadMacroDlg == NULL)
+                {
+                    g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
+                }
+                g_MadMacroDlg->SetPyScript(str);
+                g_MadMacroDlg->ShowModal();
+                if(g_ActiveMadEdit)
+                {
+                    g_ActiveMadEdit->Refresh(false);
+                    
+                }
             }
             scriptfile.Close();
         }
@@ -5493,13 +5477,24 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
         wxString medit(wxT("medit.")), pyscript;
         if (total>2) // Ignore the restore caret line and the comments
         {
-            MadMacroDlg dlg(this);
-            pyscript = wxString(wxT("#Create MadEdit Object for active edit\nmedit = MadEdit()\n\n"));
-            pyscript += m_MadMacroScripts[0]+wxT("\n");
+            if(g_MadMacroDlg == NULL)
+            {
+                g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
+            }
+
+			wxString endline(wxT("\r"));
+			if (g_ActiveMadEdit->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
+			else if (g_ActiveMadEdit->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
+			pyscript = wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline;
+			pyscript += m_MadMacroScripts[0] + endline;
             for(size_t i = 1; i < total; ++i)
-                pyscript += (medit+m_MadMacroScripts[i]+wxT("\n"));
-            dlg.SetPyScript(pyscript);
-            dlg.ShowModal();
+				pyscript += (medit + m_MadMacroScripts[i] + endline);
+			g_MadMacroDlg->SetPyScript(pyscript);
+            g_MadMacroDlg->ShowModal();
+            if(g_ActiveMadEdit)
+            {
+                g_ActiveMadEdit->Refresh(false);
+            }
         }
     }
 }
