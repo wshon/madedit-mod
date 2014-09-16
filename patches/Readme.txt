@@ -1,2 +1,1 @@
-1. Fix wrong tap order of AUINoteBook 
-http://trac.wxwidgets.org/attachment/ticket/10848/
+1. Fix wrong tap order of AUINoteBook http://trac.wxwidgets.org/attachment/ticket/10848/
