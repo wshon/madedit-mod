@@ -96,6 +96,7 @@ void MadAboutDialog::CreateGUIControls(void)
 	Center();
 	
     ////GUI Items Creation End
+    WxButtonOK->SetDefault();
 
     //restore wxFont
     #undef wxFont

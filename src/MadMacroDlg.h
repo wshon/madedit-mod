@@ -34,6 +34,7 @@ class MadMacroDlg : public wxDialog
 		wxTextCtrl* m_output;
 		wxButton* m_run;
 		wxButton* m_close;
+		bool m_debug;
 		
 		// Virtual event handlers, overide them in your derived class
 		void MadMacroDlgClose(wxCloseEvent& event);
@@ -52,9 +53,10 @@ class MadMacroDlg : public wxDialog
 
    ID_DUMMY_VALUE_ //Dont Delete this DummyValue
    }; //End of Enum
-		MadMacroDlg( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("MadEdit Macro"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = MadMacroDlg_STYLE ); 
+		MadMacroDlg( wxWindow* parent, bool debug = false, wxWindowID id = wxID_ANY, const wxString& title = _("MadEdit Macro"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = MadMacroDlg_STYLE ); 
 		virtual ~MadMacroDlg();
 		void SetPyScript(wxString & pyscript);
+        bool IsDebugOn() {return m_debug;}
 };
 
 extern MadMacroDlg * g_MadMacroDlg;

@@ -145,6 +145,7 @@ public:
     void OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewColumnMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewMacroDebugMode(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -260,6 +261,7 @@ public:
     void OnViewTextMode(wxCommandEvent& event);
     void OnViewColumnMode(wxCommandEvent& event);
     void OnViewHexMode(wxCommandEvent& event);
+    void OnViewMacroDebugMode(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -356,6 +358,7 @@ private:
     MadMacroMode m_MadMacroStatus;
     wxArrayString m_MadMacroScripts;
     int m_LastSelBeg, m_LastSelEnd;
+    bool m_MacroDebug;
 public:
     MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
     bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
@@ -512,6 +515,7 @@ enum { // menu id
     menuTextMode,
     menuColumnMode,
     menuHexMode,
+    menuMacroDebugMode,
 
     // tools
     menuOptions,

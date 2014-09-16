@@ -22,7 +22,7 @@ END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////
 
-MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxDialog(parent, id, title, pos, size, style)
 {
     //this->SetSizeHints( wxDefaultSize, wxDefaultSize );
     
@@ -41,15 +41,21 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     m_pymacro->SetText((wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
     bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
 
-    m_output = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER );
-    bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
+    m_debug = debug;
+    if (m_debug)
+    {
+        m_output = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER );
+        bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
+    }
+    else
+        m_output = 0;
     
     m_run = new wxButton( this, ID_WXBUTTONRUN, _("Run"), wxDefaultPosition, wxDefaultSize, 0 );
     bSizer6->Add( m_run, 0, wxALL, 5 );
     
     m_close = new wxButton( this, ID_WXBUTTONCLOSE, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
     bSizer6->Add( m_close, 0, wxALL, 5 );
-    
+    m_run->SetDefault();
     
     this->SetSizer( bSizer6 );
     this->Layout();
@@ -81,16 +87,25 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
         }
         if(g_EmbeddedPython)
         {
-            m_output->Clear();
-            wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
-            g_MainFrame->SetMacroRunning();
-            g_EmbeddedPython->exec(std::string(pystr.mb_str()));
-            g_MainFrame->SetMacroStopped();
+            if (m_debug)
+            {
+                wxStreamToTextRedirector redirector((wxTextCtrl *)m_output);
+                g_MainFrame->SetMacroRunning();
+                g_EmbeddedPython->exec(std::string(pystr.mb_str()));
+                g_MainFrame->SetMacroStopped();
+            }
+            else
+            {
+                g_MainFrame->SetMacroRunning();
+                g_EmbeddedPython->exec(std::string(pystr.mb_str()));
+                g_MainFrame->SetMacroStopped();                
+            }
         }
     }
 }
 void MadMacroDlg::OnCloseClick( wxCommandEvent& event ) 
 {
+    m_output->Clear();
     EndModal(ID_WXBUTTONCLOSE);
 }
 

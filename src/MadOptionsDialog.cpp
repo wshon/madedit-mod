@@ -701,6 +701,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	GetSizer()->Fit(this);
 	
     ////GUI Items Creation End
+    WxButtonOK->SetDefault();
 
     //restore wxFont
     #undef wxFont

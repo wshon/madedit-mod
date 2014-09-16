@@ -1098,6 +1098,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTextMode, MadEditFrame::OnUpdateUI_MenuViewTextMode)
 	EVT_UPDATE_UI(menuColumnMode, MadEditFrame::OnUpdateUI_MenuViewColumnMode)
 	EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
+	EVT_UPDATE_UI(menuMacroDebugMode, MadEditFrame::OnUpdateUI_MenuViewMacroDebugMode)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
@@ -1216,6 +1217,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTextMode, MadEditFrame::OnViewTextMode)
 	EVT_MENU(menuColumnMode, MadEditFrame::OnViewColumnMode)
 	EVT_MENU(menuHexMode, MadEditFrame::OnViewHexMode)
+	EVT_MENU(menuMacroDebugMode, MadEditFrame::OnViewMacroDebugMode)
 	// tools
 	EVT_MENU(menuOptions, MadEditFrame::OnToolsOptions)
 	EVT_MENU(menuHighlighting, MadEditFrame::OnToolsHighlighting)
@@ -1564,6 +1566,8 @@ CommandData CommandTable[]=
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
     { ecHexMode,      1, menuHexMode,           wxT("menuHexMode"),           _("&Hex Mode"),            wxT("Alt-3"),        wxITEM_CHECK,     hexmode_xpm_idx,    0,                         _("Change the editing mode to Hex-Mode")},
+    { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
+    { 0,              1, menuMacroDebugMode,    wxT("menuMacroDebugMode"),    _("&Macro Debug Mode"),    0,                   wxITEM_CHECK,     -1,                 0,                         _("Show Macro running output for debugging")},
 
     // Tools
     { 0, 0, 0, 0, _("&Tools"), 0, wxITEM_NORMAL, 0, &g_Menu_Tools, 0},
@@ -1786,6 +1790,7 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_MadMacroStatus = emMacroStopped;
     m_LastSelBeg = -1;
     m_LastSelEnd = -1;
+    m_MacroDebug = false;
     g_MainFrame=this;
 }
 
@@ -3479,6 +3484,11 @@ void MadEditFrame::OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()==emHexMode);
 }
+void MadEditFrame::OnUpdateUI_MenuViewMacroDebugMode(wxUpdateUIEvent& event)
+{
+    event.Enable(true);
+    event.Check(m_MacroDebug);
+}
 
 void MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event)
 {
@@ -5097,7 +5107,15 @@ void MadEditFrame::OnViewHexMode(wxCommandEvent& event)
     g_ActiveMadEdit->SetEditMode(emHexMode);
     RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.HexMode)")));
 }
-
+void MadEditFrame::OnViewMacroDebugMode(wxCommandEvent& event)
+{
+    m_MacroDebug = (!m_MacroDebug);
+    if(g_MadMacroDlg && (g_MadMacroDlg->IsDebugOn() != m_MacroDebug))
+    {
+        g_MadMacroDlg->Destroy();
+        g_MadMacroDlg = NULL;
+    }
+}
 
 void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 {
@@ -5389,8 +5407,8 @@ void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)
 {
     if(g_MadMacroDlg == NULL)
     {
-        g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
-    }
+        g_MadMacroDlg = new MadMacroDlg(this, m_MacroDebug);
+    }    
     g_MadMacroDlg->ShowModal();
     if(g_ActiveMadEdit)
     {
@@ -5435,8 +5453,8 @@ void MadEditFrame::OnToolsRunMacroFile(wxCommandEvent& event)
             {
                 if(g_MadMacroDlg == NULL)
                 {
-                    g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
-                }
+                    g_MadMacroDlg = new MadMacroDlg(this, m_MacroDebug);
+                }    
                 g_MadMacroDlg->SetPyScript(str);
                 g_MadMacroDlg->ShowModal();
                 if(g_ActiveMadEdit)
@@ -5479,7 +5497,7 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
         {
             if(g_MadMacroDlg == NULL)
             {
-                g_MadMacroDlg = (MadMacroDlg *) new MadMacroDlg(this);
+                g_MadMacroDlg = new MadMacroDlg(this, m_MacroDebug);
             }
 
 			wxString endline(wxT("\r"));

@@ -425,6 +425,7 @@ void MadHighlightingDialog::CreateGUIControls(void)
     WxListCtrlBC->SetColumnWidth( 0, wxLIST_AUTOSIZE );
     WxListCtrlFC->Show();
     WxListCtrlBC->Show();
+    WxButtonClose->SetDefault();
 }
 
 void MadHighlightingDialog::MadHighlightingDialogClose(wxCloseEvent& event)
