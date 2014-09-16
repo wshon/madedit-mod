@@ -68,8 +68,8 @@ This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
 2. Fixed MadPython insert char issue in column mode
 3. Change behave while string has illegal zero. ie. change 0x00(NUL) to 0x2400 uncode NUL
-4. Fixed Caret issue of search/replace: Caret would blink on wrong place, which would be shown in right place 
-if you iconize/restore the window
+4. Fixed Caret issue of search/replace(introduced by MadEdit): Caret would blink on wrong place, which 
+would be shown in right place if you iconize/restore the window
 5. Added MadPython syntax file and MadPython API added in the file
 
 mod v0.2.0 beta 2

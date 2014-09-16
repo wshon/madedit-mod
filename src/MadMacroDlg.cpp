@@ -88,8 +88,6 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
             g_MainFrame->SetMacroStopped();
         }
     }
-
-    EndModal(ID_WXBUTTONRUN); 
 }
 void MadMacroDlg::OnCloseClick( wxCommandEvent& event ) 
 {
