@@ -63,6 +63,14 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.2.0
+New to beta 3
+1. Replace wxRichTextCtrl with wxTextCtrl
+2. Add Macro debug mode, default off
+3. Close to clear output instead of clear on Run
+4. Add some default button for several dialogs
+5. URL changed to sourceforge.org
+
 mod v0.2.0 beta 3
 This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
