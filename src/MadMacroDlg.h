@@ -31,7 +31,7 @@ class MadMacroDlg : public wxDialog
 		DECLARE_EVENT_TABLE()
 	protected:
 		MadEdit* m_pymacro;
-		wxRichTextCtrl* m_output;
+		wxTextCtrl* m_output;
 		wxButton* m_run;
 		wxButton* m_close;
 		
