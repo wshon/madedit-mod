@@ -48,6 +48,7 @@
 ../src/MadUtils.cpp
 ../src/MadUtils.h
 ../src/MadPython.hpp
+../src/MadMacroDlg.cpp
 ../src/plugin.h
 ../src/MadPrintout.cpp
 ../src/MadPrintout.h

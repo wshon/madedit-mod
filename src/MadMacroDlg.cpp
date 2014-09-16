@@ -38,7 +38,7 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     wxString endline(wxT("\r"));
     if (m_pymacro->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
     else if (m_pymacro->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
-    m_pymacro->SetText((wxString(_("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
+    m_pymacro->SetText((wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
     bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
 
     m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER|wxWANTS_CHARS );
