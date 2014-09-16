@@ -30,26 +30,24 @@ MadMacroDlg::MadMacroDlg( wxWindow* parent, wxWindowID id, const wxString& title
     bSizer6 = new wxBoxSizer( wxVERTICAL );
 
     m_pymacro=new MadEdit(this, ID_MADEDIT, wxDefaultPosition, wxDefaultSize);
-    //m_pymacro->SetSingleLineMode(true);
-    //m_pymacro->SetEncoding(wxT("UTF-32LE"));
     m_pymacro->SetFixedWidthMode(false);
     m_pymacro->SetRecordCaretMovements(false);
     m_pymacro->SetInsertSpacesInsteadOfTab(false);
     m_pymacro->SetWantTab(false);
     m_pymacro->SetSyntax(wxT("MadPython"));
-	wxString endline(wxT("\r"));
-	if (m_pymacro->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
-	else if (m_pymacro->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
-    m_pymacro->SetText((wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
+    wxString endline(wxT("\r"));
+    if (m_pymacro->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
+    else if (m_pymacro->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
+    m_pymacro->SetText((wxString(_("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
     bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
 
     m_output = new wxRichTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER|wxWANTS_CHARS );
     bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
     
-    m_run = new wxButton( this, ID_WXBUTTONRUN, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
+    m_run = new wxButton( this, ID_WXBUTTONRUN, _("Run"), wxDefaultPosition, wxDefaultSize, 0 );
     bSizer6->Add( m_run, 0, wxALL, 5 );
     
-    m_close = new wxButton( this, ID_WXBUTTONCLOSE, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0 );
+    m_close = new wxButton( this, ID_WXBUTTONCLOSE, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
     bSizer6->Add( m_close, 0, wxALL, 5 );
     
     
@@ -65,8 +63,8 @@ MadMacroDlg::~MadMacroDlg()
 
 void MadMacroDlg::OnRunClick( wxCommandEvent& event )
 {
-	wxString pystr;
-	m_pymacro->GetText(pystr);
+    wxString pystr;
+    m_pymacro->GetText(pystr);
     if(!pystr.IsEmpty())
     {
         if(!g_EmbeddedPython)
@@ -77,7 +75,7 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
             }
             catch(std::bad_alloc &)
             {
-                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR);
+                wxMessageBox(_("Memory allocation failed"), _("Error"),  wxOK|wxICON_ERROR);
                 g_EmbeddedPython = 0;
             }
         }
@@ -91,11 +89,11 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
         }
     }
 
-    event.Skip(); 
+    EndModal(ID_WXBUTTONRUN); 
 }
 void MadMacroDlg::OnCloseClick( wxCommandEvent& event ) 
 {
-    Show(false);
+    EndModal(ID_WXBUTTONCLOSE);
 }
 
 void MadMacroDlg::SetPyScript(wxString & pyscript)
