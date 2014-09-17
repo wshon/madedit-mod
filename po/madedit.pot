@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-16 21:05+0800\n"
+"POT-Creation-Date: 2014-09-17 11:12+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgid "Hex Mode to Text/Column Mode"
 msgstr ""
 
 #: ../src/MadEdit/MadEditBasic.cpp:2263 ../src/MadEdit/MadEditBasic.cpp:2332
-#: ../src/MadEditFrame.cpp:3018
+#: ../src/MadEditFrame.cpp:3031
 msgid "The Parent Directory of this file does not exist:"
 msgstr ""
 
@@ -479,7 +479,7 @@ msgid "Convert the selection to halfwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1372 ../src/MadEditFrame.cpp:1996
-#: ../src/MadEditFrame.cpp:4401 ../src/MadEditFrame.cpp:4405
+#: ../src/MadEditFrame.cpp:4415 ../src/MadEditFrame.cpp:4419
 msgid "To Halfwidth by Options..."
 msgstr ""
 
@@ -496,7 +496,7 @@ msgid "Convert the selection to fullwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1374 ../src/MadEditFrame.cpp:1998
-#: ../src/MadEditFrame.cpp:4455 ../src/MadEditFrame.cpp:4459
+#: ../src/MadEditFrame.cpp:4469 ../src/MadEditFrame.cpp:4473
 msgid "To Fullwidth by Options..."
 msgstr ""
 
@@ -670,8 +670,8 @@ msgstr ""
 msgid "&View"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1410 ../src/MadEditFrame.cpp:3329
-#: ../src/MadEditFrame.cpp:3336
+#: ../src/MadEditFrame.cpp:1410 ../src/MadEditFrame.cpp:3342
+#: ../src/MadEditFrame.cpp:3349
 msgid "Encoding: "
 msgstr ""
 
@@ -679,13 +679,13 @@ msgstr ""
 msgid "All Encodings"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1413 ../src/MadEditFrame.cpp:3345
-#: ../src/MadEditFrame.cpp:3350
+#: ../src/MadEditFrame.cpp:1413 ../src/MadEditFrame.cpp:3358
+#: ../src/MadEditFrame.cpp:3363
 msgid "Syntax Type: "
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1415 ../src/MadEditFrame.cpp:3362
-#: ../src/MadEditFrame.cpp:3367
+#: ../src/MadEditFrame.cpp:1415 ../src/MadEditFrame.cpp:3375
+#: ../src/MadEditFrame.cpp:3380
 msgid "Font Name: "
 msgstr ""
 
@@ -717,8 +717,8 @@ msgstr ""
 msgid "[other]"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1424 ../src/MadEditFrame.cpp:3378
-#: ../src/MadEditFrame.cpp:3383
+#: ../src/MadEditFrame.cpp:1424 ../src/MadEditFrame.cpp:3391
+#: ../src/MadEditFrame.cpp:3396
 msgid "Font Size: "
 msgstr ""
 
@@ -742,8 +742,8 @@ msgstr ""
 msgid "Set/Unset the font with Fixed Width"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1502 ../src/MadEditFrame.cpp:3402
-#: ../src/MadEditFrame.cpp:3407
+#: ../src/MadEditFrame.cpp:1502 ../src/MadEditFrame.cpp:3415
+#: ../src/MadEditFrame.cpp:3420
 msgid "Tab Column: "
 msgstr ""
 
@@ -751,8 +751,8 @@ msgstr ""
 msgid "Set column of Tab char"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1521 ../src/MadEditFrame.cpp:3416
-#: ../src/MadEditFrame.cpp:3421
+#: ../src/MadEditFrame.cpp:1521 ../src/MadEditFrame.cpp:3429
+#: ../src/MadEditFrame.cpp:3434
 msgid "Line Spacing: "
 msgstr ""
 
@@ -856,95 +856,95 @@ msgstr ""
 msgid "Change the editing mode to Hex-Mode"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1570
-msgid "&Macro Debug Mode"
-msgstr ""
-
-#: ../src/MadEditFrame.cpp:1570
-msgid "Show Macro running output for debugging"
-msgstr ""
-
-#: ../src/MadEditFrame.cpp:1573
+#: ../src/MadEditFrame.cpp:1571
 msgid "&Tools"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1574
+#: ../src/MadEditFrame.cpp:1572
 msgid "&Options..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1574
+#: ../src/MadEditFrame.cpp:1572
 msgid "Change the configuration"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1575
+#: ../src/MadEditFrame.cpp:1573
 msgid "&Syntax Highlighting Settings..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1575
+#: ../src/MadEditFrame.cpp:1573
 msgid "Change syntax highlighting settings"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1577
+#: ../src/MadEditFrame.cpp:1575
 msgid "&File Type Associations..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1577
+#: ../src/MadEditFrame.cpp:1575
 msgid "Change file type associations"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1579
+#: ../src/MadEditFrame.cpp:1577
 msgid "&Purge Histories..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1579
+#: ../src/MadEditFrame.cpp:1577
 msgid "Clearing out your history"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1580
+#: ../src/MadEditFrame.cpp:1578
 msgid "&Macros"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1581
+#: ../src/MadEditFrame.cpp:1579
 msgid "Run TemporayMacro"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1581
+#: ../src/MadEditFrame.cpp:1579
 msgid "Run temporary macro"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1582
+#: ../src/MadEditFrame.cpp:1580
 msgid "Load Saved MacroScript..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1582
+#: ../src/MadEditFrame.cpp:1580
 msgid "Load saved macro script"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1583 ../src/MadEditFrame.cpp:2311
+#: ../src/MadEditFrame.cpp:1581 ../src/MadEditFrame.cpp:2311
 msgid "Start Recording"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1584 ../src/MadEditFrame.cpp:2312
+#: ../src/MadEditFrame.cpp:1582 ../src/MadEditFrame.cpp:2312
 msgid "Stop Recording"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1585 ../src/MadEditFrame.cpp:2313
+#: ../src/MadEditFrame.cpp:1583 ../src/MadEditFrame.cpp:2313
 msgid "Playback"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1586
+#: ../src/MadEditFrame.cpp:1584
 msgid "Save Currently Recorded Macro..."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1586 ../src/MadEditFrame.cpp:2314
+#: ../src/MadEditFrame.cpp:1584 ../src/MadEditFrame.cpp:2314
 msgid "Save Currently Recorded Macro"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1587
+#: ../src/MadEditFrame.cpp:1585
 msgid "Local Script List"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1589 ../src/MadEditFrame.cpp:3503
+#: ../src/MadEditFrame.cpp:1587
+msgid "Macro Debug Mode"
+msgstr ""
+
+#: ../src/MadEditFrame.cpp:1587
+msgid "Show Macro running output for debugging"
+msgstr ""
+
+#: ../src/MadEditFrame.cpp:1589 ../src/MadEditFrame.cpp:3511
 msgid "Has Unicode BOM (Byte-Order Mark)"
 msgstr ""
 
@@ -956,7 +956,7 @@ msgstr ""
 msgid "Add/Remove Unicode BOM"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1592 ../src/MadEditFrame.cpp:3518
+#: ../src/MadEditFrame.cpp:1592 ../src/MadEditFrame.cpp:3526
 msgid "NewLine Char (File Format): "
 msgstr ""
 
@@ -984,7 +984,7 @@ msgstr ""
 msgid "Convert the file format to UNIX format"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1596 ../src/MadEditFrame.cpp:3540
+#: ../src/MadEditFrame.cpp:1596 ../src/MadEditFrame.cpp:3548
 msgid "Press Enter to Insert NewLine Char: "
 msgstr ""
 
@@ -1330,7 +1330,7 @@ msgstr ""
 msgid "New File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2278 ../src/MadEditFrame.cpp:3659
+#: ../src/MadEditFrame.cpp:2278 ../src/MadEditFrame.cpp:3673
 msgid "Open File"
 msgstr ""
 
@@ -1410,7 +1410,7 @@ msgstr ""
 msgid "Wrap Lines by Max Columns"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2306 ../src/MadOptionsDialog.cpp:430
+#: ../src/MadEditFrame.cpp:2306 ../src/MadOptionsDialog.cpp:435
 msgid "Text Mode"
 msgstr ""
 
@@ -1418,7 +1418,7 @@ msgstr ""
 msgid "Column Mode"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2308 ../src/MadOptionsDialog.cpp:454
+#: ../src/MadEditFrame.cpp:2308 ../src/MadOptionsDialog.cpp:459
 msgid "Hex Mode"
 msgstr ""
 
@@ -1434,118 +1434,118 @@ msgstr ""
 msgid "Information Window"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2948
+#: ../src/MadEditFrame.cpp:2961
 #, c-format
 msgid "NoName%d"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2999
+#: ../src/MadEditFrame.cpp:3012
 msgid "This is a Directory:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3008
+#: ../src/MadEditFrame.cpp:3021
 msgid "This file does not exist:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3026
+#: ../src/MadEditFrame.cpp:3039
 msgid "Cannot access this file:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3071
+#: ../src/MadEditFrame.cpp:3084
 msgid "Cannot load this file:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3336 ../src/MadEditFrame.cpp:3350
-#: ../src/MadEditFrame.cpp:3367 ../src/MadEditFrame.cpp:3383
-#: ../src/MadEditFrame.cpp:3407 ../src/MadEditFrame.cpp:3421
-#: ../src/MadEditFrame.cpp:3535 ../src/MadEditFrame.cpp:3557
-#: ../src/MadOptionsDialog.cpp:459 ../src/MadConvEncDialog.cpp:85
+#: ../src/MadEditFrame.cpp:3349 ../src/MadEditFrame.cpp:3363
+#: ../src/MadEditFrame.cpp:3380 ../src/MadEditFrame.cpp:3396
+#: ../src/MadEditFrame.cpp:3420 ../src/MadEditFrame.cpp:3434
+#: ../src/MadEditFrame.cpp:3543 ../src/MadEditFrame.cpp:3565
+#: ../src/MadOptionsDialog.cpp:464 ../src/MadConvEncDialog.cpp:85
 msgid "None"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3507 ../src/MadEditFrame.cpp:3513
+#: ../src/MadEditFrame.cpp:3515 ../src/MadEditFrame.cpp:3521
 msgid "Has No Unicode BOM (Byte-Order Mark)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3894
+#: ../src/MadEditFrame.cpp:3908
 msgid ""
 "There was a problem previewing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3894
+#: ../src/MadEditFrame.cpp:3908
 msgid "Previewing"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3898
+#: ../src/MadEditFrame.cpp:3912
 msgid "MadEdit Print Preview"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3923
+#: ../src/MadEditFrame.cpp:3937
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3923
+#: ../src/MadEditFrame.cpp:3937
 msgid "Printing"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4397 ../src/MadEditFrame.cpp:4451
+#: ../src/MadEditFrame.cpp:4411 ../src/MadEditFrame.cpp:4465
 msgid "ASCII characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4397 ../src/MadEditFrame.cpp:4451
+#: ../src/MadEditFrame.cpp:4411 ../src/MadEditFrame.cpp:4465
 msgid "Japanese characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4398 ../src/MadEditFrame.cpp:4452
+#: ../src/MadEditFrame.cpp:4412 ../src/MadEditFrame.cpp:4466
 msgid "Korean characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4398 ../src/MadEditFrame.cpp:4452
+#: ../src/MadEditFrame.cpp:4412 ../src/MadEditFrame.cpp:4466
 msgid "other characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4401 ../src/MadEditFrame.cpp:4405
-#: ../src/MadEditFrame.cpp:4455 ../src/MadEditFrame.cpp:4459
+#: ../src/MadEditFrame.cpp:4415 ../src/MadEditFrame.cpp:4419
+#: ../src/MadEditFrame.cpp:4469 ../src/MadEditFrame.cpp:4473
 msgid "Choose the characters you want to convert:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4776
+#: ../src/MadEditFrame.cpp:4790
 msgid "Line Number: (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4776
+#: ../src/MadEditFrame.cpp:4790
 msgid "Go To Line"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4801
+#: ../src/MadEditFrame.cpp:4815
 msgid "Position: (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4801
+#: ../src/MadEditFrame.cpp:4815
 msgid "Go To Position"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5430 ../src/MadEditFrame.cpp:5531
+#: ../src/MadEditFrame.cpp:5435 ../src/MadEditFrame.cpp:5536
 msgid "Open Mad Macro File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5545
+#: ../src/MadEditFrame.cpp:5550
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5545
+#: ../src/MadEditFrame.cpp:5550
 msgid "Warning"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5600 ../src/MadMacroDlg.cpp:84
+#: ../src/MadEditFrame.cpp:5605 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5856
+#: ../src/MadEditFrame.cpp:5871
 msgid "Press OK to visit our HomePage."
 msgstr ""
 
@@ -1577,7 +1577,7 @@ msgstr ""
 
 #: ../src/MadFileAssociationDialog.cpp:401
 #: ../src/MadHighlightingDialog.cpp:339 ../src/MadPurgeHistoryDialog.cpp:95
-#: ../src/MadOptionsDialog.cpp:651 ../src/MadConvEncDialog.cpp:103
+#: ../src/MadOptionsDialog.cpp:656 ../src/MadConvEncDialog.cpp:103
 #: ../src/MadAboutDialog.cpp:86
 msgid "&Cancel"
 msgstr ""
@@ -1623,7 +1623,7 @@ msgid "&Enable Replace"
 msgstr ""
 
 #: ../src/MadFindInFilesDialog.cpp:152 ../src/MadSearchDialog.cpp:160
-#: ../src/MadReplaceDialog.cpp:141 ../src/MadMacroDlg.cpp:56
+#: ../src/MadReplaceDialog.cpp:141 ../src/MadMacroDlg.cpp:62
 msgid "Close"
 msgstr ""
 
@@ -1941,344 +1941,344 @@ msgid ""
 "Do not save settings to MadEdit.cfg when MadEdit closed (this session only)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:312
+#: ../src/MadOptionsDialog.cpp:310
+msgid "Purge History while existing"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:311
+msgid "MS Sans Serif"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:317
 msgid "Edit"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:325
+#: ../src/MadOptionsDialog.cpp:330
 msgid "Max line length before Line-Wrap (must restart MadEdit)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:336
+#: ../src/MadOptionsDialog.cpp:341
 msgid "Columns of Wrap-By-Column"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:347
+#: ../src/MadOptionsDialog.cpp:352
 msgid "Columns of Tab"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:358
+#: ../src/MadOptionsDialog.cpp:363
 msgid "Columns of Indent"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:369
+#: ../src/MadOptionsDialog.cpp:374
 msgid "Format of Date/Time"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:377
+#: ../src/MadOptionsDialog.cpp:382
 msgid "Use English instead of current locale"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:384
+#: ../src/MadOptionsDialog.cpp:389
 msgid "Insert Space char instead of Tab char"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:388
+#: ../src/MadOptionsDialog.cpp:393
 msgid "Auto Indent"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:392
+#: ../src/MadOptionsDialog.cpp:397
 msgid "Auto complete character pair"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:399
+#: ../src/MadOptionsDialog.cpp:404
 msgid "Auto copy the mouse-selected text to clipboard  ("
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:403
+#: ../src/MadOptionsDialog.cpp:408
 msgid "Enable"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:407
+#: ../src/MadOptionsDialog.cpp:412
 msgid "Disable"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:411
+#: ../src/MadOptionsDialog.cpp:416
 msgid "when pressing Ctrl key)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:415
+#: ../src/MadOptionsDialog.cpp:420
 msgid "Paste text from clipboard when pressing middle mouse button"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:421
+#: ../src/MadOptionsDialog.cpp:426
 msgid "Print"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:434
+#: ../src/MadOptionsDialog.cpp:439
 msgid "Print Syntax Highlighter"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:438
+#: ../src/MadOptionsDialog.cpp:443
 msgid "Print Line Number"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:442
+#: ../src/MadOptionsDialog.cpp:447
 msgid "Print End of Line"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:446
+#: ../src/MadOptionsDialog.cpp:451
 msgid "Print Tab Char"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:450
+#: ../src/MadOptionsDialog.cpp:455
 msgid "Print Space Char"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:460
+#: ../src/MadOptionsDialog.cpp:465
 msgid "First Page Only"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:461
+#: ../src/MadOptionsDialog.cpp:466
 msgid "Every Page"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:462
+#: ../src/MadOptionsDialog.cpp:467
 msgid "Print Offset Header"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:470
+#: ../src/MadOptionsDialog.cpp:475
 msgid "Page Header"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:474
+#: ../src/MadOptionsDialog.cpp:479
 msgid "Print Page Header"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:481 ../src/MadOptionsDialog.cpp:528
+#: ../src/MadOptionsDialog.cpp:486 ../src/MadOptionsDialog.cpp:533
 msgid "Left:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:493 ../src/MadOptionsDialog.cpp:540
+#: ../src/MadOptionsDialog.cpp:498 ../src/MadOptionsDialog.cpp:545
 msgid "Center:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:505 ../src/MadOptionsDialog.cpp:552
+#: ../src/MadOptionsDialog.cpp:510 ../src/MadOptionsDialog.cpp:557
 msgid "Right:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:517
+#: ../src/MadOptionsDialog.cpp:522
 msgid "Page Footer"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:566
+#: ../src/MadOptionsDialog.cpp:571
 msgid "Keys"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:585
+#: ../src/MadOptionsDialog.cpp:590
 msgid "Hint:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:600
+#: ../src/MadOptionsDialog.cpp:605
 msgid "Assigned Keys:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:612
+#: ../src/MadOptionsDialog.cpp:617
 msgid "New Key:"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:625
+#: ../src/MadOptionsDialog.cpp:630
 msgid "<== Add Key"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:629
+#: ../src/MadOptionsDialog.cpp:634
 msgid "==> Delete Key"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:633
+#: ../src/MadOptionsDialog.cpp:638
 msgid "Show the Key in Menu"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:640
+#: ../src/MadOptionsDialog.cpp:645
 msgid "Reset all keys to default (must restart MadEdit)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:656
+#: ../src/MadOptionsDialog.cpp:661
 msgid "[%Y/%m/%d %I:%M:%S %p] 2007/02/24 08:30:55 AM"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:658
-msgid "[%a, %d %b %Y %H:%M:%S %z] RFC822 timestamp"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:660
-#, c-format
-msgid "[%a] Abbreviated weekday name"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:661
-#, c-format
-msgid "[%A] Full weekday name"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:662
-msgid "[%b] Abbreviated month name"
-msgstr ""
-
 #: ../src/MadOptionsDialog.cpp:663
-msgid "[%B] Full month name"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:664
-#, c-format
-msgid "[%c] Date and time representation appropriate for locale"
+msgid "[%a, %d %b %Y %H:%M:%S %z] RFC822 timestamp"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:665
 #, c-format
-msgid "[%d] Day of month as decimal number (01 - 31)"
+msgid "[%a] Abbreviated weekday name"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:666
-msgid "[%H] Hour in 24-hour format (00 - 23)"
+#, c-format
+msgid "[%A] Full weekday name"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:667
-msgid "[%I] Hour in 12-hour format (01 - 12)"
+msgid "[%b] Abbreviated month name"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:668
-msgid "[%j] Day of year as decimal number (001 - 366)"
+msgid "[%B] Full month name"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:669
 #, c-format
-msgid "[%m] Month as decimal number (01 - 12)"
+msgid "[%c] Date and time representation appropriate for locale"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:670
-msgid "[%M] Minute as decimal number (00 - 59)"
+#, c-format
+msgid "[%d] Day of month as decimal number (01 - 31)"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:671
+msgid "[%H] Hour in 24-hour format (00 - 23)"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:672
+msgid "[%I] Hour in 12-hour format (01 - 12)"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:673
+msgid "[%j] Day of year as decimal number (001 - 366)"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:674
+#, c-format
+msgid "[%m] Month as decimal number (01 - 12)"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:675
+msgid "[%M] Minute as decimal number (00 - 59)"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:676
 #, c-format
 msgid "[%p] Current locale's A.M./P.M. indicator for 12-hour clock"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:672
+#: ../src/MadOptionsDialog.cpp:677
 #, c-format
 msgid "[%S] Second as decimal number (00 - 59)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:673
+#: ../src/MadOptionsDialog.cpp:678
 msgid ""
 "[%U] Week of year as decimal number, with Sunday as first day of week (00 - "
 "53)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:674
+#: ../src/MadOptionsDialog.cpp:679
 msgid "[%w] Weekday as decimal number (0 - 6; Sunday is 0)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:675
+#: ../src/MadOptionsDialog.cpp:680
 msgid ""
 "[%W] Week of year as decimal number, with Monday as first day of week (00 - "
 "53)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:676
+#: ../src/MadOptionsDialog.cpp:681
 #, c-format
 msgid "[%x] Date representation for current locale"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:677
+#: ../src/MadOptionsDialog.cpp:682
 #, c-format
 msgid "[%X] Time representation for current locale"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:678
+#: ../src/MadOptionsDialog.cpp:683
 msgid "[%y] Year without century, as decimal number (00 - 99)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:679
+#: ../src/MadOptionsDialog.cpp:684
 msgid "[%Y] Year with century, as decimal number"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:680
+#: ../src/MadOptionsDialog.cpp:685
 msgid "[%z] Time-zone name"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:681
+#: ../src/MadOptionsDialog.cpp:686
 msgid "[%Z] Time-zone abbreviation"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:684
+#: ../src/MadOptionsDialog.cpp:689
 #, c-format
 msgid "[%f] &File Name"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:685
+#: ../src/MadOptionsDialog.cpp:690
 #, c-format
 msgid "[%p] &Path Name"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:687
+#: ../src/MadOptionsDialog.cpp:692
 #, c-format
 msgid "[%n] Page &Number"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:688
+#: ../src/MadOptionsDialog.cpp:693
 #, c-format
 msgid "[%s] Total Page&s"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:690
+#: ../src/MadOptionsDialog.cpp:695
 #, c-format
 msgid "[%d] &Date"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:691
+#: ../src/MadOptionsDialog.cpp:696
 msgid "[%t] &Time"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:693
-msgid "Purge History while existing"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:694
-msgid "MS Sans Serif"
-msgstr ""
-
-#: ../src/MadOptionsDialog.cpp:697
+#: ../src/MadOptionsDialog.cpp:698
 msgid "Options"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:709 ../src/MadOptionsDialog.cpp:945
+#: ../src/MadOptionsDialog.cpp:710 ../src/MadOptionsDialog.cpp:947
 msgid "System Default"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:794
+#: ../src/MadOptionsDialog.cpp:796
 msgid ""
 "Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry "
 "from Windows Registry)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:818
+#: ../src/MadOptionsDialog.cpp:820
 msgid "Commands"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:820
+#: ../src/MadOptionsDialog.cpp:822
 msgid "Menu"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:821
+#: ../src/MadOptionsDialog.cpp:823
 msgid "Editor"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1090
+#: ../src/MadOptionsDialog.cpp:1095
 #, c-format
 msgid "Invalid value of \"%s\""
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1186
+#: ../src/MadOptionsDialog.cpp:1191
 msgid "Cannot assign key to this item"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1283
+#: ../src/MadOptionsDialog.cpp:1288
 msgid "This key is not assigned"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1307
+#: ../src/MadOptionsDialog.cpp:1312
 #, c-format
 msgid "This key is assigned to [%s]"
 msgstr ""
@@ -2359,14 +2359,14 @@ msgstr ""
 msgid "About MadEdit"
 msgstr ""
 
-#: ../src/MadMacroDlg.h:56
+#: ../src/MadMacroDlg.h:59
 msgid "MadEdit Macro"
 msgstr ""
 
-#: ../src/MadMacroDlg.cpp:53
+#: ../src/MadMacroDlg.cpp:59
 msgid "Run"
 msgstr ""
 
-#: ../src/MadMacroDlg.cpp:84
+#: ../src/MadMacroDlg.cpp:91
 msgid "Error"
 msgstr ""

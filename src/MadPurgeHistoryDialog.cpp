@@ -60,7 +60,7 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	this->SetAutoLayout(true);
 
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
-	WxStaticBoxSizer1->Add(WxBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
+	WxStaticBoxSizer1->Add(WxBoxSizer1, 1, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
 
 	wxCheckBoxRecentFiles = new wxCheckBox(this, ID_WXCHECKBOXRECENTFILES, _("Recent Files"), wxPoint(35, 5), wxSize(151, 16), 0, wxDefaultValidator, wxT("wxCheckBoxRecentFiles"));
 	WxBoxSizer1->Add(wxCheckBoxRecentFiles, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
@@ -87,7 +87,7 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	WxBoxSizer1->Add(wxCheckBoxRecentSearchedExcludeFilters, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
 
 	WxBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-	WxStaticBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
+	WxStaticBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 
 	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(5, 5), wxSize(75, 25), 0, wxDefaultValidator, wxT("WxButtonOK"));
 	WxBoxSizer2->Add(WxButtonOK, 0, wxALIGN_CENTER | wxALL, 5);

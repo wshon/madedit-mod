@@ -25,9 +25,13 @@ END_EVENT_TABLE()
 MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxDialog(parent, id, title, pos, size, style)
 {
     //this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-    
-    wxBoxSizer* bSizer6;
-    bSizer6 = new wxBoxSizer( wxVERTICAL );
+	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(this, wxID_ANY, wxT(""));
+	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
+	this->SetSizer(WxStaticBoxSizer1);
+	this->SetAutoLayout(true);
+
+    bSizer1 = new wxBoxSizer( wxVERTICAL );
+	WxStaticBoxSizer1->Add(bSizer1, 1, wxALIGN_CENTER | wxALIGN_TOP | wxEXPAND | wxALL, 5);
 
     m_pymacro=new MadEdit(this, ID_MADEDIT, wxDefaultPosition, wxDefaultSize);
     m_pymacro->SetFixedWidthMode(false);
@@ -39,26 +43,29 @@ MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxSt
     if (m_pymacro->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
     else if (m_pymacro->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
     m_pymacro->SetText((wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline));
-    bSizer6->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
+    bSizer1->Add( m_pymacro, 1, wxEXPAND | wxALL, 5 );
 
     m_debug = debug;
     if (m_debug)
     {
         m_output = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY|wxTE_MULTILINE|wxVSCROLL|wxHSCROLL|wxSIMPLE_BORDER );
-        bSizer6->Add( m_output, 1, wxEXPAND | wxALL, 5 );
+        bSizer1->Add( m_output, 1, wxEXPAND | wxALL, 5 );
     }
     else
         m_output = 0;
-    
+
+    bSizer2 = new wxBoxSizer( wxHORIZONTAL );
+	WxStaticBoxSizer1->Add(bSizer2, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 2);
     m_run = new wxButton( this, ID_WXBUTTONRUN, _("Run"), wxDefaultPosition, wxDefaultSize, 0 );
-    bSizer6->Add( m_run, 0, wxALL, 5 );
+    bSizer2->Add( m_run, 0, wxALIGN_CENTER_VERTICAL | wxALL, 3 );
     
     m_close = new wxButton( this, ID_WXBUTTONCLOSE, _("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-    bSizer6->Add( m_close, 0, wxALL, 5 );
+    bSizer2->Add( m_close, 0, wxALIGN_CENTER_VERTICAL | wxALL, 3 );
     m_run->SetDefault();
     
-    this->SetSizer( bSizer6 );
-    this->Layout();
+	Layout();
+	GetSizer()->Fit(this);
+	GetSizer()->SetSizeHints(this);
     
     this->Centre( wxBOTH );
 }
@@ -105,7 +112,7 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
 }
 void MadMacroDlg::OnCloseClick( wxCommandEvent& event ) 
 {
-    m_output->Clear();
+	if(m_output) m_output->Clear();
     EndModal(ID_WXBUTTONCLOSE);
 }
 

@@ -145,7 +145,6 @@ public:
     void OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewColumnMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuViewMacroDebugMode(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -158,11 +157,12 @@ public:
     void OnUpdateUI_MenuToolsMadMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsRunMacroFile(wxUpdateUIEvent& event);
-    void OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event);
-    void OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event);
-    void OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event);
-    void OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsStartRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsStopRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsPlayRecMacro(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsSaveRecMacro(wxUpdateUIEvent& event);
     void OnUpdateUI_MadScriptList(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuToolsMacroDebugMode(wxUpdateUIEvent& event);
 
     void OnFileNew(wxCommandEvent& event);
     void OnFileOpen(wxCommandEvent& event);
@@ -261,7 +261,6 @@ public:
     void OnViewTextMode(wxCommandEvent& event);
     void OnViewColumnMode(wxCommandEvent& event);
     void OnViewHexMode(wxCommandEvent& event);
-    void OnViewMacroDebugMode(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -276,6 +275,7 @@ public:
     void OnToolsPlayRecMacro(wxCommandEvent& event);
     void OnToolsSaveRecMacro(wxCommandEvent& event);
     void OnToolsMadScriptList(wxCommandEvent& event);
+    void OnToolsMacroDebugMode(wxCommandEvent& event);
 
     void OnToolsToggleBOM(wxCommandEvent& event);
     void OnToolsConvertToDOS(wxCommandEvent& event);

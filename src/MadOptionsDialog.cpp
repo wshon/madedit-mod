@@ -307,6 +307,11 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxCheckBoxDoNotSaveSettings->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer7->Add(WxCheckBoxDoNotSaveSettings, 0, wxALIGN_LEFT | wxALL, 2);
 
+	WxCheckBoxPurgeHistory = new wxCheckBox(WxNoteBookPage1, ID_PURGEHISTORY, _("Purge History while existing"), wxPoint(2, 77), wxSize(400, 20), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeHistory"));
+	WxCheckBoxPurgeHistory->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxBoxSizer7->Add(WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxALL, 2);
+
+
 	WxNoteBookPage2 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage2->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxNotebook1->AddPage(WxNoteBookPage2, _("Edit"));
@@ -690,10 +695,6 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
 
-	WxCheckBoxPurgeHistory = new wxCheckBox(WxNoteBookPage1, ID_PURGEHISTORY, _("Purge History while existing"), wxPoint(-19, 77), wxSize(398, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeHistory"));
-	WxCheckBoxPurgeHistory->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
-	WxBoxSizer7->Add(WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);
-
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
 	
@@ -730,6 +731,7 @@ void MadOptionsDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer7, WxCheckBoxDoNotSaveSettings, 25, 4);
     ResizeItem(WxBoxSizer7, WxCheckBoxReloadFiles, 25, 4);
     ResizeItem(WxBoxSizer7, WxCheckBoxRestoreCaretPos, 25, 4);
+    ResizeItem(WxBoxSizer7, WxCheckBoxPurgeHistory, 25, 4);
     ResizeItem(WxBoxSizer17, WxStaticText13, 2, 2);
 
     ResizeItem(WxBoxSizer9, WxStaticText3, 2, 2);
@@ -1003,6 +1005,9 @@ void MadOptionsDialog::LoadOptions(void)
 
     cfg->Read(wxT("ReloadFiles"), &bb, true);
     WxCheckBoxReloadFiles->SetValue(bb);
+
+    cfg->Read(wxT("PurgeHistory"), &bb, false);
+    WxCheckBoxPurgeHistory->SetValue(bb);
 
     cfg->Read(wxT("RestoreCaretPos"), &bb, true);
     WxCheckBoxRestoreCaretPos->SetValue(bb);

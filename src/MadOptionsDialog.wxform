@@ -666,10 +666,10 @@ object frmNewForm: TfrmNewForm
               Wx_Floating_Y_Pos = 0
             end
             object WxCheckBoxPurgeHistory: TWxCheckBox
-              Left = -19
+              Left = 2
               Top = 77
-              Width = 398
-              Height = 17
+              Width = 400
+              Height = 20
               Caption = 'Purge History while existing'
               TabOrder = 3
               Wx_BGColor = clBlack
@@ -681,7 +681,7 @@ object frmNewForm: TfrmNewForm
               Wx_Hidden = False
               Wx_IDName = 'ID_PURGEHISTORY'
               Wx_IDValue = 1199
-              Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT]
+              Wx_Alignment = [wxALIGN_LEFT]
               Wx_PaneCaption = 'WxCheckBox1'
               Wx_PaneName = 'WxCheckBox1_Pane'
               Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE

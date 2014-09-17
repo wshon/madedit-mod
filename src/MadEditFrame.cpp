@@ -1098,17 +1098,17 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTextMode, MadEditFrame::OnUpdateUI_MenuViewTextMode)
 	EVT_UPDATE_UI(menuColumnMode, MadEditFrame::OnUpdateUI_MenuViewColumnMode)
 	EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
-	EVT_UPDATE_UI(menuMacroDebugMode, MadEditFrame::OnUpdateUI_MenuViewMacroDebugMode)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
 	EVT_UPDATE_UI(menuRunTempMacro, MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro)
 	EVT_UPDATE_UI(menuRunMacroFile, MadEditFrame::OnUpdateUI_MenuToolsRunMacroFile)
-	EVT_UPDATE_UI(menuStartRecMacro, MadEditFrame::OnUpdateUI_StartRecMacro)
-	EVT_UPDATE_UI(menuStopRecMacro, MadEditFrame::OnUpdateUI_StopRecMacro)
-	EVT_UPDATE_UI(menuPlayRecMacro, MadEditFrame::OnUpdateUI_PlayRecMacro)
-	EVT_UPDATE_UI(menuSaveRecMacro, MadEditFrame::OnUpdateUI_SaveRecMacro)
+	EVT_UPDATE_UI(menuStartRecMacro, MadEditFrame::OnUpdateUI_MenuToolsStartRecMacro)
+	EVT_UPDATE_UI(menuStopRecMacro, MadEditFrame::OnUpdateUI_MenuToolsStopRecMacro)
+	EVT_UPDATE_UI(menuPlayRecMacro, MadEditFrame::OnUpdateUI_MenuToolsPlayRecMacro)
+	EVT_UPDATE_UI(menuSaveRecMacro, MadEditFrame::OnUpdateUI_MenuToolsSaveRecMacro)
 	EVT_UPDATE_UI(menuMadScriptList, MadEditFrame::OnUpdateUI_MadScriptList)
+	EVT_UPDATE_UI(menuMacroDebugMode, MadEditFrame::OnUpdateUI_MenuToolsMacroDebugMode)
 	EVT_UPDATE_UI(menuInsertNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsInsertNewLineChar)
 	EVT_UPDATE_UI(menuConvertToDOS, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToMAC, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
@@ -1217,7 +1217,6 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTextMode, MadEditFrame::OnViewTextMode)
 	EVT_MENU(menuColumnMode, MadEditFrame::OnViewColumnMode)
 	EVT_MENU(menuHexMode, MadEditFrame::OnViewHexMode)
-	EVT_MENU(menuMacroDebugMode, MadEditFrame::OnViewMacroDebugMode)
 	// tools
 	EVT_MENU(menuOptions, MadEditFrame::OnToolsOptions)
 	EVT_MENU(menuHighlighting, MadEditFrame::OnToolsHighlighting)
@@ -1231,6 +1230,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuStopRecMacro, MadEditFrame::OnToolsStopRecMacro)
 	EVT_MENU(menuPlayRecMacro, MadEditFrame::OnToolsPlayRecMacro)
 	EVT_MENU(menuSaveRecMacro, MadEditFrame::OnToolsSaveRecMacro)
+	EVT_MENU(menuMacroDebugMode, MadEditFrame::OnToolsMacroDebugMode)
 	EVT_MENU_RANGE(menuMadScrip1, menuMadScrip1000, MadEditFrame::OnToolsMadScriptList)
 	EVT_MENU(menuToggleBOM, MadEditFrame::OnToolsToggleBOM)
 	EVT_MENU(menuConvertToDOS, MadEditFrame::OnToolsConvertToDOS)
@@ -1566,8 +1566,6 @@ CommandData CommandTable[]=
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
     { ecHexMode,      1, menuHexMode,           wxT("menuHexMode"),           _("&Hex Mode"),            wxT("Alt-3"),        wxITEM_CHECK,     hexmode_xpm_idx,    0,                         _("Change the editing mode to Hex-Mode")},
-    { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
-    { 0,              1, menuMacroDebugMode,    wxT("menuMacroDebugMode"),    _("&Macro Debug Mode"),    0,                   wxITEM_CHECK,     -1,                 0,                         _("Show Macro running output for debugging")},
 
     // Tools
     { 0, 0, 0, 0, _("&Tools"), 0, wxITEM_NORMAL, 0, &g_Menu_Tools, 0},
@@ -1585,6 +1583,8 @@ CommandData CommandTable[]=
     { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                   _("Playback")},
     { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                   _("Save Currently Recorded Macro")},
     { 0,               2, menuMadScriptList,      wxT("menuMadScriptList"),      _("Local Script List"),                             wxT(""),       wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacroScripts,    0},
+    { 0,               2, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               2, menuMacroDebugMode,     wxT("menuMacroDebugMode"),     _("Macro Debug Mode"),                              wxT(""),       wxITEM_CHECK,     -1,              0,                   _("Show Macro running output for debugging")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -2360,7 +2360,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         }
     }
 
-
     // save ReloadFilesList
     wxString files;
     int count=int(m_Notebook->GetPageCount());
@@ -2378,6 +2377,20 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         }
     }
     m_Config->Write(wxT("/MadEdit/ReloadFilesList"), files );
+
+    bb=false;
+    m_Config->Read(wxT("PurgeHistory"), &bb);
+	if(bb)
+	{
+		PurgeRecentFiles();
+		PurgeRecentFonts();
+		PurgeRecentEncodings();
+		g_SearchDialog->PurgeRecentFindTexts();
+		g_ReplaceDialog->PurgeRecentReplaceTexts();
+		g_FindInFilesDialog->PurgeRecentFindDirs();
+		g_FindInFilesDialog->PurgeRecentFindFilters();
+		g_FindInFilesDialog->PurgeRecentFindExcludes();
+	}
 
     m_Config->SetPath(wxT("/FileCaretPos"));
     g_FileCaretPosManager.Save(m_Config);
@@ -3484,11 +3497,6 @@ void MadEditFrame::OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()==emHexMode);
 }
-void MadEditFrame::OnUpdateUI_MenuViewMacroDebugMode(wxUpdateUIEvent& event)
-{
-    event.Enable(true);
-    event.Check(m_MacroDebug);
-}
 
 void MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event)
 {
@@ -3584,24 +3592,30 @@ void MadEditFrame::OnUpdateUI_MenuToolsRunTempMacro(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit != NULL);
 }
 
-void MadEditFrame::OnUpdateUI_StartRecMacro(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuToolsStartRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && IsMacroStopped());
 }
 
-void MadEditFrame::OnUpdateUI_StopRecMacro(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuToolsStopRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && IsMacroRecording());
 }
 
-void MadEditFrame::OnUpdateUI_PlayRecMacro(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuToolsPlayRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit && IsMacroStopped() && HasRecordedScript());
 }
 
-void MadEditFrame::OnUpdateUI_SaveRecMacro(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuToolsSaveRecMacro(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit != NULL && IsMacroStopped() && HasRecordedScript());
+}
+
+void MadEditFrame::OnUpdateUI_MenuToolsMacroDebugMode(wxUpdateUIEvent& event)
+{
+    event.Enable(true);
+    event.Check(m_MacroDebug);
 }
 
 void MadEditFrame::OnUpdateUI_MadScriptList(wxUpdateUIEvent& event)
@@ -5107,15 +5121,6 @@ void MadEditFrame::OnViewHexMode(wxCommandEvent& event)
     g_ActiveMadEdit->SetEditMode(emHexMode);
     RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.HexMode)")));
 }
-void MadEditFrame::OnViewMacroDebugMode(wxCommandEvent& event)
-{
-    m_MacroDebug = (!m_MacroDebug);
-    if(g_MadMacroDlg && (g_MadMacroDlg->IsDebugOn() != m_MacroDebug))
-    {
-        g_MadMacroDlg->Destroy();
-        g_MadMacroDlg = NULL;
-    }
-}
 
 void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 {
@@ -5196,7 +5201,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 
         m_Config->Write(wxT("ReloadFiles"), g_OptionsDialog->WxCheckBoxReloadFiles->GetValue());
         m_Config->Write(wxT("RestoreCaretPos"), g_OptionsDialog->WxCheckBoxRestoreCaretPos->GetValue());
-
+        m_Config->Write(wxT("PurgeHistory"), g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue());
 
         bool bb;
         long ll;
@@ -5614,6 +5619,16 @@ void MadEditFrame::OnToolsMadScriptList(wxCommandEvent& event)
             }
         }
         scriptfile.Close();
+    }
+}
+
+void MadEditFrame::OnToolsMacroDebugMode(wxCommandEvent& event)
+{
+    m_MacroDebug = (!m_MacroDebug);
+    if(g_MadMacroDlg && (g_MadMacroDlg->IsDebugOn() != m_MacroDebug))
+    {
+        g_MadMacroDlg->Destroy();
+        g_MadMacroDlg = NULL;
     }
 }
 

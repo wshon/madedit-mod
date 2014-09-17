@@ -30,6 +30,9 @@ class MadMacroDlg : public wxDialog
 	private:
 		DECLARE_EVENT_TABLE()
 	protected:
+		wxStaticBoxSizer *WxStaticBoxSizer1;
+   		wxBoxSizer* bSizer1;
+		wxBoxSizer* bSizer2;
 		MadEdit* m_pymacro;
 		wxTextCtrl* m_output;
 		wxButton* m_run;
@@ -53,7 +56,7 @@ class MadMacroDlg : public wxDialog
 
    ID_DUMMY_VALUE_ //Dont Delete this DummyValue
    }; //End of Enum
-		MadMacroDlg( wxWindow* parent, bool debug = false, wxWindowID id = wxID_ANY, const wxString& title = _("MadEdit Macro"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 717,448 ), long style = MadMacroDlg_STYLE ); 
+		MadMacroDlg( wxWindow* parent, bool debug = false, wxWindowID id = wxID_ANY, const wxString& title = _("MadEdit Macro"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = MadMacroDlg_STYLE ); 
 		virtual ~MadMacroDlg();
 		void SetPyScript(wxString & pyscript);
         bool IsDebugOn() {return m_debug;}
