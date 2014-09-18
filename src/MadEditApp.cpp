@@ -12,6 +12,7 @@
 
 #include "MadEdit/MadEdit.h"
 
+#include <wx/display.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
@@ -448,9 +449,9 @@ bool MadEditApp::OnInit()
         wxDisplay dis(i);
         if(dis.IsPrimary())
         {
-            wxRect rect = dis.GetClientArea()
-            size.x = std::min(rect.width, wxm::DEFAULT_WINDOW_WIDTH);
-            size.y = std::min(rect.height, wxm::DEFAULT_WINDOW_HEIGHT);
+            wxRect rect = dis.GetClientArea();
+            size.x = std::min(rect.width, size.x);
+            size.y = std::min(rect.height, size.y);
             break;
         }
     }
