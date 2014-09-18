@@ -3152,7 +3152,7 @@ bool MadEditFrame::QueryCloseFile(int idx)
 
     wxString name=m_Notebook->GetPageText(idx);
     if(name[name.Len()-1]==wxT('*'))
-            name.Truncate(name.Len()-1);
+        name.Truncate(name.Len()-1);
 
     if(madedit->Save(true, name, false)==wxID_CANCEL)
         return false;
