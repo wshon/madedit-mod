@@ -44,6 +44,8 @@
 ../src/MadWordCountDialog.h
 ../src/MadAboutDialog.cpp
 ../src/MadAboutDialog.h
+../src/MadNumberDlg.cpp
+../src/MadNumberDlg.h
 ../src/MadPlugin.cpp
 ../src/MadUtils.cpp
 ../src/MadUtils.h

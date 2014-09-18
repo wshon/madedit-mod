@@ -64,6 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/ignore:4217 /ignore:4049"
 				AdditionalDependencies="wxmsw28ud_core.lib wxbase28ud.lib wxmsw28ud_aui.lib python27_d.lib libboost_python-vc80-mt-sgyd-1_56.lib comctl32.lib uuid.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
@@ -142,6 +143,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="/ignore:4217 /ignore:4049"
 				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib wxmsw28u_aui.lib libpng.lib zlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
@@ -219,6 +221,10 @@
 			</File>
 			<File
 				RelativePath="..\src\MadMacroDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\MadNumberDlg.cpp"
 				>
 			</File>
 			<File

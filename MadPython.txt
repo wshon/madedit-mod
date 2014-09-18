@@ -54,6 +54,8 @@ Supported method list:
 void ProcessCommand(int command)
 void InsertWChar(int key)
 void InsertStr(const std::string &str)
+void InsertIncrementalNumber(int initial, int step, int total, int stepType,
+                        int fmt, int align, bool zeroPad)
 void ScrollLineUp()
 void ScrollLineDown()
 void ScrollPageUp()
@@ -325,6 +327,59 @@ MouseNotify
 
 Note: Some of the command is meanless with scriptin, such like MouseNotify. And some of them
 have meanfull clone like ToUpperCase, Paste, etc
+
+MadWordWrapMode
+---------------
+NoWrap
+WrapByWindow
+WrapByColumn
+
+MadEditMode
+-----------
+TextMode
+ColumnMode
+HexMode
+
+MadCaretType
+------------
+VerticalLine
+HorizontalLine
+Block
+
+MadNewLineType
+--------------
+Default
+DOS 
+UNIX 
+MAC
+
+MadConvertEncodingFlag
+----------------------
+None
+SC2TC// Simplified Chinese  ==> Traditional Chinese
+TC2SC// Traditional Chinese ==> Simplified Chinese
+JK2TC// Japanese Kanji      ==> Traditional Chinese
+JK2SC// Japanese Kanji      ==> Simplified Chinese
+C2JK  // Trad&Simp Chinese   ==> Japanese Kanji
+
+MadNumberingStepType
+--------------------
+Linear
+Exponential
+
+MadNumberFormat
+---------------
+DEC
+HEX
+BIN
+OCT
+
+MadNumberAlign
+--------------
+Left
+Right
+
+
 
 Author:
 ------

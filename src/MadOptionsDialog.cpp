@@ -1092,17 +1092,17 @@ void MadOptionsDialog::WxButtonOKClick(wxCommandEvent& event)
 {
     long lo;
     bool error=false;
-    wxString errtext(_("Invalid value of \"%s\""));
+    wxString errtext(_("Invalid value of \"%s(%s)\""));
 
     if(!WxEditMaxSizeToLoad->GetValue().ToLong(&lo) || lo<0)
     {
-        wxLogError(errtext, WxStaticText1->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText1->GetLabel().c_str(), WxEditMaxSizeToLoad->GetValue().c_str());
         error=true;
     }
 
     if(!WxEditMaxTextFileSize->GetValue().ToLong(&lo) || lo<0)
     {
-        wxLogError(errtext, WxStaticText2->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText2->GetLabel().c_str(), WxEditMaxTextFileSize->GetValue().c_str());
         error=true;
     }
 
@@ -1112,25 +1112,25 @@ void MadOptionsDialog::WxButtonOKClick(wxCommandEvent& event)
     if(!WxEditMaxLineLength->GetValue().ToLong(&lo) || lo<80)
 #endif
     {
-        wxLogError(errtext, WxStaticText3->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText3->GetLabel().c_str(), WxEditMaxLineLength->GetValue().c_str());
         error=true;
     }
 
     if(!WxEditMaxColumns->GetValue().ToLong(&lo) || lo<=0)
     {
-        wxLogError(errtext, WxStaticText4->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText4->GetLabel().c_str(), WxEditMaxColumns->GetValue().c_str());
         error=true;
     }
 
     if(!WxEditTabColumns->GetValue().ToLong(&lo) || lo<=0)
     {
-        wxLogError(errtext, WxStaticText5->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText5->GetLabel().c_str(), WxEditTabColumns->GetValue().c_str());
         error=true;
     }
 
     if(!WxEditIndentColumns->GetValue().ToLong(&lo) || lo<=0)
     {
-        wxLogError(errtext, WxStaticText6->GetLabel().c_str());
+        wxLogError(errtext, WxStaticText6->GetLabel().c_str(), WxEditIndentColumns->GetValue().c_str());
         error=true;
     }
 

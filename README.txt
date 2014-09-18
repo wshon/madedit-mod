@@ -63,6 +63,16 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.2.0
+New to beta 4
+1. Changed error message of Options Dialog
+2. Add Incremental numbering feature in Edit->Advanced for column numbering at current caret pos
+3. Use InsertString for InsertStr for performance
+4. Export InsertIncrementalNumber to MadPython
+5. Improve MadMacro dialog
+6. Update Simplifed Chinese
+Waiting for bug report of MadPython and Incremental numbering:-P
+
 mod v0.2.0 beta 4
 New to beta 3
 1. Replace wxRichTextCtrl with wxTextCtrl
@@ -70,13 +80,9 @@ New to beta 3
 3. Close to clear output instead of clear on Run
 4. Add some default button for several dialogs
 5. URL changed to sourceforge.org
-6. Fixed a crash bug introduced by Macro debug mode
-7. Ajust GUI of MadMacroDlg
-8. Move Debug mode switch from View to Macro menu group
-9. Update simplifed chinese translation
 
 mod v0.2.0 beta 3
-New to beta 2
+This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
 2. Fixed MadPython insert char issue in column mode
 3. Change behave while string has illegal zero. ie. change 0x00(NUL) to 0x2400 uncode NUL

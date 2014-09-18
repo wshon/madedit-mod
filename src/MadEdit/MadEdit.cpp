@@ -5792,6 +5792,127 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
     }
 }
 
+void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumberingStepType stepType,
+                        MadNumberFormat fmt, MadNumberAlign align, bool zeroPad)
+{
+    wxString numFmt(wxT("%")), tstr;
+    ucs4string out;
+    vector<ucs4_t> ucs;
+    bool output = false, binary = false;
+    int colcount = 0, num = initial;
+    char padding[513], padchar = ' '; //init to '0'
+    
+    if(total > 512) return;
+
+    if(zeroPad) padchar = '0';
+    if(total && align == naRight && fmt != nfBIN)
+	{
+		if(zeroPad) numFmt<<wxT("0");
+		numFmt<<total;
+	}
+    switch(fmt)
+    {
+        case nfHEX:
+            numFmt<<wxT("X");
+            break;
+        case nfBIN:
+            binary = true;
+            break;
+        case nfOCT:
+            numFmt<<wxT("o");
+            break;
+        default://nfDEC
+            numFmt<<wxT("d");
+    }
+
+    if(m_Selection)
+    {
+        if(m_EditMode == emColumnMode)
+        {
+            output = true;
+            colcount = m_SelectionEnd->rowid - m_SelectionBegin->rowid + 1;
+            if(colcount>1)
+            {
+                int cc=colcount;
+                bool linear = (stepType==nstLinear);
+                const char * strbuff = 0;
+                char buffer[33];
+                do
+                {
+                    if(binary)
+                    {
+                        strbuff = &padding[0];
+                        if(total)
+                        {
+                            memset(padding, padchar, total);
+                            padding[total] = 0;
+                            if(align == naLeft)
+                                itoa(num,padding,2);
+                            else//(align == naRight)
+                            {
+                                itoa(num,buffer,2);
+                                int len = strlen(buffer);
+                                if(len < total)
+                                {
+                                    padding[total-len] = 0;
+                                    strcat(padding, buffer);
+                                }
+                                else
+                                    strbuff = buffer;
+                            }
+                        }
+                        else
+                        {
+                            itoa(num,padding,2);
+                        }
+                        tstr +=  wxString::FromAscii(strbuff);
+                    }
+                    else
+                    {
+                        wxString tmp(wxString::Format(numFmt, num));
+                        tstr<<tmp;
+                        if(align == naLeft && total > tmp.Len())
+                        {
+                            memset(padding, padchar, (total - tmp.Len()));
+                            tstr +=  wxString::FromAscii(padding);
+                        }
+                        
+                    }
+                    tstr<<wxT("\n");
+
+                    if(linear) num += step;
+                    else num *= step;
+                }while(--cc > 0);
+            }
+        }
+    }
+    else//Ignore step and other
+    {
+        output = true;
+    }
+
+    if(output)
+    {
+        TranslateText(tstr.c_str(), tstr.Len(), &ucs, true);
+
+        for(size_t i=0, size=ucs.size(); i<size; ++i)
+        {
+            out += ucs[i] ;
+        }
+        if(m_Selection)
+        {
+            if(colcount>1)                
+                InsertColumnString(out.c_str(), out.length(), colcount, true, false);
+            else                
+                InsertColumnString(out.c_str(), out.length(), 0, true, false);
+        }
+        else
+        {
+            InsertString(out.c_str(), out.length(), false, true, false);
+        }
+    }
+}
+
 // get indent spaces from current the line of caretpos
 void MadEdit::GetIndentSpaces(int lineid, MadLineIterator lit, vector <ucs4_t> &spaces, bool autoIndent, bool unindentChar)
 {

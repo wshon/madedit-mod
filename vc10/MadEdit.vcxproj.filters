@@ -186,6 +186,9 @@
     <ClInclude Include="..\src\EmbeddedPython.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MadNumberDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\MadAboutDialog.cpp">
@@ -354,6 +357,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\EmbeddedPython.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MadNumberDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

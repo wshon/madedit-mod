@@ -293,9 +293,24 @@ namespace mad_python
             void InsertStr(const std::string &str)
             {
                 wxString wxStr(str.c_str(), wxConvLocal);
-                size_t len = wxStr.Length();
-                for(size_t i = 0; i<len; ++i)
-                    g_ActiveMadEdit->ProcessCommand(int(wxStr[i]));
+				
+				ucs4string out;
+				vector<ucs4_t> ucs;
+
+				g_ActiveMadEdit->TranslateText(wxStr.c_str(), wxStr.Len(), &ucs, true);
+				
+				for(size_t i=0, size=ucs.size(); i<size; ++i)
+				{
+					out += ucs[i] ;
+				}
+				g_ActiveMadEdit->InsertString(out.c_str(), out.length(), false, true, false);
+            }
+
+            void InsertIncrementalNumber(int initial, int step, int total, int stepType,
+                        int fmt, int align, bool zeroPad)
+            {
+                g_ActiveMadEdit->InsertIncrementalNumber(initial, step, total, 
+                        (MadNumberingStepType)stepType, (MadNumberFormat)fmt, (MadNumberAlign)align, zeroPad);
             }
             void ScrollLineUp()
             {
@@ -1339,6 +1354,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ProcessCommand", &PyMadEdit::ProcessCommand, "")
         .def("InsertWChar", &PyMadEdit::InsertWChar, "")
         .def("InsertStr", &PyMadEdit::InsertStr, "")
+        .def("InsertIncrementalNumber", &PyMadEdit::InsertIncrementalNumber, "")
         .def("GoToLine", &PyMadEdit::GoToLine, "Go To Line of current file")
         .def("GoToLineColumn", &PyMadEdit::GoToLineColumn, "Go To Line, Column of current file")
         .def("SetSyntax", &PyMadEdit::SetSyntax, "Set syntax for current file")
@@ -1621,6 +1637,22 @@ BOOST_PYTHON_MODULE(madpython)
         .value("JK2TC", cefJK2TC)// Japanese Kanji      ==> Traditional Chinese
         .value("JK2SC", cefJK2SC)// Japanese Kanji      ==> Simplified Chinese
         .value("C2JK", cefC2JK)  // Trad&Simp Chinese   ==> Japanese Kanji
+        ;
+    enum_<MadNumberingStepType>("MadNumberingStepType")
+        .value("Linear", nstLinear)
+        .value("Exponential", nstExponential)
+        ;
+
+    enum_<MadNumberFormat>("MadNumberFormat")
+        .value("DEC", nfDEC)
+        .value("HEX", nfHEX)
+        .value("BIN", nfBIN)
+        .value("OCT", nfOCT)
+        ;
+
+    enum_<MadNumberAlign>("MadNumberAlign")
+        .value("Left", naLeft)
+        .value("Right",naRight)
         ;
 }
 #endif //__MADPYTHON__

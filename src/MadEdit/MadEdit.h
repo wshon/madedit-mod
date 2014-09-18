@@ -118,6 +118,27 @@ typedef int MadSortFlags;
 enum
 { sfAscending=0, sfDescending=1, sfCaseSensitive=2, sfRemoveDuplicate=4, sfNumericSort=8 };
 
+enum MadNumberingStepType
+{
+    nstLinear,
+    nstExponential
+};
+
+enum MadNumberFormat
+{
+    nfDEC,
+    nfHEX,
+    nfBIN,
+    nfOCT
+};
+
+enum MadNumberAlign
+{
+    naLeft,
+    naRight,
+};
+
+
 //==================================================
 typedef std::basic_string<ucs4_t> ucs4string;
 
@@ -807,6 +828,8 @@ public: // basic functions
     void DeleteLine() { ProcessCommand(ecDeleteLine); }
     void InsertTabChar() { ProcessCommand(ecInsertTabChar); }
     void InsertDateTime() { ProcessCommand(ecInsertDateTime); }
+    void InsertIncrementalNumber(int intial, int step, int total, MadNumberingStepType stepType,
+                        MadNumberFormat fmt, MadNumberAlign align, bool zeroPad);
 
     void HighlightWords();
 

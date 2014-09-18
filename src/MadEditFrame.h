@@ -117,6 +117,7 @@ public:
     void OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
+    void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuIndent(wxUpdateUIEvent& event);
@@ -227,6 +228,7 @@ public:
     void OnEditTabToSpace(wxCommandEvent& event);
     void OnEditSpaceToTab(wxCommandEvent& event);
     void OnEditTrimTrailingSpaces(wxCommandEvent& event);
+    void OnEditInsertNumbers(wxCommandEvent& event);
 
     void OnSearchFind(wxCommandEvent& event);
     void OnSearchFindNext(wxCommandEvent& event);
@@ -448,6 +450,7 @@ enum { // menu id
     menuTabToSpace,
     menuSpaceToTab,
     menuTrimTrailingSpaces,
+	menuInsertNumbers,
 
     // search
     menuFindNext,

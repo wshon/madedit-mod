@@ -21,6 +21,7 @@
 #endif
 #include "MadPurgeHistoryDialog.h"
 #include "MadMacroDlg.h"
+#include "MadNumberDlg.h"
 #include "MadConvEncDialog.h"
 #include "MadWordCountDialog.h"
 #include "MadSortDialog.h"
@@ -156,9 +157,9 @@
     #define GetAccelFromString(x) wxGetAccelFromString(x)
 #endif
 
-wxString g_MadEdit_Version(wxT("MadEdit mod 0.2.0"));
-wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
-wxString g_MadEditMod_URL(wxT("http://sourceforge.net/projects/madedit-mod/"));
+extern wxString g_MadEdit_Version;
+extern wxString g_MadEdit_URL;
+extern wxString g_MadEditMod_URL;
 
 EmbeddedPython *g_EmbeddedPython = 0;
 
@@ -1068,6 +1069,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTabToSpace, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuSpaceToTab, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuFindNext, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1183,6 +1185,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTabToSpace, MadEditFrame::OnEditTabToSpace)
 	EVT_MENU(menuSpaceToTab, MadEditFrame::OnEditSpaceToTab)
 	EVT_MENU(menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces)
+	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	// search
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
@@ -1377,6 +1380,7 @@ CommandData CommandTable[]=
     { 0,                2, menuSpaceToTab,               wxT("menuSpaceToTab"),               _("Space Chars To Tab Chars"),                wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert Space chars to Tab chars in the selection")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT("menuTrimTrailingSpaces"),       _("Tri&m Trailing Spaces"),                   wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Trim trailing spaces at the end of lines")},
+    { 0,                2, menuInsertNumbers,            wxT("menuInsertNumbers"),            _("Insert incremental numbers..."),              wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Insert incremental numbers with step and padding at current caret")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuSort,                     wxT("menuSort"),                     _("&Sort"),                                   0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Sort,     0},
     { 0,                2, menuSortAscending,            wxT("menuSortAscending"),            _("Sort Lines (&Ascending)"),                 wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Sort the selected or all lines in ascending order")},
@@ -3303,6 +3307,10 @@ void MadEditFrame::OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
 }
+void MadEditFrame::OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()==emColumnMode);
+}
 
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event)
 {
@@ -4515,6 +4523,81 @@ void MadEditFrame::OnEditTrimTrailingSpaces(wxCommandEvent& event)
     {
         g_ActiveMadEdit->TrimTrailingSpaces();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("TrimTrailingSpaces()")));
+    }
+}
+
+void MadEditFrame::OnEditInsertNumbers(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()==emColumnMode)
+    {
+        if(g_MadNumberDlg == NULL) g_MadNumberDlg = new MadNumberDlg(this);
+        if(g_MadNumberDlg->ShowModal() == wxID_OK)
+        {
+
+            MadNumberingStepType numStepType = nstLinear;
+            MadNumberFormat numFormat = nfDEC;
+            MadNumberAlign numAlign = naLeft;
+            wxString strStepType(wxT("MadNumberingStepType.Linear")),
+                strFormat(wxT("MadNumberFormat.DEC")),
+                strAlign(wxT("MadNumberAlign.Left"));
+
+            int sel = g_MadNumberDlg->WxChoiceNumberStepType->GetSelection();
+
+            switch( sel )
+            {
+	            case 1: numStepType = nstExponential; break;
+	            default: break;
+            }
+
+            sel = g_MadNumberDlg->WxChoiceFormat->GetSelection();       
+            switch( sel )
+            {
+	            case 1:
+                {
+                    numFormat = nfHEX;
+                    strFormat = wxT("MadNumberFormat.HEX");
+                }
+                break;
+	            case 2:
+                {
+                    numFormat = nfBIN;
+                    strFormat = wxT("MadNumberFormat.BIN");
+                }
+                break;
+	            case 3:
+                {
+                    numFormat = nfOCT;
+                    strFormat = wxT("MadNumberFormat.OCT");
+                }
+                break;
+	            default:
+                    break;
+            }
+
+			sel = g_MadNumberDlg->WxChoiceAlign->GetSelection();        
+            switch( sel )
+            {
+	            case 1:
+                {
+                    numAlign = naRight;
+                    strAlign = wxT("MadNumberAlign.Right");
+                }
+                break;
+	            default:
+                    break;
+            }
+
+            long initialNum = 0, numStep = 0, totalChar = 0;
+            g_MadNumberDlg->WxEditNumberOfChars->GetValue().ToLong(&totalChar);
+            g_MadNumberDlg->WxEditNumberingStep->GetValue().ToLong(&numStep);;
+            g_MadNumberDlg->WxEditInitialNumber->GetValue().ToLong(&initialNum);;
+            g_ActiveMadEdit->InsertIncrementalNumber(initialNum, numStep, totalChar, numStepType, numFormat, numAlign, g_MadNumberDlg->WxPadChar->GetValue());
+            g_ActiveMadEdit->Refresh(false);
+            
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("InsertIncrementalNumber(%d, %d, %d, %s, %s, %s, %s)"), 
+                initialNum, numStep, totalChar, strStepType.c_str(), strFormat.c_str(), strAlign.c_str(),
+                g_MadNumberDlg->WxPadChar->GetValue()?wxT("True"):wxT("False")));
+        }
     }
 }
 
