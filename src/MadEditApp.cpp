@@ -442,8 +442,18 @@ bool MadEditApp::OnInit()
     cfg->Read(wxT("/MadEdit/WindowMaximize"), &maximize, false);
 #endif
     wxPoint pos=wxDefaultPosition;
-    wxSize size=wxDefaultSize;
-
+    wxSize size(800, 600);
+    for(int i=0; i<wxDisplay::GetCount(); ++i)
+    {
+        wxDisplay dis(i);
+        if(dis.IsPrimary())
+        {
+            wxRect rect = dis.GetClientArea()
+            size.x = std::min(rect.width, wxm::DEFAULT_WINDOW_WIDTH);
+            size.y = std::min(rect.height, wxm::DEFAULT_WINDOW_HEIGHT);
+            break;
+        }
+    }
     //if(!maximize)	// removed: gogo, 30.08.2009
     {
         long x=0,y=0,w=0,h=0;
