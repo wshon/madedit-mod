@@ -5509,7 +5509,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
             if(blk.m_Size != 0)
             {
                 wxFileOffset cpos = 0, msize = 0;
-                if(m_InsertMode || lit == m_Lines->m_LineList.end())
+                if(m_InsertMode || (lit == m_Lines->m_LineList.end()))
                 {
                     MadInsertUndoData *insud = new MadInsertUndoData;
                     insud->m_Pos = pos + rowpos;
