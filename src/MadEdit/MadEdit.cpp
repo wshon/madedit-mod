@@ -5384,7 +5384,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
         {
             MadInsertUndoData *insud = new MadInsertUndoData;
             insud->m_Pos = pos + rowpos;
-			cpos = insud->m_Pos;
+            cpos = insud->m_Pos;
             insud->m_Size = blk.m_Size;
             insud->m_Data.push_back(blk);
 
@@ -5509,7 +5509,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
             if(blk.m_Size != 0)
             {
                 wxFileOffset cpos = 0, msize = 0;
-                if(m_InsertMode)
+                if(m_InsertMode || lit == m_Lines->m_LineList.end())
                 {
                     MadInsertUndoData *insud = new MadInsertUndoData;
                     insud->m_Pos = pos + rowpos;
@@ -5525,14 +5525,13 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
                 else
                 {
                     MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-                    wxFileOffset newlinesize = lit->m_NewLineSize;
-                    if(lines == 1) newlinesize = 0;
                     oudata->m_Pos = pos + rowpos;
                     oudata->m_InsSize = blk.m_Size;
                     oudata->m_InsData.push_back(blk);
                     oudata->m_DelSize = blk.m_Size;
-                    if(oudata->m_DelSize > (lit->m_Size - rowpos)) oudata->m_DelSize = (lit->m_Size - rowpos);
-                    oudata->m_DelSize -= newlinesize;
+                    wxFileOffset leftsize = (lit->m_Size - rowpos - lit->m_NewLineSize);
+                    if(oudata->m_DelSize > leftsize) oudata->m_DelSize = leftsize;
+
                     cpos = oudata->m_Pos;
                     msize = oudata->m_InsSize;
                     undo->m_Undos.push_back(oudata);
