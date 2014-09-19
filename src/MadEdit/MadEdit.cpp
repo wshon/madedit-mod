@@ -5525,12 +5525,14 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
                 else
                 {
                     MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-                
+                    wxFileOffset newlinesize = lit->m_NewLineSize;
+                    if(lines == 1) newlinesize = 0;
                     oudata->m_Pos = pos + rowpos;
                     oudata->m_InsSize = blk.m_Size;
                     oudata->m_InsData.push_back(blk);
                     oudata->m_DelSize = blk.m_Size;
                     if(oudata->m_DelSize > (lit->m_Size - rowpos)) oudata->m_DelSize = (lit->m_Size - rowpos);
+                    oudata->m_DelSize -= newlinesize;
                     cpos = oudata->m_Pos;
                     msize = oudata->m_InsSize;
                     undo->m_Undos.push_back(oudata);

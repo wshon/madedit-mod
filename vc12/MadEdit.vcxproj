@@ -79,6 +79,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;..\libpng;$(BOOST)\stage\lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27.lib;libboost_python-vc120-mt-s-1_56.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4049 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions>
@@ -129,6 +130,7 @@
     <ClInclude Include="..\src\MadFindInFilesDialog.h" />
     <ClInclude Include="..\src\MadHighlightingDialog.h" />
     <ClInclude Include="..\src\MadMacroDlg.h" />
+    <ClInclude Include="..\src\MadNumberDlg.h" />
     <ClInclude Include="..\src\MadOptionsDialog.h" />
     <ClInclude Include="..\src\MadPrintout.h" />
     <ClInclude Include="..\src\MadPurgeHistoryDialog.h" />
@@ -196,6 +198,7 @@
     <ClCompile Include="..\src\MadFindInFilesDialog.cpp" />
     <ClCompile Include="..\src\MadHighlightingDialog.cpp" />
     <ClCompile Include="..\src\MadMacroDlg.cpp" />
+    <ClCompile Include="..\src\MadNumberDlg.cpp" />
     <ClCompile Include="..\src\MadOptionsDialog.cpp" />
     <ClCompile Include="..\src\MadPrintout.cpp" />
     <ClCompile Include="..\src\MadPurgeHistoryDialog.cpp" />
