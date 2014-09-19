@@ -66,6 +66,17 @@ Syntax files, Locale files and Settings:
 mod v0.2.1
 1. Support InsertMode in HexMode(Toggleable)
 2. Paste as insert or replace according to InsertMode
+3. Replace in all mode by paste
+
+mod v0.2.0
+New features from 0.1.x
+1. Single Instance feature don't compatable with 0.1.x
+2. MadPython based on Python 2.7.8 as automation macro(Edit/Record/Run/Save/Load)
+3. Insert incremantal numbers
+3. Purge history during exiting
+4. Right click on file tab supported
+5. Close to right/left
+6. Fixed bugs found including hang issue caused by empty (), [] and {} in regluar expression
 
 mod v0.2.0
 New to beta 4

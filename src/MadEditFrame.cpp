@@ -2385,17 +2385,17 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     bb=false;
     m_Config->Read(wxT("PurgeHistory"), &bb);
-	if(bb)
-	{
-		PurgeRecentFiles();
-		PurgeRecentFonts();
-		PurgeRecentEncodings();
-		g_SearchDialog->PurgeRecentFindTexts();
-		g_ReplaceDialog->PurgeRecentReplaceTexts();
-		g_FindInFilesDialog->PurgeRecentFindDirs();
-		g_FindInFilesDialog->PurgeRecentFindFilters();
-		g_FindInFilesDialog->PurgeRecentFindExcludes();
-	}
+    if(bb)
+    {
+        PurgeRecentFiles();
+        PurgeRecentFonts();
+        PurgeRecentEncodings();
+        g_SearchDialog->PurgeRecentFindTexts();
+        g_ReplaceDialog->PurgeRecentReplaceTexts();
+        g_FindInFilesDialog->PurgeRecentFindDirs();
+        g_FindInFilesDialog->PurgeRecentFindFilters();
+        g_FindInFilesDialog->PurgeRecentFindExcludes();
+    }
 
     m_Config->SetPath(wxT("/FileCaretPos"));
     g_FileCaretPosManager.Save(m_Config);
@@ -2496,11 +2496,13 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     // so we must call exit() to quit the app.
     exit(0);
 #else
+#if 0
     extern HANDLE g_Mutex;
     if(g_Mutex)
     {
         ReleaseMutex(g_Mutex);
     }
+#endif
     Destroy(); // quit app normally.
 #endif
 }
