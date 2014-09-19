@@ -63,6 +63,10 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
+mod v0.2.1
+1. Support InsertMode in HexMode(Toggleable)
+2. Paste as insert or replace according to InsertMode
+
 mod v0.2.0
 New to beta 4
 1. Changed error message of Options Dialog

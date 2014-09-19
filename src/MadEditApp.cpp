@@ -17,6 +17,7 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <wx/snglinst.h>
+#include <algorithm>
 
 IMPLEMENT_APP(MadEditApp)
 

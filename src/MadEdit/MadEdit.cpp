@@ -238,7 +238,6 @@ void GTK2_DrawText(wxMemoryDC *dc, MadEncoding *encoding, const int *widths,
     if (!dc->m_window) return;
     if (text.empty()) return;
 
-
     x = dc->LogicalToDeviceX(x);//XLOG2DEV(x);
     y = dc->LogicalToDeviceY(y);//YLOG2DEV(y);
 
@@ -6426,7 +6425,7 @@ void MadEdit::InsertHexChar(int hc) // handle input in hexarea
 
     bool oldModified=m_Modified;
 
-    if(m_CaretPos.pos == m_Lines->m_Size)   // insert at end
+    if((m_CaretPos.pos == m_Lines->m_Size || m_InsertMode) && !m_CaretAtHalfByte)   // insert at end
     {
         MadBlock blk(m_Lines->m_MemData, 0, 1);
         wxByte b = hc << 4;
@@ -6535,12 +6534,28 @@ void MadEdit::InsertHexData(wxByte *hex, size_t count)
     MadBlock blk(m_Lines->m_MemData, 0, count);
     blk.m_Pos = m_Lines->m_MemData->Put(hex, count);
 
-    if(m_Selection)
+    if(m_Selection || !m_InsertMode)
     {
         MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-
-        oudata->m_Pos = m_SelectionBegin->pos;
-        oudata->m_DelSize = m_SelectionEnd->pos - m_SelectionBegin->pos;
+        if(!m_Selection)
+        {
+            wxFileOffset leftsize = m_Lines->m_Size - m_CaretPos.pos;
+            oudata->m_Pos = m_CaretPos.pos;
+            oudata->m_DelSize = (leftsize < blk.m_Size)?leftsize:blk.m_Size;
+        }
+        else
+        {
+            oudata->m_Pos = m_SelectionBegin->pos;
+            if(m_InsertMode)
+            {
+                oudata->m_DelSize = m_SelectionEnd->pos - m_SelectionBegin->pos;
+            }
+            else
+            {
+                wxFileOffset leftsize = m_Lines->m_Size - m_SelectionBegin->pos;
+                oudata->m_DelSize = (leftsize < blk.m_Size)?leftsize:blk.m_Size;
+            }
+        }
 
         oudata->m_InsSize = blk.m_Size;
         oudata->m_InsData.push_back(blk);
@@ -6580,7 +6595,6 @@ void MadEdit::InsertHexData(wxByte *hex, size_t count)
 
         DoSelectionChanged();
         DoStatusChanged();
-
     }
     else
     {
@@ -8983,16 +8997,19 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 }
                 else
                 {
-                    bool oldim = m_InsertMode;
-                    m_InsertMode = false;
+                    //bool oldim = m_InsertMode;
+                    //m_InsertMode = false;
                     ucs4_t uc=command;
                     InsertString(&uc, 1, false, true, false);
-                    m_InsertMode = oldim;
+                    //m_InsertMode = oldim;
                 }
             }
             else
                 switch(command)
                 {
+                case ecToggleInsertMode:
+                    SetInsertMode(!m_InsertMode);
+                    break;
                 case ecPrevWord:
                 case ecSelPrevWord:
                 case ecLeft:

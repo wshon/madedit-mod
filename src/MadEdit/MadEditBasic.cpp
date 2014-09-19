@@ -633,7 +633,7 @@ void MadEdit::HexModeToTextMode(MadEditMode mode)
         DoStatusChanged();
         DoSelectionChanged();
 
-        SetInsertMode(m_InsertMode);
+        //SetInsertMode(m_InsertMode);
     }
     else
     {
@@ -643,8 +643,9 @@ void MadEdit::HexModeToTextMode(MadEditMode mode)
         m_RepaintAll = true;
 
         UpdateAppearance();
-        SetInsertMode(m_InsertMode);
+        //SetInsertMode(m_InsertMode);
     }
+    SetInsertMode(m_InsertMode);
 }
 
 void MadEdit::SetEditMode(MadEditMode mode)
@@ -753,7 +754,7 @@ void MadEdit::SetEditMode(MadEditMode mode)
             UpdateAppearance();
 
             m_RepaintAll = true;
-            SetCaretType(ctBlock);
+            //SetCaretType(ctBlock);
 
             if(m_LoadingFile == false)
             {
@@ -791,6 +792,8 @@ void MadEdit::SetEditMode(MadEditMode mode)
                 DoStatusChanged();
             }
 
+            // change to replace mode for backward comptability
+            SetInsertMode(false);
             //if(Focused()) ShowCaret();
             break;
 
@@ -1025,6 +1028,8 @@ void MadEdit::SetMaxColumns(long cols)
 
 void MadEdit::SetInsertMode(bool mode)
 {
+    if(m_InsertMode==mode) return;
+
     m_InsertMode=mode;
     if(mode==true)
     {

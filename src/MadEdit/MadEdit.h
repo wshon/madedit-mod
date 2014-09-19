@@ -729,8 +729,8 @@ public: // basic functions
     void SetInsertMode(bool mode);  // true: insert, false: overwrite
     bool GetInsertMode()
     {
-        if(m_EditMode==emHexMode)
-            return false;
+        //if(m_EditMode==emHexMode)
+        //    return false;
         return m_InsertMode;
     }
 
