@@ -1721,12 +1721,12 @@ void MadEdit::PasteFromClipboard()
         size_t size = ucs.size();
         if(size)
         {
-            bool oldim = m_InsertMode;
-            m_InsertMode = true;
+            //bool oldim = m_InsertMode;
+            //m_InsertMode = true;
 
             InsertString(&ucs[0], size, false, true, false);
 
-            m_InsertMode = oldim;
+            //m_InsertMode = oldim;
         }
     }
 }

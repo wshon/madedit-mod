@@ -937,6 +937,7 @@ void OnEditStatusChanged(MadEdit *madedit)
             {
                 g_ReplaceDialog->UpdateCheckBoxByCBHex(g_ReplaceDialog->WxCheckBoxFindHex->GetValue());
             }
+            g_ActiveMadEdit->Refresh(false);
         }
     }
 }

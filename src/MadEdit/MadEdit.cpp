@@ -59,6 +59,12 @@ using std::list;
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
+#ifdef __WXMSW__
+#define ITOA(num,buf,fmt) _itoa(num,buf,fmt)
+#else
+#define ITOA(num,buf,fmt) itoa(num,buf,fmt)
+#endif
+
 static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr);
 extern void RecordAsMadMacro(MadEdit *, wxString&);
 extern void FromCmdToString(wxString &cmdStr, int madCmd);
@@ -4840,6 +4846,13 @@ void MadEdit::InsertString(const ucs4_t *ucs, size_t count, bool bColumnEditing,
                 oudata->m_InsSize = blk.m_Size;
                 oudata->m_InsData.push_back(blk);
 
+                if(!m_InsertMode)
+                {
+                    wxFileOffset delsize = (blk.m_Size > oudata->m_DelSize) ? blk.m_Size:oudata->m_DelSize;
+                    if(delsize > (m_Lines->m_Size - m_SelectionBegin->pos)) delsize = m_Lines->m_Size - m_SelectionBegin->pos;
+                    oudata->m_DelSize = delsize;
+                }
+
                 MadLineIterator lit = DeleteInsertData(oudata->m_Pos,
                                         oudata->m_DelSize, &oudata->m_DelData,
                                         oudata->m_InsSize, &oudata->m_InsData);
@@ -5366,18 +5379,40 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
 
         UCStoBlock(ucs, count, blk);
 
-        MadInsertUndoData *insud = new MadInsertUndoData;
-        insud->m_Pos = pos + rowpos;
-        insud->m_Size = blk.m_Size;
-        insud->m_Data.push_back(blk);
+        wxFileOffset cpos;
+        if(m_InsertMode)
+        {
+            MadInsertUndoData *insud = new MadInsertUndoData;
+            insud->m_Pos = pos + rowpos;
+			cpos = insud->m_Pos;
+            insud->m_Size = blk.m_Size;
+            insud->m_Data.push_back(blk);
 
-        undo->m_Undos.push_back(insud);
+            undo->m_Undos.push_back(insud);
 
-        DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+            DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+        }
+        else
+        {
+            MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+
+            oudata->m_Pos = pos + rowpos;
+            cpos = oudata->m_Pos;
+            oudata->m_InsSize = blk.m_Size;
+            oudata->m_InsData.push_back(blk);
+            oudata->m_DelSize = blk.m_Size;
+            if(oudata->m_DelSize > (firstlit->m_Size - oudata->m_Pos)) oudata->m_DelSize = (firstlit->m_Size - oudata->m_Pos);
+            if(oudata->m_DelSize > oudata->m_InsSize)
+                oudata->m_DelSize = oudata->m_InsSize;
+            undo->m_Undos.push_back(oudata);
+            DeleteInsertData(oudata->m_Pos,
+                                oudata->m_DelSize, &oudata->m_DelData,
+                                oudata->m_InsSize, &oudata->m_InsData);
+        }
 
         m_Lines->Reformat(firstlit, lastlit);
 
-        m_CaretPos.pos = insud->m_Pos + blk.m_Size;
+        m_CaretPos.pos = cpos + blk.m_Size;
         undo->m_CaretPosAfter=m_CaretPos.pos;
         UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
@@ -5394,7 +5429,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
         if(bSelText)
         {
             m_Selection=true;
-            m_SelectionPos1.pos=insud->m_Pos;
+            m_SelectionPos1.pos=cpos;
             m_SelectionPos2.pos=undo->m_CaretPosAfter;
             UpdateSelectionPos();
         }
@@ -5473,29 +5508,51 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
 
             if(blk.m_Size != 0)
             {
-                MadInsertUndoData *insud = new MadInsertUndoData;
-                insud->m_Pos = pos + rowpos;
-                insud->m_Size = blk.m_Size;
-                insud->m_Data.push_back(blk);
-
-                undo->m_Undos.push_back(insud);
-
-                DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+                wxFileOffset cpos = 0, msize = 0;
+                if(m_InsertMode)
+                {
+                    MadInsertUndoData *insud = new MadInsertUndoData;
+                    insud->m_Pos = pos + rowpos;
+                    insud->m_Size = blk.m_Size;
+                    insud->m_Data.push_back(blk);
+                    cpos = insud->m_Pos;
+                    msize = insud->m_Size;
+                
+                    undo->m_Undos.push_back(insud);
+                
+                    DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+                }
+                else
+                {
+                    MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+                
+                    oudata->m_Pos = pos + rowpos;
+                    oudata->m_InsSize = blk.m_Size;
+                    oudata->m_InsData.push_back(blk);
+                    oudata->m_DelSize = blk.m_Size;
+                    if(oudata->m_DelSize > (lit->m_Size - rowpos)) oudata->m_DelSize = (lit->m_Size - rowpos);
+                    cpos = oudata->m_Pos;
+                    msize = oudata->m_InsSize;
+                    undo->m_Undos.push_back(oudata);
+                    DeleteInsertData(oudata->m_Pos,
+                                        oudata->m_DelSize, &oudata->m_DelData,
+                                        oudata->m_InsSize, &oudata->m_InsData);
+                }
 
                 if(bColumnEditing)
                 {
                     if(lines==linecount) // firstline
                     {
-                        m_SelectionPos2.pos=insud->m_Pos+insud->m_Size;
+                        m_SelectionPos2.pos=cpos+msize;
                     }
                     if(lines==1) // lastline
                     {
-                        m_SelectionPos1.pos=insud->m_Pos+insud->m_Size;
+                        m_SelectionPos1.pos=cpos+msize;
                     }
                 }
                 if(bSelText && lines==1)
                 {
-                    selcaretpos=insud->m_Pos+insud->m_Size;
+                    selcaretpos=cpos+msize;
                 }
             }
             else if(bSelText && lines==1)
@@ -5572,14 +5629,33 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
                         break;
                     }
 
-                    MadInsertUndoData *insud = new MadInsertUndoData;
-                    insud->m_Pos = m_Lines->m_Size;
-                    insud->m_Size = blk.m_Size;
-                    insud->m_Data.push_back(blk);
-
-                    undo->m_Undos.push_back(insud);
-
-                    DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+                    if(m_InsertMode)
+                    {
+                        MadInsertUndoData *insud = new MadInsertUndoData;
+                        insud->m_Pos = m_Lines->m_Size;
+                        insud->m_Size = blk.m_Size;
+                        insud->m_Data.push_back(blk);
+                    
+                        undo->m_Undos.push_back(insud);
+                    
+                        DeleteInsertData(insud->m_Pos, 0, NULL, insud->m_Size, &insud->m_Data);
+                    }
+                    else
+                    {
+                        MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+                    
+                        oudata->m_Pos = m_Lines->m_Size;
+                        oudata->m_InsSize = blk.m_Size;
+                        oudata->m_InsData.push_back(blk);
+                        oudata->m_DelSize = blk.m_Size;
+                        if(oudata->m_DelSize > (lit->m_Size - oudata->m_Pos)) oudata->m_DelSize = (lit->m_Size - oudata->m_Pos);
+                        if(oudata->m_DelSize > oudata->m_InsSize)
+                            oudata->m_DelSize = oudata->m_InsSize;
+                        undo->m_Undos.push_back(oudata);
+                        DeleteInsertData(oudata->m_Pos,
+                                            oudata->m_DelSize, &oudata->m_DelData,
+                                            oudata->m_InsSize, &oudata->m_InsData);
+                    }
 
                     lit = m_Lines->m_LineList.end();
                 }
@@ -5846,10 +5922,10 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
                             memset(padding, padchar, total);
                             padding[total] = 0;
                             if(align == naLeft)
-                                itoa(num,padding,2);
+                                ITOA(num,padding,2);
                             else//(align == naRight)
                             {
-                                itoa(num,buffer,2);
+                                ITOA(num,buffer,2);
                                 int len = strlen(buffer);
                                 if(len < total)
                                 {
@@ -5862,7 +5938,7 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
                         }
                         else
                         {
-                            itoa(num,padding,2);
+                            ITOA(num,padding,2);
                         }
                         tstr +=  wxString::FromAscii(strbuff);
                     }

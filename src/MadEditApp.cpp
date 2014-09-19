@@ -444,7 +444,7 @@ bool MadEditApp::OnInit()
     cfg->Read(wxT("/MadEdit/WindowMaximize"), &maximize, false);
 #endif
     wxPoint pos=wxDefaultPosition;
-    wxSize size(800, 600);
+    wxSize size(1024, 768);
     for(int i=0; i<wxDisplay::GetCount(); ++i)
     {
         wxDisplay dis(i);
