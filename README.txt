@@ -63,12 +63,13 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
-mod v0.2.1
-1. Support InsertMode in HexMode(Toggleable)
+Mod v0.2.1
+1. Support Insert in HexMode(Toggleable)
 2. Paste as insert or replace according to InsertMode
 3. Replace in all mode by paste
+4. Fixed issue: Purge history while existing does not work
 
-mod v0.2.0
+Mod v0.2.0
 New features from 0.1.x
 1. Single Instance feature don't compatable with 0.1.x
 2. MadPython based on Python 2.7.8 as automation macro(Edit/Record/Run/Save/Load)
@@ -78,7 +79,7 @@ New features from 0.1.x
 5. Close to right/left
 6. Fixed bugs found including hang issue caused by empty (), [] and {} in regluar expression
 
-mod v0.2.0
+Mod v0.2.0
 New to beta 4
 1. Changed error message of Options Dialog
 2. Add Incremental numbering feature in Edit->Advanced for column numbering at current caret pos
@@ -88,7 +89,7 @@ New to beta 4
 6. Update Simplifed Chinese
 Waiting for bug report of MadPython and Incremental numbering:-P
 
-mod v0.2.0 beta 4
+Mod v0.2.0 beta 4
 New to beta 3
 1. Replace wxRichTextCtrl with wxTextCtrl
 2. Add Macro debug mode, default off
@@ -96,7 +97,7 @@ New to beta 3
 4. Add some default button for several dialogs
 5. URL changed to sourceforge.org
 
-mod v0.2.0 beta 3
+Mod v0.2.0 beta 3
 This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
 2. Fixed MadPython insert char issue in column mode
@@ -105,7 +106,7 @@ This would be 0.2.0 if no critical issue found
 would be shown in right place if you iconize/restore the window
 5. Added MadPython syntax file and MadPython API added in the file
 
-mod v0.2.0 beta 2
+Mod v0.2.0 beta 2
 Known issue: MadPython not work well in column mode, eg. insert char in column mode
 1. Fixed wxAUIBook bug with patch(http://trac.wxwidgets.org/attachment/ticket/10848/)
 2. Add Close All To The Left/Right feature
@@ -113,7 +114,7 @@ Known issue: MadPython not work well in column mode, eg. insert char in column m
 4. Fixed hang issue caused by empty (), [] and {} in regluar expression
 5. More missed commands was recorded, eg, SetEditMode
 
-mod v0.2.0 beta 2014.9.12
+Mod v0.2.0 beta 2014.9.12
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to 0.1.5 beta
 1. Replace the ugly code for single instance support with the IPC of wxWidgets
@@ -125,7 +126,7 @@ New to 0.1.5 beta
 7. Fixed issue of loading script with unicode characters, eg, unicode in comments
 8. Update translation of Simplified Chinese
 
-mod v0.1.5 beta 2014.9.11
+Mod v0.1.5 beta 2014.9.11
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 4
 1. Add new image for Run TempMacro
@@ -136,12 +137,12 @@ listed on the menu.
 status bar
 6. Remove and add new APIs in MadPython
 
-mod v0.1.5 alpha 4 2014.9.10
+Mod v0.1.5 alpha 4 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 3
 Fixed known issue: SetCaretPosition would get wrong selection beginning pos and duplicated SetCaretPosition
 
-mod v0.1.5 alpha 3 2014.9.10
+Mod v0.1.5 alpha 3 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 2
 1. Fixed Assertion on wxEVT_MOUSE_CAPTURE_LOST
@@ -153,7 +154,7 @@ pos and duplicated SetCaretPosition). Not well tested.
 6. Updated translation for Simplified Chinese.
 7. SaveRecord Icon is to be updated.
 
-mod v0.1.5 alpha 2014.9.5
+Mod v0.1.5 alpha 2014.9.5
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
@@ -164,16 +165,16 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 6. Save script/connected with shortcut(?)(Todo)
 7. Right click on file tab supported(Alpha 2)
 
-mod v0.1.4 2014.6.29
+Mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
 2. Update Simplifed/Traditional Chinese translation
 3. Partially upadate/add translation of Italian/Japanese/Spanish/Russion? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
 4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
-mod v0.1.3 2014.6.23
+Mod v0.1.3 2014.6.23
 Nothing changed. Rebuid with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
 
-mod v0.1.2
+Mod v0.1.2
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
 3. Add FreeBasic Syntax(wxMedit)

@@ -2384,17 +2384,29 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_Config->Write(wxT("/MadEdit/ReloadFilesList"), files );
 
     bb=false;
-    m_Config->Read(wxT("PurgeHistory"), &bb);
+    m_Config->Read(wxT("/MadEdit/PurgeHistory"), &bb);
     if(bb)
     {
         PurgeRecentFiles();
         PurgeRecentFonts();
         PurgeRecentEncodings();
-        g_SearchDialog->PurgeRecentFindTexts();
-        g_ReplaceDialog->PurgeRecentReplaceTexts();
-        g_FindInFilesDialog->PurgeRecentFindDirs();
-        g_FindInFilesDialog->PurgeRecentFindFilters();
-        g_FindInFilesDialog->PurgeRecentFindExcludes();
+		if (g_SearchDialog != NULL)
+		{
+			g_SearchDialog->Show(false);
+			g_SearchDialog->PurgeRecentFindTexts();
+		}
+		if (g_ReplaceDialog != NULL)
+		{
+			g_ReplaceDialog->Show(false);
+			g_ReplaceDialog->PurgeRecentReplaceTexts();
+		}
+		if (g_FindInFilesDialog != NULL)
+		{
+			g_FindInFilesDialog->Show(false);
+			g_FindInFilesDialog->PurgeRecentFindDirs();
+			g_FindInFilesDialog->PurgeRecentFindFilters();
+			g_FindInFilesDialog->PurgeRecentFindExcludes();
+		}
     }
 
     m_Config->SetPath(wxT("/FileCaretPos"));
@@ -2426,7 +2438,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 	m_Config->Write(wxT("/MadEdit/WindowHeight"), y );
 #endif
 //------------------
-	//bool purgeHis = WxCheckBoxPurgeHistory->IsChecked();
     m_Config->SetPath(wxT("/RecentFiles"));
     m_RecentFiles->Save(*m_Config);
 
