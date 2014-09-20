@@ -67,7 +67,8 @@ Mod v0.2.1
 1. Support Insert in HexMode(Toggleable)
 2. Paste as insert or replace according to InsertMode
 3. Replace in all mode by paste
-4. Fixed issue: Purge history while existing does not work
+4. Fixed issue: Purge history while existing not working
+5. Fixed issue: Tab to indent while selecting more than 2 lines not working
 
 Mod v0.2.0
 New features from 0.1.x

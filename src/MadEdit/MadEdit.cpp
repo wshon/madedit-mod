@@ -7753,42 +7753,438 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 }
             }
             else
+            {
+                if((command != ecIncreaseIndent) && (command != ecDecreaseIndent) &&
+                    (command != ecComment) && (command != ecUncomment))
                 {
-                    if((command != ecIncreaseIndent) && (command != ecDecreaseIndent) &&
-                        (command != ecComment) && (command != ecUncomment))
+                    wxString cmdStr(wxT("ProcessCommand("));
+                    FromCmdToString(cmdStr, command);
+                    cmdStr<<wxT(")");                        
+                    RecordAsMadMacro(this, cmdStr);
+                }
+                switch(command)
+                {
+                case ecLeft:
+                case ecSelLeft:
+                    if(m_Selection && command==ecLeft)
                     {
-                        wxString cmdStr(wxT("ProcessCommand("));
-                        FromCmdToString(cmdStr, command);
-                        cmdStr<<wxT(")");                        
-                        RecordAsMadMacro(this, cmdStr);
+                        m_CaretPos= *m_SelectionBegin;
+                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
                     }
-                    switch(command)
+                    else if(m_CaretPos.extraspaces != 0)        // ColumnMode
                     {
-                    case ecLeft:
-                    case ecSelLeft:
-                        if(m_Selection && command==ecLeft)
+                        --m_CaretPos.extraspaces;
+                        m_CaretPos.xpos -= GetUCharWidth(0x20);
+                    }
+                    else
+                    {
+                        if(m_CaretRowUCharPos == 0)   // at begin-of-row
                         {
-                            m_CaretPos= *m_SelectionBegin;
-                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                            if(m_EditMode == emTextMode)
+                            {
+                                if(m_CaretPos.subrowid != 0)     // to prev subrow
+                                {
+                                    --m_CaretPos.rowid;
+                                    --m_CaretPos.subrowid;
+                                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                                }
+                                else if(m_CaretPos.rowid != 0)   // to prev line's last row
+                                {
+                                    MadLineIterator & lit = m_CaretPos.iter;
+                                    --lit;
+
+                                    --m_CaretPos.lineid;
+                                    m_CaretPos.linepos = lit->m_Size - lit->m_NewLineSize;
+                                    m_CaretPos.pos -= lit->m_NewLineSize;
+
+                                    --m_CaretPos.rowid;
+                                    m_CaretPos.subrowid = int(lit->RowCount() - 1);
+                                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                                }
+                            }
                         }
-                        else if(m_CaretPos.extraspaces != 0)        // ColumnMode
+                        else                // in middle of row
                         {
-                            --m_CaretPos.extraspaces;
-                            m_CaretPos.xpos -= GetUCharWidth(0x20);
+                            --m_CaretRowUCharPos;
+                            MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
+
+                            m_CaretPos.pos -= ucp.second;
+                            m_CaretPos.linepos -= ucp.second;
+
+                            m_CaretPos.xpos -= m_ActiveRowWidths[m_CaretRowUCharPos];
+                        }
+                    }
+
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    break;
+
+                case ecRight:
+                case ecSelRight:
+                    if(m_Selection && command==ecRight)
+                    {
+                        m_CaretPos= *m_SelectionEnd;
+                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                    }
+                    else if(m_CaretRowUCharPos == int(m_ActiveRowUChars.size())) // at end-of-row
+                    {
+                        if(m_EditMode == emTextMode)
+                        {
+                            MadLineIterator & lit = m_CaretPos.iter;
+                            if(m_CaretPos.subrowid + 1 < int(lit->RowCount()))      // to next subrow
+                            {
+                                ++m_CaretPos.rowid;
+                                ++m_CaretPos.subrowid;
+
+                                UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                            }
+                            else if(m_CaretPos.rowid < int(m_Lines->m_RowCount - 1))  //to next line
+                            {
+                                m_CaretPos.pos += lit->m_NewLineSize;
+
+                                ++lit;
+                                ++m_CaretPos.lineid;
+                                m_CaretPos.linepos = 0;
+
+                                ++m_CaretPos.rowid;
+                                m_CaretPos.subrowid = 0;
+
+                                UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                            }
+                        }
+                        else                // ColumnMode
+                        {
+                            if(m_CaretPos.xpos < m_MaxColumnRowWidth)
+                            {
+                                //if(m_CaretPos.subrowid == m_CaretPos.iter->RowCount() - 1)
+                                {
+                                    ++m_CaretPos.extraspaces;
+                                    m_CaretPos.xpos += GetUCharWidth(0x20);
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
+                        m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
+
+                        ++m_CaretRowUCharPos;
+
+                        m_CaretPos.pos += ucp.second;
+                        m_CaretPos.linepos += ucp.second;
+                    }
+
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    break;
+
+                case ecUp:
+                case ecSelUp:
+                    if(m_CaretPos.rowid > 0)
+                    {
+                        if(m_CaretPos.subrowid > 0)  // to prev subrow
+                        {
+                            --m_CaretPos.rowid;
+                            --m_CaretPos.subrowid;
+
+                            MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+                            std::advance(riter, m_CaretPos.subrowid);
+
+                            m_CaretPos.pos -= (m_CaretPos.linepos - riter->m_Start);
+                            m_CaretPos.linepos = riter->m_Start;
+
+                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                        }
+                        else                // to prev line's last row
+                        {
+                            --m_CaretPos.rowid;
+                            --m_CaretPos.lineid;
+
+                            MadLineIterator & lit = m_CaretPos.iter;
+                            --lit;
+                            m_CaretPos.subrowid = int(lit->RowCount() - 1);
+
+                            MadRowIndexIterator riter = lit->m_RowIndices.begin();
+                            std::advance(riter, m_CaretPos.subrowid);
+
+                            m_CaretPos.pos -= (m_CaretPos.linepos + (lit->m_Size - riter->m_Start));
+                            m_CaretPos.linepos = riter->m_Start;
+
+                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                        }
+                    }
+
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecDown:
+                case ecSelDown:
+                    if(m_CaretPos.rowid < int(m_Lines->m_RowCount - 1))   //to next line/row
+                    {
+                        MadLineIterator & lit = m_CaretPos.iter;
+                        if(m_CaretPos.subrowid + 1 < int(lit->RowCount()))        // to next subrow
+                        {
+                            ++m_CaretPos.rowid;
+                            ++m_CaretPos.subrowid;
+
+                            MadRowIndexIterator riter = lit->m_RowIndices.begin();
+                            std::advance(riter, m_CaretPos.subrowid);
+
+                            // set linepos pos for begin of row
+                            m_CaretPos.pos += (riter->m_Start - m_CaretPos.linepos);
+                            m_CaretPos.linepos = riter->m_Start;
+
+                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                        }
+                        else                // to next line
+                        {
+                            MadRowIndexIterator riter = lit->m_RowIndices.begin();
+                            std::advance(riter, m_CaretPos.subrowid + 1);
+
+                            // set linepos pos for begin of line
+                            m_CaretPos.pos +=
+                                (riter->m_Start - m_CaretPos.linepos) + lit->m_NewLineSize;
+
+                            m_CaretPos.linepos = 0;
+                            ++lit;
+                            ++m_CaretPos.lineid;
+                            ++m_CaretPos.rowid;
+
+                            m_CaretPos.subrowid = 0;
+
+                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                        }
+                    }
+
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecBeginLine:
+                case ecSelBeginLine:
+                    {
+                        // get first non-space char
+                        int charpos = 0;
+                        int xpos = 0;
+                        wxFileOffset len = 0;
+                        while(charpos < int(m_ActiveRowUChars.size()))
+                        {
+                            MadUCPair & ucp = m_ActiveRowUChars[charpos];
+                            int uc = ucp.first;
+                            if(uc != 0x20 && uc != 0x09 && uc != 0x3000)      // fullwidth space char
+                                break;
+
+                            xpos += m_ActiveRowWidths[charpos];
+                            len += ucp.second;
+                            ++charpos;
+                        }
+
+                        if(charpos == int(m_ActiveRowUChars.size()) && charpos != 0)
+                        {
+                            charpos = 0;
+                            xpos = 0;
+                            len = 0;
+                        }
+
+                        if(m_CaretRowUCharPos == 0)
+                        {
+                            if(m_CaretPos.extraspaces == 0)
+                            {
+                                if(charpos != 0)
+                                {
+                                    m_CaretRowUCharPos = charpos;
+                                    m_CaretPos.xpos = xpos;
+                                    m_CaretPos.pos += len;
+                                    m_CaretPos.linepos += len;
+                                }
+                            }
+                            else
+                            {
+                                m_CaretPos.extraspaces = 0;
+                                m_CaretPos.xpos = 0;
+                            }
                         }
                         else
                         {
-                            if(m_CaretRowUCharPos == 0)   // at begin-of-row
+                            m_CaretPos.extraspaces = 0;
+                            if(charpos != 0)
                             {
-                                if(m_EditMode == emTextMode)
+                                if(m_CaretRowUCharPos == charpos)
                                 {
-                                    if(m_CaretPos.subrowid != 0)     // to prev subrow
+                                    m_CaretRowUCharPos = 0;
+                                    m_CaretPos.xpos = 0;
+                                    m_CaretPos.pos -= len;
+                                    m_CaretPos.linepos -= len;
+                                }
+                                else
+                                {
+                                    wxFileOffset len2 = m_CaretPos.linepos -
+                                        m_CaretPos.iter->m_RowIndices[m_CaretPos.subrowid].m_Start;
+
+                                    m_CaretPos.pos = m_CaretPos.pos - len2 + len;
+                                    m_CaretPos.linepos = m_CaretPos.linepos - len2 + len;
+
+                                    m_CaretRowUCharPos = charpos;
+                                    m_CaretPos.xpos = xpos;
+                                }
+                            }
+                            else
+                            {
+                                m_CaretRowUCharPos = 0;
+                                m_CaretPos.xpos = 0;
+                                len = m_CaretPos.linepos -
+                                    m_CaretPos.iter->m_RowIndices[m_CaretPos.subrowid].m_Start;
+                                m_CaretPos.pos -= len;
+                                m_CaretPos.linepos -= len;
+                            }
+
+                        }
+                        m_LastCaretXPos = m_CaretPos.xpos;
+                        AppearCaret();
+                        UpdateScrollBarPos();
+                    }
+                    break;
+
+                case ecEndLine:
+                case ecSelEndLine:
+                    if(m_CaretPos.extraspaces != 0)
+                    {
+                        m_CaretPos.xpos -= int(m_CaretPos.extraspaces * GetUCharWidth(0x20));
+                        m_CaretPos.extraspaces = 0;
+                    }
+                    else
+                    {
+                        while(m_CaretRowUCharPos < int(m_ActiveRowUChars.size()))
+                        {
+                            MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
+                            m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
+                            m_CaretPos.pos += ucp.second;
+                            m_CaretPos.linepos += ucp.second;
+                            ++m_CaretRowUCharPos;
+                        }
+                    }
+
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecBeginDoc:
+                case ecSelBeginDoc:
+                    m_CaretPos.Reset(m_Lines->m_LineList.begin());
+                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecEndDoc:
+                case ecSelEndDoc:
+                    m_CaretPos.iter = m_Lines->m_LineList.end();
+                    --m_CaretPos.iter;
+                    m_CaretPos.pos = m_Lines->m_Size;
+                    m_CaretPos.linepos = m_CaretPos.iter->m_Size;    //-m_CaretPos.iter->m_NewLineSize;
+                    m_CaretPos.rowid = int(m_Lines->m_RowCount - 1);
+                    m_CaretPos.lineid = int(m_Lines->m_LineCount - 1);
+                    m_CaretPos.subrowid = int(m_CaretPos.iter->RowCount() - 1);
+
+                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecPrevPage:
+                case ecSelPrevPage:
+                    {
+                        int count=m_CompleteRowCount-1;
+                        if(count==0) ++count;
+
+                        if(m_CaretPos.rowid > count)
+                        {
+                            m_CaretPos.rowid -= count;
+                        }
+                        else
+                        {
+                            m_CaretPos.rowid = 0;
+                        }
+
+                        int rowid = m_CaretPos.rowid;
+                        m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
+                        m_CaretPos.subrowid = m_CaretPos.rowid - rowid;
+
+                        MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+                        std::advance(riter, m_CaretPos.subrowid);
+
+                        m_CaretPos.linepos = riter->m_Start;
+                        m_CaretPos.pos += m_CaretPos.linepos;
+
+                        UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                    }
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+                case ecNextPage:
+                case ecSelNextPage:
+                    {
+                        int count=m_CompleteRowCount-1;
+                        if(count==0) ++count;
+
+                        if(m_CaretPos.rowid + count < int(m_Lines->m_RowCount))
+                        {
+                            m_CaretPos.rowid += count;
+                        }
+                        else
+                        {
+                            m_CaretPos.rowid = int(m_Lines->m_RowCount - 1);
+                        }
+
+                        int rowid = m_CaretPos.rowid;
+                        m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
+                        m_CaretPos.subrowid = m_CaretPos.rowid - rowid;
+
+                        MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+                        std::advance(riter, m_CaretPos.subrowid);
+
+                        m_CaretPos.linepos = riter->m_Start;
+                        m_CaretPos.pos += m_CaretPos.linepos;
+
+                        UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                    }
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    break;
+
+                case ecPrevWord:
+                case ecSelPrevWord:
+                    if(m_CaretPos.extraspaces != 0)
+                    {
+                        m_CaretPos.xpos -= int(m_CaretPos.extraspaces * GetUCharWidth(0x20));
+                        m_CaretPos.extraspaces = 0;
+                    }
+                    else
+                    {
+                        if(m_CaretRowUCharPos != 0 || m_CaretPos.rowid != 0)
+                        {
+                            int uctype0 = 0;
+                            do
+                            {
+                                if(m_CaretRowUCharPos == 0)
+                                {
+                                    if(m_CaretPos.subrowid != 0)   // to prev subrow
                                     {
                                         --m_CaretPos.rowid;
                                         --m_CaretPos.subrowid;
                                         UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
                                     }
-                                    else if(m_CaretPos.rowid != 0)   // to prev line's last row
+                                    else if(m_CaretPos.rowid != 0) // to prev line's last row
                                     {
                                         MadLineIterator & lit = m_CaretPos.iter;
                                         --lit;
@@ -7800,11 +8196,33 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                         --m_CaretPos.rowid;
                                         m_CaretPos.subrowid = int(lit->RowCount() - 1);
                                         UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                                        break;
+                                    }
+                                    else          // at begin of file
+                                    {
+                                        break;
                                     }
                                 }
-                            }
-                            else                // in middle of row
-                            {
+
+                                wxASSERT(m_CaretRowUCharPos != 0);
+
+                                if(uctype0 == 0)
+                                {
+                                    uctype0 = GetUCharType(m_ActiveRowUChars[m_CaretRowUCharPos - 1].first);
+                                    //if(uctype0 == 1)
+                                    //    uctype0 = 0;
+                                }
+                                else
+                                {
+                                    int uctype=GetUCharType(m_ActiveRowUChars[m_CaretRowUCharPos - 1].first);
+                                    if(uctype != uctype0)// && uctype != 1 )
+                                    {
+                                        break;
+                                    }
+                                    uctype0=uctype;
+                                }
+
                                 --m_CaretRowUCharPos;
                                 MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
 
@@ -7812,818 +8230,451 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                 m_CaretPos.linepos -= ucp.second;
 
                                 m_CaretPos.xpos -= m_ActiveRowWidths[m_CaretRowUCharPos];
+
+                            }
+                            while(m_CaretRowUCharPos != 0 || m_CaretPos.subrowid != 0);
+                        }
+                    }
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    break;
+
+                case ecNextWord:
+                case ecSelNextWord:
+                    if(m_CaretPos.pos < m_Lines->m_Size)
+                    {
+                        MadLineIterator & lit = m_CaretPos.iter;
+                        wxFileOffset lineendpos = lit->m_Size - lit->m_NewLineSize;
+                        if(m_CaretPos.linepos < lineendpos)
+                        {
+                            m_Lines->InitNextUChar(lit, m_CaretPos.linepos);
+
+                            MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+                            int uctype0 = 0, uctype;
+                            do
+                            {
+                                (m_Lines->*NextUChar)(m_ActiveRowUChars);
+                                MadUCPair & ucp = m_ActiveRowUChars.back();
+
+                                if(uctype0 == 0)
+                                {
+                                    uctype0 = GetUCharType(ucp.first);
+                                }
+                                else
+                                {
+                                    uctype = GetUCharType(ucp.first);
+                                    if(uctype != uctype0)
+                                    {
+                                        //if(uctype != 1)
+                                            break;
+                                        //uctype0 = 1;
+                                    }
+                                }
+
+                                m_CaretPos.pos += ucp.second;
+                                m_CaretPos.linepos += ucp.second;
+
+                                if(m_CaretPos.linepos <= lineendpos &&
+                                    m_CaretPos.subrowid < int(lit->RowCount()-1) &&
+                                    m_CaretPos.linepos >= lit->m_RowIndices[m_CaretPos.subrowid + 1].m_Start)
+                                {
+                                    ++m_CaretPos.subrowid;
+                                    ++m_CaretPos.rowid;
+                                }
+
+                            }
+                            while(m_CaretPos.linepos < lineendpos);
+
+                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                        }
+                        else                // to next line
+                        {
+                            //if(m_CaretPos.rowid < m_Lines->m_RowCount - 1)
+                            {
+                                m_CaretPos.pos += lit->m_NewLineSize;
+
+                                ++lit;
+                                ++m_CaretPos.lineid;
+                                m_CaretPos.linepos = 0;
+
+                                ++m_CaretPos.rowid;
+                                m_CaretPos.subrowid = 0;
+
+                                UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
                             }
                         }
+                    }
+                    AppearCaret();
+                    UpdateScrollBarPos();
+                    m_LastCaretXPos = m_CaretPos.xpos;
+                    break;
+
+                case ecLeftBrace:
+                case ecSelLeftBrace:
+                    if(m_LeftBrace_rowid<0)
+                    {
+                        MadLineIterator lit=m_CaretPos.iter;
+                        wxFileOffset linepos=m_CaretPos.linepos;
+                        m_LeftBrace_rowid=m_CaretPos.rowid - m_CaretPos.subrowid;
+                        m_LeftBrace.BraceIndex=-1;
+                        FindLeftBrace(m_LeftBrace_rowid, lit, linepos, m_LeftBrace);
+                    }
+
+                    if(m_LeftBrace_rowid>=0)
+                    {
+                        int rowid = m_LeftBrace_rowid;
+                        m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
+                        m_CaretPos.subrowid = m_LeftBrace_rowid - rowid;
+                        m_CaretPos.rowid = m_LeftBrace_rowid;
+                        m_CaretPos.linepos = m_LeftBrace.LinePos;
+                        m_CaretPos.pos += m_CaretPos.linepos;
+
+                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                        m_LastCaretXPos = m_CaretPos.xpos;
 
                         AppearCaret();
                         UpdateScrollBarPos();
+                    }
+                    break;
+
+                case ecRightBrace:
+                case ecSelRightBrace:
+                    if(m_RightBrace_rowid<0)
+                    {
+                        MadLineIterator lit=m_CaretPos.iter;
+                        wxFileOffset linepos=m_CaretPos.linepos;
+                        m_RightBrace_rowid=m_CaretPos.rowid - m_CaretPos.subrowid;
+                        m_RightBrace.BraceIndex=-1;
+                        FindRightBrace(m_RightBrace_rowid, lit, linepos, m_RightBrace);
+                    }
+
+                    if(m_RightBrace_rowid>=0)
+                    {
+                        int rowid = m_RightBrace_rowid;
+                        m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
+                        m_CaretPos.subrowid = m_RightBrace_rowid - rowid;
+                        m_CaretPos.rowid = m_RightBrace_rowid;
+                        m_CaretPos.linepos = m_RightBrace.LinePos;
+                        m_CaretPos.pos += m_CaretPos.linepos;
+
+                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
                         m_LastCaretXPos = m_CaretPos.xpos;
-                        break;
 
-                    case ecRight:
-                    case ecSelRight:
-                        if(m_Selection && command==ecRight)
+                        AppearCaret();
+                        UpdateScrollBarPos();
+                    }
+                    break;
+
+                case ecReturn:
+                case ecReturnNoIndent:
+                    if(!IsReadOnly() && !m_SingleLineMode)
+                    {
+                        if(m_Selection && m_EditMode == emColumnMode)
                         {
-                            m_CaretPos= *m_SelectionEnd;
-                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                            DeleteSelection(true, NULL, false);
                         }
-                        else if(m_CaretRowUCharPos == int(m_ActiveRowUChars.size())) // at end-of-row
+                        else
                         {
-                            if(m_EditMode == emTextMode)
+                            //if(m_CaretPos.extraspaces)
+                            m_CaretPos.extraspaces = 0;
+
+                            vector < ucs4_t > ucs;
+
+                            switch (m_InsertNewLineType)
                             {
-                                MadLineIterator & lit = m_CaretPos.iter;
-                                if(m_CaretPos.subrowid + 1 < int(lit->RowCount()))      // to next subrow
-                                {
-                                    ++m_CaretPos.rowid;
-                                    ++m_CaretPos.subrowid;
+                            case nltUNIX:
+#ifndef __WXMSW__
+                            case nltDefault:
+#endif
+                                ucs.push_back(0x0A);
+                                break;
+                            case nltMAC:
+                                ucs.push_back(0x0D);
+                                break;
+                            case nltDOS:
+#ifdef __WXMSW__
+                            case nltDefault:
+#endif
+                                ucs.push_back(0x0D);
+                                ucs.push_back(0x0A);
+                                break;
+                            }
 
-                                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                            if(m_AutoIndent && command==ecReturn)
+                            {
+                                bool prevline=false;
+
+                                MadUCQueue ucqueue;
+                                MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+                                ucs4_t uc;
+                                wxFileOffset pos, pos1;
+
+                                if(m_Selection)
+                                {
+                                    pos=m_SelectionBegin->iter->m_RowIndices[0].m_Start;
+                                    m_Lines->InitNextUChar(m_SelectionBegin->iter, pos);
+                                    pos1=m_SelectionBegin->pos;
+                                    pos=pos1-m_SelectionBegin->linepos+pos;
                                 }
-                                else if(m_CaretPos.rowid < int(m_Lines->m_RowCount - 1))  //to next line
+                                else
                                 {
-                                    m_CaretPos.pos += lit->m_NewLineSize;
+                                    pos=m_CaretPos.iter->m_RowIndices[0].m_Start;
+                                    m_Lines->InitNextUChar(m_CaretPos.iter, pos);
+                                    pos1=m_CaretPos.pos;
+                                    pos=pos1-m_CaretPos.linepos+pos;
+                                }
 
-                                    ++lit;
-                                    ++m_CaretPos.lineid;
-                                    m_CaretPos.linepos = 0;
+                                while(pos<pos1 && (m_Lines->*NextUChar)(ucqueue) && ((uc=ucqueue.back().first)==0x20 || uc==0x09))
+                                    pos+=ucqueue.back().second;
 
-                                    ++m_CaretPos.rowid;
-                                    m_CaretPos.subrowid = 0;
+                                if(pos==pos1)   // from [pos] to [pos1] are all spaces
+                                {
+                                    prevline=true;
+                                }
 
-                                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+                                int spaces=0;
+
+                                if(m_Selection)
+                                    m_Lines->InitNextUChar(m_SelectionEnd->iter, m_SelectionEnd->linepos);
+                                else
+                                    m_Lines->InitNextUChar(m_CaretPos.iter, m_CaretPos.linepos);
+
+                                while((m_Lines->*NextUChar)(ucqueue) && ((uc=ucqueue.back().first)==0x20 || uc==0x09))
+                                {
+                                    ++spaces;
+                                }
+
+                                bool unindentChar=false;
+                                if(ucqueue.size()>0 && m_Syntax->m_UnindentChar.Find(wxChar(uc))>=0)
+                                {
+                                    unindentChar=true;
+                                }
+
+                                if(spaces)
+                                {
+                                    if(m_Selection)
+                                    {
+                                        m_SelectionEnd->pos+=spaces;
+                                    }
+                                    else
+                                    {
+                                        m_Selection=true;
+                                        m_SelectionPos1=m_CaretPos;
+                                        m_SelectionPos2=m_CaretPos;
+                                        m_SelectionPos2.pos+=spaces;
+
+                                        m_SelectionBegin=&m_SelectionPos1;
+                                        m_SelectionEnd=&m_SelectionPos2;
+                                    }
+                                    UpdateSelectionPos();
+                                }
+
+
+                                if(m_Selection)
+                                {
+                                    if((prevline || m_SelectionBegin->linepos == 0)
+                                        && m_SelectionBegin->lineid != 0)
+                                    {
+                                        MadLineIterator lit = m_SelectionBegin->iter;
+                                        GetIndentSpaces(m_SelectionBegin->lineid - 1, --lit, ucs, true, unindentChar);
+                                    }
+                                    else
+                                    {
+                                        GetIndentSpaces(m_SelectionBegin->lineid, m_SelectionBegin->iter, ucs, true, unindentChar);
+                                    }
+                                }
+                                else
+                                {
+                                    if((prevline || m_CaretPos.linepos == 0) && m_CaretPos.lineid != 0)
+                                    {
+                                        MadLineIterator lit = m_CaretPos.iter;
+                                        GetIndentSpaces(m_CaretPos.lineid - 1, --lit, ucs, true, unindentChar);
+                                    }
+                                    else
+                                    {
+                                        GetIndentSpaces(m_CaretPos.lineid, m_CaretPos.iter, ucs, true, unindentChar);
+                                    }
                                 }
                             }
-                            else                // ColumnMode
+
+                            InsertString(&ucs[0], ucs.size(), false, true, false);
+                        }
+                    }
+                    break;
+
+                case ecTab:
+                    if(!IsReadOnly())
+                    {
+                        if(m_Selection && (m_SelectionPos1.lineid != m_SelectionPos2.lineid))
+                        {
+                            IncreaseDecreaseIndent(true);
+                        }
+                        else if(m_InsertSpacesInsteadOfTab)
+                        {
+                            int tabwidth = m_TabColumns * GetUCharWidth(0x20);
+                            if(m_Selection) tabwidth -= (m_SelectionBegin->xpos % tabwidth);
+                            else tabwidth -= (m_CaretPos.xpos % tabwidth);
+                            int spaces=tabwidth/GetUCharWidth(0x20);
+                            if(spaces==0) spaces=m_TabColumns;
+
+                            ucs4_t *sp = new ucs4_t[spaces];
+                            for(int i = 0; i < spaces; ++i)
+                                sp[i] = 0x20;
+                            InsertString(sp, spaces, true, true, false);
+                            delete []sp;
+                        }
+                        else
+                        {
+                            ucs4_t tab = 0x09;
+                            InsertString(&tab, 1, true, true, false);
+                        }
+                    }
+                    break;
+
+                case ecIncreaseIndent:
+                    {
+                        RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(True)")));
+                        IncreaseDecreaseIndent(true);
+                    }
+                    break;
+                case ecDecreaseIndent:
+                    {
+                        RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(False)")));
+                        IncreaseDecreaseIndent(false);
+                    }
+                    break;
+
+                case ecComment:
+                    {
+                        RecordAsMadMacro(this, wxString(wxT("CommentUncomment(True)")));
+                        CommentUncomment(true);
+                    }
+                    break;
+                case ecUncomment:
+                    {
+                        RecordAsMadMacro(this, wxString(wxT("CommentUncomment(False)")));
+                        CommentUncomment(false);
+                    }
+                    break;
+
+                case ecInsertTabChar:
+                    if(!IsReadOnly())
+                    {
+                        ucs4_t tab = 0x09;
+                        InsertString(&tab, 1, true, true, false);
+                    }
+                    break;
+
+                case ecDelete:
+                    if(!IsReadOnly())
+                    {
+                        if(m_Selection)
+                        {
+                            if(m_EditMode==emColumnMode && GetSelectionSize()==0)
                             {
-                                if(m_CaretPos.xpos < m_MaxColumnRowWidth)
+                                if(m_CaretRowUCharPos == int(m_ActiveRowUChars.size())) // at end-of-row
                                 {
-                                    //if(m_CaretPos.subrowid == m_CaretPos.iter->RowCount() - 1)
+                                    if(m_CaretPos.xpos < m_MaxColumnRowWidth)
                                     {
                                         ++m_CaretPos.extraspaces;
                                         m_CaretPos.xpos += GetUCharWidth(0x20);
                                     }
                                 }
-                            }
-
-                        }
-                        else
-                        {
-                            MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
-                            m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
-
-                            ++m_CaretRowUCharPos;
-
-                            m_CaretPos.pos += ucp.second;
-                            m_CaretPos.linepos += ucp.second;
-                        }
-
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        break;
-
-                    case ecUp:
-                    case ecSelUp:
-                        if(m_CaretPos.rowid > 0)
-                        {
-                            if(m_CaretPos.subrowid > 0)  // to prev subrow
-                            {
-                                --m_CaretPos.rowid;
-                                --m_CaretPos.subrowid;
-
-                                MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
-                                std::advance(riter, m_CaretPos.subrowid);
-
-                                m_CaretPos.pos -= (m_CaretPos.linepos - riter->m_Start);
-                                m_CaretPos.linepos = riter->m_Start;
-
-                                UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                            }
-                            else                // to prev line's last row
-                            {
-                                --m_CaretPos.rowid;
-                                --m_CaretPos.lineid;
-
-                                MadLineIterator & lit = m_CaretPos.iter;
-                                --lit;
-                                m_CaretPos.subrowid = int(lit->RowCount() - 1);
-
-                                MadRowIndexIterator riter = lit->m_RowIndices.begin();
-                                std::advance(riter, m_CaretPos.subrowid);
-
-                                m_CaretPos.pos -= (m_CaretPos.linepos + (lit->m_Size - riter->m_Start));
-                                m_CaretPos.linepos = riter->m_Start;
-
-                                UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                            }
-                        }
-
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecDown:
-                    case ecSelDown:
-                        if(m_CaretPos.rowid < int(m_Lines->m_RowCount - 1))   //to next line/row
-                        {
-                            MadLineIterator & lit = m_CaretPos.iter;
-                            if(m_CaretPos.subrowid + 1 < int(lit->RowCount()))        // to next subrow
-                            {
-                                ++m_CaretPos.rowid;
-                                ++m_CaretPos.subrowid;
-
-                                MadRowIndexIterator riter = lit->m_RowIndices.begin();
-                                std::advance(riter, m_CaretPos.subrowid);
-
-                                // set linepos pos for begin of row
-                                m_CaretPos.pos += (riter->m_Start - m_CaretPos.linepos);
-                                m_CaretPos.linepos = riter->m_Start;
-
-                                UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                            }
-                            else                // to next line
-                            {
-                                MadRowIndexIterator riter = lit->m_RowIndices.begin();
-                                std::advance(riter, m_CaretPos.subrowid + 1);
-
-                                // set linepos pos for begin of line
-                                m_CaretPos.pos +=
-                                    (riter->m_Start - m_CaretPos.linepos) + lit->m_NewLineSize;
-
-                                m_CaretPos.linepos = 0;
-                                ++lit;
-                                ++m_CaretPos.lineid;
-                                ++m_CaretPos.rowid;
-
-                                m_CaretPos.subrowid = 0;
-
-                                UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                            }
-                        }
-
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecBeginLine:
-                    case ecSelBeginLine:
-                        {
-                            // get first non-space char
-                            int charpos = 0;
-                            int xpos = 0;
-                            wxFileOffset len = 0;
-                            while(charpos < int(m_ActiveRowUChars.size()))
-                            {
-                                MadUCPair & ucp = m_ActiveRowUChars[charpos];
-                                int uc = ucp.first;
-                                if(uc != 0x20 && uc != 0x09 && uc != 0x3000)      // fullwidth space char
-                                    break;
-
-                                xpos += m_ActiveRowWidths[charpos];
-                                len += ucp.second;
-                                ++charpos;
-                            }
-
-                            if(charpos == int(m_ActiveRowUChars.size()) && charpos != 0)
-                            {
-                                charpos = 0;
-                                xpos = 0;
-                                len = 0;
-                            }
-
-                            if(m_CaretRowUCharPos == 0)
-                            {
-                                if(m_CaretPos.extraspaces == 0)
-                                {
-                                    if(charpos != 0)
-                                    {
-                                        m_CaretRowUCharPos = charpos;
-                                        m_CaretPos.xpos = xpos;
-                                        m_CaretPos.pos += len;
-                                        m_CaretPos.linepos += len;
-                                    }
-                                }
                                 else
                                 {
-                                    m_CaretPos.extraspaces = 0;
-                                    m_CaretPos.xpos = 0;
-                                }
-                            }
-                            else
-                            {
-                                m_CaretPos.extraspaces = 0;
-                                if(charpos != 0)
-                                {
-                                    if(m_CaretRowUCharPos == charpos)
-                                    {
-                                        m_CaretRowUCharPos = 0;
-                                        m_CaretPos.xpos = 0;
-                                        m_CaretPos.pos -= len;
-                                        m_CaretPos.linepos -= len;
-                                    }
-                                    else
-                                    {
-                                        wxFileOffset len2 = m_CaretPos.linepos -
-                                            m_CaretPos.iter->m_RowIndices[m_CaretPos.subrowid].m_Start;
-
-                                        m_CaretPos.pos = m_CaretPos.pos - len2 + len;
-                                        m_CaretPos.linepos = m_CaretPos.linepos - len2 + len;
-
-                                        m_CaretRowUCharPos = charpos;
-                                        m_CaretPos.xpos = xpos;
-                                    }
-                                }
-                                else
-                                {
-                                    m_CaretRowUCharPos = 0;
-                                    m_CaretPos.xpos = 0;
-                                    len = m_CaretPos.linepos -
-                                        m_CaretPos.iter->m_RowIndices[m_CaretPos.subrowid].m_Start;
-                                    m_CaretPos.pos -= len;
-                                    m_CaretPos.linepos -= len;
-                                }
-
-                            }
-                            m_LastCaretXPos = m_CaretPos.xpos;
-                            AppearCaret();
-                            UpdateScrollBarPos();
-                        }
-                        break;
-
-                    case ecEndLine:
-                    case ecSelEndLine:
-                        if(m_CaretPos.extraspaces != 0)
-                        {
-                            m_CaretPos.xpos -= int(m_CaretPos.extraspaces * GetUCharWidth(0x20));
-                            m_CaretPos.extraspaces = 0;
-                        }
-                        else
-                        {
-                            while(m_CaretRowUCharPos < int(m_ActiveRowUChars.size()))
-                            {
-                                MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
-                                m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
-                                m_CaretPos.pos += ucp.second;
-                                m_CaretPos.linepos += ucp.second;
-                                ++m_CaretRowUCharPos;
-                            }
-                        }
-
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecBeginDoc:
-                    case ecSelBeginDoc:
-                        m_CaretPos.Reset(m_Lines->m_LineList.begin());
-                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecEndDoc:
-                    case ecSelEndDoc:
-                        m_CaretPos.iter = m_Lines->m_LineList.end();
-                        --m_CaretPos.iter;
-                        m_CaretPos.pos = m_Lines->m_Size;
-                        m_CaretPos.linepos = m_CaretPos.iter->m_Size;    //-m_CaretPos.iter->m_NewLineSize;
-                        m_CaretPos.rowid = int(m_Lines->m_RowCount - 1);
-                        m_CaretPos.lineid = int(m_Lines->m_LineCount - 1);
-                        m_CaretPos.subrowid = int(m_CaretPos.iter->RowCount() - 1);
-
-                        UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecPrevPage:
-                    case ecSelPrevPage:
-                        {
-                            int count=m_CompleteRowCount-1;
-                            if(count==0) ++count;
-
-                            if(m_CaretPos.rowid > count)
-                            {
-                                m_CaretPos.rowid -= count;
-                            }
-                            else
-                            {
-                                m_CaretPos.rowid = 0;
-                            }
-
-                            int rowid = m_CaretPos.rowid;
-                            m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
-                            m_CaretPos.subrowid = m_CaretPos.rowid - rowid;
-
-                            MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
-                            std::advance(riter, m_CaretPos.subrowid);
-
-                            m_CaretPos.linepos = riter->m_Start;
-                            m_CaretPos.pos += m_CaretPos.linepos;
-
-                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                        }
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-                    case ecNextPage:
-                    case ecSelNextPage:
-                        {
-                            int count=m_CompleteRowCount-1;
-                            if(count==0) ++count;
-
-                            if(m_CaretPos.rowid + count < int(m_Lines->m_RowCount))
-                            {
-                                m_CaretPos.rowid += count;
-                            }
-                            else
-                            {
-                                m_CaretPos.rowid = int(m_Lines->m_RowCount - 1);
-                            }
-
-                            int rowid = m_CaretPos.rowid;
-                            m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
-                            m_CaretPos.subrowid = m_CaretPos.rowid - rowid;
-
-                            MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
-                            std::advance(riter, m_CaretPos.subrowid);
-
-                            m_CaretPos.linepos = riter->m_Start;
-                            m_CaretPos.pos += m_CaretPos.linepos;
-
-                            UpdateCaretByXPos(m_LastCaretXPos, m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                        }
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        break;
-
-                    case ecPrevWord:
-                    case ecSelPrevWord:
-                        if(m_CaretPos.extraspaces != 0)
-                        {
-                            m_CaretPos.xpos -= int(m_CaretPos.extraspaces * GetUCharWidth(0x20));
-                            m_CaretPos.extraspaces = 0;
-                        }
-                        else
-                        {
-                            if(m_CaretRowUCharPos != 0 || m_CaretPos.rowid != 0)
-                            {
-                                int uctype0 = 0;
-                                do
-                                {
-                                    if(m_CaretRowUCharPos == 0)
-                                    {
-                                        if(m_CaretPos.subrowid != 0)   // to prev subrow
-                                        {
-                                            --m_CaretPos.rowid;
-                                            --m_CaretPos.subrowid;
-                                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                                        }
-                                        else if(m_CaretPos.rowid != 0) // to prev line's last row
-                                        {
-                                            MadLineIterator & lit = m_CaretPos.iter;
-                                            --lit;
-
-                                            --m_CaretPos.lineid;
-                                            m_CaretPos.linepos = lit->m_Size - lit->m_NewLineSize;
-                                            m_CaretPos.pos -= lit->m_NewLineSize;
-
-                                            --m_CaretPos.rowid;
-                                            m_CaretPos.subrowid = int(lit->RowCount() - 1);
-                                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                                            break;
-                                        }
-                                        else          // at begin of file
-                                        {
-                                            break;
-                                        }
-                                    }
-
-                                    wxASSERT(m_CaretRowUCharPos != 0);
-
-                                    if(uctype0 == 0)
-                                    {
-                                        uctype0 = GetUCharType(m_ActiveRowUChars[m_CaretRowUCharPos - 1].first);
-                                        //if(uctype0 == 1)
-                                        //    uctype0 = 0;
-                                    }
-                                    else
-                                    {
-                                        int uctype=GetUCharType(m_ActiveRowUChars[m_CaretRowUCharPos - 1].first);
-                                        if(uctype != uctype0)// && uctype != 1 )
-                                        {
-                                            break;
-                                        }
-                                        uctype0=uctype;
-                                    }
-
-                                    --m_CaretRowUCharPos;
                                     MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
+                                    m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
 
-                                    m_CaretPos.pos -= ucp.second;
-                                    m_CaretPos.linepos -= ucp.second;
-
-                                    m_CaretPos.xpos -= m_ActiveRowWidths[m_CaretRowUCharPos];
-
-                                }
-                                while(m_CaretRowUCharPos != 0 || m_CaretPos.subrowid != 0);
-                            }
-                        }
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        break;
-
-                    case ecNextWord:
-                    case ecSelNextWord:
-                        if(m_CaretPos.pos < m_Lines->m_Size)
-                        {
-                            MadLineIterator & lit = m_CaretPos.iter;
-                            wxFileOffset lineendpos = lit->m_Size - lit->m_NewLineSize;
-                            if(m_CaretPos.linepos < lineendpos)
-                            {
-                                m_Lines->InitNextUChar(lit, m_CaretPos.linepos);
-
-                                MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-                                int uctype0 = 0, uctype;
-                                do
-                                {
-                                    (m_Lines->*NextUChar)(m_ActiveRowUChars);
-                                    MadUCPair & ucp = m_ActiveRowUChars.back();
-
-                                    if(uctype0 == 0)
-                                    {
-                                        uctype0 = GetUCharType(ucp.first);
-                                    }
-                                    else
-                                    {
-                                        uctype = GetUCharType(ucp.first);
-                                        if(uctype != uctype0)
-                                        {
-                                            //if(uctype != 1)
-                                                break;
-                                            //uctype0 = 1;
-                                        }
-                                    }
+                                    ++m_CaretRowUCharPos;
 
                                     m_CaretPos.pos += ucp.second;
                                     m_CaretPos.linepos += ucp.second;
+                                }
+                                EndUpdateSelection(true);
+                            }
 
-                                    if(m_CaretPos.linepos <= lineendpos &&
-                                        m_CaretPos.subrowid < int(lit->RowCount()-1) &&
-                                        m_CaretPos.linepos >= lit->m_RowIndices[m_CaretPos.subrowid + 1].m_Start)
-                                    {
-                                        ++m_CaretPos.subrowid;
-                                        ++m_CaretPos.rowid;
-                                    }
+                            DeleteSelection(true, NULL, true);
+                        }
+                        else                // no Selection
+                        {
+                            if(m_CaretPos.pos < m_Lines->m_Size)
+                            {
+                                // at End of Line
+                                if(m_CaretPos.extraspaces == 0 &&
+                                    m_CaretPos.linepos == m_CaretPos.iter->m_Size - m_CaretPos.iter->m_NewLineSize)
+                                {
+
+                                    MadDeleteUndoData *dudata = new MadDeleteUndoData;
+                                    dudata->m_Pos = m_CaretPos.pos;
+                                    dudata->m_Size = m_CaretPos.iter->m_NewLineSize;
+
+                                    MadLineIterator lit =
+                                        DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+                                    MadUndo *undo = m_UndoBuffer->Add();
+                                    undo->m_CaretPosBefore = m_CaretPos.pos;
+                                    undo->m_CaretPosAfter = m_CaretPos.pos;
+                                    undo->m_Undos.push_back(dudata);
+
+                                    bool sc= (m_Modified==false);
+                                    m_Modified = true;
+
+                                    m_Lines->Reformat(lit, lit);
+
+                                    UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                                    AppearCaret();
+                                    UpdateScrollBarPos();
+
+                                    m_LastCaretXPos = m_CaretPos.xpos;
+
+                                    m_RepaintAll = true;
+                                    Refresh(false);
+
+                                    DoSelectionChanged();
+                                    if(sc) DoStatusChanged();
 
                                 }
-                                while(m_CaretPos.linepos < lineendpos);
-
-                                UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                            }
-                            else                // to next line
-                            {
-                                //if(m_CaretPos.rowid < m_Lines->m_RowCount - 1)
+                                else
                                 {
-                                    m_CaretPos.pos += lit->m_NewLineSize;
-
-                                    ++lit;
-                                    ++m_CaretPos.lineid;
-                                    m_CaretPos.linepos = 0;
-
-                                    ++m_CaretPos.rowid;
-                                    m_CaretPos.subrowid = 0;
-
-                                    UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-                                }
-                            }
-                        }
-                        AppearCaret();
-                        UpdateScrollBarPos();
-                        m_LastCaretXPos = m_CaretPos.xpos;
-                        break;
-
-                    case ecLeftBrace:
-                    case ecSelLeftBrace:
-                        if(m_LeftBrace_rowid<0)
-                        {
-                            MadLineIterator lit=m_CaretPos.iter;
-                            wxFileOffset linepos=m_CaretPos.linepos;
-                            m_LeftBrace_rowid=m_CaretPos.rowid - m_CaretPos.subrowid;
-                            m_LeftBrace.BraceIndex=-1;
-                            FindLeftBrace(m_LeftBrace_rowid, lit, linepos, m_LeftBrace);
-                        }
-
-                        if(m_LeftBrace_rowid>=0)
-                        {
-                            int rowid = m_LeftBrace_rowid;
-                            m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
-                            m_CaretPos.subrowid = m_LeftBrace_rowid - rowid;
-                            m_CaretPos.rowid = m_LeftBrace_rowid;
-                            m_CaretPos.linepos = m_LeftBrace.LinePos;
-                            m_CaretPos.pos += m_CaretPos.linepos;
-
-                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                            m_LastCaretXPos = m_CaretPos.xpos;
-
-                            AppearCaret();
-                            UpdateScrollBarPos();
-                        }
-                        break;
-
-                    case ecRightBrace:
-                    case ecSelRightBrace:
-                        if(m_RightBrace_rowid<0)
-                        {
-                            MadLineIterator lit=m_CaretPos.iter;
-                            wxFileOffset linepos=m_CaretPos.linepos;
-                            m_RightBrace_rowid=m_CaretPos.rowid - m_CaretPos.subrowid;
-                            m_RightBrace.BraceIndex=-1;
-                            FindRightBrace(m_RightBrace_rowid, lit, linepos, m_RightBrace);
-                        }
-
-                        if(m_RightBrace_rowid>=0)
-                        {
-                            int rowid = m_RightBrace_rowid;
-                            m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, rowid);
-                            m_CaretPos.subrowid = m_RightBrace_rowid - rowid;
-                            m_CaretPos.rowid = m_RightBrace_rowid;
-                            m_CaretPos.linepos = m_RightBrace.LinePos;
-                            m_CaretPos.pos += m_CaretPos.linepos;
-
-                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                            m_LastCaretXPos = m_CaretPos.xpos;
-
-                            AppearCaret();
-                            UpdateScrollBarPos();
-                        }
-                        break;
-
-                    case ecReturn:
-                    case ecReturnNoIndent:
-                        if(!IsReadOnly() && !m_SingleLineMode)
-                        {
-                            if(m_Selection && m_EditMode == emColumnMode)
-                            {
-                                DeleteSelection(true, NULL, false);
-                            }
-                            else
-                            {
-                                //if(m_CaretPos.extraspaces)
-                                m_CaretPos.extraspaces = 0;
-
-                                vector < ucs4_t > ucs;
-
-                                switch (m_InsertNewLineType)
-                                {
-                                case nltUNIX:
-#ifndef __WXMSW__
-                                case nltDefault:
-#endif
-                                    ucs.push_back(0x0A);
-                                    break;
-                                case nltMAC:
-                                    ucs.push_back(0x0D);
-                                    break;
-                                case nltDOS:
-#ifdef __WXMSW__
-                                case nltDefault:
-#endif
-                                    ucs.push_back(0x0D);
-                                    ucs.push_back(0x0A);
-                                    break;
-                                }
-
-                                if(m_AutoIndent && command==ecReturn)
-                                {
-                                    bool prevline=false;
-
-                                    MadUCQueue ucqueue;
-                                    MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-                                    ucs4_t uc;
-                                    wxFileOffset pos, pos1;
-
-                                    if(m_Selection)
+                                    // ColumnMode & beyond EOL
+                                    if(m_CaretPos.extraspaces != 0
+                                        && m_CaretPos.subrowid == int(m_CaretPos.iter->RowCount()-1))
                                     {
-                                        pos=m_SelectionBegin->iter->m_RowIndices[0].m_Start;
-                                        m_Lines->InitNextUChar(m_SelectionBegin->iter, pos);
-                                        pos1=m_SelectionBegin->pos;
-                                        pos=pos1-m_SelectionBegin->linepos+pos;
-                                    }
-                                    else
-                                    {
-                                        pos=m_CaretPos.iter->m_RowIndices[0].m_Start;
-                                        m_Lines->InitNextUChar(m_CaretPos.iter, pos);
-                                        pos1=m_CaretPos.pos;
-                                        pos=pos1-m_CaretPos.linepos+pos;
-                                    }
+                                        MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
 
-                                    while(pos<pos1 && (m_Lines->*NextUChar)(ucqueue) && ((uc=ucqueue.back().first)==0x20 || uc==0x09))
-                                        pos+=ucqueue.back().second;
+                                        // delete newline char
+                                        oudata->m_Pos = m_CaretPos.pos;
+                                        oudata->m_DelSize = m_CaretPos.iter->m_NewLineSize;
 
-                                    if(pos==pos1)   // from [pos] to [pos1] are all spaces
-                                    {
-                                        prevline=true;
-                                    }
+                                        // insert spaces
+                                        vector < ucs4_t > ucs;
+                                        ucs.insert(ucs.begin(), m_CaretPos.extraspaces, 0x20);
 
-                                    int spaces=0;
+                                        MadBlock blk(m_Lines->m_MemData, -1, 0);
+                                        UCStoBlock(&ucs[0], m_CaretPos.extraspaces, blk);
 
-                                    if(m_Selection)
-                                        m_Lines->InitNextUChar(m_SelectionEnd->iter, m_SelectionEnd->linepos);
-                                    else
-                                        m_Lines->InitNextUChar(m_CaretPos.iter, m_CaretPos.linepos);
+                                        oudata->m_InsSize = blk.m_Size;
+                                        oudata->m_InsData.push_back(blk);
 
-                                    while((m_Lines->*NextUChar)(ucqueue) && ((uc=ucqueue.back().first)==0x20 || uc==0x09))
-                                    {
-                                        ++spaces;
-                                    }
-
-                                    bool unindentChar=false;
-                                    if(ucqueue.size()>0 && m_Syntax->m_UnindentChar.Find(wxChar(uc))>=0)
-                                    {
-                                        unindentChar=true;
-                                    }
-
-                                    if(spaces)
-                                    {
-                                        if(m_Selection)
-                                        {
-                                            m_SelectionEnd->pos+=spaces;
-                                        }
-                                        else
-                                        {
-                                            m_Selection=true;
-                                            m_SelectionPos1=m_CaretPos;
-                                            m_SelectionPos2=m_CaretPos;
-                                            m_SelectionPos2.pos+=spaces;
-
-                                            m_SelectionBegin=&m_SelectionPos1;
-                                            m_SelectionEnd=&m_SelectionPos2;
-                                        }
-                                        UpdateSelectionPos();
-                                    }
-
-
-                                    if(m_Selection)
-                                    {
-                                        if((prevline || m_SelectionBegin->linepos == 0)
-                                            && m_SelectionBegin->lineid != 0)
-                                        {
-                                            MadLineIterator lit = m_SelectionBegin->iter;
-                                            GetIndentSpaces(m_SelectionBegin->lineid - 1, --lit, ucs, true, unindentChar);
-                                        }
-                                        else
-                                        {
-                                            GetIndentSpaces(m_SelectionBegin->lineid, m_SelectionBegin->iter, ucs, true, unindentChar);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if((prevline || m_CaretPos.linepos == 0) && m_CaretPos.lineid != 0)
-                                        {
-                                            MadLineIterator lit = m_CaretPos.iter;
-                                            GetIndentSpaces(m_CaretPos.lineid - 1, --lit, ucs, true, unindentChar);
-                                        }
-                                        else
-                                        {
-                                            GetIndentSpaces(m_CaretPos.lineid, m_CaretPos.iter, ucs, true, unindentChar);
-                                        }
-                                    }
-                                }
-
-                                InsertString(&ucs[0], ucs.size(), false, true, false);
-                            }
-                        }
-                        break;
-
-                    case ecTab:
-                        if(!IsReadOnly())
-                        {
-                            if(m_Selection && (m_SelectionPos1.lineid != m_SelectionPos2.lineid) && m_EditMode==emTextMode)
-                            {
-                                IncreaseDecreaseIndent(true);
-                            }
-                            else if(m_InsertSpacesInsteadOfTab)
-                            {
-                                int tabwidth = m_TabColumns * GetUCharWidth(0x20);
-                                if(m_Selection) tabwidth -= (m_SelectionBegin->xpos % tabwidth);
-                                else tabwidth -= (m_CaretPos.xpos % tabwidth);
-                                int spaces=tabwidth/GetUCharWidth(0x20);
-                                if(spaces==0) spaces=m_TabColumns;
-
-                                ucs4_t *sp = new ucs4_t[spaces];
-                                for(int i = 0; i < spaces; ++i)
-                                    sp[i] = 0x20;
-                                InsertString(sp, spaces, true, true, false);
-                                delete []sp;
-                            }
-                            else
-                            {
-                                ucs4_t tab = 0x09;
-                                InsertString(&tab, 1, true, true, false);
-                            }
-                        }
-                        break;
-
-                    case ecIncreaseIndent:
-                        {
-                            RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(True)")));
-                            IncreaseDecreaseIndent(true);
-                        }
-                        break;
-                    case ecDecreaseIndent:
-                        {
-                            RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(False)")));
-                            IncreaseDecreaseIndent(false);
-                        }
-                        break;
-
-                    case ecComment:
-                        {
-                            RecordAsMadMacro(this, wxString(wxT("CommentUncomment(True)")));
-                            CommentUncomment(true);
-                        }
-                        break;
-                    case ecUncomment:
-                        {
-                            RecordAsMadMacro(this, wxString(wxT("CommentUncomment(False)")));
-                            CommentUncomment(false);
-                        }
-                        break;
-
-                    case ecInsertTabChar:
-                        if(!IsReadOnly())
-                        {
-                            ucs4_t tab = 0x09;
-                            InsertString(&tab, 1, true, true, false);
-                        }
-                        break;
-
-                    case ecDelete:
-                        if(!IsReadOnly())
-                        {
-                            if(m_Selection)
-                            {
-                                if(m_EditMode==emColumnMode && GetSelectionSize()==0)
-                                {
-                                    if(m_CaretRowUCharPos == int(m_ActiveRowUChars.size())) // at end-of-row
-                                    {
-                                        if(m_CaretPos.xpos < m_MaxColumnRowWidth)
-                                        {
-                                            ++m_CaretPos.extraspaces;
-                                            m_CaretPos.xpos += GetUCharWidth(0x20);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
-                                        m_CaretPos.xpos += m_ActiveRowWidths[m_CaretRowUCharPos];
-
-                                        ++m_CaretRowUCharPos;
-
-                                        m_CaretPos.pos += ucp.second;
-                                        m_CaretPos.linepos += ucp.second;
-                                    }
-                                    EndUpdateSelection(true);
-                                }
-
-                                DeleteSelection(true, NULL, true);
-                            }
-                            else                // no Selection
-                            {
-                                if(m_CaretPos.pos < m_Lines->m_Size)
-                                {
-                                    // at End of Line
-                                    if(m_CaretPos.extraspaces == 0 &&
-                                        m_CaretPos.linepos == m_CaretPos.iter->m_Size - m_CaretPos.iter->m_NewLineSize)
-                                    {
-
-                                        MadDeleteUndoData *dudata = new MadDeleteUndoData;
-                                        dudata->m_Pos = m_CaretPos.pos;
-                                        dudata->m_Size = m_CaretPos.iter->m_NewLineSize;
-
-                                        MadLineIterator lit =
-                                            DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+                                        MadLineIterator lit = DeleteInsertData(oudata->m_Pos,
+                                                                               oudata->m_DelSize, &oudata->m_DelData,
+                                                                               oudata->m_InsSize, &oudata->m_InsData);
 
                                         MadUndo *undo = m_UndoBuffer->Add();
                                         undo->m_CaretPosBefore = m_CaretPos.pos;
-                                        undo->m_CaretPosAfter = m_CaretPos.pos;
-                                        undo->m_Undos.push_back(dudata);
+                                        undo->m_Undos.push_back(oudata);
 
                                         bool sc= (m_Modified==false);
                                         m_Modified = true;
 
                                         m_Lines->Reformat(lit, lit);
 
+                                        m_CaretPos.pos = oudata->m_Pos + oudata->m_InsSize;
+                                        undo->m_CaretPosAfter = m_CaretPos.pos;
                                         UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
                                         AppearCaret();
@@ -8636,45 +8687,210 @@ void MadEdit::ProcessCommand(MadEditCommand command)
 
                                         DoSelectionChanged();
                                         if(sc) DoStatusChanged();
-
                                     }
-                                    else
+                                    else          // at middle of line
                                     {
-                                        // ColumnMode & beyond EOL
-                                        if(m_CaretPos.extraspaces != 0
-                                            && m_CaretPos.subrowid == int(m_CaretPos.iter->RowCount()-1))
+                                        m_CaretPos.extraspaces = 0;
+
+                                        m_Lines->InitNextUChar(m_CaretPos.iter, m_CaretPos.linepos);
+
+                                        MadUCQueue ucqueue;
+                                        MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+                                        (m_Lines->*NextUChar)(ucqueue);
+
+                                        MadDeleteUndoData *dudata = new MadDeleteUndoData;
+                                        dudata->m_Pos = m_CaretPos.pos;
+                                        dudata->m_Size = ucqueue.front().second;
+
+                                        size_t oldrows = m_Lines->m_RowCount;
+                                        size_t oldlines = m_Lines->m_LineCount;
+
+                                        MadLineIterator lit =
+                                            DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+                                        MadUndo *undo = m_UndoBuffer->Add();
+                                        undo->m_CaretPosBefore = m_CaretPos.pos;
+                                        undo->m_CaretPosAfter = m_CaretPos.pos;
+                                        undo->m_Undos.push_back(dudata);
+
+                                        bool sc= (m_Modified==false);
+                                        m_Modified = true;
+
+                                        size_t count = m_Lines->Reformat(lit, lit);
+
+                                        UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                                        AppearCaret();
+                                        UpdateScrollBarPos();
+
+                                        m_LastCaretXPos = m_CaretPos.xpos;
+
+                                        if(oldrows != m_Lines->m_RowCount
+                                            || oldlines != m_Lines->m_LineCount || count > 1)
                                         {
-                                            MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+                                            m_RepaintAll = true;
+                                        }
+                                        else
+                                        {
+                                            m_RepaintSelection = true;
+                                            m_SelFirstRow = m_CaretPos.rowid - m_CaretPos.subrowid;
+                                            m_SelLastRow = m_SelFirstRow + int(lit->RowCount() - 1);
+                                        }
+                                        Refresh(false);
 
-                                            // delete newline char
-                                            oudata->m_Pos = m_CaretPos.pos;
-                                            oudata->m_DelSize = m_CaretPos.iter->m_NewLineSize;
+                                        DoSelectionChanged();
+                                        if(sc) DoStatusChanged();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
 
-                                            // insert spaces
-                                            vector < ucs4_t > ucs;
-                                            ucs.insert(ucs.begin(), m_CaretPos.extraspaces, 0x20);
+                case ecDeleteLine:
+                case ecCutLine:
+                    if(!IsReadOnly())
+                    {
+                        if(!m_Selection)
+                        {
+                            m_SelectionPos1=m_CaretPos;
+                            m_SelectionPos2=m_CaretPos;
+                            m_SelectionBegin=&m_SelectionPos1;
+                            m_SelectionEnd=&m_SelectionPos2;
+                            m_Selection=true;
+                        }
 
-                                            MadBlock blk(m_Lines->m_MemData, -1, 0);
-                                            UCStoBlock(&ucs[0], m_CaretPos.extraspaces, blk);
+                        m_SelectionBegin->extraspaces=0;
+                        m_SelectionBegin->xpos=0;
+                        wxFileOffset size=m_SelectionBegin->linepos - m_SelectionBegin->iter->m_RowIndices[m_SelectionBegin->subrowid].m_Start;
+                        m_SelectionBegin->linepos-=size;
+                        m_SelectionBegin->pos-=size;
 
-                                            oudata->m_InsSize = blk.m_Size;
-                                            oudata->m_InsData.push_back(blk);
+                        m_SelectionEnd->extraspaces=0;
+                        m_SelectionEnd->xpos=0;
+                        if(m_SelectionEnd->subrowid == int(m_SelectionEnd->iter->RowCount()-1)) // at last subrow
+                        {
+                            size=m_SelectionEnd->iter->m_Size - m_SelectionEnd->linepos;
+                            m_SelectionEnd->linepos+=size;
+                            m_SelectionEnd->pos+=size;
+                            if(m_SelectionEnd->lineid < int(m_Lines->m_LineCount-1))  // to next line
+                            {
+                                ++m_SelectionEnd->lineid;
+                                ++m_SelectionEnd->rowid;
+                                m_SelectionEnd->subrowid=0;
+                            }
+                        }
+                        else // to next subrow
+                        {
+                            size=m_SelectionEnd->iter->m_RowIndices[m_SelectionEnd->subrowid+1].m_Start - m_SelectionEnd->linepos;
+                            m_SelectionEnd->linepos+=size;
+                            m_SelectionEnd->pos+=size;
+                            ++m_SelectionEnd->rowid;
+                            ++m_SelectionEnd->subrowid;
+                        }
 
-                                            MadLineIterator lit = DeleteInsertData(oudata->m_Pos,
-                                                                                   oudata->m_DelSize, &oudata->m_DelData,
-                                                                                   oudata->m_InsSize, &oudata->m_InsData);
+                        if(m_SelectionBegin->pos == m_SelectionEnd->pos)
+                        {
+                            m_Selection=false;
+                            m_RepaintSelection=true;
+                            Refresh(false);
+
+                            m_CaretPos=*m_SelectionBegin;
+                            AppearCaret();
+                            UpdateScrollBarPos();
+                            m_LastCaretXPos = m_CaretPos.xpos;
+
+                            DoSelectionChanged();
+                        }
+                        else
+                        {
+                            MadEditMode em=m_EditMode;
+                            m_EditMode=emTextMode;
+                            if(command==ecCutLine)
+                            {
+                                CopyToClipboard();
+                            }
+                            DeleteSelection(true, NULL, false);
+                            m_EditMode=em;
+                        }
+                    }
+                    break;
+
+                case ecBackSpace:
+                    if(!IsReadOnly())
+                    {
+                        if(m_Selection)
+                        {
+                            if(m_EditMode==emColumnMode && GetSelectionSize()==0 && m_SelLeftXPos!=0)
+                            {
+                                if(m_CaretPos.extraspaces != 0)
+                                {
+                                    --m_CaretPos.extraspaces;
+                                    m_CaretPos.xpos -= GetUCharWidth(0x20);
+                                }
+                                else
+                                {
+                                    if(m_CaretRowUCharPos != 0)   // at middle-of-row
+                                    {
+                                        --m_CaretRowUCharPos;
+                                        MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
+
+                                        m_CaretPos.pos -= ucp.second;
+                                        m_CaretPos.linepos -= ucp.second;
+
+                                        m_CaretPos.xpos -= m_ActiveRowWidths[m_CaretRowUCharPos];
+                                    }
+                                }
+                                EndUpdateSelection(true);
+                            }
+
+                            DeleteSelection(true, NULL, true);
+                        }
+                        else                // no Selection
+                        {
+                            if(m_CaretPos.pos > 0)
+                            {
+                                if(m_CaretPos.extraspaces)
+                                {
+                                    --m_CaretPos.extraspaces;
+                                    m_CaretPos.xpos -= GetUCharWidth(0x20);
+
+                                    AppearCaret();
+                                    UpdateScrollBarPos();
+                                    m_LastCaretXPos = m_CaretPos.xpos;
+                                }
+                                else
+                                {
+                                    if(m_CaretRowUCharPos == 0)     // at begin-of-row
+                                    {
+                                        if(m_CaretPos.subrowid != 0) // to prev subrow
+                                        {
+                                            --m_CaretPos.rowid;
+                                            --m_CaretPos.subrowid;
+                                            UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                                            wxASSERT(m_CaretRowUCharPos != 0);
+
+                                            // delete last char of current row
+                                            MadDeleteUndoData *dudata = new MadDeleteUndoData;
+
+                                            size_t len = m_ActiveRowUChars.back().second;
+                                            dudata->m_Pos = m_CaretPos.pos - len;
+                                            dudata->m_Size = len;
+
+                                            MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                             MadUndo *undo = m_UndoBuffer->Add();
-                                            undo->m_CaretPosBefore = m_CaretPos.pos;
-                                            undo->m_Undos.push_back(oudata);
+                                            undo->m_CaretPosBefore=m_CaretPos.pos;
+                                            undo->m_CaretPosAfter=dudata->m_Pos;
+                                            undo->m_Undos.push_back(dudata);
 
                                             bool sc= (m_Modified==false);
                                             m_Modified = true;
 
                                             m_Lines->Reformat(lit, lit);
 
-                                            m_CaretPos.pos = oudata->m_Pos + oudata->m_InsSize;
-                                            undo->m_CaretPosAfter = m_CaretPos.pos;
+                                            m_CaretPos.pos = dudata->m_Pos;
                                             UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
                                             AppearCaret();
@@ -8687,286 +8903,31 @@ void MadEdit::ProcessCommand(MadEditCommand command)
 
                                             DoSelectionChanged();
                                             if(sc) DoStatusChanged();
+
                                         }
-                                        else          // at middle of line
+                                        else if(m_CaretPos.rowid != 0)       // to prev line's last row
                                         {
-                                            m_CaretPos.extraspaces = 0;
-
-                                            m_Lines->InitNextUChar(m_CaretPos.iter, m_CaretPos.linepos);
-
-                                            MadUCQueue ucqueue;
-                                            MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-                                            (m_Lines->*NextUChar)(ucqueue);
+                                            // delete prev line's newline char
+                                            MadLineIterator lit = m_CaretPos.iter;
+                                            --lit;
 
                                             MadDeleteUndoData *dudata = new MadDeleteUndoData;
-                                            dudata->m_Pos = m_CaretPos.pos;
-                                            dudata->m_Size = ucqueue.front().second;
 
-                                            size_t oldrows = m_Lines->m_RowCount;
-                                            size_t oldlines = m_Lines->m_LineCount;
-
-                                            MadLineIterator lit =
-                                                DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
-
-                                            MadUndo *undo = m_UndoBuffer->Add();
-                                            undo->m_CaretPosBefore = m_CaretPos.pos;
-                                            undo->m_CaretPosAfter = m_CaretPos.pos;
-                                            undo->m_Undos.push_back(dudata);
-
-                                            bool sc= (m_Modified==false);
-                                            m_Modified = true;
-
-                                            size_t count = m_Lines->Reformat(lit, lit);
-
-                                            UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                                            AppearCaret();
-                                            UpdateScrollBarPos();
-
-                                            m_LastCaretXPos = m_CaretPos.xpos;
-
-                                            if(oldrows != m_Lines->m_RowCount
-                                                || oldlines != m_Lines->m_LineCount || count > 1)
-                                            {
-                                                m_RepaintAll = true;
-                                            }
-                                            else
-                                            {
-                                                m_RepaintSelection = true;
-                                                m_SelFirstRow = m_CaretPos.rowid - m_CaretPos.subrowid;
-                                                m_SelLastRow = m_SelFirstRow + int(lit->RowCount() - 1);
-                                            }
-                                            Refresh(false);
-
-                                            DoSelectionChanged();
-                                            if(sc) DoStatusChanged();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                    case ecDeleteLine:
-                    case ecCutLine:
-                        if(!IsReadOnly())
-                        {
-                            if(!m_Selection)
-                            {
-                                m_SelectionPos1=m_CaretPos;
-                                m_SelectionPos2=m_CaretPos;
-                                m_SelectionBegin=&m_SelectionPos1;
-                                m_SelectionEnd=&m_SelectionPos2;
-                                m_Selection=true;
-                            }
-
-                            m_SelectionBegin->extraspaces=0;
-                            m_SelectionBegin->xpos=0;
-                            wxFileOffset size=m_SelectionBegin->linepos - m_SelectionBegin->iter->m_RowIndices[m_SelectionBegin->subrowid].m_Start;
-                            m_SelectionBegin->linepos-=size;
-                            m_SelectionBegin->pos-=size;
-
-                            m_SelectionEnd->extraspaces=0;
-                            m_SelectionEnd->xpos=0;
-                            if(m_SelectionEnd->subrowid == int(m_SelectionEnd->iter->RowCount()-1)) // at last subrow
-                            {
-                                size=m_SelectionEnd->iter->m_Size - m_SelectionEnd->linepos;
-                                m_SelectionEnd->linepos+=size;
-                                m_SelectionEnd->pos+=size;
-                                if(m_SelectionEnd->lineid < int(m_Lines->m_LineCount-1))  // to next line
-                                {
-                                    ++m_SelectionEnd->lineid;
-                                    ++m_SelectionEnd->rowid;
-                                    m_SelectionEnd->subrowid=0;
-                                }
-                            }
-                            else // to next subrow
-                            {
-                                size=m_SelectionEnd->iter->m_RowIndices[m_SelectionEnd->subrowid+1].m_Start - m_SelectionEnd->linepos;
-                                m_SelectionEnd->linepos+=size;
-                                m_SelectionEnd->pos+=size;
-                                ++m_SelectionEnd->rowid;
-                                ++m_SelectionEnd->subrowid;
-                            }
-
-                            if(m_SelectionBegin->pos == m_SelectionEnd->pos)
-                            {
-                                m_Selection=false;
-                                m_RepaintSelection=true;
-                                Refresh(false);
-
-                                m_CaretPos=*m_SelectionBegin;
-                                AppearCaret();
-                                UpdateScrollBarPos();
-                                m_LastCaretXPos = m_CaretPos.xpos;
-
-                                DoSelectionChanged();
-                            }
-                            else
-                            {
-                                MadEditMode em=m_EditMode;
-                                m_EditMode=emTextMode;
-                                if(command==ecCutLine)
-                                {
-                                    CopyToClipboard();
-                                }
-                                DeleteSelection(true, NULL, false);
-                                m_EditMode=em;
-                            }
-                        }
-                        break;
-
-                    case ecBackSpace:
-                        if(!IsReadOnly())
-                        {
-                            if(m_Selection)
-                            {
-                                if(m_EditMode==emColumnMode && GetSelectionSize()==0 && m_SelLeftXPos!=0)
-                                {
-                                    if(m_CaretPos.extraspaces != 0)
-                                    {
-                                        --m_CaretPos.extraspaces;
-                                        m_CaretPos.xpos -= GetUCharWidth(0x20);
-                                    }
-                                    else
-                                    {
-                                        if(m_CaretRowUCharPos != 0)   // at middle-of-row
-                                        {
-                                            --m_CaretRowUCharPos;
-                                            MadUCPair & ucp = m_ActiveRowUChars[m_CaretRowUCharPos];
-
-                                            m_CaretPos.pos -= ucp.second;
-                                            m_CaretPos.linepos -= ucp.second;
-
-                                            m_CaretPos.xpos -= m_ActiveRowWidths[m_CaretRowUCharPos];
-                                        }
-                                    }
-                                    EndUpdateSelection(true);
-                                }
-
-                                DeleteSelection(true, NULL, true);
-                            }
-                            else                // no Selection
-                            {
-                                if(m_CaretPos.pos > 0)
-                                {
-                                    if(m_CaretPos.extraspaces)
-                                    {
-                                        --m_CaretPos.extraspaces;
-                                        m_CaretPos.xpos -= GetUCharWidth(0x20);
-
-                                        AppearCaret();
-                                        UpdateScrollBarPos();
-                                        m_LastCaretXPos = m_CaretPos.xpos;
-                                    }
-                                    else
-                                    {
-                                        if(m_CaretRowUCharPos == 0)     // at begin-of-row
-                                        {
-                                            if(m_CaretPos.subrowid != 0) // to prev subrow
-                                            {
-                                                --m_CaretPos.rowid;
-                                                --m_CaretPos.subrowid;
-                                                UpdateCaret(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                                                wxASSERT(m_CaretRowUCharPos != 0);
-
-                                                // delete last char of current row
-                                                MadDeleteUndoData *dudata = new MadDeleteUndoData;
-
-                                                size_t len = m_ActiveRowUChars.back().second;
-                                                dudata->m_Pos = m_CaretPos.pos - len;
-                                                dudata->m_Size = len;
-
-                                                MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
-
-                                                MadUndo *undo = m_UndoBuffer->Add();
-                                                undo->m_CaretPosBefore=m_CaretPos.pos;
-                                                undo->m_CaretPosAfter=dudata->m_Pos;
-                                                undo->m_Undos.push_back(dudata);
-
-                                                bool sc= (m_Modified==false);
-                                                m_Modified = true;
-
-                                                m_Lines->Reformat(lit, lit);
-
-                                                m_CaretPos.pos = dudata->m_Pos;
-                                                UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                                                AppearCaret();
-                                                UpdateScrollBarPos();
-
-                                                m_LastCaretXPos = m_CaretPos.xpos;
-
-                                                m_RepaintAll = true;
-                                                Refresh(false);
-
-                                                DoSelectionChanged();
-                                                if(sc) DoStatusChanged();
-
-                                            }
-                                            else if(m_CaretPos.rowid != 0)       // to prev line's last row
-                                            {
-                                                // delete prev line's newline char
-                                                MadLineIterator lit = m_CaretPos.iter;
-                                                --lit;
-
-                                                MadDeleteUndoData *dudata = new MadDeleteUndoData;
-
-                                                size_t len = lit->m_NewLineSize;
-                                                dudata->m_Pos = m_CaretPos.pos - len;
-                                                dudata->m_Size = len;
-
-                                                lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
-
-                                                MadUndo *undo = m_UndoBuffer->Add();
-                                                undo->m_CaretPosBefore=m_CaretPos.pos;
-                                                undo->m_CaretPosAfter=dudata->m_Pos;
-                                                undo->m_Undos.push_back(dudata);
-
-                                                m_Modified = true;
-                                                m_Selection = false;
-
-                                                m_Lines->Reformat(lit, lit);
-
-                                                m_CaretPos.pos = dudata->m_Pos;
-                                                UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                                                AppearCaret();
-                                                UpdateScrollBarPos();
-
-                                                m_LastCaretXPos = m_CaretPos.xpos;
-
-                                                m_RepaintAll = true;
-                                                Refresh(false);
-
-                                                DoSelectionChanged();
-                                                DoStatusChanged();
-                                            }
-
-                                        }
-                                        else          // in middle of row
-                                        {
-                                            MadDeleteUndoData *dudata = new MadDeleteUndoData;
-
-                                            size_t len = m_ActiveRowUChars[m_CaretRowUCharPos - 1].second;
+                                            size_t len = lit->m_NewLineSize;
                                             dudata->m_Pos = m_CaretPos.pos - len;
                                             dudata->m_Size = len;
 
-                                            size_t oldrows = m_Lines->m_RowCount;
-                                            size_t oldlines = m_Lines->m_LineCount;
-
-                                            MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+                                            lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                             MadUndo *undo = m_UndoBuffer->Add();
                                             undo->m_CaretPosBefore=m_CaretPos.pos;
                                             undo->m_CaretPosAfter=dudata->m_Pos;
                                             undo->m_Undos.push_back(dudata);
 
-                                            bool sc= (m_Modified==false);
                                             m_Modified = true;
+                                            m_Selection = false;
 
-                                            size_t count = m_Lines->Reformat(lit, lit);
+                                            m_Lines->Reformat(lit, lit);
 
                                             m_CaretPos.pos = dudata->m_Pos;
                                             UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
@@ -8976,64 +8937,103 @@ void MadEdit::ProcessCommand(MadEditCommand command)
 
                                             m_LastCaretXPos = m_CaretPos.xpos;
 
-                                            if(oldrows != m_Lines->m_RowCount
-                                                || oldlines != m_Lines->m_LineCount || count > 1)
-                                            {
-                                                m_RepaintAll = true;
-                                            }
-                                            else
-                                            {
-                                                m_RepaintSelection = true;
-                                                m_SelFirstRow = m_CaretPos.rowid - m_CaretPos.subrowid;
-                                                m_SelLastRow = m_SelFirstRow + int(lit->RowCount() - 1);
-                                            }
+                                            m_RepaintAll = true;
                                             Refresh(false);
 
                                             DoSelectionChanged();
-                                            if(sc) DoStatusChanged();
+                                            DoStatusChanged();
                                         }
+
+                                    }
+                                    else          // in middle of row
+                                    {
+                                        MadDeleteUndoData *dudata = new MadDeleteUndoData;
+
+                                        size_t len = m_ActiveRowUChars[m_CaretRowUCharPos - 1].second;
+                                        dudata->m_Pos = m_CaretPos.pos - len;
+                                        dudata->m_Size = len;
+
+                                        size_t oldrows = m_Lines->m_RowCount;
+                                        size_t oldlines = m_Lines->m_LineCount;
+
+                                        MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+                                        MadUndo *undo = m_UndoBuffer->Add();
+                                        undo->m_CaretPosBefore=m_CaretPos.pos;
+                                        undo->m_CaretPosAfter=dudata->m_Pos;
+                                        undo->m_Undos.push_back(dudata);
+
+                                        bool sc= (m_Modified==false);
+                                        m_Modified = true;
+
+                                        size_t count = m_Lines->Reformat(lit, lit);
+
+                                        m_CaretPos.pos = dudata->m_Pos;
+                                        UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                                        AppearCaret();
+                                        UpdateScrollBarPos();
+
+                                        m_LastCaretXPos = m_CaretPos.xpos;
+
+                                        if(oldrows != m_Lines->m_RowCount
+                                            || oldlines != m_Lines->m_LineCount || count > 1)
+                                        {
+                                            m_RepaintAll = true;
+                                        }
+                                        else
+                                        {
+                                            m_RepaintSelection = true;
+                                            m_SelFirstRow = m_CaretPos.rowid - m_CaretPos.subrowid;
+                                            m_SelLastRow = m_SelFirstRow + int(lit->RowCount() - 1);
+                                        }
+                                        Refresh(false);
+
+                                        DoSelectionChanged();
+                                        if(sc) DoStatusChanged();
                                     }
                                 }
                             }
                         }
-                        break;
-
-                    case ecToggleInsertMode:
-                        SetInsertMode(!m_InsertMode);
-                        break;
-
-                    case ecInsertDateTime:
-                        if(!IsReadOnly())
-                        {
-                            wxString fmt;
-                            m_Config->Read(wxT("/MadEdit/DateTimeFormat"), &fmt, wxT("%c"));
-                            if(!fmt.IsEmpty())
-                            {
-                                char oldlocale[256];
-                                bool inEnglish=false;
-                                m_Config->Read(wxT("/MadEdit/DateTimeInEnglish"), &inEnglish);
-                                if(inEnglish)
-                                {
-                                    strcpy(oldlocale, setlocale( LC_TIME, NULL ));
-                                    setlocale( LC_TIME, "C" );
-                                }
-
-                                wxDateTime now = wxDateTime::Now();
-                                wxString text = now.Format(fmt.c_str());
-
-                                if(inEnglish)
-                                {
-                                    setlocale( LC_TIME, oldlocale );
-                                }
-
-                                vector<ucs4_t> ucs;
-                                TranslateText(text.c_str(), text.Len(), &ucs, true);
-                                InsertString(&ucs[0], ucs.size(), false, true, false);
-                            }
-                        }
-                        break;
                     }
+                    break;
+
+                case ecToggleInsertMode:
+                    SetInsertMode(!m_InsertMode);
+                    break;
+
+                case ecInsertDateTime:
+                    if(!IsReadOnly())
+                    {
+                        wxString fmt;
+                        m_Config->Read(wxT("/MadEdit/DateTimeFormat"), &fmt, wxT("%c"));
+                        if(!fmt.IsEmpty())
+                        {
+                            char oldlocale[256];
+                            bool inEnglish=false;
+                            m_Config->Read(wxT("/MadEdit/DateTimeInEnglish"), &inEnglish);
+                            if(inEnglish)
+                            {
+                                strcpy(oldlocale, setlocale( LC_TIME, NULL ));
+                                setlocale( LC_TIME, "C" );
+                            }
+
+                            wxDateTime now = wxDateTime::Now();
+                            wxString text = now.Format(fmt.c_str());
+
+                            if(inEnglish)
+                            {
+                                setlocale( LC_TIME, oldlocale );
+                            }
+
+                            vector<ucs4_t> ucs;
+                            TranslateText(text.c_str(), text.Len(), &ucs, true);
+                            InsertString(&ucs[0], ucs.size(), false, true, false);
+                        }
+                    }
+                    break;
                 }
+            }
             if(bSel)
             {
                 EndUpdateSelection(true);
