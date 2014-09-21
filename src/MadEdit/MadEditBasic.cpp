@@ -694,7 +694,7 @@ void MadEdit::SetEditMode(MadEditMode mode)
                     DoSelectionChanged();
                 DoStatusChanged();
 
-                SetInsertMode(m_InsertMode);
+                //SetInsertMode(m_InsertMode);
             }
             else                      //HexMode
             {
@@ -727,11 +727,19 @@ void MadEdit::SetEditMode(MadEditMode mode)
 
                 m_EditMode = emColumnMode;
 
+                if(m_WordWrapMode != wwmNoWrap)
+                {
+                    bool oldconfigmode = m_StorePropertiesToGlobalConfig;
+                    m_StorePropertiesToGlobalConfig = false;
+                    SetWordWrapMode(wwmNoWrap);// WordWrap is useless in columnmode
+                    m_StorePropertiesToGlobalConfig = oldconfigmode;
+                }
+
                 if(selchange == true)
                     DoSelectionChanged();
                 DoStatusChanged();
 
-                SetInsertMode(m_InsertMode);
+                //SetInsertMode(m_InsertMode);
             }
             else                      //HexMode
             {

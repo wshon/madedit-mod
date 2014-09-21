@@ -64,6 +64,10 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
 Mod v0.2.1
+1. Add "Insert increamental numbers" to edit popup
+2. Column Align
+
+Mod v0.2.1
 1. Support Insert in HexMode(Toggleable)
 2. Paste as insert or replace according to InsertMode
 3. Replace in all mode by paste

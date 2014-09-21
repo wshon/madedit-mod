@@ -831,6 +831,8 @@ public: // basic functions
     void InsertIncrementalNumber(int intial, int step, int total, MadNumberingStepType stepType,
                         MadNumberFormat fmt, MadNumberAlign align, bool zeroPad);
 
+    void ColumnAlign();
+
     void HighlightWords();
 
     void SelectAll();

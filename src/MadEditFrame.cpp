@@ -1071,6 +1071,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSpaceToTab, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
+	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_ColumnAlign)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuFindNext, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1187,6 +1188,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuSpaceToTab, MadEditFrame::OnEditSpaceToTab)
 	EVT_MENU(menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
+	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
 	// search
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
@@ -1381,7 +1383,8 @@ CommandData CommandTable[]=
     { 0,                2, menuSpaceToTab,               wxT("menuSpaceToTab"),               _("Space Chars To Tab Chars"),                wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert Space chars to Tab chars in the selection")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT("menuTrimTrailingSpaces"),       _("Tri&m Trailing Spaces"),                   wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Trim trailing spaces at the end of lines")},
-    { 0,                2, menuInsertNumbers,            wxT("menuInsertNumbers"),            _("Insert incremental numbers..."),              wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Insert incremental numbers with step and padding at current caret")},
+    { 0,                2, menuInsertNumbers,            wxT("menuInsertNumbers"),            _("Insert Incremental numbers..."),           wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Insert incremental numbers with step and padding at current caret")},
+    { 0,                2, menuColumnAlign,              wxT("menuColumnAlign"),              _("Column Align"),                            wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Column Align")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuSort,                     wxT("menuSort"),                     _("&Sort"),                                   0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Sort,     0},
     { 0,                2, menuSortAscending,            wxT("menuSortAscending"),            _("Sort Lines (&Ascending)"),                 wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Sort the selected or all lines in ascending order")},
@@ -2006,6 +2009,8 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_EditSubAdv->Append(menuSpaceToTab, _("Space Chars To Tab Chars"));
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append(menuTrimTrailingSpaces, _("Tri&m Trailing Spaces"));
+    g_Menu_EditSubAdv->Append(menuInsertNumbers, _("Insert incremental numbers..."));
+    g_Menu_EditSubAdv->Append(menuColumnAlign, _("Column Align"));
     g_Menu_EditPop->AppendSubMenu(g_Menu_EditSubAdv, _("Ad&vanced"));
     g_Menu_EditSubSort = new wxMenu((long)0);
     g_Menu_EditSubSort->Append(menuSortAscending, _("Sort Lines (&Ascending)"));
@@ -3326,6 +3331,11 @@ void MadEditFrame::OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()==emColumnMode);
 }
 
+void MadEditFrame::OnUpdateUI_Menu_ColumnAlign(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
+}
+
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit && //g_ActiveMadEdit->GetEditMode()==emHexMode &&
@@ -4612,6 +4622,15 @@ void MadEditFrame::OnEditInsertNumbers(wxCommandEvent& event)
                 initialNum, numStep, totalChar, strStepType.c_str(), strFormat.c_str(), strAlign.c_str(),
                 g_MadNumberDlg->WxPadChar->GetValue()?wxT("True"):wxT("False")));
         }
+    }
+}
+
+void MadEditFrame::OnEditColumnAlign(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->ColumnAlign();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ColumnAlign()")));
     }
 }
 
