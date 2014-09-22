@@ -5874,175 +5874,120 @@ void MadEdit::ColumnAlign()
         return;
 
     bool oldModified=m_Modified;
-    if(m_EditMode == emColumnMode)
-    {
-        MadBlock blk(m_Lines->m_MemData, m_Lines->m_MemData->m_Size, 0);
+    MadLineIterator lit;
 
-        MadLineIterator lit;
+    if((m_EditMode == emColumnMode) &&(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid))
+    {
+        MadUndo *undo = NULL;
+        MadLineIterator lit, lastlit, firstlit;
         size_t count;
         bool SelEndAtBOL=false;
-        wxFileOffset linestartpos;
-        if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
+        wxFileOffset linestartpos, offset = m_SelectionBegin->linepos;
+        int lineid = 0;
+        //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
         {
-            lit=m_SelectionBegin->iter;
+            lastlit = lit=m_SelectionEnd->iter;
+            firstlit = m_SelectionBegin->iter;
             if(m_SelectionEnd->linepos == 0) // selend at begin of line
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid;
-                SelEndAtBOL=true;
+                //SelEndAtBOL=true;
             }
             else
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid +1;
+                //++lit;
+                lineid = m_SelectionEnd->lineid;
             }
-
+        
             // save first line pos
-            linestartpos=m_SelectionBegin->linepos+lit->m_RowIndices.front().m_Start;
-			m_SelectionPos1.pos = m_SelectionBegin->pos + linestartpos;
-        }
-        else
-        {
-            lit=m_CaretPos.iter;
-            count=1;
-            SelEndAtBOL=true;
-
-            // save first line pos
-            linestartpos=m_CaretPos.linepos+lit->m_RowIndices.front().m_Start;
-			m_SelectionPos1.pos = m_CaretPos.pos;
+            linestartpos=lit->m_RowIndices.front().m_Start;
+            m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
         }
 
-        vector<wxByte> buffervector;
-        buffervector.resize(2048);
-        wxByte *buf=&buffervector[0];
-
-        vector <ucs4_t> spaces;
         MadUCQueue ucqueue;
         MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
         wxFileOffset delsize=0;
-        for(;;)  // for each line
+        wxFileOffset pos = -1;
+        do  // for each line
         {
             --count;
-            m_Lines->InitNextUChar(lit, linestartpos);
+            GetLineByLine(lit, pos, lineid);
+            --lineid;
+            //--lastlit;
 
-            delsize += (lit->m_Size-linestartpos);
-            ucs4_t uc=0x0D;
-            wxFileOffset nonspacepos=linestartpos;
-
-            linestartpos=0;
-            spaces.clear();
-            ucqueue.clear();
-
-            // get spaces at begin of line
-            while((m_Lines->*NextUChar)(ucqueue))
+            if(offset <= (lit->m_Size-lit->m_NewLineSize))
             {
-                uc=ucqueue.back().first;
-                if(uc==0x20 || uc==0x09)
+                delsize=0;
+                m_Lines->InitNextUChar(lit, offset);
+            
+                //delsize += (lit->m_Size-linestartpos);
+                ucs4_t uc=0x0D;
+                //wxFileOffset nonspacepos=linestartpos;
+            
+                //linestartpos=0;
+                //spaces.clear();
+                ucqueue.clear();
+
+                
+                // get spaces at begin of line
+                while((m_Lines->*NextUChar)(ucqueue))
                 {
-                    spaces.push_back(uc);
-                    nonspacepos+=ucqueue.back().second;
+                    uc=ucqueue.back().first;
+                    if(uc==0x20 || uc==0x09)
+                    {
+                        ++delsize;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+            
+                // writeback the indent-spaces and rest content of line
+                if(delsize!=0) // this line is not a empty line
                 {
-                    break;
+                    MadDeleteUndoData *dudata = new MadDeleteUndoData;
+                    
+                    dudata->m_Pos = pos+offset;
+                    dudata->m_Size = delsize;
+                    
+                    lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+                    if(undo == NULL)
+                        undo = m_UndoBuffer->Add();
+                    //undo->m_CaretPosBefore = dudata->m_Pos;
+                    undo->m_Undos.push_back(dudata);
+                    m_Lines->Reformat(lit, lit);
                 }
             }
-
-            // writeback the indent-spaces and rest content of line
-            if(spaces.size()!=0 || (uc!=0x0D && uc!=0x0A)) // this line is not a empty line
-            {
-                DecreaseIndentSpaces(spaces);
-
-                if(spaces.size()!=0)
-                    UCStoBlock(&spaces[0], spaces.size(), blk);
-            }
-
-            size_t size = lit->m_Size - nonspacepos;
-            if(count==0 && !SelEndAtBOL)
-            {
-                // exclude NewLine chars
-                size -= lit->m_NewLineSize;
-                delsize -= lit->m_NewLineSize;
-            }
-
-            if(size>0)
-            {
-                if(buffervector.size()<size)
-                {
-                    buffervector.resize(size);
-                    buf=&buffervector[0];
-                }
-
-                lit->Get(nonspacepos, buf, size);
-                m_Lines->m_MemData->Put(buf, size);
-                blk.m_Size+=size;
-            }
-
-            if(count==0)
-                break;
-
-            ++lit;
         }
+        while(count>0);
 
-        if(blk.m_Size==0 && delsize==0)
-            return;
-
-        MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-
-        oudata->m_Pos = m_SelectionPos1.pos;
-        oudata->m_DelSize = delsize;
-
-        oudata->m_InsSize = blk.m_Size;
-        oudata->m_InsData.push_back(blk);
-
-        lit = DeleteInsertData(oudata->m_Pos, oudata->m_DelSize, &oudata->m_DelData,
-                                              oudata->m_InsSize, &oudata->m_InsData);
-
-        MadUndo *undo=m_UndoBuffer->Add();
-        undo->m_CaretPosBefore=m_CaretPos.pos;
-        undo->m_CaretPosAfter=oudata->m_Pos;
-        undo->m_Undos.push_back(oudata);
-
-        count = m_Lines->Reformat(lit, lit);
-
-        m_CaretPos.pos=oudata->m_Pos;
-        UpdateCaretByPos(m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-        m_Selection=true;
-        m_SelectionPos2.pos=m_SelectionPos1.pos+blk.m_Size;
-        UpdateSelectionPos();
-        m_SelectionBegin=&m_SelectionPos1;
-        m_SelectionEnd=&m_SelectionPos2;
-
-        AppearCaret();
-        UpdateScrollBarPos();
-        m_LastCaretXPos = m_CaretPos.xpos;
-
+        //m_Lines->Reformat(firstlit, lastlit);
+        if(undo)
+        {
+            m_Modified = true;
+        }
+        m_Selection = false;
         m_RepaintAll = true;
         Refresh(false);
-
-        bool sc=(oldModified==false);
-        m_Modified=true;
-
-        DoSelectionChanged();
-        if(sc) DoStatusChanged();
     }
     else
     {
-        // use Regular Expressions to trim all heading spaces
-        wxFileOffset rangeFrom = m_CaretPos.linepos, rangeTo = -1;
-        int lineid = m_CaretPos.lineid;
-        MadLineIterator lit;
+        wxFileOffset rangeFrom = -1, rangeTo = -1;
         if(m_Selection)
         {
-            lineid = m_SelectionBegin->lineid;
+            int lineid = m_SelectionBegin->lineid;
             (void)GetLineByLine(lit, rangeFrom, lineid);
             rangeTo = m_SelectionEnd->pos;
         }
         else
         {
-            (void)GetLineByLine(lit, rangeFrom, lineid);
-            rangeTo = rangeFrom+m_CaretPos.iter->m_Size;
+            rangeFrom = m_CaretPos.pos;
+            rangeTo = rangeFrom+m_CaretPos.iter->m_Size-m_CaretPos.linepos;
         }
-        ReplaceTextAll(wxT("^[ \t]+"), wxT(""), true, true, false, NULL, NULL, rangeFrom, rangeTo);
+        ReplaceTextAll(wxT("^[ \t]+"), wxT(""), true, true, false, NULL, NULL, rangeFrom, rangeTo);        
     }
 }
 
