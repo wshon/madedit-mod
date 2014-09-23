@@ -2484,7 +2484,18 @@ bool MadEdit::ReloadByModificationTime()
         return false;
     }
 
-    if(modtime == m_ModificationTime) return false; // the file doesn't change.
+    // Check if the file attribute was changed
+    bool writable = wxFileName::IsFileWritable(m_Lines->m_Name);
+    bool readable = wxFileName::IsFileReadable(m_Lines->m_Name);
+    if(!readable)
+    {
+        m_Modified = true;
+        DoStatusChanged();
+        return false;
+    }
+
+    if(!((IsReadOnly() && writable) || (!IsReadOnly() && !writable)))
+        if(modtime == m_ModificationTime) return false; // the file doesn't change.
 
     m_ModificationTime = modtime;
 

@@ -5442,6 +5442,32 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
         MadLineIterator lit = firstlit;
         wxFileOffset inssize = 0, selcaretpos;
         const ucs4_t *ucs1 = ucs;
+
+        // newline
+        ucs4_t nl[2];
+        size_t count = 0;
+        switch (m_InsertNewLineType)
+        {
+        case nltUNIX:
+    #ifndef __WXMSW__
+        case nltDefault:
+    #endif
+            nl[count++] = 0x0A;
+            break;
+        case nltMAC:
+            nl[count++] = 0x0D;
+            break;
+        case nltDOS:
+    #ifdef __WXMSW__
+        case nltDefault:
+    #endif
+            nl[count++] = 0x0D;
+            nl[count++] = 0x0A;
+            break;
+        default:
+            break;
+        }
+
         for(;;)
         {
             int ulen = 0;
@@ -5480,30 +5506,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
             if(lines == 1 && lit == m_Lines->m_LineList.end())
             {
                 // add newline
-                ucs4_t nl;
-                switch (m_InsertNewLineType)
-                {
-                case nltUNIX:
-            #ifndef __WXMSW__
-                case nltDefault:
-            #endif
-                    nl = 0x0A;
-                    UCStoBlock(&nl, 1, blk);
-                    break;
-                case nltMAC:
-                    nl = 0x0D;
-                    UCStoBlock(&nl, 1, blk);
-                    break;
-                case nltDOS:
-            #ifdef __WXMSW__
-                case nltDefault:
-            #endif
-                    nl = 0x0D;
-                    UCStoBlock(&nl, 1, blk);
-                    nl = 0x0A;
-                    UCStoBlock(&nl, 1, blk);
-                    break;
-                }
+                UCStoBlock(&nl[0], count, blk);
             }
 
             if(blk.m_Size != 0)
@@ -5603,32 +5606,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
 
                     blk.m_Pos = -1;
                     blk.m_Size = 0;
-                    ucs4_t nl;
-                    switch (m_InsertNewLineType)
-                    {
-                    case nltUNIX:
-            #ifndef __WXMSW__
-                    case nltDefault:
-            #endif
-                        nl = 0x0A;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-
-                    case nltMAC:
-                        nl = 0x0D;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-
-                    case nltDOS:
-            #ifdef __WXMSW__
-                    case nltDefault:
-            #endif
-                        nl = 0x0D;
-                        UCStoBlock(&nl, 1, blk);
-                        nl = 0x0A;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-                    }
+                    UCStoBlock(&nl[0], count, blk);
 
                     if(m_InsertMode)
                     {
@@ -5716,31 +5694,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
                     xpos = xpos0;
 
                     // add newline
-                    ucs4_t nl;
-                    switch (m_InsertNewLineType)
-                    {
-                    case nltUNIX:
-            #ifndef __WXMSW__
-                    case nltDefault:
-            #endif
-                        nl = 0x0A;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-                    case nltMAC:
-                        nl = 0x0D;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-
-                    case nltDOS:
-            #ifdef __WXMSW__
-                    case nltDefault:
-            #endif
-                        nl = 0x0D;
-                        UCStoBlock(&nl, 1, blk);
-                        nl = 0x0A;
-                        UCStoBlock(&nl, 1, blk);
-                        break;
-                    }
+                    UCStoBlock(&nl[0], count, blk);
                 }
                 else
                 {
@@ -5955,7 +5909,10 @@ void MadEdit::ColumnAlign()
                     lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                     if(undo == NULL)
+                    {
                         undo = m_UndoBuffer->Add();
+                        undo->m_CaretPosBefore=m_CaretPos.pos;
+                    }
                     //undo->m_CaretPosBefore = dudata->m_Pos;
                     undo->m_Undos.push_back(dudata);
                     m_Lines->Reformat(lit, lit);
