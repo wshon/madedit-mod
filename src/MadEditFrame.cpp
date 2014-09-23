@@ -910,16 +910,17 @@ void OnEditStatusChanged(MadEdit *madedit)
 
             if(madedit->IsReadOnly())
             {
-                if(g_RdOnly)
+                if(g_RdOnly == NULL)
                 {
                 //static wxString rostr(_("ReadOnly"));
-                    wxColour old = g_StatusBar->GetForegroundColour();
                     wxRect rect;
                     g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
                     g_StatusBar->GetFieldRect(5, rect);
-					g_RdOnly = new wxStaticText(g_StatusBar, wxID_ANY, _("ReadOnly"), rect.GetPosition(), wxDefaultSize, 0);
+                    wxPoint pos = rect.GetPosition();
+                    pos.y += 2;
+                    pos.x += 4;
+                    g_RdOnly = new wxStaticText(g_StatusBar, wxID_ANY, _("ReadOnly"), pos, wxDefaultSize, 0);
                     //g_StatusBar->SetStatusText(ovrstr, 6);
-                    g_StatusBar->SetForegroundColour(old); 
                 }
                 g_RdOnly->Show(true);
             }
@@ -940,13 +941,14 @@ void OnEditStatusChanged(MadEdit *madedit)
                 //static wxString ovrstr(_("OVR"));
                 if(g_OvrStr == NULL)
                 {
-                    wxColour old = g_StatusBar->GetForegroundColour();
                     wxRect rect;
                     g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
                     g_StatusBar->GetFieldRect(6, rect);
-					g_OvrStr = new wxStaticText(g_StatusBar, wxID_ANY, _("OVR"), rect.GetPosition(), wxDefaultSize, 0);
+                    wxPoint pos = rect.GetPosition();
+                    pos.y += 2;
+                    pos.x += 4;
+                    g_OvrStr = new wxStaticText(g_StatusBar, wxID_ANY, _("OVR"), pos, wxDefaultSize, 0);
                     //g_StatusBar->SetStatusText(ovrstr, 6);
-                    g_StatusBar->SetForegroundColour(old); 
                 }
                 g_OvrStr->Show(true);
             }

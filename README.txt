@@ -69,6 +69,7 @@ Mod v0.2.2
 3. Add attribute check in file change detect. The file would be marked as modified
 if it was deleted, changed attributes.
 4. Improve the code of InsertColumnString
+5. Colorful ReadOnly and InsertMode
 
 Mod v0.2.1
 1. Support Insert in HexMode(Toggleable)
