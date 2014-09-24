@@ -846,7 +846,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                             expr.Truncate(expr.Len()-1);
                     }
                 }
-                if(!expr.IsEmpty())
+                else
                 {
                     size_t count=begpos.size(), idx=0;
                     if(WxCheckBoxListFirstOnly->GetValue()) count=1;

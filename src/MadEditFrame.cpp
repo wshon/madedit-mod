@@ -2914,7 +2914,8 @@ void MadEditFrame::OnFindInFilesResultsDClick(wxMouseEvent& event)
                 wxString title=g_MainFrame->m_Notebook->GetPageText(cpdata->pageid);
                 if(title[title.Len()-1]==wxT('*'))
                     title.Truncate(title.Len()-1);
-                if(title==cpdata->filename)
+                wxFileName fname(cpdata->filename);
+                if(title==fname.GetFullName())
                 {
                     g_MainFrame->SetPageFocus(cpdata->pageid);
                     madedit = g_ActiveMadEdit;

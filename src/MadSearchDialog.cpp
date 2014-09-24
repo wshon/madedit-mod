@@ -890,9 +890,9 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         {
             int pid=-1;
             expr=madedit->GetFileName();
+            pid=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
             if(expr.IsEmpty())
             {
-                pid=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
                 if(pid>=0)
                 {
                     expr=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageText(pid);
