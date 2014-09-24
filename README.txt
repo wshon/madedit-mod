@@ -70,6 +70,7 @@ Mod v0.2.2
 if it was deleted, changed attributes.
 4. Improve the code of InsertColumnString
 5. Colorful ReadOnly and InsertMode
+6. Fixed issue that Double click would not jump to content line if the file was opened but deleted(FindAll)
 
 Mod v0.2.1
 1. Support Insert in HexMode(Toggleable)
