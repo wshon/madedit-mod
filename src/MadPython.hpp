@@ -19,6 +19,7 @@
 
 extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
+extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true);
 
 // Ugly bigger switch than bigger map
 void FromCmdToString(wxString &cmdStr, int madCmd)
@@ -999,7 +1000,7 @@ namespace mad_python
 
             // list the matched data to pbegpos & pendpos
             // return the found count or SR_EXPR_ERROR
-            int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord)
+            int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool dis_results = true)
             {
                 int ResultCount=0;
                 if(expr.empty())
@@ -1012,76 +1013,14 @@ namespace mad_python
 
                 int ok = madedit->FindTextAll(wxExpr, bRegex, bCaseSensitive, bWholeWord, false, &begpos, &endpos);
 
-                if(ok>=0)
+                if(ok>=0 && dis_results)
                 {
-                    if(!begpos.empty()) // found data
-                    {
-                        int pid=-1;
-                        wxExpr=madedit->GetFileName();
-                        if(wxExpr.IsEmpty())
-                        {
-                            pid=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
-                            if(pid>=0)
-                            {
-                                wxExpr=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageText(pid);
-                                if(wxExpr[wxExpr.Len()-1]==wxT('*'))
-                                    wxExpr.Truncate(wxExpr.Len()-1);
-                            }
-                        }
-                        if(!wxExpr.IsEmpty())
-                        {
-                            size_t count=begpos.size(), idx=0;
-                            int line=-1, oldline;
-                            wxString linetext, loc;
-                            results->Freeze();
-                            do
-                            {
-                                if(madedit->IsTextFile())
-                                {
-                                    oldline=line;
-                                    line=madedit->GetLineByPos(begpos[idx]);
-                                    if(line!=oldline)
-                                    {
-                                        linetext.Empty();
-                                        madedit->GetLine(linetext, line, 512);
-                                    }
-                                    loc.Printf(_("Line(%d): "), line+1);
-                                }
-                                else
-                                {
-                                    loc.Printf(_("Offset(%s): "), wxLongLong(begpos[idx]).ToString().c_str());
-                                    linetext = _("Binary file matches");
-                                }
-
-                                fmt = loc +linetext;
-                                g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-                                ++ResultCount;
-                            }
-                            while(++idx < count);
-                            results->Thaw();
-                            if(results->GetCount())
-                            {
-                                results->ExpandAll();
-                                g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
-                                g_MainFrame->m_AuiManager.Update();
-                            }
-                        }
-                    }
+                    FindAllResultDisplay(begpos, endpos, madedit);
                 }
                 
-                if(!ResultCount)
-                {
-                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
-                }
-                else
-                {
-                    wxString smsg;
-                    smsg.Printf(_("%d results"), ResultCount);
-                    g_StatusBar->SetStatusText(smsg, 0 );
-                }
                 return ok;
             }
-            int FindHexAll(const std::string &expr)
+            int FindHexAll(const std::string &expr, bool dis_results = true)
             {
                 int ResultCount=0;
                 if(expr.empty())
@@ -1094,70 +1033,9 @@ namespace mad_python
              
                 int ok = madedit->FindHexAll(wxExpr, false, &begpos, &endpos);
 
-                if(ok>=0)
+                if(ok>=0 && dis_results)
                 {
-                    if(!begpos.empty()) // found data
-                    {
-                        int pid=-1;
-                        wxExpr=madedit->GetFileName();
-                        if(wxExpr.IsEmpty())
-                        {
-                            pid=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
-                            if(pid>=0)
-                            {
-                                wxExpr=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageText(pid);
-                                if(wxExpr[wxExpr.Len()-1]==wxT('*'))
-                                    wxExpr.Truncate(wxExpr.Len()-1);
-                            }
-                        }
-                        if(!wxExpr.IsEmpty())
-                        {
-                            size_t count=begpos.size(), idx=0;
-                            int line=-1, oldline;
-                            wxString linetext, loc;
-                            results->Freeze();
-                            do
-                            {
-                                if(madedit->IsTextFile())
-                                {
-                                    oldline=line;
-                                    line=madedit->GetLineByPos(begpos[idx]);
-                                    if(line!=oldline)
-                                    {
-                                        linetext.Empty();
-                                        madedit->GetLine(linetext, line, 512);
-                                    }
-                                    loc.Printf(_("Line(%d): "), line+1);
-                                }
-                                else
-                                {
-                                    loc.Printf(_("Offset(%s): "), wxLongLong(begpos[idx]).ToString().c_str());
-                                    linetext = _("Binary file matches");
-                                }
-
-                                fmt = loc +linetext;
-                                g_MainFrame->AddItemToFindInFilesResults(fmt, idx, wxExpr, pid, begpos[idx], endpos[idx]);
-                                ++ResultCount;
-                            }
-                            while(++idx < count);
-                            results->Thaw();
-                            if(results->GetCount())
-                            {
-                                results->ExpandAll();
-                            }
-                        }
-                    }
-                }
-                
-                if(!ResultCount)
-                {
-                    g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
-                }
-                else
-                {
-                    wxString smsg;
-                    smsg.Printf(_("%d results"), ResultCount);
-                    g_StatusBar->SetStatusText(smsg, 0 );
+                    FindAllResultDisplay(begpos, endpos, madedit);
                 }
 
                 return ok;
@@ -1332,6 +1210,8 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindTextNext_member_overloads, FindTextNe
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindTextPrevious_member_overloads, FindTextPrevious, 4, 6)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindHexNext_member_overloads, FindHexNext, 1, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindHexPrevious_member_overloads, FindHexPrevious, 1, 3)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindTextAll_member_overloads, FindTextAll, 4, 5)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(FindHexAll_member_overloads, FindHexAll, 1, 2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ReplaceText_member_overloads, ReplaceText, 5, 7)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ReplaceHex_member_overloads, ReplaceHex, 2, 4)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ReplaceTextAll_member_overloads, ReplaceTextAll, 5, 7)
@@ -1515,8 +1395,8 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ReplaceHex", &PyMadEdit::ReplaceHex, ReplaceHex_member_overloads( args("expr", "fmt"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("ReplaceTextAll", &PyMadEdit::ReplaceTextAll, ReplaceTextAll_member_overloads( args("expr", "fmt", "bRegex", "bCaseSensitive", "bWholeWord", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("ReplaceHexAll", &PyMadEdit::ReplaceHexAll, ReplaceHexAll_member_overloads( args("expr", "fmt", "rangeFrom", "rangeTo"), "Doc string" )[return_value_policy<return_by_value>()])
-        .def("FindTextAll", &PyMadEdit::FindTextAll, return_value_policy<return_by_value>(), "Doc string" )
-        .def("FindHexAll", &PyMadEdit::FindHexAll, return_value_policy<return_by_value>(), "Doc string" )
+        .def("FindTextAll", &PyMadEdit::FindTextAll, FindTextAll_member_overloads( args("expr", "bRegex", "bCaseSensitive", "bWholeWord", "showresults"), "Doc string" )[return_value_policy<return_by_value>()])
+        .def("FindHexAll", &PyMadEdit::FindHexAll, FindHexAll_member_overloads( args("expr", "showresults"), "Doc string" )[return_value_policy<return_by_value>()])
         .def("LoadFromFile", &PyMadEdit::LoadFromFile, LoadFromFile_member_overloads( args("filename", "encoding"), "Doc string" )[return_value_policy<return_by_value>()])
 
         .def("ToHalfWidth", &PyMadEdit::ToHalfWidth, ToHalfWidth_member_overloads( args("ascii", "japanese", "korean", "other"), "Doc string" ))

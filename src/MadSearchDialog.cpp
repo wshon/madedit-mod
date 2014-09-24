@@ -844,6 +844,77 @@ void MadSearchDialog::WxButtonCountClick(wxCommandEvent& event)
     }
 }
 
+void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true)
+{
+    int ResultCount=0;
+    wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
+
+    if(!begpos.empty()) // found data
+    {
+		int pid = ((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
+        wxString fmt, filename=madedit->GetFileName();
+
+        if(filename.IsEmpty())
+        {
+            if(pid>=0)
+            {
+                filename=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageText(pid);
+                if(filename[filename.Len()-1]==wxT('*'))
+                    filename.Truncate(filename.Len()-1);
+            }
+        }
+        if(!filename.IsEmpty())
+        {
+            size_t count=begpos.size(), idx=0;
+            int line=-1, oldline;
+            wxString linetext, loc;
+            results->Freeze();
+            do
+            {
+                if(madedit->IsTextFile())
+                {
+                    oldline=line;
+                    line=madedit->GetLineByPos(begpos[idx]);
+                    if(line!=oldline)
+                    {
+                        linetext.Empty();
+                        madedit->GetLine(linetext, line, 512);
+                    }
+                    loc.Printf(_("Line(%d): "), line+1);
+                }
+                else
+                {
+                    loc.Printf(_("Offset(%s): "), wxLongLong(begpos[idx]).ToString().c_str());
+                    linetext = _("Binary file matches");
+                }
+
+                fmt = loc +linetext;
+				g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
+                ++ResultCount;
+            }
+            while(++idx < count);
+            results->Thaw();
+            if(results->GetCount())
+            {
+                if(expandresults) results->ExpandAll();
+                g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
+                g_MainFrame->m_AuiManager.Update();
+            }
+        }
+    }
+
+    if(!ResultCount)
+    {
+        g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+    }
+    else
+    {
+        wxString smsg;
+        smsg.Printf(_("%d results"), ResultCount);
+        g_StatusBar->SetStatusText(smsg, 0 );
+    }
+}
+
 void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 {
     extern MadEdit *g_ActiveMadEdit;
@@ -886,70 +957,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 
         if(ok<0) return;
 
-        if(!begpos.empty()) // found data
-        {
-            int pid=-1;
-            expr=madedit->GetFileName();
-            pid=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
-            if(expr.IsEmpty())
-            {
-                if(pid>=0)
-                {
-                    expr=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageText(pid);
-                    if(expr[expr.Len()-1]==wxT('*'))
-                        expr.Truncate(expr.Len()-1);
-                }
-            }
-            if(!expr.IsEmpty())
-            {
-                size_t count=begpos.size(), idx=0;
-                int line=-1, oldline;
-                wxString linetext, loc;
-                results->Freeze();
-                do
-                {
-                    if(madedit->IsTextFile())
-                    {
-                        oldline=line;
-                        line=madedit->GetLineByPos(begpos[idx]);
-                        if(line!=oldline)
-                        {
-                            linetext.Empty();
-                            madedit->GetLine(linetext, line, 512);
-                        }
-                        loc.Printf(_("Line(%d): "), line+1);
-                    }
-                    else
-                    {
-                        loc.Printf(_("Offset(%s): "), wxLongLong(begpos[idx]).ToString().c_str());
-                        linetext = _("Binary file matches");
-                    }
-
-                    fmt = loc +linetext;
-                    g_MainFrame->AddItemToFindInFilesResults(fmt, idx, expr, pid, begpos[idx], endpos[idx]);
-                    ++ResultCount;
-                }
-                while(++idx < count);
-                results->Thaw();
-                if(results->GetCount())
-                {
-                    results->ExpandAll();
-                    g_MainFrame->m_AuiManager.GetPane(g_MainFrame->m_InfoNotebook).Show();
-                    g_MainFrame->m_AuiManager.Update();
-                }
-            }
-        }
-    }
-
-    if(!ResultCount)
-    {
-        g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
-    }
-    else
-    {
-        wxString smsg;
-        smsg.Printf(_("%d results"), ResultCount);
-        g_StatusBar->SetStatusText(smsg, 0 );
+        FindAllResultDisplay(begpos, endpos, madedit);
     }
 }
 
