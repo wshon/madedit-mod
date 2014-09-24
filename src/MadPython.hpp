@@ -1000,7 +1000,7 @@ namespace mad_python
 
             // list the matched data to pbegpos & pendpos
             // return the found count or SR_EXPR_ERROR
-            int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool dis_results = true)
+            int FindTextAll(const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool showresults = true)
             {
                 int ResultCount=0;
                 if(expr.empty())
@@ -1013,14 +1013,14 @@ namespace mad_python
 
                 int ok = madedit->FindTextAll(wxExpr, bRegex, bCaseSensitive, bWholeWord, false, &begpos, &endpos);
 
-                if(ok>=0 && dis_results)
+                if(ok>=0 && showresults)
                 {
                     FindAllResultDisplay(begpos, endpos, madedit);
                 }
                 
                 return ok;
             }
-            int FindHexAll(const std::string &expr, bool dis_results = true)
+            int FindHexAll(const std::string &expr, bool showresults = true)
             {
                 int ResultCount=0;
                 if(expr.empty())
@@ -1033,7 +1033,7 @@ namespace mad_python
              
                 int ok = madedit->FindHexAll(wxExpr, false, &begpos, &endpos);
 
-                if(ok>=0 && dis_results)
+                if(ok>=0 && showresults)
                 {
                     FindAllResultDisplay(begpos, endpos, madedit);
                 }
