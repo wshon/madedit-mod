@@ -23,8 +23,16 @@ class wxSingleInstanceChecker;
 class MadAppConn : public wxConnection
 {
 public:
-    virtual bool OnExecute(const wxString& WXUNUSED(topic), wxChar* WXUNUSED(data),
-        int WXUNUSED(size), wxIPCFormat WXUNUSED(format));
+	
+	bool MadAppConn::OnExecute(const wxString& topic,
+#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
+							wxChar* data,
+							int WXUNUSED(size),
+#else
+							const void * data,
+							size_t WXUNUSED(size),
+#endif
+							wxIPCFormat WXUNUSED(format));
 };
 
 class MadAppSrv : public wxServer

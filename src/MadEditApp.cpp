@@ -203,10 +203,18 @@ wxConnectionBase *MadAppSrv::OnAcceptConnection(const wxString& topic)
 }
 
 // Opens a file passed from another instance
-bool MadAppConn::OnExecute(const wxString& WXUNUSED(topic), wxChar *data, int WXUNUSED(size), wxIPCFormat WXUNUSED(format))
+bool MadAppConn::OnExecute(const wxString& topic,
+#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
+                        wxChar* data,
+                    	int WXUNUSED(size),
+#else
+                        const void * data,
+                        size_t WXUNUSED(size),
+#endif
+                    	wxIPCFormat WXUNUSED(format))
 {
     MadEditFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), MadEditFrame);
-    wxString filename(data);
+    wxString filename((wxChar*)data);
     if (filename.IsEmpty())
     {
         // Just raise the main window
