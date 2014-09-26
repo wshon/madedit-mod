@@ -39,6 +39,7 @@ namespace mad_python
 
 class MadEdit;
 class MadSearchDialog;
+class MadReplaceDialog;
 
 typedef void (*OnSelectionChangedPtr)(MadEdit *madedit);
 typedef void (*OnStatusChangedPtr)(MadEdit *madedit);
@@ -1053,6 +1054,7 @@ public: // utility functions
 
     bool StringToHex(wxString ws, vector<wxByte> &hex);
     friend class MadSearchDialog;
+    friend class MadReplaceDialog;
     friend class mad_python::PyMadEdit;
 };
 

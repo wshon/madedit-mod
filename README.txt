@@ -33,6 +33,8 @@ B. MS Windows (__WXMSW__):
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
 
+P.S.: Don't use VS.Net 2010 which has bugs to crash MadEdit(with wxWidgets-2.8.12 and 3.0.1). Use
+      VS.Net 2003, 2005 or 2013 instead(2008 might has the same issue as 2010)
 P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
       or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
@@ -62,6 +64,9 @@ Syntax files, Locale files and Settings:
     2. $(MadEdit execution file directory)/MadEdit.cfg: Windows
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
+
+Mod v0.2.3
+Fix issue that Replace dialog never has chance to replace wrap around
 
 Mod v0.2.2
 1. Add "Insert increamental numbers" to edit popup menu
