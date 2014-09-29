@@ -2422,23 +2422,23 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         PurgeRecentFiles();
         PurgeRecentFonts();
         PurgeRecentEncodings();
-		if (g_SearchDialog != NULL)
-		{
-			g_SearchDialog->Show(false);
-			g_SearchDialog->PurgeRecentFindTexts();
-		}
-		if (g_ReplaceDialog != NULL)
-		{
-			g_ReplaceDialog->Show(false);
-			g_ReplaceDialog->PurgeRecentReplaceTexts();
-		}
-		if (g_FindInFilesDialog != NULL)
-		{
-			g_FindInFilesDialog->Show(false);
-			g_FindInFilesDialog->PurgeRecentFindDirs();
-			g_FindInFilesDialog->PurgeRecentFindFilters();
-			g_FindInFilesDialog->PurgeRecentFindExcludes();
-		}
+        if (g_SearchDialog != NULL)
+        {
+            g_SearchDialog->Show(false);
+            g_SearchDialog->PurgeRecentFindTexts();
+        }
+        if (g_ReplaceDialog != NULL)
+        {
+            g_ReplaceDialog->Show(false);
+            g_ReplaceDialog->PurgeRecentReplaceTexts();
+        }
+        if (g_FindInFilesDialog != NULL)
+        {
+            g_FindInFilesDialog->Show(false);
+            g_FindInFilesDialog->PurgeRecentFindDirs();
+            g_FindInFilesDialog->PurgeRecentFindFilters();
+            g_FindInFilesDialog->PurgeRecentFindExcludes();
+        }
     }
 
     m_Config->SetPath(wxT("/FileCaretPos"));
@@ -3877,19 +3877,19 @@ void MadEditFrame::OnFileCloseAll(wxCommandEvent& event)
 
 void MadEditFrame::OnFileCloseAllButThis(wxCommandEvent& event)
 {
-	wxWindow * thisWin = m_Notebook->GetPage(m_Notebook->GetSelection());
+    wxWindow * thisWin = m_Notebook->GetPage(m_Notebook->GetSelection());
 
-	m_Notebook->SetSelection(0);
-	while (m_Notebook->GetPageCount() > 1)
-	{
-		int idx = m_Notebook->GetSelection();
-		if (thisWin != m_Notebook->GetPage(idx))
-		{
-			CloseFile(idx);
-		}
-		else
-			m_Notebook->AdvanceSelection(true);
-	}
+    m_Notebook->SetSelection(0);
+    while (m_Notebook->GetPageCount() > 1)
+    {
+        int idx = m_Notebook->GetSelection();
+        if (thisWin != m_Notebook->GetPage(idx))
+        {
+            CloseFile(idx);
+        }
+        else
+            m_Notebook->AdvanceSelection(true);
+    }
 }
 
 void MadEditFrame::OnFileCloseAllToTheLeft(wxCommandEvent& event)
@@ -3909,14 +3909,14 @@ void MadEditFrame::OnFileCloseAllToTheLeft(wxCommandEvent& event)
 
 void MadEditFrame::OnFileCloseAllToTheRight(wxCommandEvent& event)
 {
-	wxWindow * thisWin = m_Notebook->GetPage(m_Notebook->GetSelection());
+    wxWindow * thisWin = m_Notebook->GetPage(m_Notebook->GetSelection());
     m_Notebook->AdvanceSelection(true);
-	int idx = m_Notebook->GetSelection();
-	while (m_Notebook->GetPage(idx) != thisWin)
-	{
-		CloseFile(idx);
-		idx = m_Notebook->GetSelection();
-	}
+    int idx = m_Notebook->GetSelection();
+    while (m_Notebook->GetPage(idx) != thisWin)
+    {
+        CloseFile(idx);
+        idx = m_Notebook->GetSelection();
+    }
 }
 
 void MadEditFrame::OnFilePageSetup(wxCommandEvent& event)
@@ -4680,6 +4680,10 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
 
     g_ReplaceDialog->Show(false);
 
+    static wxString text(_("Find Results"));
+    int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
+    m_InfoNotebook->SetPageText(pid, text);
+
     g_SearchDialog->Show();
     g_SearchDialog->SetFocus();
     g_SearchDialog->Raise();
@@ -4882,6 +4886,10 @@ void MadEditFrame::OnSearchFindInFiles(wxCommandEvent& event)
     {
         g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
     }
+
+    static wxString text(_("Find/Replace in Files Results"));
+    int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
+    m_InfoNotebook->SetPageText(pid, text);
 
     g_FindInFilesDialog->Show();
     g_FindInFilesDialog->SetFocus();

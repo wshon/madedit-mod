@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-26 20:13+0800\n"
-"PO-Revision-Date: 2014-09-26 20:34+0800\n"
+"POT-Creation-Date: 2014-09-29 16:07+0800\n"
+"PO-Revision-Date: 2014-09-29 16:11+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -1769,7 +1769,7 @@ msgstr "十六进制模式"
 msgid "Run Temporary Macro"
 msgstr "运行临时宏语句"
 
-#: ../src/MadEditFrame.cpp:2370
+#: ../src/MadEditFrame.cpp:2370 ../src/MadEditFrame.cpp:4890
 msgid "Find/Replace in Files Results"
 msgstr "多文件查找/替换的结果"
 
@@ -1859,40 +1859,44 @@ msgstr "其他文字"
 msgid "Choose the characters you want to convert:"
 msgstr "选择想转换的文字："
 
-#: ../src/MadEditFrame.cpp:4937
+#: ../src/MadEditFrame.cpp:4683
+msgid "Find Results"
+msgstr "查找的结果"
+
+#: ../src/MadEditFrame.cpp:4945
 msgid "Line Number: (you can input HexNumber: 0xNNN)"
 msgstr "行数：（可以输入16进位数字: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:4937
+#: ../src/MadEditFrame.cpp:4945
 msgid "Go To Line"
 msgstr "跳到此行"
 
-#: ../src/MadEditFrame.cpp:4962
+#: ../src/MadEditFrame.cpp:4970
 msgid "Position: (you can input HexNumber: 0xNNN)"
 msgstr "文件位置：（可以输入16进位数字: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:4962
+#: ../src/MadEditFrame.cpp:4970
 msgid "Go To Position"
 msgstr "跳到文件位置"
 
-#: ../src/MadEditFrame.cpp:5582 ../src/MadEditFrame.cpp:5683
+#: ../src/MadEditFrame.cpp:5590 ../src/MadEditFrame.cpp:5691
 msgid "Open Mad Macro File"
 msgstr "打开MadPython宏文件"
 
-#: ../src/MadEditFrame.cpp:5697
+#: ../src/MadEditFrame.cpp:5705
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr "要覆盖%s吗？"
 
-#: ../src/MadEditFrame.cpp:5697
+#: ../src/MadEditFrame.cpp:5705
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/MadEditFrame.cpp:5752 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:5760 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr "分配内存失败"
 
-#: ../src/MadEditFrame.cpp:6018
+#: ../src/MadEditFrame.cpp:6026
 msgid "Press OK to visit our HomePage."
 msgstr "按「确定」可以浏览我们的主页。"
 
@@ -1918,14 +1922,14 @@ msgstr "<- 加入自定义文件类型"
 
 #: ../src/MadFileAssociationDialog.cpp:397
 #: ../src/MadHighlightingDialog.cpp:335 ../src/MadPurgeHistoryDialog.cpp:92
-#: ../src/MadConvEncDialog.cpp:99 ../src/MadAboutDialog.cpp:85
+#: ../src/MadConvEncDialog.cpp:99 ../src/MadAboutDialog.cpp:84
 msgid "&OK"
 msgstr "确定(&O)"
 
 #: ../src/MadFileAssociationDialog.cpp:401
 #: ../src/MadHighlightingDialog.cpp:339 ../src/MadPurgeHistoryDialog.cpp:95
 #: ../src/MadOptionsDialog.cpp:656 ../src/MadConvEncDialog.cpp:103
-#: ../src/MadAboutDialog.cpp:89
+#: ../src/MadAboutDialog.cpp:88
 msgid "&Cancel"
 msgstr "取消(&C)"
 
@@ -2692,7 +2696,7 @@ msgstr "统计字数"
 msgid "Word Count (Selected Text)"
 msgstr "统计字数 (所选取的文字)"
 
-#: ../src/MadAboutDialog.cpp:93
+#: ../src/MadAboutDialog.cpp:92
 msgid "About MadEdit"
 msgstr "关于 MadEdit"
 

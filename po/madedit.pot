@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-26 20:13+0800\n"
+"POT-Creation-Date: 2014-09-29 16:07+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1761,7 +1761,7 @@ msgstr ""
 msgid "Run Temporary Macro"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2370
+#: ../src/MadEditFrame.cpp:2370 ../src/MadEditFrame.cpp:4890
 msgid "Find/Replace in Files Results"
 msgstr ""
 
@@ -1847,40 +1847,44 @@ msgstr ""
 msgid "Choose the characters you want to convert:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4937
+#: ../src/MadEditFrame.cpp:4683
+msgid "Find Results"
+msgstr ""
+
+#: ../src/MadEditFrame.cpp:4945
 msgid "Line Number: (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4937
+#: ../src/MadEditFrame.cpp:4945
 msgid "Go To Line"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4962
+#: ../src/MadEditFrame.cpp:4970
 msgid "Position: (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4962
+#: ../src/MadEditFrame.cpp:4970
 msgid "Go To Position"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5582 ../src/MadEditFrame.cpp:5683
+#: ../src/MadEditFrame.cpp:5590 ../src/MadEditFrame.cpp:5691
 msgid "Open Mad Macro File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5697
+#: ../src/MadEditFrame.cpp:5705
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5697
+#: ../src/MadEditFrame.cpp:5705
 msgid "Warning"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5752 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:5760 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6018
+#: ../src/MadEditFrame.cpp:6026
 msgid "Press OK to visit our HomePage."
 msgstr ""
 
@@ -1906,14 +1910,14 @@ msgstr ""
 
 #: ../src/MadFileAssociationDialog.cpp:397
 #: ../src/MadHighlightingDialog.cpp:335 ../src/MadPurgeHistoryDialog.cpp:92
-#: ../src/MadConvEncDialog.cpp:99 ../src/MadAboutDialog.cpp:85
+#: ../src/MadConvEncDialog.cpp:99 ../src/MadAboutDialog.cpp:84
 msgid "&OK"
 msgstr ""
 
 #: ../src/MadFileAssociationDialog.cpp:401
 #: ../src/MadHighlightingDialog.cpp:339 ../src/MadPurgeHistoryDialog.cpp:95
 #: ../src/MadOptionsDialog.cpp:656 ../src/MadConvEncDialog.cpp:103
-#: ../src/MadAboutDialog.cpp:89
+#: ../src/MadAboutDialog.cpp:88
 msgid "&Cancel"
 msgstr ""
 
@@ -2677,7 +2681,7 @@ msgstr ""
 msgid "Word Count (Selected Text)"
 msgstr ""
 
-#: ../src/MadAboutDialog.cpp:93
+#: ../src/MadAboutDialog.cpp:92
 msgid "About MadEdit"
 msgstr ""
 

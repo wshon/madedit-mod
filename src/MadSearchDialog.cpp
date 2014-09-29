@@ -918,7 +918,7 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
 void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 {
     extern MadEdit *g_ActiveMadEdit;
-    wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
+    //wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
     int ResultCount=0;
 
     if(g_ActiveMadEdit==NULL)

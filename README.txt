@@ -1,5 +1,5 @@
                         =================================
-                               MadEdit v0.2.9 mod
+                                  MadEdit mod
                         =================================
 About:
 -----
@@ -66,7 +66,19 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
 Mod v0.2.3
-Fix issue that Replace dialog never has chance to replace wrap around
+1. Change Info window label for Search or Search in Files
+
+Mod v0.2.2.1
+1. Fix Modal dialog bug of wxWidgets 2.8.12(Patch from MadEdit 0.2.9.1) (Win32 only):
+    Use MadEdit open two new files, NoName1 and NoName2, the focus is on NoName2 now.
+    Select [Convert File Encoding...] in Tools menu, and press OK to close the dialog.
+    Then switch to NoName1, and reopen the [Convert File Encoding...] dialog.
+    After pressing OK the focus will jump to NoName2, cannot convert the encoding of NoName1.
+
+2. Fix wrong tap order of AUINoteBook http://trac.wxwidgets.org/attachment/ticket/10848/
+3. Fix bug in Mouse Select to clipboard
+4. Fix issue that Replace dialog never has chance to replace wrap around
+5. Update simplified chinese translation
 
 Mod v0.2.2
 1. Add "Insert increamental numbers" to edit popup menu
