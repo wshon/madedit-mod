@@ -851,7 +851,7 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
 
     if(!begpos.empty()) // found data
     {
-		int pid = ((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
+        int pid = ((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageIndex(madedit);
         wxString fmt, filename=madedit->GetFileName();
 
         if(filename.IsEmpty())
@@ -889,7 +889,7 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
                 }
 
                 fmt = loc +linetext;
-				g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
+                g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
                 ++ResultCount;
             }
             while(++idx < count);
