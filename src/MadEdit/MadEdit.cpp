@@ -5830,57 +5830,69 @@ void MadEdit::ColumnAlign()
     bool oldModified=m_Modified;
     MadLineIterator lit;
 
-    if((m_EditMode == emColumnMode) &&(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid))
+    if((m_EditMode == emColumnMode) &&(m_Selection && m_SelectionBegin->xpos && m_SelectionBegin->lineid!=m_SelectionEnd->lineid))
     {
         MadUndo *undo = NULL;
         MadLineIterator lit, lastlit, firstlit;
         size_t count;
         bool SelEndAtBOL=false;
-        wxFileOffset linestartpos, offset = m_SelectionBegin->linepos;
-        int lineid = 0;
+        wxFileOffset linestartpos;
+        int columns = m_SelectionBegin->xpos/GetUCharWidth(0x20);
         //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
         {
-            lastlit = lit=m_SelectionEnd->iter;
+            lastlit=lit=m_SelectionEnd->iter;
             firstlit = m_SelectionBegin->iter;
             if(m_SelectionEnd->linepos == 0) // selend at begin of line
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid;
-                //SelEndAtBOL=true;
             }
             else
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid +1;
-                //++lit;
-                lineid = m_SelectionEnd->lineid;
             }
         
             // save first line pos
             linestartpos=lit->m_RowIndices.front().m_Start;
             m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
+            
         }
 
         MadUCQueue ucqueue;
-        MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-        wxFileOffset delsize=0;
-        wxFileOffset pos = -1;
+        wxFileOffset delsize=0, pos = m_SelectionEnd->pos - m_SelectionEnd->linepos;
         do  // for each line
         {
-            --count;
-            GetLineByLine(lit, pos, lineid);
-            --lineid;
-            //--lastlit;
+            ucs4_t tuc=0x0D;
+            MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+            
+            m_Lines->InitNextUChar(lit, 0);
+            bool longline = false;
+            wxFileOffset startpos = 0, rowpos = 0;
+            while((m_Lines->*NextUChar)(ucqueue))
+            {
+                tuc = ucqueue.back().first;
+                if(tuc == 0x0D || tuc == 0x0A)
+                {
+                    break;
+                }
+                ++rowpos;
+                if(tuc == 0x09)
+                {
+                    size_t mod = startpos%m_TabColumns;
+                    startpos += (m_TabColumns-mod);
+                }
+                else
+                    ++startpos;
+                if(startpos == columns)
+                {
+                    longline = true;
+                    break;
+                }
+            }
 
-            if(offset <= (lit->m_Size-lit->m_NewLineSize))
+            if(longline)
             {
                 delsize=0;
-                m_Lines->InitNextUChar(lit, offset);
-            
-                //delsize += (lit->m_Size-linestartpos);
                 ucs4_t uc=0x0D;
-                //wxFileOffset nonspacepos=linestartpos;
-            
-                //linestartpos=0;
-                //spaces.clear();
                 ucqueue.clear();
 
                 
@@ -5903,7 +5915,7 @@ void MadEdit::ColumnAlign()
                 {
                     MadDeleteUndoData *dudata = new MadDeleteUndoData;
                     
-                    dudata->m_Pos = pos+offset;
+                    dudata->m_Pos = pos+rowpos;
                     dudata->m_Size = delsize;
                     
                     lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
@@ -5913,15 +5925,20 @@ void MadEdit::ColumnAlign()
                         undo = m_UndoBuffer->Add();
                         undo->m_CaretPosBefore=m_CaretPos.pos;
                     }
-                    //undo->m_CaretPosBefore = dudata->m_Pos;
                     undo->m_Undos.push_back(dudata);
-                    m_Lines->Reformat(lit, lit);
                 }
+            }
+
+            --count;
+            if(count > 0)
+            {
+                --lit;
+                pos -= lit->m_Size;
             }
         }
         while(count>0);
 
-        //m_Lines->Reformat(firstlit, lastlit);
+        m_Lines->Reformat(firstlit, lastlit);
         if(undo)
         {
             m_Modified = true;

@@ -67,6 +67,7 @@ Syntax files, Locale files and Settings:
 
 Mod v0.2.3
 1. Change Info window label for Search or Search in Files
+2. Column Align
 
 Mod v0.2.2.1
 1. Fix Modal dialog bug of wxWidgets 2.8.12(Patch from MadEdit 0.2.9.1) (Win32 only):
