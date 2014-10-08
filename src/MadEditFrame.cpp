@@ -30,6 +30,7 @@
 #include "MadUtils.h"
 #include "MadCommand.h"
 #include "plugin.h"
+#include <wx/config.h>
 #include "wx/aui/auibook.h"
 
 #include <wx/app.h>
@@ -44,7 +45,6 @@
 #include <wx/msgdlg.h>
 #include <wx/dnd.h>
 #include <wx/printdlg.h>
-#include <wx/config.h>
 
 #include <algorithm>
 
@@ -3033,7 +3033,50 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
         {
             MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
 #ifdef __WXMSW__
-            if(me->GetFileName().Lower()==filename.Lower())
+            bool hasopened = false;
+            wxString myname(me->GetFileName());
+            if(myname.Lower()==filename.Lower())
+            {
+                bool as1 = myname.IsAscii(), as2 = filename.IsAscii();
+                if(as1 == as2)
+                {
+                    if(as1 == true)
+                        hasopened = false;
+                    else /*Suspicous non-ascii chars*/
+                    {
+                        size_t len = filename.Len();
+                        int i = 0;
+                        for(; i < len; ++i)
+                        {
+                            wxString ns1(filename[i]), ns2(myname[i]);
+                            bool a1 = ns1.IsAscii(), a2 = ns2.IsAscii();
+                            if(a1 == a2)
+                            {
+                                if(a1 == false)
+                                {
+									if(ns1 != ns1)
+                                    {/*Fixme: Is MakeLower work for all Latin char??*/
+                                        ns1.MakeLower();
+                                        ns2.MakeLower();
+										if ((ns1 != ns2) || ((ns1[0] == 0x20) || (ns2[0] == 0x20)))
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if(i == len) hasopened = true;
+                    }
+                }
+            }
+
+            if(hasopened)
 #else
             if(me->GetFileName()==filename)
 #endif
