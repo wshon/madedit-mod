@@ -3052,7 +3052,7 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
                             bool a1 = ns1.IsAscii(), a2 = ns2.IsAscii();
                             if(a1 == a2)
                             {
-                                if(a1 == false)
+                                if(a1 == false) /*non-ascii chars*/
                                 {
 									if(ns1 != ns1)
                                     {/*Fixme: Is MakeLower work for all Latin char??*/
@@ -3071,7 +3071,8 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
                             }
                         }
 
-                        if(i == len) hasopened = true;
+                        if(i == len)
+                            hasopened = true;
                     }
                 }
             }
