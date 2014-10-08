@@ -34,11 +34,12 @@ wxChar TestEncoding(const wxChar *name, wxFontEncoding enc, wxByte *mb)
 
 #ifdef __WXMSW__
 #define MSW_GET_FONT_NAME(cp,fn) MSW_GetFontName(cp,fn)
+extern wxString g_MadEditRegkeyPath;
 
 // get fontname from registry mime database
 void MSW_GetFontName(wxChar *codepage, wxString &fontname)
 {
-    const wxString MIMEDB(wxT("HKEY_CLASSES_ROOT\\MIME\\Database\\Codepage\\"));
+    const wxString MIMEDB(g_MadEditRegkeyPath + wxT("MIME\\Database\\Codepage\\"));
     wxRegKey *pRegKey = new wxRegKey(MIMEDB + codepage);
 
     if(!pRegKey->Exists())

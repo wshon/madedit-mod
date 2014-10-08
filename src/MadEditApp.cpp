@@ -36,6 +36,9 @@ wxLocale g_Locale;
 wxString g_MadEditAppDir;
 wxString g_MadEditHomeDir;
 wxString g_MadEditConfigName;
+#ifdef __WXMSW__
+wxString g_MadEditRegkeyPath = wxT("HKEY_CURRENT_USER\\Software\\Classes\\");
+#endif
 bool g_DoNotSaveSettings=false;
 bool g_ResetAllKeys=false;
 

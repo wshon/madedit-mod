@@ -5305,7 +5305,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 #ifdef __WXMSW__
         if(g_OptionsDialog->WxCheckBoxRightClickMenu->GetValue())
         {
-            wxRegKey *pRegKey = new wxRegKey(wxT("HKEY_CLASSES_ROOT\\*\\shell\\MadEdit\\command"));
+            wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit\\command"));
             pRegKey->Create();
             wxString exepath=GetExecutablePath();
             pRegKey->SetValue(wxEmptyString, wxString(wxT('"'))+exepath+wxString(wxT("\" \"%1\"")));
@@ -5313,7 +5313,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         }
         else
         {
-            wxRegKey *pRegKey = new wxRegKey(wxT("HKEY_CLASSES_ROOT\\*\\shell\\MadEdit"));
+            wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit"));
             pRegKey->DeleteSelf();
             delete pRegKey;
         }
