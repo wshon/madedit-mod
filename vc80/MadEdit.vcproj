@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049"
-				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib wxmsw28u_aui.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
+				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib wxmsw28u_aui.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib libboost_system-vc80-mt-s-1_56.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)stage/lib&quot;;$(NOINHERIT)"
