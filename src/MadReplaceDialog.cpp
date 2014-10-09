@@ -7,6 +7,7 @@
 
 #include "MadReplaceDialog.h"
 #include "MadSearchDialog.h"
+#include "MadRecentList.h"
 
 #include "MadEdit/MadEdit.h"
 
@@ -224,7 +225,7 @@ void MadReplaceDialog::CreateGUIControls(void)
     WxButtonClose->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadReplaceDialog::MadReplaceDialogKeyDown));
 
 
-    m_RecentReplaceText=new wxFileHistory(20, ID_RECENTREPLACETEXT1);
+    m_RecentReplaceText=new MadRecentList(20, ID_RECENTREPLACETEXT1);
     m_RecentReplaceText->UseMenu(WxPopupMenuRecentReplaceText);
 
     wxConfigBase *m_Config=wxConfigBase::Get(false);

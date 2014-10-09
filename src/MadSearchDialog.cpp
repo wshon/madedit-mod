@@ -8,6 +8,7 @@
 #include "MadEditFrame.h"
 #include "MadSearchDialog.h"
 #include "MadReplaceDialog.h"
+#include "MadRecentList.h"
 
 #include "MadEdit/MadEdit.h"
 #include "wx/gbsizer.h"
@@ -228,7 +229,7 @@ void MadSearchDialog::CreateGUIControls(void)
     WxButtonClose->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadSearchDialog::MadSearchDialogKeyDown));
 
 
-    m_RecentFindText=new wxFileHistory(20, ID_RECENTFINDTEXT1);
+    m_RecentFindText=new MadRecentList(20, ID_RECENTFINDTEXT1);
     m_RecentFindText->UseMenu(WxPopupMenuRecentFindText);
 
     wxConfigBase *m_Config=wxConfigBase::Get(false);

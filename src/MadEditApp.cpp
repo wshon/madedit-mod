@@ -18,6 +18,7 @@
 #include <wx/fileconf.h>
 #include <wx/snglinst.h>
 #include <algorithm>
+#include <boost/locale.hpp>
 
 IMPLEMENT_APP(MadEditApp)
 
@@ -419,6 +420,10 @@ bool MadEditApp::OnInit()
 #endif
 
     // init locale
+    boost::locale::generator gen;
+    std::locale loc=gen(""); 
+    std::locale::global(loc);
+    
     wxString strlang;
     cfg->Read(wxT("/MadEdit/Language"), &strlang);
     int lang=g_LanguageValue[0];

@@ -29,6 +29,7 @@
 #include "MadPrintout.h"
 #include "MadUtils.h"
 #include "MadCommand.h"
+#include "MadRecentList.h"
 #include "plugin.h"
 #include <wx/config.h>
 #include "wx/aui/auibook.h"
@@ -47,6 +48,7 @@
 #include <wx/printdlg.h>
 
 #include <algorithm>
+#include <boost/locale/conversion.hpp>
 
 #include "EmbeddedPython.hpp"
 
@@ -171,6 +173,7 @@ int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
 wxStaticText* g_OvrStr = NULL;
 wxStaticText* g_RdOnly = NULL;
+const int MAX_FILE_NAME_LEN = 2048;/*Windows (NTFS)*/
 
 bool g_CheckModTimeForReload=true;
 
@@ -232,6 +235,15 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
                 (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
         }
     }
+}
+
+inline char * ConvWC2MB(const wxString & ws)
+{
+    static char * g_CharBuffer = NULL;
+    if(g_CharBuffer == NULL)
+        g_CharBuffer = new char[MAX_FILE_NAME_LEN];
+    wxWC2MB(g_CharBuffer, ws.c_str(), MAX_FILE_NAME_LEN);
+    return g_CharBuffer;
 }
 
 //---------------------------------------------------------------------------
@@ -2252,17 +2264,17 @@ void MadEditFrame::CreateGUIControls(void)
 
 
     /***/
-    m_RecentFiles=new wxFileHistory();
+    m_RecentFiles=new MadRecentList();
     m_RecentFiles->UseMenu(g_Menu_File_RecentFiles);
     m_Config->SetPath(wxT("/RecentFiles"));
     m_RecentFiles->Load(*m_Config);
 
-    m_RecentEncodings=new wxFileHistory(9, menuRecentEncoding1);
+    m_RecentEncodings=new MadRecentList(9, menuRecentEncoding1);
     m_RecentEncodings->UseMenu(g_Menu_View_Encoding);
     m_Config->SetPath(wxT("/RecentEncodings"));
     m_RecentEncodings->Load(*m_Config);
 
-    m_RecentFonts=new wxFileHistory(9, menuRecentFont1);
+    m_RecentFonts=new MadRecentList(9, menuRecentFont1);
     m_RecentFonts->UseMenu(g_Menu_View_FontName);
     m_Config->SetPath(wxT("/RecentFonts"));
     m_RecentFonts->Load(*m_Config);
@@ -2973,7 +2985,11 @@ void MadEditFrame::AddItemToFindInFilesResults(const wxString &text, size_t inde
             {
                 wxString idname=m_FindInFilesResults->GetItemText(id);
 #ifdef __WXMSW__
-                if(filename.Lower() < idname.Lower())
+                std::string myname(ConvWC2MB(filename));
+                std::string idfile(ConvWC2MB(idname));
+                
+                if(boost::locale::to_lower(myname) < boost::locale::to_lower(idfile))
+                //if(filename.Lower() < idname.Lower())
 #else
                 if(filename < idname)
 #endif
@@ -3033,51 +3049,10 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
         {
             MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
 #ifdef __WXMSW__
-            bool hasopened = false;
-            wxString myname(me->GetFileName());
-            if(myname.Lower()==filename.Lower())
-            {
-                bool as1 = myname.IsAscii(), as2 = filename.IsAscii();
-                if(as1 == as2)
-                {
-                    if(as1 == true)
-                        hasopened = false;
-                    else /*Suspicous non-ascii chars*/
-                    {
-                        size_t len = filename.Len();
-                        int i = 0;
-                        for(; i < len; ++i)
-                        {
-                            wxString ns1(filename[i]), ns2(myname[i]);
-                            bool a1 = ns1.IsAscii(), a2 = ns2.IsAscii();
-                            if(a1 == a2)
-                            {
-                                if(a1 == false) /*non-ascii chars*/
-                                {
-                                    if(ns1 != ns1)
-                                    {/*Fixme: Is MakeLower work for all Latin char??*/
-                                        ns1.MakeLower();
-                                        ns2.MakeLower();
-                                        if ((ns1 != ns2) || ((ns1[0] == 0x20) || (ns2[0] == 0x20)))//Hacking!
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
+            std::string myname(ConvWC2MB(filename));
+            std::string openedfile(ConvWC2MB(me->GetFileName()));
 
-                        if(i == len)
-                            hasopened = true;
-                    }
-                }
-            }
-
-            if(hasopened)
+            if(boost::locale::to_lower(openedfile) == boost::locale::to_lower(myname))
 #else
             if(me->GetFileName()==filename)
 #endif

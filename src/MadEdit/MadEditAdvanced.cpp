@@ -804,7 +804,7 @@ void MadEdit::ToLowerCase()
         int nc=0;
 #if defined(__WXMSW__)
         if(c<=0xFF)
-			nc=std::tolower(c);
+        nc=std::tolower(c);
         else 
 #endif
         nc=std::towlower(c);

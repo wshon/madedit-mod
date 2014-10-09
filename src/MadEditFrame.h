@@ -45,6 +45,7 @@ class wxMadAuiNotebook;
 class wxAuiNotebookEvent;
 class MadEdit;
 class MadTreeCtrl;
+class MadRecentList;
 
 class MadEditFrame : public wxFrame
 {
@@ -87,9 +88,9 @@ public:
     int           m_NewFileCount;
     wxConfigBase  *m_Config;
     wxImageList   *m_ImageList;
-    wxFileHistory *m_RecentFiles;
-    wxFileHistory *m_RecentEncodings;
-    wxFileHistory *m_RecentFonts;
+    MadRecentList *m_RecentFiles;
+    MadRecentList *m_RecentEncodings;
+    MadRecentList *m_RecentFonts;
 
     wxAuiManager m_AuiManager; // wxAUI
     wxAuiNotebook *m_InfoNotebook; //

@@ -10,6 +10,7 @@
 #include "MadReplaceDialog.h"
 #include "MadSearchDialog.h"
 #include "MadEdit/MadEdit.h"
+#include "MadRecentList.h"
 
 #include <wx/progdlg.h>
 #include <wx/dir.h>
@@ -295,9 +296,9 @@ void MadFindInFilesDialog::CreateGUIControls(void)
     WxComboBoxEncoding->SetValue(systemenc);
 
     //
-    m_RecentFindDir = new wxFileHistory();
-    m_RecentFindFilter = new wxFileHistory();
-    m_RecentFindExclude = new wxFileHistory();
+    m_RecentFindDir = new MadRecentList();
+    m_RecentFindFilter = new MadRecentList();
+    m_RecentFindExclude = new MadRecentList();
     wxConfigBase *m_Config=wxConfigBase::Get(false);
     wxString oldpath=m_Config->GetPath();
     m_Config->SetPath(wxT("/RecentFindDir"));
