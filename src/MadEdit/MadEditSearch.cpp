@@ -33,7 +33,7 @@ inline char_type xtolower(char_type ch)
     if(ch<0 || ch>0xFFFF) return ch;
 #if defined(__WXMSW__)
     if(ch<=0xFF)
-		return std::tolower(ch);
+        return std::tolower(ch);
 #endif
     return std::towlower(wchar_t(ch));
 }
@@ -43,7 +43,7 @@ inline wchar_t xtolower(wchar_t ch)
 {
 #if defined(__WXMSW__)
     if(ch<=0xFF)
-		return std::tolower(ch);
+        return std::tolower(ch);
 #endif
     return std::towlower(ch);
 }

@@ -3054,11 +3054,11 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
                             {
                                 if(a1 == false) /*non-ascii chars*/
                                 {
-									if(ns1 != ns1)
+                                    if(ns1 != ns1)
                                     {/*Fixme: Is MakeLower work for all Latin char??*/
                                         ns1.MakeLower();
                                         ns2.MakeLower();
-										if ((ns1 != ns2) || ((ns1[0] == 0x20) || (ns2[0] == 0x20)))
+                                        if ((ns1 != ns2) || ((ns1[0] == 0x20) || (ns2[0] == 0x20)))//Hacking!
                                         {
                                             break;
                                         }

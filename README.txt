@@ -21,7 +21,7 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommanded)
+      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommanded, and apply patches)
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
@@ -64,6 +64,10 @@ Syntax files, Locale files and Settings:
     2. $(MadEdit execution file directory)/MadEdit.cfg: Windows
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
+
+Mod v0.2.4
+1. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
+2. Fix issue that cannot open the files "a b" and "aU+00C0b" simultaneously
 
 Mod v0.2.3
 1. Change Info window label for Search or Search in Files
