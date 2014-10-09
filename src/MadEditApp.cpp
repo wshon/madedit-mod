@@ -210,12 +210,12 @@ wxConnectionBase *MadAppSrv::OnAcceptConnection(const wxString& topic)
 bool MadAppConn::OnExecute(const wxString& topic,
 #if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
                         wxChar* data,
-                    	int WXUNUSED(size),
+                        int WXUNUSED(size),
 #else
                         const void * data,
                         size_t WXUNUSED(size),
 #endif
-                    	wxIPCFormat WXUNUSED(format))
+                        wxIPCFormat WXUNUSED(format))
 {
     MadEditFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), MadEditFrame);
     wxString filename((wxChar*)data);
