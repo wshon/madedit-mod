@@ -8,7 +8,6 @@
 
 #include "MadRecentList.h"
 #include <wx/menu.h>
-#include <boost/locale/conversion.hpp>
 
 // Ugly global
 //extern char * ConvWC2MB(const wxString&);

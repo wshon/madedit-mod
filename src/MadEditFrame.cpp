@@ -235,6 +235,26 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
     }
 }
 
+#define BUF_LEN 512
+wxString MadwxLower(const wxString& ws)
+{
+#ifdef __WXMSW__
+    wchar_t buf[BUF_LEN+1];
+    wxString result, tmp;
+    size_t len = ws.Len(), beg = 0;
+    do
+    {
+        wcscpy(buf, ws.SubString(beg, beg+BUF_LEN-1).wc_str());
+        CharLowerW(buf);
+        result<<buf;
+        beg += BUF_LEN;
+    }while(len > beg);
+    return result;
+#else
+    return ws.Lower();
+#endif
+}
+
 //---------------------------------------------------------------------------
 
 // for RestoreCaretPos
@@ -3035,6 +3055,7 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
         {
             MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
 #ifdef __WXMSW__
+			wxString lname = MadwxLower(filename);
             if(me->GetFileName().Lower()==filename.Lower())
 #else
             if(me->GetFileName()==filename)
