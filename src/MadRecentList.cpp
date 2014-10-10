@@ -10,16 +10,12 @@
 #include <wx/menu.h>
 
 // Ugly global
-//extern char * ConvWC2MB(const wxString&);
+extern wxString MadStrLower(const wxString &);
 bool MadRecentList::ItemEQ(const wxString& item1, const wxString& item2)
 {
     if (m_caseSensitive)
         return item1 == item2;
-    
-    //std::string str1(ConvWC2MB(item1));
-    //std::string str2(ConvWC2MB(item2));
-
-    return (item1.Lower() == item2.Lower());
+    return (MadStrLower(item1)==MadStrLower(item2));
 }
 
 static const wxChar *s_MRUEntryFormat = wxT("&%d %s");

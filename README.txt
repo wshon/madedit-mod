@@ -70,9 +70,10 @@ Fix Linux build
 
 Mod v0.2.4
 1. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
-2. Fix issue that cannot open the files "a b" and "aU+00C0b" simultaneously
+2. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
 3. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
 4. Fix crash issue while buiding with VS2010
+5. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
 
 Mod v0.2.3
 1. Change Info window label for Search or Search in Files

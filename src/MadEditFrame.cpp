@@ -236,7 +236,7 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
 }
 
 #define BUF_LEN 512
-wxString MadwxLower(const wxString& ws)
+wxString MadStrLower(const wxString& ws)
 {
 #ifdef __WXMSW__
     wchar_t buf[BUF_LEN+1];
@@ -1039,7 +1039,8 @@ public:
             size_t i=0;
             for(;i<count;++i)
             {
-                lname=facename.Lower();
+                //lname=facename.Lower();
+                lname=MadStrLower(facename);
                 if(lname < m_facenames_lowercase[i]) break;
             }
 
@@ -2631,7 +2632,8 @@ MadEdit *MadEditFrame::GetEditByFileName(const wxString &filename, int &id)
         MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
         fn = me->GetFileName();
 #ifdef __WXMSW__
-        if(fn.Lower()==filename.Lower())
+        if(MadStrLower(fn)==MadStrLower(filename))
+        //if(fn.Lower()==filename.Lower())
 #else
         if(fn==filename)
 #endif
@@ -2948,7 +2950,8 @@ void MadEditFrame::OnFindInFilesResultsDClick(wxMouseEvent& event)
                 g_MainFrame->OpenFile(cpdata->filename, true);
 
 #ifdef __WXMSW__
-                if(g_ActiveMadEdit->GetFileName().Lower()==cpdata->filename.Lower())
+                if(MadStrLower(g_ActiveMadEdit->GetFileName())==MadStrLower(cpdata->filename))
+                //if(g_ActiveMadEdit->GetFileName().Lower()==cpdata->filename.Lower())
 #else
                 if(g_ActiveMadEdit->GetFileName()==cpdata->filename)
 #endif
@@ -2994,7 +2997,8 @@ void MadEditFrame::AddItemToFindInFilesResults(const wxString &text, size_t inde
             {
                 wxString idname=m_FindInFilesResults->GetItemText(id);
 #ifdef __WXMSW__
-                if(filename.Lower() < idname.Lower())
+                if(MadStrLower(filename) < MadStrLower(idname))
+                //if(filename.Lower() < idname.Lower())
 #else
                 if(filename < idname)
 #endif
@@ -3055,8 +3059,8 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
         {
             MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
 #ifdef __WXMSW__
-			wxString lname = MadwxLower(filename);
-            if(me->GetFileName().Lower()==filename.Lower())
+            if(MadStrLower(me->GetFileName())==MadStrLower(filename))
+            //if(me->GetFileName().Lower()==filename.Lower())
 #else
             if(me->GetFileName()==filename)
 #endif

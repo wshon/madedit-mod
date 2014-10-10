@@ -550,7 +550,7 @@ WX_DECLARE_HASH_SET( wxString, wxStringHash, wxStringEqual, MadFileNameList );
 MadFileNameList g_FileNameList; // the filenames matched the filename filter
 
 vector<wxString> g_ExcludeFilters;
-
+extern wxString MadStrLower(const wxString &);
 class DirTraverser : public wxDirTraverser
 {
 public:
@@ -577,7 +577,8 @@ public:
             {
                 fn.Assign(filename);
 #ifdef __WXMSW__
-                if(fn.GetFullName().Lower().Matches(g_ExcludeFilters[i].c_str()))
+                if(MadStrLower(fn.GetFullName()).Matches(g_ExcludeFilters[i].c_str()))
+                //if(fn.GetFullName().Lower().Matches(g_ExcludeFilters[i].c_str()))
 #else
                 if(fn.GetFullName().Matches(g_ExcludeFilters[i].c_str()))
 #endif
