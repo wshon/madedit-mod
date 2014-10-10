@@ -48,7 +48,6 @@
 #include <wx/printdlg.h>
 
 #include <algorithm>
-#include <boost/locale/conversion.hpp>
 
 #include "EmbeddedPython.hpp"
 
@@ -173,7 +172,6 @@ int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
 wxStaticText* g_OvrStr = NULL;
 wxStaticText* g_RdOnly = NULL;
-const int MAX_FILE_NAME_LEN = 2048;/*Windows (NTFS)*/
 
 bool g_CheckModTimeForReload=true;
 
@@ -235,15 +233,6 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
                 (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
         }
     }
-}
-
-inline char * ConvWC2MB(const wxString & ws)
-{
-    static char * g_CharBuffer = NULL;
-    if(g_CharBuffer == NULL)
-        g_CharBuffer = new char[MAX_FILE_NAME_LEN];
-    wxWC2MB(g_CharBuffer, ws.c_str(), MAX_FILE_NAME_LEN);
-    return g_CharBuffer;
 }
 
 //---------------------------------------------------------------------------
@@ -2622,11 +2611,7 @@ MadEdit *MadEditFrame::GetEditByFileName(const wxString &filename, int &id)
         MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
         fn = me->GetFileName();
 #ifdef __WXMSW__
-        std::string myname(ConvWC2MB(filename));
-        std::string idfile(ConvWC2MB(fn));
-        
-        if(boost::locale::to_lower(myname) == boost::locale::to_lower(idfile))
-        //if(fn.Lower()==filename.Lower())
+        if(fn.Lower()==filename.Lower())
 #else
         if(fn==filename)
 #endif
@@ -2943,10 +2928,7 @@ void MadEditFrame::OnFindInFilesResultsDClick(wxMouseEvent& event)
                 g_MainFrame->OpenFile(cpdata->filename, true);
 
 #ifdef __WXMSW__
-                std::string myname(ConvWC2MB(cpdata->filename));
-                std::string openedfile(ConvWC2MB(g_ActiveMadEdit->GetFileName()));
-                
-                if(boost::locale::to_lower(openedfile) == boost::locale::to_lower(myname))
+                if(g_ActiveMadEdit->GetFileName().Lower()==cpdata->filename.Lower())
 #else
                 if(g_ActiveMadEdit->GetFileName()==cpdata->filename)
 #endif
@@ -2992,11 +2974,7 @@ void MadEditFrame::AddItemToFindInFilesResults(const wxString &text, size_t inde
             {
                 wxString idname=m_FindInFilesResults->GetItemText(id);
 #ifdef __WXMSW__
-                std::string myname(ConvWC2MB(filename));
-                std::string idfile(ConvWC2MB(idname));
-                
-                if(boost::locale::to_lower(myname) < boost::locale::to_lower(idfile))
-                //if(filename.Lower() < idname.Lower())
+                if(filename.Lower() < idname.Lower())
 #else
                 if(filename < idname)
 #endif
@@ -3052,14 +3030,12 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
 
         // check this file is opened or not
         int count=int(m_Notebook->GetPageCount());
+
         for(int id=0;id<count;++id)
         {
             MadEdit *me=(MadEdit*)m_Notebook->GetPage(id);
 #ifdef __WXMSW__
-            std::string myname(ConvWC2MB(filename));
-            std::string openedfile(ConvWC2MB(me->GetFileName()));
-
-            if(boost::locale::to_lower(openedfile) == boost::locale::to_lower(myname))
+            if(me->GetFileName().Lower()==filename.Lower())
 #else
             if(me->GetFileName()==filename)
 #endif
