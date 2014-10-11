@@ -11,6 +11,7 @@
 #include "MadRecentList.h"
 
 #include "MadEdit/MadEdit.h"
+#include <wx/progdlg.h>
 #include "wx/gbsizer.h"
 #include <list>
 #include <sstream>
@@ -27,6 +28,14 @@ extern wxStatusBar *g_StatusBar;   // add: gogo, 19.09.2009
 MadSearchDialog *g_SearchDialog=NULL;
 extern void RecordAsMadMacro(MadEdit *, wxString&);
 extern MadEdit *g_ActiveMadEdit;
+wxProgressDialog *g_SearchProgressDialog=NULL;
+
+bool OnSearchProgressUpdate(int value, const wxString &newmsg=wxEmptyString, bool *skip=NULL)
+{
+    if(g_SearchProgressDialog == NULL)
+        return true;
+    return g_SearchProgressDialog->Update(value, newmsg, skip);
+}
 
 //----------------------------------------------------------------------------
 // MadSearchDialog
@@ -64,7 +73,6 @@ MadSearchDialog::MadSearchDialog( wxWindow *parent, wxWindowID id, const wxStrin
 
 MadSearchDialog::~MadSearchDialog()
 {
-
 }
 
 //static int gs_MinX=0;
@@ -845,7 +853,7 @@ void MadSearchDialog::WxButtonCountClick(wxCommandEvent& event)
     }
 }
 
-void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true)
+void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL)
 {
     int ResultCount=0;
     wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
@@ -870,6 +878,9 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
             int line=-1, oldline;
             wxString linetext, loc;
             results->Freeze();
+            
+            wxString status = _("Prepare %d matched texts of %d...");
+            status += wxT("                                \n");
             do
             {
                 if(madedit->IsTextFile())
@@ -892,6 +903,10 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
                 fmt = loc +linetext;
                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
                 ++ResultCount;
+                if(updater != NULL)
+                {
+                    if(updater(idx, wxString::Format(status, idx, count), NULL)== false) break;
+                }
             }
             while(++idx < count);
             results->Thaw();
@@ -949,16 +964,32 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                 WxCheckBoxCaseSensitive->GetValue(),
                 WxCheckBoxWholeWord->GetValue(),
                 false,
-                &begpos, &endpos);
+                &begpos, &endpos, true);
             RecordAsMadMacro(madedit, wxString::Format(wxT("FindTextAll(\"%s\", %s, %s, %s)"), expr,
                             WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False")));
         }
 
-        if(ok<0) return;
+        if(ok<=0) return;
 
-        FindAllResultDisplay(begpos, endpos, madedit);
+        Show(false);
+        wxString msg = _("Found %d matched texts...");
+        msg += wxT("                                \n");
+        wxProgressDialog dialog(_("Preparing Results"),
+                                    wxString::Format(msg, 0),
+                                    ok,    // range
+                                    this,   // parent
+                                    wxPD_CAN_ABORT |
+                                    wxPD_AUTO_HIDE |
+                                    wxPD_APP_MODAL);
+        g_SearchProgressDialog = &dialog;
+        
+        FindAllResultDisplay(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
+        
+        dialog.Update(ok);
+        g_SearchProgressDialog = NULL;
+        Show(true);
     }
 }
 

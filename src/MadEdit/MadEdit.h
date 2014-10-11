@@ -46,6 +46,7 @@ typedef void (*OnStatusChangedPtr)(MadEdit *madedit);
 typedef void (*OnToggleWindowPtr)(MadEdit *madedit);
 typedef void (*OnMouseRightUpPtr)(MadEdit *madedit);
 typedef void (*OnActivatePtr)(MadEdit *madedit);
+typedef bool (*OnProgressUpdatePtr)(int value, const wxString &newmsg, bool *skip);
 
 //==============================================================================
 // A Manager of FontWidth Buffer

@@ -19,7 +19,7 @@
 
 extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
-extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true);
+extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
 
 // Ugly bigger switch than bigger map
 void FromCmdToString(wxString &cmdStr, int madCmd)

@@ -33,7 +33,7 @@
 
 MadFindInFilesDialog *g_FindInFilesDialog=NULL;
 extern wxStatusBar *g_StatusBar;
-extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true);
+extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
 
 //----------------------------------------------------------------------------
 // MadFindInFilesDialog
@@ -638,7 +638,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
     size_t totalfiles;
     if(WxRadioButtonOpenedFiles->GetValue())
     {
-        totalfiles= ((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageCount();
+        totalfiles=((wxAuiNotebook*)g_MainFrame->m_Notebook)->GetPageCount();
     }
     else
     {

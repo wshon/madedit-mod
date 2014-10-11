@@ -3368,6 +3368,9 @@ int MadEdit::FindTextAll(const wxString &expr,
     int count=0;
     int state;
 
+    wxString fmt = _("Found %d matched texts...");
+    fmt += wxT("                                \n");
+
     while((state=Search(bpos, epos, expr, bRegex, bCaseSensitive, bWholeWord))==SR_YES)
     {
         if(pbegpos) pbegpos->push_back(bpos.pos);
