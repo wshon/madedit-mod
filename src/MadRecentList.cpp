@@ -32,7 +32,7 @@ void MadRecentList::AddFileToHistory(const wxString& item)
     size_t i;
 
     // Check we don't already have this item
-    for (i = 0; i < m_fileHistoryN; ++i)
+    for (i = 0; i < GetCount(); ++i)
     {
         if ( m_fileHistory[i] && ItemEQ(item, m_fileHistory[i]) )
         {
@@ -44,38 +44,38 @@ void MadRecentList::AddFileToHistory(const wxString& item)
     }
 
     // if we already have a full history, delete the one at the end
-    if ( m_fileMaxFiles == m_fileHistoryN )
+    if ( m_fileMaxFiles == GetCount() )
     {
-        RemoveFileFromHistory (m_fileHistoryN - 1);
+        RemoveFileFromHistory (GetCount() - 1);
         AddFileToHistory (item);
         return;
     }
 
     // Add to the project item history:
     // Move existing items (if any) down so we can insert item at beginning.
-    if (m_fileHistoryN < m_fileMaxFiles)
+    if (GetCount() < m_fileMaxFiles)
     {
         wxList::compatibility_iterator node = m_fileMenus.GetFirst();
         while (node)
         {
             wxMenu* menu = (wxMenu*) node->GetData();
-            if ( m_fileHistoryN == 0 && menu->GetMenuItemCount() )
+            if ( GetCount() == 0 && menu->GetMenuItemCount() )
             {
                 menu->AppendSeparator();
             }
-            menu->Append(GetBaseId()+m_fileHistoryN, _("[EMPTY]"));
+            menu->Append(GetBaseId()+GetCount(), _("[EMPTY]"));
             node = node->GetNext();
         }
         ++m_fileHistoryN;
     }
     // Shuffle items down
-    for (i = (m_fileHistoryN-1); i > 0; --i)
+    for (i = (GetCount()-1); i > 0; --i)
     {
         m_fileHistory[i] = m_fileHistory[i-1];
     }
     m_fileHistory[0] = MYcopystring(item);
 
-    for (i = 0; i < m_fileHistoryN; ++i)
+    for (i = 0; i < GetCount(); ++i)
     {
         if ( m_fileHistory[i] )
         {

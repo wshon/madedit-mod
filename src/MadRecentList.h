@@ -23,7 +23,7 @@ public:
 #endif
     }
 
-    MadRecentList(bool caseSensitive=OSCaseSensitive(), size_t maxFiles = 9, wxWindowID idBase = wxID_FILE1)
+    MadRecentList(size_t maxFiles = 9, wxWindowID idBase = wxID_FILE1, bool caseSensitive=OSCaseSensitive() )
         : wxFileHistory(maxFiles, idBase), m_caseSensitive(caseSensitive)
     {}
 

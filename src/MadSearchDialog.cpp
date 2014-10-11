@@ -229,7 +229,7 @@ void MadSearchDialog::CreateGUIControls(void)
     WxButtonClose->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadSearchDialog::MadSearchDialogKeyDown));
 
 
-    m_RecentFindText=new MadRecentList(20, ID_RECENTFINDTEXT1);
+    m_RecentFindText=new MadRecentList(20, ID_RECENTFINDTEXT1, true);
     m_RecentFindText->UseMenu(WxPopupMenuRecentFindText);
 
     wxConfigBase *m_Config=wxConfigBase::Get(false);
