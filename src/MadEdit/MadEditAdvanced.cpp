@@ -759,7 +759,7 @@ void MadEdit::ToUpperCase()
         int nc=0;
 #if defined(__WXMSW__)
         if(c<=0xFF)
-		   nc=std::toupper(c);
+           nc=std::toupper(c);
         else 
 #endif
         nc=std::towupper(c);
@@ -851,26 +851,26 @@ void MadEdit::InvertCase()
 #if defined(__WXMSW__)
         if (c<=0xFF)
         {
-			if(std::islower(c))
-			{
-				nc=std::toupper(c);
-			}
-			else if(std::isupper(c))
-			{
-				nc=std::tolower(c);
-			}
+            if(std::islower(c))
+            {
+                nc=std::toupper(c);
+            }
+            else if(std::isupper(c))
+            {
+                nc=std::tolower(c);
+            }
         }
         else
 #endif
         {
-			if(std::iswlower(c))
-			{
-				nc=std::towupper(c);
-			}
-			else if(std::iswupper(c))
-			{
-				nc=std::towlower(c);
-			}
+            if(std::iswlower(c))
+            {
+                nc=std::towupper(c);
+            }
+            else if(std::iswupper(c))
+            {
+                nc=std::towlower(c);
+            }
         }
 
         if(nc != c)
@@ -1709,7 +1709,7 @@ SortLineData::SortLineData(const MadLineIterator& l, int id)
             {
 #if defined(__WXMSW__)
                 if(uc<=0xFF)
-			        uc=std::tolower(uc);
+                    uc=std::tolower(uc);
                 else
 #endif
                 uc = std::towlower(wchar_t(uc));

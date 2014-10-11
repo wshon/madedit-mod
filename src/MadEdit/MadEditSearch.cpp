@@ -32,7 +32,8 @@ inline char_type xtolower(char_type ch)
 {
     if(ch<0 || ch>0xFFFF) return ch;
 #if defined(__WXMSW__)
-    return (char_type)CharLowerW((LPWSTR)ch);
+    ucs4_t tch = (ucs4_t)ch;
+    return (char_type)CharLowerW((LPWSTR)tch);
 #else
     return std::towlower(wchar_t(ch));
 #endif
@@ -42,7 +43,8 @@ template<>
 inline wchar_t xtolower(wchar_t ch)
 {
 #if defined(__WXMSW__)
-    return (wchar_t)CharLowerW((LPWSTR)ch);
+    ucs4_t tch = (ucs4_t)ch;
+    return (wchar_t)CharLowerW((LPWSTR)tch);
 #else
     return std::towlower(wchar_t(ch));
 #endif
@@ -290,7 +292,8 @@ struct ucs4_regex_traits: public null_regex_traits<ucs4_t>
     {
         if(ch<0 || ch>0xFFFF) return ch;
 #if defined(__WXMSW__)
-        return (char_type2)CharLowerW((LPWSTR)ch);
+        ucs4_t tch = (ucs4_t)ch;
+        return (char_type2)CharLowerW((LPWSTR)tch);
 #else
         return std::towlower(wchar_t(ch));
 #endif
@@ -298,7 +301,8 @@ struct ucs4_regex_traits: public null_regex_traits<ucs4_t>
     static wchar_t tolower(wchar_t ch)
     {
 #if defined(__WXMSW__)
-        return (wchar_t)CharLowerW((LPWSTR)ch);
+        ucs4_t tch = (ucs4_t)ch;
+        return (wchar_t)CharLowerW((LPWSTR)tch);
 #else
         return std::towlower(ch);
 #endif
@@ -309,7 +313,8 @@ struct ucs4_regex_traits: public null_regex_traits<ucs4_t>
     {
         if(ch<0 || ch>0xFFFF) return ch;
 #if defined(__WXMSW__)
-        return (char_type2)CharUpperW((LPWSTR)ch);
+        ucs4_t tch = (ucs4_t)ch;
+        return (char_type2)CharUpperW((LPWSTR)tch);
 #else
         return std::towupper(wchar_t(ch));
 #endif
@@ -317,7 +322,8 @@ struct ucs4_regex_traits: public null_regex_traits<ucs4_t>
     static wchar_t toupper(wchar_t ch)
     {
 #if defined(__WXMSW__)
-        return (wchar_t)CharUpperW((LPWSTR)ch);
+        ucs4_t tch = (ucs4_t)ch;
+        return (wchar_t)CharUpperW((LPWSTR)tch);
 #else
         return std::towupper(wchar_t(ch));
 #endif

@@ -183,9 +183,6 @@
     <ClInclude Include="..\src\MadNumberDlg.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MadRecentList.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\MadAboutDialog.cpp">
@@ -357,9 +354,6 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\MadNumberDlg.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\MadRecentList.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

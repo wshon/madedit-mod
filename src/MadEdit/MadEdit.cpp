@@ -4570,9 +4570,8 @@ MadLineIterator MadEdit::DeleteInsertData(wxFileOffset pos,
 
                     if(bpos != delsize) // separate bit
                     {
-                        
                         MadBlock block_tmp = *bit;
-                        MadBlockIterator bit2 = blocks.insert(bit, block_tmp);
+                        MadBlockIterator bit2 = blocks1.insert(bit, block_tmp);
                         //MadBlockIterator bit2 = blocks1.insert(bit, *bit);
                         bit2->m_Size = delsize - bpos;
 
