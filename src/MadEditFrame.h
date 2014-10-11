@@ -88,7 +88,7 @@ public:
     int           m_NewFileCount;
     wxConfigBase  *m_Config;
     wxImageList   *m_ImageList;
-    wxFileHistory *m_RecentFiles;
+    MadRecentList *m_RecentFiles;
     MadRecentList *m_RecentEncodings;
     MadRecentList *m_RecentFonts;
 

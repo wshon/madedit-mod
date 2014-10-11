@@ -2274,7 +2274,7 @@ void MadEditFrame::CreateGUIControls(void)
 
 
     /***/
-    m_RecentFiles=new wxFileHistory();
+    m_RecentFiles=new MadRecentList();
     m_RecentFiles->UseMenu(g_Menu_File_RecentFiles);
     m_Config->SetPath(wxT("/RecentFiles"));
     m_RecentFiles->Load(*m_Config);
