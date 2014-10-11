@@ -238,7 +238,7 @@ inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
 #define BUF_LEN 512
 wxString MadStrLower(const wxString& ws)
 {
-#if 0//def __WXMSW__
+#ifdef __WXMSW__
     wchar_t buf[BUF_LEN+1];
     wxString result, tmp;
     size_t len = ws.Len(), beg = 0;
