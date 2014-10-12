@@ -879,7 +879,7 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
             wxString linetext, loc;
             results->Freeze();
             
-            wxString status = _("Prepare %d matched texts of %d...");
+            wxString status = _("Preparing %d of %d results...");
             status += wxT("                                \n");
             do
             {
@@ -903,7 +903,7 @@ void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
                 fmt = loc +linetext;
                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
                 ++ResultCount;
-                if(updater != NULL)
+                if(updater != NULL && (count >= 1000))
                 {
                     if(updater(idx, wxString::Format(status, idx, count), NULL)== false) break;
                 }
@@ -989,7 +989,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         
         dialog.Update(ok);
         g_SearchProgressDialog = NULL;
-        Show(true);
+        //Show(true);
     }
 }
 

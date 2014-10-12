@@ -4707,7 +4707,7 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
 
     g_ReplaceDialog->Show(false);
 
-    static wxString text(_("Find Results"));
+    static wxString text(_("Search Results"));
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
 

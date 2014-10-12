@@ -71,11 +71,12 @@ Fix Linux build
 Mod v0.2.4
 1. Colum Align released
 2. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
-3. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
-4. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
-5. Fix crash issue while buiding with VS2010
-6. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
-7. Fix Upper/Lower issue of wxString under Windows
+3. Improve usibility of FindAll
+4. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
+5. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
+6. Fix crash issue while buiding with VS2010
+7. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
+8. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
 
 Mod v0.2.3
 1. Change Info window label for Search or Search in Files
