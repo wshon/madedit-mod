@@ -72,11 +72,13 @@ Mod v0.2.4
 1. Colum Align released
 2. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
 3. Improve usibility of FindAll
-4. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
-5. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
-6. Fix crash issue while buiding with VS2010
-7. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
-8. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
+4. FindAll in Selection
+5. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
+6. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
+7. Fix crash issue while buiding with VS2010
+8. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
+9. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
+10. Fix issue introduced by FindAll that it would be found if the matched text was at the beginning
 
 Mod v0.2.3
 1. Change Info window label for Search or Search in Files

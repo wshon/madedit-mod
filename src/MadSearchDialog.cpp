@@ -952,9 +952,25 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
     if(expr.Len()>0)
     {
         m_RecentFindText->AddFileToHistory(expr);
+        
+        wxFileOffset selend = g_ActiveMadEdit->GetSelectionEndPos();
+
+        // moved here: gogo, 19.09.2009
+        wxFileOffset caretpos = g_ActiveMadEdit->GetCaretPosition();
+        //wxInt64 from = 0, to = 0;
+        wxFileOffset rangeFrom = -1, rangeTo = -1;
+        if(WxCheckBoxSearchInSelection->IsChecked())
+        {
+            rangeTo = m_SearchTo;
+            // removed: gogo, 19.09.2009
+            //wxFileOffset caretpos = g_ActiveMadEdit->GetCaretPosition();
+            if(caretpos <= m_SearchFrom || caretpos >= m_SearchTo)
+                rangeFrom = m_SearchFrom;
+        }
+
         if(WxCheckBoxFindHex->GetValue())
         {
-            ok = madedit->FindHexAll(expr, false, &begpos, &endpos);
+            ok = madedit->FindHexAll(expr, false, &begpos, &endpos, rangeFrom, rangeTo);
             RecordAsMadMacro(madedit, wxString::Format(wxT("FindHexAll(\"%s\")"), expr));
         }
         else
@@ -964,7 +980,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                 WxCheckBoxCaseSensitive->GetValue(),
                 WxCheckBoxWholeWord->GetValue(),
                 false,
-                &begpos, &endpos, true);
+                &begpos, &endpos, rangeFrom, rangeTo);
             RecordAsMadMacro(madedit, wxString::Format(wxT("FindTextAll(\"%s\", %s, %s, %s)"), expr,
                             WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
