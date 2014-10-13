@@ -65,6 +65,13 @@ using std::list;
 #define ITOA(num,buf,fmt) itoa(num,buf,fmt)
 #endif
 
+/*wxMAJOR_VERSION wxMINOR_VERSION wxRELEASE_NUMBER wxSUBRELEASE_NUMBER*/
+#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9) || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9 && wxRELEASE_NUMBER < 2)
+#define MADK_NONE 0
+#else
+#define MADK_NONE WXK_NONE
+#endif
+
 static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr);
 extern void RecordAsMadMacro(MadEdit *, wxString&);
 extern void FromCmdToString(wxString &cmdStr, int madCmd);
@@ -9651,12 +9658,7 @@ void MadEdit::OnChar(wxKeyEvent& evt)
         DoToggleWindow();
     }
 #ifdef __WXMSW__
-    /*wxMAJOR_VERSION wxMINOR_VERSION wxRELEASE_NUMBER wxSUBRELEASE_NUMBER*/
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9) || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9 && wxRELEASE_NUMBER < 2)
-    else if(key == 0 || (ucs4==key && (ucs4>=0x100 || (((!evt.HasModifiers()) || (evt.GetModifiers() == wxMOD_SHIFT)) && ucs4 >= ecCharFirst))))
-#else
-    else if(key == WXK_NONE || (ucs4==key && (ucs4>=0x100 || (((!evt.HasModifiers()) || (evt.GetModifiers() == wxMOD_SHIFT)) && ucs4 >= ecCharFirst))))
-#endif
+    else if(key == MADK_NONE || (ucs4==key && (ucs4>=0x100 || (((!evt.HasModifiers()) || (evt.GetModifiers() == wxMOD_SHIFT)) && ucs4 >= ecCharFirst))))
     {
         m_ProcessWin98LeadByte=false;
 
@@ -9708,11 +9710,7 @@ void MadEdit::OnChar(wxKeyEvent& evt)
         m_ProcessWin98LeadByte=true;
     }
 #else
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9) || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9 && wxRELEASE_NUMBER < 2)
-    else if(key == 0 || (ucs4>=(ucs4_t)0x100 || (!evt.HasModifiers() && ucs4 >= (ucs4_t)ecCharFirst)))
-#else
-    else if(key == WXK_NONE || (ucs4>=(ucs4_t)0x100 || (!evt.HasModifiers() && ucs4 >= (ucs4_t)ecCharFirst)))
-#endif
+    else if(key == MADK_NONE || (ucs4>=(ucs4_t)0x100 || (!evt.HasModifiers() && ucs4 >= (ucs4_t)ecCharFirst)))
     {
         ProcessCommand(ucs4);
     }
