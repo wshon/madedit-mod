@@ -80,8 +80,8 @@ const wxString g_MadTopicStr = wxT("single-instance");
 #include <gdk/gdkx.h>
 #if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
 #include <wx/gtk/win_gtk.h>
-#else
-#include <wx/gtk/private/win_gtk.h>
+//#else
+//#include <wx/gtk/private/win_gtk.h>
 #endif
 
 Atom g_MadEdit_atom;
