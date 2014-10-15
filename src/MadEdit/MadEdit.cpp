@@ -29,15 +29,17 @@
 #endif
 
 #ifdef __WXGTK__
+#include <stdio.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
-#include <wx/gtk/dcmemory.h>
 #if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
 #include <wx/gtk/win_gtk.h>
+#include <wx/gtk/dcmemory.h>
 #else
-#include <wx/gtk/private/win_gtk.h>
+//#include <wx/gtk/private/win_gtk.h>
+#include <wx/dcmemory.h>
 #endif
 #endif
 
@@ -59,10 +61,64 @@ using std::list;
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
-#ifdef __WXMSW__
 #define ITOA(num,buf,fmt) _itoa(num,buf,fmt)
-#else
-#define ITOA(num,buf,fmt) itoa(num,buf,fmt)
+#ifndef __WXMSW__
+#include <iostream>
+
+/* A utility function to reverse a string  */
+void reverse(char str[], int length)
+{
+    int start = 0;
+    int end = length -1;
+    while (start < end)
+    {
+        std::swap(*(str+start), *(str+end));
+        start++;
+        end--;
+    }
+}
+
+// Implementation of itoa()
+char* _itoa(int num, char* str, int base)
+{
+    int i = 0;
+    bool isNegative = false;
+
+    /* Handle 0 explicitely, otherwise empty string is printed for 0 */
+    if (num == 0)
+    {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+
+    // In standard itoa(), negative numbers are handled only with 
+    // base 10. Otherwise numbers are considered unsigned.
+    if (num < 0 && base == 10)
+    {
+        isNegative = true;
+        num = -num;
+    }
+
+    // Process individual digits
+    while (num != 0)
+    {
+        int rem = num % base;
+        str[i++] = (rem > 9)? (rem-10) + 'a' : rem + '0';
+        num = num/base;
+    }
+
+    // If number is negative, append '-'
+    if (isNegative)
+        str[i++] = '-';
+
+    str[i] = '\0'; // Append string terminator
+
+    // Reverse the string
+    reverse(str, i);
+
+    return str;
+}
 #endif
 
 /*wxMAJOR_VERSION wxMINOR_VERSION wxRELEASE_NUMBER wxSUBRELEASE_NUMBER*/
@@ -73,7 +129,7 @@ using std::list;
 #endif
 
 static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr);
-extern void RecordAsMadMacro(MadEdit *, wxString&);
+extern void RecordAsMadMacro(MadEdit *, const wxString&);
 extern void FromCmdToString(wxString &cmdStr, int madCmd);
 MadKeyBindings MadEdit::ms_KeyBindings;
 
@@ -597,7 +653,11 @@ static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr)
 #ifdef __WXMSW__
     const wchar_t * wchTmpStr = wsStr.wc_str();
 #else
+#if wxMAJOR_VERSION < 3
     const wchar_t * wchTmpStr = (wsStr.wc_str()).data();
+#else
+    const wchar_t * wchTmpStr = wsStr.wc_str();
+#endif
 #endif
     while(* wchStr && * wchTmpStr)
     {
@@ -10840,7 +10900,7 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
                     }
                 }
 
-                wxCaretSuspend cs(this);
+                //wxCaretSuspend cs(this);
     #endif
 
                 dc.Blit(0,0,m_ClientWidth,m_ClientHeight, &markdc, 0, 0);

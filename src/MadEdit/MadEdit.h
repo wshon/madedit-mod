@@ -844,7 +844,7 @@ public: // basic functions
     void DndBegDrag();
     void DndDrop();
     bool CanPaste();
-    void CopyToClipboard(wxString & text){PutTextToClipboard(text);}
+    void CopyToClipboard(const wxString & text){PutTextToClipboard(text);}
 
     bool CanUndo()
     {

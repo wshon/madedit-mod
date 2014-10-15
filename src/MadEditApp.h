@@ -52,8 +52,8 @@ class MadEditApp:public wxApp
     wxSingleInstanceChecker * m_SigleAppChecker;
     MadAppSrv * m_AppServer;
 public:
-	bool OnInit();
-	int OnExit();
+    bool OnInit();
+    int OnExit();
 };
 
  

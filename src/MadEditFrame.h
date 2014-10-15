@@ -372,7 +372,7 @@ public:
     void SetMacroRunning() {m_MadMacroStatus = emMacroRunning;}
     void SetMacroRecording() {m_MadMacroStatus = emMacroRecoding;}
     void SetMacroStopped() {m_MadMacroStatus = emMacroStopped;}
-    void AddMacroScript(wxString & script, int caretPos = 0, int selBeg = -1, int selEnd = -1)
+    void AddMacroScript(const wxString & script, int caretPos = 0, int selBeg = -1, int selEnd = -1)
     {
         if(((selBeg != -1) && (selEnd != -1)) && (selBeg != m_LastSelBeg || selEnd != m_LastSelEnd))
         {

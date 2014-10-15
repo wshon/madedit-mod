@@ -38,8 +38,11 @@ if test "x$IS_MACOS" == "x"; then
             glib-2.0 >= 2.6.0
             gtk+-2.0 >= 2.6.0
     ])
-    CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
-    LIBS="$LIBS $glib_gtk2_LIBS"
+    PKG_CHECK_MODULES(python, [
+            python >= 2.7
+    ])
+    CXXFLAGS="$CXXFLAGS $python_CFLAGS"
+    LIBS="$LIBS $python_LIBS"
 fi
 
 # option for additional Xpressive lib

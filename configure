@@ -754,6 +754,8 @@ am__fastdepCXX_FALSE
 PKG_CONFIG
 glib_gtk2_CFLAGS
 glib_gtk2_LIBS
+python_CFLAGS
+python_LIBS
 WX_CONFIG_PATH
 WX_CPPFLAGS
 WX_CFLAGS
@@ -783,6 +785,8 @@ CCC
 PKG_CONFIG
 glib_gtk2_CFLAGS
 glib_gtk2_LIBS
+python_CFLAGS
+python_LIBS
 CXXCPP'
 
 
@@ -12722,8 +12726,6 @@ else
 	pkg_failed=untried
 fi
 
-
-
 if test $pkg_failed = yes; then
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -13116,9 +13118,10 @@ echo "$as_me: error:
    " >&2;}
    { (exit 1); exit 1; }; }
 fi
-CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS `pkg-config --cflags python2`"
 CXXFLAGS="$CXXFLAGS $WX_CXXFLAGS_ONLY"
 #CFLAGS="$CFLAGS $WX_CFLAGS_ONLY"
+LIBS="$LIBS `pkg-config --libs python2`"
 if test "$WX_LIBS_set" != 1; then
     LIBS="$LIBS $WX_LIBS"
 fi

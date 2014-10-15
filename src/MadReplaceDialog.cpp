@@ -20,7 +20,7 @@
 
 MadReplaceDialog *g_ReplaceDialog=NULL;
 extern MadEdit *g_ActiveMadEdit;
-extern void RecordAsMadMacro(MadEdit *, wxString&);
+extern void RecordAsMadMacro(MadEdit *, const wxString&);
 //----------------------------------------------------------------------------
 // MadReplaceDialog
 //----------------------------------------------------------------------------

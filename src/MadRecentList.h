@@ -30,7 +30,7 @@ public:
     virtual void AddFileToHistory(const wxString& file);
 private:
 #if (wxMAJOR_VERSION >= 3)
-	wxString MadRecentList::NormalizeFileName(const wxFileName& fn);
+	wxString NormalizeFileName(const wxFileName& fn);
 	wxString GetMRUEntryLabel(int n, const wxString& path)
 	{
 		// we need to quote '&' characters which are used for mnemonics

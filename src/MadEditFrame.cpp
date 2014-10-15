@@ -223,7 +223,7 @@ int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 
-inline void RecordAsMadMacro(MadEdit * edit, wxString& script)
+inline void RecordAsMadMacro(MadEdit * edit, const wxString& script)
 {
     if((g_MainFrame != NULL) && (edit == g_ActiveMadEdit))
     {
@@ -4263,7 +4263,7 @@ void MadEditFrame::OnEditSortAscending(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfAscending, begin, end);
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), sfAscending, begin, end));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), (int)sfAscending, begin, end));
     }
 }
 
@@ -4274,7 +4274,7 @@ void MadEditFrame::OnEditSortDescending(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfDescending, begin, end);
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), sfDescending, begin, end));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), (int)sfDescending, begin, end));
     }
 }
 
@@ -4285,7 +4285,7 @@ void MadEditFrame::OnEditSortAscendingCase(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfAscending|sfCaseSensitive, begin, end);
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), sfAscending|sfCaseSensitive, begin, end));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), (int)sfAscending|sfCaseSensitive, begin, end));
     }
 }
 
@@ -4296,7 +4296,7 @@ void MadEditFrame::OnEditSortDescendingCase(wxCommandEvent& event)
         int begin, end;
         g_ActiveMadEdit->GetSelectionLineId(begin, end);
         g_ActiveMadEdit->SortLines(sfDescending|sfCaseSensitive, begin, end);
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), sfDescending|sfCaseSensitive, begin, end));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SortLines(%d, %d, %d)"), (int)sfDescending|sfCaseSensitive, begin, end));
     }
 }
 

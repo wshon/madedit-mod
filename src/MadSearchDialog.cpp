@@ -26,7 +26,7 @@
 extern wxStatusBar *g_StatusBar;   // add: gogo, 19.09.2009
 
 MadSearchDialog *g_SearchDialog=NULL;
-extern void RecordAsMadMacro(MadEdit *, wxString&);
+extern void RecordAsMadMacro(MadEdit *, const wxString&);
 extern MadEdit *g_ActiveMadEdit;
 wxProgressDialog *g_SearchProgressDialog=NULL;
 
