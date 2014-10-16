@@ -31,6 +31,19 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	src/MadUtils.h \
 	src/MadWordCountDialog.cpp \
 	src/MadWordCountDialog.h \
+	src/MadPurgeHistoryDialog.cpp \
+	src/MadPurgeHistoryDialog.h \
+	src/MadNumberDlg.cpp \
+	src/MadNumberDlg.h \
+	src/MadMacroDlg.cpp \
+	src/MadMacroDlg.h \
+	src/MadRecentList.cpp \
+	src/MadRecentList.h \
+	src/MadPython.hpp \
+	src/EmbeddedPython.cpp \
+	src/EmbeddedPython.hpp \
+	src/MadMacroDlg.cpp \
+	src/MadMacroDlg.h \
 	src/plugin.h \
 	src/MadEdit/caret_new.cpp \
 	src/MadEdit/caret_new.h \
