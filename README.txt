@@ -22,6 +22,7 @@ B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
       1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommanded, and apply patches)
+         --enable-ipc
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
@@ -42,6 +43,7 @@ P.S.: Since MadEdit v0.2.2, Xpressive is attached in MadEdit sources package.
 P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
 P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
       wxWidgets
+P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error
 
 
 
