@@ -38,9 +38,11 @@ P.S.: Don't use VS.Net 2010 which has bugs to crash MadEdit(with wxWidgets-2.8.1
 P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
       or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
-P.S.2: Since MadEdit v0.2.2, Xpressive is attached in MadEdit sources package.
+P.S.: Since MadEdit v0.2.2, Xpressive is attached in MadEdit sources package.
+P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
+P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
+      wxWidgets
 
-P.S.3 wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
 
 
 Syntax files, Locale files and Settings:
