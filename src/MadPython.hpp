@@ -1,7 +1,7 @@
 #ifndef __MADPYTHON__
 #define __MADPYTHON__
 #include <stdexcept>
-#include <python.h>
+#include <Python.h>
 
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
