@@ -1071,20 +1071,6 @@ madedit-MadEditSearch.obj: src/MadEdit/MadEditSearch.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-MadEditSearch.obj `if test -f 'src/MadEdit/MadEditSearch.cpp'; then $(CYGPATH_W) 'src/MadEdit/MadEditSearch.cpp'; else $(CYGPATH_W) '$(srcdir)/src/MadEdit/MadEditSearch.cpp'; fi`
 
-madedit-MadEdit_gtk.o: src/MadEdit/MadEdit_gtk.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-MadEdit_gtk.o -MD -MP -MF "$(DEPDIR)/madedit-MadEdit_gtk.Tpo" -c -o madedit-MadEdit_gtk.o `test -f 'src/MadEdit/MadEdit_gtk.cpp' || echo '$(srcdir)/'`src/MadEdit/MadEdit_gtk.cpp; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/madedit-MadEdit_gtk.Tpo" "$(DEPDIR)/madedit-MadEdit_gtk.Po"; else rm -f "$(DEPDIR)/madedit-MadEdit_gtk.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/MadEdit/MadEdit_gtk.cpp' object='madedit-MadEdit_gtk.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-MadEdit_gtk.o `test -f 'src/MadEdit/MadEdit_gtk.cpp' || echo '$(srcdir)/'`src/MadEdit/MadEdit_gtk.cpp
-
-madedit-MadEdit_gtk.obj: src/MadEdit/MadEdit_gtk.cpp
-@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-MadEdit_gtk.obj -MD -MP -MF "$(DEPDIR)/madedit-MadEdit_gtk.Tpo" -c -o madedit-MadEdit_gtk.obj `if test -f 'src/MadEdit/MadEdit_gtk.cpp'; then $(CYGPATH_W) 'src/MadEdit/MadEdit_gtk.cpp'; else $(CYGPATH_W) '$(srcdir)/src/MadEdit/MadEdit_gtk.cpp'; fi`; \
-@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/madedit-MadEdit_gtk.Tpo" "$(DEPDIR)/madedit-MadEdit_gtk.Po"; else rm -f "$(DEPDIR)/madedit-MadEdit_gtk.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='src/MadEdit/MadEdit_gtk.cpp' object='madedit-MadEdit_gtk.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-MadEdit_gtk.obj `if test -f 'src/MadEdit/MadEdit_gtk.cpp'; then $(CYGPATH_W) 'src/MadEdit/MadEdit_gtk.cpp'; else $(CYGPATH_W) '$(srcdir)/src/MadEdit/MadEdit_gtk.cpp'; fi`
-
 madedit-MadEncoding.o: src/MadEdit/MadEncoding.cpp
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-MadEncoding.o -MD -MP -MF "$(DEPDIR)/madedit-MadEncoding.Tpo" -c -o madedit-MadEncoding.o `test -f 'src/MadEdit/MadEncoding.cpp' || echo '$(srcdir)/'`src/MadEdit/MadEncoding.cpp; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/madedit-MadEncoding.Tpo" "$(DEPDIR)/madedit-MadEncoding.Po"; else rm -f "$(DEPDIR)/madedit-MadEncoding.Tpo"; exit 1; fi
