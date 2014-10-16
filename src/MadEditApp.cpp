@@ -507,11 +507,11 @@ bool MadEditApp::OnInit()
         wp.length=sizeof(WINDOWPLACEMENT);
         GetWindowPlacement((HWND)myFrame->GetHWND(), &wp);
 
-	   // changed: gogo, 30.08.2009
-	   //wp.showCmd=SW_SHOWMAXIMIZED;
-	   wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
+       // changed: gogo, 30.08.2009
+       //wp.showCmd=SW_SHOWMAXIMIZED;
+       wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
 
-	   SetWindowPlacement((HWND)myFrame->GetHWND(), &wp);
+       SetWindowPlacement((HWND)myFrame->GetHWND(), &wp);
     }
 #endif
 
