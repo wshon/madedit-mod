@@ -653,11 +653,11 @@ static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr)
 #ifdef __WXMSW__
     const wchar_t * wchTmpStr = wsStr.wc_str();
 #else
-#if wxMAJOR_VERSION < 3
-    const wchar_t * wchTmpStr = (wsStr.wc_str()).data();
-#else
+//#if wxMAJOR_VERSION < 3
+//    const wchar_t * wchTmpStr = (wsStr.wc_str()).data();
+//#else
     const wchar_t * wchTmpStr = wsStr.wc_str();
-#endif
+//#endif
 #endif
     while(* wchStr && * wchTmpStr)
     {

@@ -9883,7 +9883,7 @@ fi
 else
 	pkg_failed=untried
 fi
-echo "$pkg_cv_glib_gtk2_CFLAGS"
+
 if test -n "$PKG_CONFIG"; then
     if test -n "$glib_gtk2_LIBS"; then
         pkg_cv_glib_gtk2_LIBS="$glib_gtk2_LIBS"
@@ -10099,7 +10099,7 @@ fi
 if test "${with_boost+set}" = set; then :
   withval=$with_boost; CXXFLAGS="$CXXFLAGS -I$withval"
 fi
-
+echo "$CXXFLAGS"
 
 
 # Checks for wxWidgets library

@@ -557,7 +557,7 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                 
                 if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
                 {
-                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %d, %d)"), text, reptext, rangeFrom, rangeTo));
+                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %d, %d)"), text.c_str(), reptext.c_str(), rangeFrom, rangeTo));
                 }
             }
             else
@@ -569,7 +569,7 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                     rangeFrom, rangeTo);
                 if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
                 {
-                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %d, %d)"), text, reptext,
+                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %d, %d)"), text.c_str(), reptext.c_str(),
                                     WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                                     WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
                                     WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
@@ -591,11 +591,11 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                     
                     if(WxCheckBoxFindHex->GetValue())
                     {
-                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %d, %d)"), text, reptext, rangeFrom, rangeTo));
+                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %d, %d)"), text.c_str(), reptext.c_str(), rangeFrom, rangeTo));
                     }
                     else
                     {
-                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %d, %d)"), text, reptext,
+                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %d, %d)"), text.c_str(), reptext.c_str(),
                                         WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                                         WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
                                         WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
@@ -668,7 +668,7 @@ void MadReplaceDialog::WxButtonReplaceAllClick(wxCommandEvent& event)
         if(WxCheckBoxFindHex->GetValue())
         {
             count=g_ActiveMadEdit->ReplaceHexAll(text, reptext, NULL, NULL, rangeFrom, rangeTo);
-            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHexAll(\"%s\", \"%s\", %d, %d)"), text, reptext, rangeFrom, rangeTo));
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHexAll(\"%s\", \"%s\", %d, %d)"), text.c_str(), reptext.c_str(), rangeFrom, rangeTo));
         }
         else
         {
@@ -677,7 +677,7 @@ void MadReplaceDialog::WxButtonReplaceAllClick(wxCommandEvent& event)
                 WxCheckBoxCaseSensitive->GetValue(),
                 WxCheckBoxWholeWord->GetValue(),
                 NULL, NULL, rangeFrom, rangeTo);
-            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextAll(\"%s\", \"%s\", %s, %s, %d, %d)"), text, reptext,
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextAll(\"%s\", \"%s\", %s, %s, %d, %d)"), text.c_str(), reptext.c_str(),
                             WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));

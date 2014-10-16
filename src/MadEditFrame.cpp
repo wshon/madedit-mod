@@ -5876,7 +5876,7 @@ void MadEditFrame::OnToolsConvertEncoding(wxCommandEvent& event)
     {
         g_ActiveMadEdit->ConvertEncoding(g_ConvEncDialog->WxComboBoxEncoding->GetValue(),
                                          MadConvertEncodingFlag(g_ConvEncDialog->WxRadioBoxOption->GetSelection()));
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertEncoding(%s, %d)"), g_ConvEncDialog->WxComboBoxEncoding->GetValue(),
+        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ConvertEncoding(%s, %d)"), g_ConvEncDialog->WxComboBoxEncoding->GetValue().c_str(),
                                          MadConvertEncodingFlag(g_ConvEncDialog->WxRadioBoxOption->GetSelection())));
         wxString oldpath=m_Config->GetPath();
         m_Config->SetPath(wxT("/MadEdit"));

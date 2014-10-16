@@ -76,8 +76,10 @@ const wxString g_MadTopicStr = wxT("single-instance");
 // are from gcin (http://www.csie.nctu.edu.tw/~cp76/gcin/)
 
 #include <X11/Xatom.h>
+#define GSocket GlibGSocket 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
+#undef GSocket
 #if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
 #include <wx/gtk/win_gtk.h>
 //#else
