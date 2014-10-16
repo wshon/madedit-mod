@@ -61,7 +61,8 @@ AC_ARG_WITH(xpressive,
 AC_ARG_WITH(boost, 
     [  --with-boost=PATH       use additional Boost library path,
                           otherwise use system include path],
-    [CXXFLAGS="$CXXFLAGS -I$withval"])
+    [CXXFLAGS="$CXXFLAGS -I$withval"].
+    [LIBS="$LIBS -l$withval/stage/lib/libboost_python"])
 
 
 # Checks for wxWidgets library
@@ -71,7 +72,7 @@ if test "x$WX_LIBS" != "x"; then
 fi
 
 AM_OPTIONS_WXCONFIG
-AM_PATH_WXCONFIG(2.8.0, wxWin=1, net,base,core,aui)
+AM_PATH_WXCONFIG(2.8.0, wxWin=1, [net,base,core,aui])
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
            wxWidgets must be installed on your system
