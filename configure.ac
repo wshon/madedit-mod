@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([madedit], [0.2.9], [madedit@gmail.com])
+AC_INIT([madedit-mod], [0.2.4], [liminggang@gmail.com])
 AC_CONFIG_SRCDIR([src/MadEditApp.cpp])
 AC_CONFIG_HEADER([config.h])
 AC_PREFIX_DEFAULT([/usr])
@@ -38,6 +38,11 @@ if test "x$IS_MACOS" == "x"; then
             glib-2.0 >= 2.6.0
             gtk+-2.0 >= 2.6.0
     ])
+    CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
+    LIBS="$LIBS $glib_gtk2_LIBS"
+fi
+
+if test "x$IS_MACOS" == "x"; then
     PKG_CHECK_MODULES(python, [
             python >= 2.7
     ])
@@ -95,7 +100,8 @@ else
     AC_MSG_ERROR([wxWidgets must be built with UNICODE enabled.])
 fi
 
-
+# Make sure we have X11, and also have it added to LIBS
+AC_CHECK_LIB(X11,XOpenDisplay,,AC_MSG_FAILURE([libX11 not found. Check 'config.log' for more details.]))
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])
