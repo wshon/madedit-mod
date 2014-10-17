@@ -2342,7 +2342,9 @@ MadLineState MadLines::Reformat(MadLineIterator iter)
             if(blockpos != 0)                 //seperate block
             {
                 // prev block
-                blockiter = iter->m_Blocks.insert(blockiter, *blockiter);
+                MadBlock block_tmp = *blockiter;
+                blockiter = iter->m_Blocks.insert(blockiter, block_tmp);
+                //blockiter = iter->m_Blocks.insert(blockiter, *blockiter);
                 blockiter->m_Size = blockpos;
 
                 // this block

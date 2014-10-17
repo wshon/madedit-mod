@@ -320,85 +320,6 @@ bool MadEditApp::OnInit()
             delete client;
             return false;
         }
-#if 0
-#ifdef __WXMSW__
-        g_Mutex = CreateMutex(NULL, true, wxT("MadEdit_App"));
-        if(GetLastError() == ERROR_ALREADY_EXISTS)
-        {
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
-            extern const wxChar *wxCanvasClassNameNR;    // class name of MadEditFrame
-#else
-            wxString MadFrameName(wxWindowMSW::MSWGetRegisteredClassName());
-			MadFrameName += "NR";
-#endif
-            wxChar title[256]={0};
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
-            HWND prevapp = ::FindWindowEx(NULL, NULL, wxCanvasClassNameNR, NULL);
-#else
-            HWND prevapp = ::FindWindowEx(NULL, NULL, MadFrameName.c_str()/*wxCanvasClassNameNR*/, NULL);
-#endif
-            for(;;)                // find wxCanvasClassNameNR
-            {
-                if(prevapp)
-                {
-                    int len = ::GetWindowText(prevapp, title, 256);
-                    if(len>=8 && title[len-1]==wxT(' '))    // last wchar is space?
-                    {
-                        title[7]=0;
-                        if(lstrcmp(title, wxT("MadEdit"))==0) // compare first 7 wchars
-                            break;
-                    }
-                }
-                else
-                {
-                    Sleep(50);
-                }
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
-                prevapp =::FindWindowEx(NULL, prevapp, wxCanvasClassNameNR, NULL);
-#else
-                prevapp =::FindWindowEx(NULL, prevapp, MadFrameName.c_str()/*wxCanvasClassNameNR*/, NULL);
-#endif
-            }
-
-            if(prevapp != NULL)   // send msg to the previous instance
-            {
-                WINDOWPLACEMENT wp;
-                wp.length=sizeof(WINDOWPLACEMENT);
-                GetWindowPlacement(prevapp, &wp);
-                if(wp.showCmd!=SW_SHOWMINIMIZED)
-                {
-                    ::SetForegroundWindow(prevapp);
-                }
-
-                COPYDATASTRUCT cds =
-                {
-                    (ULONG_PTR)prevapp,
-                    DWORD((filenames.length()+1)*sizeof(wxChar)),
-                    (PVOID)(const wxChar*)filenames.c_str()
-                };
-
-                ::SendMessage(prevapp, WM_COPYDATA, 0, (LPARAM) &cds);
-
-                g_DoNotSaveSettings = true;
-                DeleteConfig();
-                return false;
-            }
-        }
-#elif defined(__WXGTK__)
-        //g_Display=GDK_DISPLAY();
-        //g_MadEdit_atom = XInternAtom(g_Display, "g_MadEdit_atom", False);
-        //Window madedit_win;
-
-        //if ((madedit_win=XGetSelectionOwner(g_Display, g_MadEdit_atom))!=None)
-        {
-            send_message(madedit_win, filenames);
-
-            g_DoNotSaveSettings = true;
-            DeleteConfig();
-            return false;
-        }
-#endif
-#endif
     }
 
 
@@ -513,22 +434,6 @@ bool MadEditApp::OnInit()
 
     myFrame->Show(true);
 
-#if 0
-#if defined(__WXGTK__)
-    if(bSingleInstance)
-    {
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9) || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION == 9 && wxRELEASE_NUMBER<3)
-        GtkPizza *pizza = GTK_PIZZA(myFrame->m_mainWidget);
-        Window win=GDK_WINDOW_XWINDOW(pizza->bin_window);
-#else
-        wxPizza *pizza = WX_PIZZA(myFrame->m_mainWidget);
-        Window win=GDK_WINDOW_XWINDOW(pizza->m_fixed.container.widget.window);
-#endif
-        XSetSelectionOwner(g_Display, g_MadEdit_atom, win, CurrentTime);
-        gdk_window_add_filter(NULL, my_gdk_filter, NULL);
-    }
-#endif
-#endif
     // reload files previously opened
     wxString files;
     cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);

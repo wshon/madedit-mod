@@ -996,6 +996,8 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
 
 #ifdef __WXMSW__
     fontname=wxT("Courier New");
+#elif defined(__APPLE__) && defined(__MACH__)
+    fontname=wxT("Monaco");
 #else
     fontname=wxT("Monospace");
 #endif
@@ -4532,7 +4534,9 @@ MadLineIterator MadEdit::DeleteInsertData(wxFileOffset pos,
 
             if(bpos != delsize) // tail, separate bit1
             {
-                bit = blocks.insert(bit1, *bit1);
+                MadBlock block_tmp = *bit1;
+                bit = blocks.insert(bit1, block_tmp);
+                //bit = blocks.insert(bit1, *bit1);
                 bit->m_Size = delsize - bpos;
 
                 bit1 = bit + 1;
