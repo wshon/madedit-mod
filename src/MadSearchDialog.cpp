@@ -853,7 +853,7 @@ void MadSearchDialog::WxButtonCountClick(wxCommandEvent& event)
     }
 }
 
-void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL)
+void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL)
 {
     int ResultCount=0;
     wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
@@ -1001,7 +1001,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                                     wxPD_APP_MODAL);
         g_SearchProgressDialog = &dialog;
         
-        FindAllResultDisplay(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
+        DisplayFindAllResult(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
         
         dialog.Update(ok);
         g_SearchProgressDialog = NULL;

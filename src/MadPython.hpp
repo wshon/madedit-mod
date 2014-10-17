@@ -19,7 +19,7 @@
 
 extern wxStatusBar *g_StatusBar;
 extern MadEdit *g_ActiveMadEdit;
-extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
+extern void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
 
 // Ugly bigger switch than bigger map
 void FromCmdToString(wxString &cmdStr, int madCmd)
@@ -1015,7 +1015,7 @@ namespace mad_python
 
             if(ok>=0 && showresults)
             {
-                FindAllResultDisplay(begpos, endpos, madedit);
+                DisplayFindAllResult(begpos, endpos, madedit);
             }
             
             return ok;
@@ -1035,7 +1035,7 @@ namespace mad_python
 
             if(ok>=0 && showresults)
             {
-                FindAllResultDisplay(begpos, endpos, madedit);
+                DisplayFindAllResult(begpos, endpos, madedit);
             }
 
             return ok;

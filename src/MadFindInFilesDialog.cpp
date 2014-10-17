@@ -33,7 +33,7 @@
 
 MadFindInFilesDialog *g_FindInFilesDialog=NULL;
 extern wxStatusBar *g_StatusBar;
-extern void FindAllResultDisplay(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
+extern void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
 
 //----------------------------------------------------------------------------
 // MadFindInFilesDialog
@@ -835,7 +835,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 if(ok<0) break;
             }
 
-            FindAllResultDisplay(begpos, endpos, madedit, false);
+            DisplayFindAllResult(begpos, endpos, madedit, false);
         }
         
         if(tempedit) delete tempedit;

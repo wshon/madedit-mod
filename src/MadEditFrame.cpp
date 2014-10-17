@@ -2198,7 +2198,7 @@ void MadEditFrame::CreateGUIControls(void)
      
             wxString hlp_prefix(wxT("####"));
             size_t i=0;
-			bool hasHelp = false;
+            bool hasHelp = false;
             bool cont = dir.GetFirst(&filename, wxT("*.mpy"), wxDIR_FILES);
             while(cont)
             {
@@ -2209,17 +2209,17 @@ void MadEditFrame::CreateGUIControls(void)
                 wxTextFile scriptfile(filename);
 
                 scriptfile.Open(wxConvFile);
-				hasHelp = false;
+                hasHelp = false;
                 if(scriptfile.IsOpened())
                 {
-					firstLine = scriptfile.GetFirstLine();
-					hasHelp = firstLine.StartsWith(hlp_prefix, &help);
-				}
+                    firstLine = scriptfile.GetFirstLine();
+                    hasHelp = firstLine.StartsWith(hlp_prefix, &help);
+                }
 
-				if (hasHelp)
-					g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName(), help);
-				else
-					g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName());
+                if (hasHelp)
+                    g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName(), help);
+                else
+                    g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName());
                 ++i;
 
                 cont = dir.GetNext(&filename);
@@ -2564,13 +2564,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     // so we must call exit() to quit the app.
     exit(0);
 #else
-#if 0
-    extern HANDLE g_Mutex;
-    if(g_Mutex)
-    {
-        ReleaseMutex(g_Mutex);
-    }
-#endif
     Destroy(); // quit app normally.
 #endif
 }

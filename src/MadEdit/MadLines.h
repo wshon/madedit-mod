@@ -283,6 +283,7 @@ struct MadLine
     void Get(wxFileOffset pos, wxByte *buf, size_t size)    // get n bytes
     {
         wxASSERT(pos >= 0 && pos + size <= m_Size);
+        if(size == 0) return;
 
         MadBlockIterator biter = m_Blocks.begin();
         if(pos >= biter->m_Size)

@@ -71,7 +71,7 @@ Syntax files, Locale files and Settings:
 
 Todo
 Fix Linux build
-Known issue: Hightlight word would not work with syntax highlight
+Known issue: Hightlight word would not work within string(eg, "Flow")
 
 Mod v0.2.4
 1. Colum Align released
