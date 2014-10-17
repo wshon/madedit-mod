@@ -62,7 +62,7 @@ AC_ARG_WITH(boost,
     [  --with-boost=PATH       use additional Boost library path,
                           otherwise use system include path],
     [CXXFLAGS="$CXXFLAGS -I$withval"].
-    [LIBS="$LIBS -l$withval/stage/lib/libboost_python"])
+    [LIBS="$LIBS -l$withval/stage/lib/boost_python"])
 
 
 # Checks for wxWidgets library
@@ -102,7 +102,12 @@ else
 fi
 
 # Make sure we have X11, and also have it added to LIBS
-AC_CHECK_LIB(X11,XOpenDisplay,,AC_MSG_FAILURE([libX11 not found. Check 'config.log' for more details.]))
+AC_CHECK_LIB([X11], [XOpenDisplay],[ac_X11="yes"],[ac_X11="no"])
+if test "x$ac_X11" = "xno"; then
+AC_MSG_ERROR([Could not find XOpenDisplay in -lX11.])
+else
+   LIBS="$LIBS -lX11"
+fi
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])
