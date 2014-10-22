@@ -73,6 +73,12 @@ Todo
 Fix Linux build
 Known issue: Hightlight word would not work within string(eg, "Flow")
 
+Mod v0.2.5
+1. Encoding group/filter
+2. Toolbar of bookmark, add ClearAllBookmarks
+3. 
+
+
 Mod v0.2.4
 1. Colum Align released
 2. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
