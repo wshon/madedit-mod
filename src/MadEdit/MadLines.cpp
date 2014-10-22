@@ -4024,6 +4024,10 @@ int MadLineList::GetPreviousBookmark( MadLineIterator position )
 	return lineNum;
 }
 
+void MadLineList::ClearAllBookmarks()
+{
+    m_BookmarkList.clear();
+}
 
 MadLineIterator MadLineList::erase( MadLineIterator position )
 {

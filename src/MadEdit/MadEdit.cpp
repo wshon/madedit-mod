@@ -11590,4 +11590,12 @@ void MadEdit::GotoPreviousBookmark()
     if ( lineNum > 0 )
         GoToLine( int(m_Lines->m_LineCount + 1) - lineNum );
 }
+
+void MadEdit::ClearAllBookmarks()
+{
+    m_Lines->m_LineList.ClearAllBookmarks();
+    m_RepaintAll = true;
+    Refresh( false );
+}
+
 //----------

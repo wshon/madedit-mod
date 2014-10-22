@@ -116,6 +116,7 @@ public:
     void OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
@@ -203,6 +204,7 @@ public:
     void OnEditToggleBookmark(wxCommandEvent& event);
     void OnEditGotoNextBookmark(wxCommandEvent& event);
     void OnEditGotoPreviousBookmark(wxCommandEvent& event);
+    void OnEditClearAllBookmarks(wxCommandEvent& event);
     //----------
 
     void OnEditSortAscending(wxCommandEvent& event);

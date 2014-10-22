@@ -1106,6 +1106,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_MenuEditToggleBookmark)
 	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
 	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoPreviousBookmark)
+	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks)
 	EVT_UPDATE_UI(menuSortAscending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortDescending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortAscendingCase, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
@@ -1222,6 +1223,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuToggleBookmark, MadEditFrame::OnEditToggleBookmark)
 	EVT_MENU(menuGotoNextBookmark, MadEditFrame::OnEditGotoNextBookmark)
     EVT_MENU(menuGotoPreviousBookmark, MadEditFrame::OnEditGotoPreviousBookmark)
+    EVT_MENU(menuClearAllBookmarks, MadEditFrame::OnEditClearAllBookmarks)
 	EVT_MENU(menuSortAscending, MadEditFrame::OnEditSortAscending)
 	EVT_MENU(menuSortDescending, MadEditFrame::OnEditSortDescending)
 	EVT_MENU(menuSortAscendingCase, MadEditFrame::OnEditSortAscendingCase)
@@ -1414,7 +1416,7 @@ CommandData CommandTable[]=
     { 0,                1, menuToggleBookmark,           wxT("menuToggleBookmark"),           _("Toggle/Remove Bookmark "),                 wxT("Ctrl-F2"),      wxITEM_NORMAL,    bookmark_toggle_xpm_idx, 0,               _("Toggle Bookmark at current line")},
     { 0,                1, menuGotoNextBookmark,         wxT("menuGotoNextBookmark"),         _("Go To Next Bookmark"),                     wxT("F2"),           wxITEM_NORMAL,    bookmark_next_xpm_idx,   0,               _("Go to the next bookmark")},
     { 0,                1, menuGotoPreviousBookmark,     wxT("menuGotoPreviousBookmark"),     _("Go To Previous Bookmark"),                 wxT("Shift-F2"),     wxITEM_NORMAL,    bookmark_prev_xpm_idx,   0,               _("Go to the previous bookmark")},
-    //{ 0,                1, menuClearAllBookmarks,        wxT("menuClearAllBookmarks"),        _("Clear All Bookmarks"),                     wxT(""),             wxITEM_NORMAL,    bookmark_clear_xpm_idx,   0,              _("Clear All Bookmarks")},
+    { 0,                1, menuClearAllBookmarks,        wxT("menuClearAllBookmarks"),        _("Clear All Bookmarks"),                     wxT(""),             wxITEM_NORMAL,    bookmark_clear_xpm_idx,   0,              _("Clear All Bookmarks")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuAdvanced,                 wxT("menuAdvanced"),                 _("Ad&vanced"),                               0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Advanced, 0},
     { 0,                2, menuCopyAsHexString,          wxT("menuCopyAsHexString"),          _("Copy As &Hex String"),                     wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection as hex-string")},
@@ -2002,6 +2004,10 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(stop_xpm));
     m_ImageList->Add(wxBitmap(playback_xpm));
     m_ImageList->Add(wxBitmap(saverec_xpm));
+    m_ImageList->Add(wxBitmap(bookmark_toggle_xpm));
+    m_ImageList->Add(wxBitmap(bookmark_next_xpm));
+    m_ImageList->Add(wxBitmap(bookmark_prev_xpm));
+    m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
 
 
     // add menuitems
@@ -2193,8 +2199,8 @@ void MadEditFrame::CreateGUIControls(void)
             for(size_t j=0; j<encGrps.size(); ++j)
             {
                 wxASSERT(encGrps[j]<ENCG_MAX);
-                if(g_Menu_View_EncodingGrps[j] == NULL)
-                    g_Menu_View_EncodingGrps[j] = new wxMenu((long)0);
+				if (g_Menu_View_EncodingGrps[encGrps[j]] == NULL)
+					g_Menu_View_EncodingGrps[encGrps[j]] = new wxMenu((long)0);
                 g_Menu_View_EncodingGrps[encGrps[j]]->Append(menuEncoding1 + int(i), enc+des);
             }
         }
@@ -2381,7 +2387,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuToggleBookmark,  _T("ToggleBookmark"),  m_ImageList->GetBitmap(bookmark_toggle_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark ") );
     WxToolBar1->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark") );
     WxToolBar1->AddTool(menuGotoPreviousBookmark,  _T("GotoPreviousBookmark"),  m_ImageList->GetBitmap(bookmark_prev_xpm_idx),wxNullBitmap, wxITEM_NORMAL,  _("Go To Previous Bookmark") );
-    //WxToolBar1->AddTool(menuClearAllBookmarks,  _T("ClearAllBookmarks"),  m_ImageList->GetBitmap(bookmark_clear_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks") );
+    WxToolBar1->AddTool(menuClearAllBookmarks,  _T("ClearAllBookmarks"),  m_ImageList->GetBitmap(bookmark_clear_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks") );
     WxToolBar1->AddSeparator();
     WxToolBar1->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find") );
     WxToolBar1->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find Next") );
@@ -3401,6 +3407,10 @@ void MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event)
 {
     event.Enable( g_ActiveMadEdit != NULL );
 }
+void MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event)
+{
+    event.Enable( g_ActiveMadEdit != NULL );
+}
 //----------
 
 void MadEditFrame::OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event)
@@ -4277,6 +4287,16 @@ void MadEditFrame::OnEditGotoPreviousBookmark(wxCommandEvent& event)
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("GotoPreviousBookmark()")));
     }
 }
+
+void MadEditFrame::OnEditClearAllBookmarks(wxCommandEvent& event)
+{
+    if ( g_ActiveMadEdit )
+    {
+        g_ActiveMadEdit->ClearAllBookmarks();
+        //RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ClearAllBookmarks()")));
+    }
+}
+
 //----------
 
 void MadEditFrame::OnEditSortAscending(wxCommandEvent& event)

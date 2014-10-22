@@ -340,6 +340,7 @@ public:
     int  GetNextBookmark( MadLineIterator position ); // return line number, or -1 if no bookmars
     int  GetPreviousBookmark( MadLineIterator position ); // return line number from the end to the beginning, or -1
     bool IsBookmarked( MadLineIterator position );
+    void ClearAllBookmarks();
 
     MadLineIterator erase( MadLineIterator position );
 

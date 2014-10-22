@@ -3,7 +3,7 @@ static const char *bookmark_prev_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 15 94 2",
 "+  c #C82513",
-"   c Black",
+"   c None",
 "f  c #1F64CF",
 "J  c #94C0FE",
 "!  c #74AEFE",

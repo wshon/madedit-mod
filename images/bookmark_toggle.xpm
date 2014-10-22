@@ -1,5 +1,5 @@
 /* XPM */
-static const char *bookmark_xpm[] = {
+static const char *bookmark_toggle_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 15 69 1",
 "+ c #C82513",
@@ -72,20 +72,19 @@ static const char *bookmark_xpm[] = {
 "8 c #E95C4E",
 "= c #F3998F",
 /* pixels */
-"               ",
-"  .XoO+        ",
-"  .X@#$%   &*  ",
-"  .X=-;:>,<*1  ",
-"  .X234567890  ",
-"  .Xqwqertyui  ",
-"  .Xpasdfghjk  ",
-"  .Xtlzxchvbn  ",
-"  .XmmMNBVCZA  ",
-"  .X   SDFGH3  ",
-"  .X    JKL3   ",
-"  .X           ",
-"  .X           ",
-"  .X           ",
-"               ",
-"               "
+"                ",
+"  .XoO+         ",
+"  .X@#$%   &*   ",
+"  .X=-;:>,<*1   ",
+"  .X234567890   ",
+"  .Xqwqertyui   ",
+"  .Xpasdfghjk   ",
+"  .Xtlzxchvbn   ",
+"  .XmmMNBVCZA   ",
+"  .X   SDFGH3   ",
+"  .X    JKL3    ",
+"  .X            ",
+"  .X            ",
+"  .X            ",
+"                "
 };

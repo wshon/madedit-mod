@@ -925,6 +925,7 @@ public: // basic functions
     void SetBookmark();
     void GotoNextBookmark();
     void GotoPreviousBookmark();
+    void ClearAllBookmarks();
     //----------
 
 public: // advanced functions
