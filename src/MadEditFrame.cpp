@@ -161,6 +161,7 @@
 extern wxString g_MadEdit_Version;
 extern wxString g_MadEdit_URL;
 extern wxString g_MadEditMod_URL;
+extern wxString MadEncodingGrpName[];
 
 EmbeddedPython *g_EmbeddedPython = 0;
 
@@ -191,6 +192,7 @@ wxMenu *g_Menu_Edit_Sort = NULL;
 wxMenu *g_Menu_Edit_Advanced = NULL;
 wxMenu *g_Menu_View_Encoding = NULL;
 wxMenu *g_Menu_View_AllEncodings = NULL;
+wxMenu *g_Menu_View_EncodingGrps[ENCG_MAX] = {NULL};
 wxMenu *g_Menu_View_Syntax = NULL;
 wxMenu *g_Menu_View_FontName = NULL;
 wxMenu *g_Menu_View_Font0 = NULL;
@@ -2172,6 +2174,15 @@ void MadEditFrame::CreateGUIControls(void)
     }
 
     {
+        //size_t pos = g_Menu_View_Encoding->GetMenuItemCount() - 1;
+        g_Menu_View_Encoding->AppendSeparator();
+        for(int encgid = (MadEncodingGrp)0; encgid < ENCG_MAX; ++encgid)
+        {
+            g_Menu_View_EncodingGrps[encgid] = new wxMenu((long)0);
+            g_Menu_View_Encoding->Append(menuEncodingGroup1 + encgid, MadEncodingGrpName[encgid], g_Menu_View_EncodingGrps[encgid]);
+            //++pos;
+        }
+
         size_t cnt=MadEncoding::GetEncodingsCount();
         for(size_t i=0;i<cnt;++i)
         {
@@ -2179,7 +2190,14 @@ void MadEditFrame::CreateGUIControls(void)
             wxString des=wxGetTranslation(MadEncoding::GetEncodingDescription(i).c_str());
 
             g_Menu_View_AllEncodings->Append(menuEncoding1 + int(i), enc+des);
+            const std::vector<int>& encGrps = MadEncoding::GetEncodingGrps(i);
+            for(size_t j=0; j<encGrps.size(); ++j)
+            {
+                wxASSERT(encGrps[j]<ENCG_MAX);
+                g_Menu_View_EncodingGrps[encGrps[j]]->Append(menuEncoding1 + int(i), enc+des);
+            }
         }
+        
     }
 
     {

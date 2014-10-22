@@ -16,6 +16,76 @@ using std::vector;
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
+// Pure C instead of Map of Map, but map with MadEncodingGrp 
+// ISO_8859_1(NA)  ==> (ENCG_ISO8859)&&(ENCG_WESTERNEUROPE))
+// ISO_8859_2  ==> (ENCG_ISO8859)&&(ENCG_CENTRALEUROPE))
+// ISO_8859_3  ==> (ENCG_ISO8859)&&(ENCG_SOUTHEUROPE))
+// ISO_8859_4  ==> (ENCG_ISO8859)&&(ENCG_NORTHEUROPE))
+// ISO_8859_5  ==> (ENCG_ISO8859)&&(ENCG_CYRILLIC))
+// ISO_8859_6  ==> (ENCG_ISO8859)&&(ENCG_ARABIC))
+// ISO_8859_7  ==> (ENCG_ISO8859)&&(ENCG_GREEK))
+// ISO_8859_8  ==> (ENCG_ISO8859)&&(ENCG_HEBREW))
+// ISO_8859_9  ==> (ENCG_ISO8859)&&(ENCG_TURKISH))
+// ISO_8859_10 ==> (ENCG_ISO8859)&&(ENCG_NORTHEUROPE))
+// ISO_8859_11 ==> (ENCG_ISO8859)&&(ENCG_SOUTHEASTASIA))
+// ISO_8859_13 ==> (ENCG_ISO8859)&&(ENCG_BALTIC))
+// ISO_8859_14 ==> (ENCG_ISO8859)&&(ENCG_NORTHEUROPE))
+// ISO_8859_15 ==> (ENCG_ISO8859)&&(ENCG_WESTERNEUROPE))
+// ISO_8859_16(NA) ==> (ENCG_ISO8859)&&(ENCG_SOUTHEUROPE))
+// Windows
+// Windows_874  ==> (ENCG_WINDOWS)&&(ENCG_SOUTHEASTASIA))
+// Windows_1250 ==> (ENCG_WINDOWS)&&(ENCG_CENTRALEUROPE))
+// Windows_1251 ==> (ENCG_WINDOWS)&&(ENCG_CYRILLIC))
+// Windows_1252 ==> (ENCG_WINDOWS)&&(ENCG_WESTERNEUROPE))
+// Windows_1253 ==> (ENCG_WINDOWS)&&(ENCG_GREEK))
+// Windows_1254 ==> (ENCG_WINDOWS)&&(ENCG_TURKISH))
+// Windows_1255 ==> (ENCG_WINDOWS)&&(ENCG_HEBREW))
+// Windows_1256 ==> (ENCG_WINDOWS)&&(ENCG_ARABIC))
+// Windows_1257 ==> (ENCG_WINDOWS)&&(ENCG_BALTIC))
+// Windows_1258(NA) ==> (ENCG_WINDOWS)&&(ENCG_SOUTHEASTASIA))
+// OEM
+// CP437 ==> (ENCG_OEM))
+// CP850(NA) ==> (ENCG_OEM))
+// CP852(NA) ==> (ENCG_OEM))
+// CP855(NA) ==> (ENCG_OEM)&&(ENCG_CYRILLIC))
+// CP866(NA) ==> (ENCG_OEM)&&(ENCG_CYRILLIC))
+// Cyrillic
+// KOI8_R(NA) ==> (ENCG_CYRILLIC))
+// KOI8_U(NA) ==> (ENCG_CYRILLIC))
+// Windows & East Asia
+// MS932 ==> (ENCG_WINDOWS)&&(ENCG_EASTASIA))
+// MS936 ==> (ENCG_WINDOWS)&&(ENCG_EASTASIA))
+// MS949 ==> (ENCG_WINDOWS)&&(ENCG_EASTASIA))
+// MS950 ==> (ENCG_WINDOWS)&&(ENCG_EASTASIA))
+// CP20932(NA) ==> (ENCG_WINDOWS)&&(ENCG_EASTASIA))
+// Unicode
+// GB18030(NA) ==> (ENCG_UNICODE)&&(ENCG_EASTASIA))
+// UTF_8    ==> (ENCG_UNICODE))
+// UTF_16LE ==> (ENCG_UNICODE))
+// UTF_16BE ==> (ENCG_UNICODE))
+// UTF_32LE ==> (ENCG_UNICODE))
+// UTF_32BE ==> (ENCG_UNICODE))
+
+wxString MadEncodingGrpName[ENCG_MAX] =
+{
+    /*ENCG_WESTERNEUROPE, */_("Western European "),
+    /*ENCG_CENTRALEUROPE, */_("Central European "),
+    /*ENCG_SOUTHEUROPE,   */_("South European "),
+    /*ENCG_NORTHEUROPE,   */_("North European "),
+    /*ENCG_CYRILLIC,      */_("Cyrillic "),
+    /*ENCG_ARABIC,        */_("Arabic "),
+    /*ENCG_GREEK,         */_("Greek "),
+    /*ENCG_HEBREW,        */_("Hebrew "),
+    /*ENCG_TURKISH,       */_("Turkish "),
+    /*ENCG_BALTIC,        */_("Baltic "),
+    /*ENCG_EASTASIA,      */_("East Asian "),
+    /*ENCG_SOUTHEASTASIA, */_("Southeast Asian "),
+    /*ENCG_UNICODE,       */_("Unicode "),
+    /*ENCG_ISO8859,       */_("ISO-8859 "),
+    /*ENCG_WINDOWS,       */_("Windows "),
+    /*ENCG_OEM,           */_("OEM "),
+    /*ENCG_DEFAULT,       */_("Other "),
+};
 
 static vector<MadEncodingInfo> EncodingsTable;
 
@@ -74,6 +144,7 @@ void MadEncoding::InitEncodings()
     wxFontEncoding sysenc=wxLocale::GetSystemEncoding();
 
     size_t count=wxFontMapper::GetSupportedEncodingsCount();
+    std::vector<int> encGrp;
     for (size_t idx = 0; idx<count; ++idx)
     {
         wxFontEncoding enc=wxFontMapper::GetEncoding(idx);
@@ -83,6 +154,8 @@ void MadEncoding::InitEncodings()
 
 #ifdef __WXMSW__
         wxString fontname(wxT("Courier New"));
+#elif defined(__APPLE__) && defined(__MACH__)
+        wxString fontname(wxT("Monaco"));
 #else
         wxString fontname(wxT("Monospace"));
 #endif
@@ -91,6 +164,7 @@ void MadEncoding::InitEncodings()
         bool dotest=true;      // test the encoding if is supported in this machine
         wxChar testwc=0;
         wxByte testmb[8]={0};
+        encGrp.clear();
         switch(enc)
         {
         case wxFONTENCODING_CP932:          // Japanese (shift-JIS)
@@ -105,6 +179,8 @@ void MadEncoding::InitEncodings()
                     testmb[1]=0x40;
                     MSW_GET_FONT_NAME(wxT("932"), fontname);
                     added=true;
+                    encGrp.push_back(ENCG_WINDOWS);
+                    encGrp.push_back(ENCG_EASTASIA);
                 }
                 else
                 {
@@ -125,6 +201,8 @@ void MadEncoding::InitEncodings()
                     testmb[1]=0xa1;
                     MSW_GET_FONT_NAME(wxT("936"), fontname);
                     added=true;
+                    encGrp.push_back(ENCG_WINDOWS);
+                    encGrp.push_back(ENCG_EASTASIA);
                 }
                 else
                 {
@@ -145,6 +223,8 @@ void MadEncoding::InitEncodings()
                     testmb[1]=0xa1;
                     MSW_GET_FONT_NAME(wxT("949"), fontname);
                     added=true;
+                    encGrp.push_back(ENCG_WINDOWS);
+                    encGrp.push_back(ENCG_EASTASIA);
                 }
                 else
                 {
@@ -165,6 +245,8 @@ void MadEncoding::InitEncodings()
                     testmb[1]=0x40;
                     MSW_GET_FONT_NAME(wxT("950"), fontname);
                     added=true;
+                    encGrp.push_back(ENCG_WINDOWS);
+                    encGrp.push_back(ENCG_EASTASIA);
                 }
                 else
                 {
@@ -185,6 +267,8 @@ void MadEncoding::InitEncodings()
                     testmb[1]=0xa1;
                     MSW_GET_FONT_NAME(wxT("51932"), fontname);
                     added=true;
+                    encGrp.push_back(ENCG_WINDOWS);
+                    encGrp.push_back(ENCG_EASTASIA);
                 }
                 else
                 {
@@ -197,14 +281,17 @@ void MadEncoding::InitEncodings()
             name=wxT("CP437");
             testwc=0xa0;
             testmb[0]=0xff;
+            encGrp.push_back(ENCG_OEM);
             break;
         case wxFONTENCODING_UTF7:    // not support
             ignore=true;
             dotest=false;
+            //encGrp.push_back(ENCG_UNICODE);
             break;
         case wxFONTENCODING_UTF8:
             type=etUTF8;
             dotest=false;
+            encGrp.push_back(ENCG_UNICODE);
             break;
         case wxFONTENCODING_UTF16BE:
             type=etUTF16BE;
@@ -216,6 +303,7 @@ void MadEncoding::InitEncodings()
                     name=wxT("utf-16be");
                     desc=wxT("Unicode 16 bit Big Endian (UTF-16BE)");
                     added=true;
+                    encGrp.push_back(ENCG_UNICODE);
                 }
                 else ignore=true;
             }
@@ -230,6 +318,7 @@ void MadEncoding::InitEncodings()
                     name=wxT("utf-16le");
                     desc=wxT("Unicode 16 bit Little Endian (UTF-16LE)");
                     added=true;
+                    encGrp.push_back(ENCG_UNICODE);
                 }
                 else ignore=true;
             }
@@ -244,6 +333,7 @@ void MadEncoding::InitEncodings()
                     name=wxT("utf-32be");
                     desc=wxT("Unicode 32 bit Big Endian (UTF-32BE)");
                     added=true;
+                    encGrp.push_back(ENCG_UNICODE);
                 }
                 else ignore=true;
             }
@@ -258,6 +348,7 @@ void MadEncoding::InitEncodings()
                     name=wxT("utf-32le");
                     desc=wxT("Unicode 32 bit Little Endian (UTF-32LE)");
                     added=true;
+                    encGrp.push_back(ENCG_UNICODE);
                 }
                 else ignore=true;
             }
@@ -269,6 +360,51 @@ void MadEncoding::InitEncodings()
                 static wxByte mbtable[]={0xc3,   0xc6,   0xc0,   0xfd,   0xac,   0xfe,   0xaa,   0xd0,   0xc0,   0xa1,   0, 0xaf,   0xa4,   0xbc};
                 testwc    = wctable[enc-wxFONTENCODING_ISO8859_2];
                 testmb[0] = mbtable[enc-wxFONTENCODING_ISO8859_2];
+                encGrp.push_back(ENCG_ISO8859);
+                switch(enc)
+                {
+                    case wxFONTENCODING_ISO8859_2:
+                        encGrp.push_back(ENCG_CENTRALEUROPE);
+                        break;
+                    case wxFONTENCODING_ISO8859_3:
+                        encGrp.push_back(ENCG_SOUTHEUROPE);
+                        break;
+                    case wxFONTENCODING_ISO8859_4:
+                        encGrp.push_back(ENCG_NORTHEUROPE);
+                        break;
+                    case wxFONTENCODING_ISO8859_5:
+                        encGrp.push_back(ENCG_CYRILLIC);
+                        break;
+                    case wxFONTENCODING_ISO8859_6:
+                        encGrp.push_back(ENCG_ARABIC);
+                        break;
+                    case wxFONTENCODING_ISO8859_7:
+                        encGrp.push_back(ENCG_GREEK);
+                        break;
+                    case wxFONTENCODING_ISO8859_8:
+                        encGrp.push_back(ENCG_HEBREW);
+                        break;
+                    case wxFONTENCODING_ISO8859_9:
+                        encGrp.push_back(ENCG_TURKISH);
+                        break;
+                    case wxFONTENCODING_ISO8859_10:
+                        encGrp.push_back(ENCG_NORTHEUROPE);
+                        break;
+                    case wxFONTENCODING_ISO8859_11:
+                        encGrp.push_back(ENCG_SOUTHEASTASIA);
+                        break;
+                    case wxFONTENCODING_ISO8859_13:
+                        encGrp.push_back(ENCG_BALTIC);
+                        break;
+                    case wxFONTENCODING_ISO8859_14:
+                        encGrp.push_back(ENCG_NORTHEUROPE);
+                        break;
+                    case wxFONTENCODING_ISO8859_15:
+                        encGrp.push_back(ENCG_WESTERNEUROPE);
+                        break;
+                    default:// Not support yet
+                        break;
+                }
             }
             else if(enc>=wxFONTENCODING_CP1250 && enc<=wxFONTENCODING_CP1257)
             {
@@ -276,12 +412,44 @@ void MadEncoding::InitEncodings()
                 static wxByte mbtable[]={0xc3,   0xa8,   0x8c,   0x83,   0xd0,   0xaa,   0x8c,   0x8d};
                 testwc    = wctable[enc-wxFONTENCODING_CP1250];
                 testmb[0] = mbtable[enc-wxFONTENCODING_CP1250];
+                encGrp.push_back(ENCG_WINDOWS);
+                switch(enc)
+                {
+                    case wxFONTENCODING_CP1250:
+                        encGrp.push_back(ENCG_CENTRALEUROPE);
+                        break;
+                    case wxFONTENCODING_CP1251:
+                        encGrp.push_back(ENCG_CYRILLIC);
+                        break;
+                    case wxFONTENCODING_CP1252:
+                        encGrp.push_back(ENCG_WESTERNEUROPE);
+                        break;
+                    case wxFONTENCODING_CP1253:
+                        encGrp.push_back(ENCG_GREEK);
+                        break;
+                    case wxFONTENCODING_CP1254:
+                        encGrp.push_back(ENCG_TURKISH);
+                        break;
+                    case wxFONTENCODING_CP1255:
+                        encGrp.push_back(ENCG_HEBREW);
+                        break;
+                    case wxFONTENCODING_CP1256:
+                        encGrp.push_back(ENCG_ARABIC);
+                        break;
+                    case wxFONTENCODING_CP1257:
+                        encGrp.push_back(ENCG_BALTIC);
+                        break;
+                    default:
+                        break;
+                }
             }
             else if(name==wxT("windows-874"))
             {
                 testwc=0x0e50;
                 testmb[0]=0xf0;
                 MSW_GET_FONT_NAME(wxT("874"), fontname);
+                encGrp.push_back(ENCG_WINDOWS);
+                encGrp.push_back(ENCG_SOUTHEASTASIA);
             }
             else if(name==wxT("default") || name==wxGetTranslation(wxT("default")))   // unnecessary
             {
@@ -312,7 +480,7 @@ void MadEncoding::InitEncodings()
                 ms_SystemEncodingIndex=EncodingsTable.size();
             }
 
-            EncodingsTable.push_back( MadEncodingInfo(enc, name.Upper(), desc, type, fontname) );
+            EncodingsTable.push_back( MadEncodingInfo(enc, name.Upper(), desc, type, fontname, encGrp) );
         }
     }
 }
@@ -360,6 +528,12 @@ wxString MadEncoding::GetEncodingFontName(size_t idx)
 {
     wxASSERT(idx<EncodingsTable.size());
     return EncodingsTable[idx].m_FontName;
+}
+
+const std::vector<int>& MadEncoding::GetEncodingGrps(size_t idx)
+{
+    wxASSERT(idx<EncodingsTable.size());
+    return EncodingsTable[idx].m_GrpIdVec;
 }
 
 wxString MadEncoding::EncodingToName(wxFontEncoding enc)

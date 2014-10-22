@@ -469,6 +469,9 @@ enum { // menu id
     // view
     menuEncoding,
     menuAllEncodings,
+    menuEncodingGroup1,
+    menuEncodingGroup99 = menuEncodingGroup1 + 98,
+
     menuEncoding1,
     menuEncoding99 = menuEncoding1 + 98,
 

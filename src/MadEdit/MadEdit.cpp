@@ -73,8 +73,8 @@ void reverse(char str[], int length)
     while (start < end)
     {
         std::swap(*(str+start), *(str+end));
-        start++;
-        end--;
+        ++start;
+        --end;
     }
 }
 
@@ -567,7 +567,7 @@ void FontWidthManager::ClearBuffer_1_16(const wxString &fontname, int fontsize)
         list<FontWidthBuffer>::iterator itend=vecit->end();
         while(it != itend)
         {
-            if(it->fontsize==fontsize && (!wxChCmp(it->fontname, fontname)))
+            if(it->fontsize==fontsize && !fontname.compare(it->fontname)/*(!wxChCmp(it->fontname, fontname))*/)
             {
                 memset_t<long long>(it->widths, 0, sizeof(wxUint16)*65536);
                 break;
@@ -650,15 +650,8 @@ static inline int wxChCmp(const wchar_t * wchStr, const wxString & wsStr)
     size_t count=wsStr.Length();
     if(!count) return 1;
 
-#ifdef __WXMSW__
     const wchar_t * wchTmpStr = wsStr.wc_str();
-#else
-//#if wxMAJOR_VERSION < 3
-//    const wchar_t * wchTmpStr = (wsStr.wc_str()).data();
-//#else
-    const wchar_t * wchTmpStr = wsStr.wc_str();
-//#endif
-#endif
+
     while(* wchStr && * wchTmpStr)
     {
         if((* wchStr) != (* wchTmpStr))
