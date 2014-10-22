@@ -151,6 +151,14 @@
 #include "../images/saverec.xpm"
 #define saverec_xpm_idx (play_xpm_idx+1)
 
+#include "../images/bookmark_toggle.xpm"
+#define bookmark_toggle_xpm_idx (saverec_xpm_idx+1)
+#include "../images/bookmark_next.xpm"
+#define bookmark_next_xpm_idx (bookmark_toggle_xpm_idx+1)
+#include "../images/bookmark_prev.xpm"
+#define bookmark_prev_xpm_idx (bookmark_next_xpm_idx+1)
+#include "../images/bookmark_clear.xpm"
+#define bookmark_clear_xpm_idx (bookmark_prev_xpm_idx+1)
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1403,10 +1411,10 @@ CommandData CommandTable[]=
 
     // add: gogo, 21.09.2009
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
-    { 0,                1, menuToggleBookmark,           wxT("menuToggleBookmark"),           _("Toggle/Remove Bookmark "),                 wxT("Ctrl-F2"),      wxITEM_NORMAL,    -1,                0,                     _("Toggle Bookmark at current line")},
-    { 0,                1, menuGotoNextBookmark,         wxT("menuGotoNextBookmark"),         _("Go To Next Bookmark"),                     wxT("F2"),           wxITEM_NORMAL,    -1,                0,                     _("Go to the next bookmark")},
-    { 0,                1, menuGotoPreviousBookmark,     wxT("menuGotoPreviousBookmark"),     _("Go To Previous Bookmark"),                 wxT("Shift-F2"),     wxITEM_NORMAL,    -1,                0,                     _("Go to the previous bookmark")},
-
+    { 0,                1, menuToggleBookmark,           wxT("menuToggleBookmark"),           _("Toggle/Remove Bookmark "),                 wxT("Ctrl-F2"),      wxITEM_NORMAL,    bookmark_toggle_xpm_idx, 0,               _("Toggle Bookmark at current line")},
+    { 0,                1, menuGotoNextBookmark,         wxT("menuGotoNextBookmark"),         _("Go To Next Bookmark"),                     wxT("F2"),           wxITEM_NORMAL,    bookmark_next_xpm_idx,   0,               _("Go to the next bookmark")},
+    { 0,                1, menuGotoPreviousBookmark,     wxT("menuGotoPreviousBookmark"),     _("Go To Previous Bookmark"),                 wxT("Shift-F2"),     wxITEM_NORMAL,    bookmark_prev_xpm_idx,   0,               _("Go to the previous bookmark")},
+    //{ 0,                1, menuClearAllBookmarks,        wxT("menuClearAllBookmarks"),        _("Clear All Bookmarks"),                     wxT(""),             wxITEM_NORMAL,    bookmark_clear_xpm_idx,   0,              _("Clear All Bookmarks")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuAdvanced,                 wxT("menuAdvanced"),                 _("Ad&vanced"),                               0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Advanced, 0},
     { 0,                2, menuCopyAsHexString,          wxT("menuCopyAsHexString"),          _("Copy As &Hex String"),                     wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection as hex-string")},
@@ -2174,15 +2182,6 @@ void MadEditFrame::CreateGUIControls(void)
     }
 
     {
-        //size_t pos = g_Menu_View_Encoding->GetMenuItemCount() - 1;
-        g_Menu_View_Encoding->AppendSeparator();
-        for(int encgid = (MadEncodingGrp)0; encgid < ENCG_MAX; ++encgid)
-        {
-            g_Menu_View_EncodingGrps[encgid] = new wxMenu((long)0);
-            g_Menu_View_Encoding->Append(menuEncodingGroup1 + encgid, MadEncodingGrpName[encgid], g_Menu_View_EncodingGrps[encgid]);
-            //++pos;
-        }
-
         size_t cnt=MadEncoding::GetEncodingsCount();
         for(size_t i=0;i<cnt;++i)
         {
@@ -2194,10 +2193,18 @@ void MadEditFrame::CreateGUIControls(void)
             for(size_t j=0; j<encGrps.size(); ++j)
             {
                 wxASSERT(encGrps[j]<ENCG_MAX);
+                if(g_Menu_View_EncodingGrps[j] == NULL)
+                    g_Menu_View_EncodingGrps[j] = new wxMenu((long)0);
                 g_Menu_View_EncodingGrps[encGrps[j]]->Append(menuEncoding1 + int(i), enc+des);
             }
         }
-        
+
+        g_Menu_View_Encoding->AppendSeparator();
+        for(int encgid = 0; encgid < ENCG_MAX; ++encgid)
+        {
+            if(g_Menu_View_EncodingGrps[encgid])
+                g_Menu_View_Encoding->Append(menuEncodingGroup1 + encgid, MadEncodingGrpName[encgid], g_Menu_View_EncodingGrps[encgid]);
+        }
     }
 
     {
@@ -2370,6 +2377,11 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddSeparator();
     WxToolBar1->AddTool(menuComment, _T("Comment"), m_ImageList->GetBitmap(comment_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Comment") );
     WxToolBar1->AddTool(menuUncomment, _T("Uncomment"), m_ImageList->GetBitmap(uncomment_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Uncomment") );
+    WxToolBar1->AddSeparator();
+    WxToolBar1->AddTool(menuToggleBookmark,  _T("ToggleBookmark"),  m_ImageList->GetBitmap(bookmark_toggle_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark ") );
+    WxToolBar1->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark") );
+    WxToolBar1->AddTool(menuGotoPreviousBookmark,  _T("GotoPreviousBookmark"),  m_ImageList->GetBitmap(bookmark_prev_xpm_idx),wxNullBitmap, wxITEM_NORMAL,  _("Go To Previous Bookmark") );
+    //WxToolBar1->AddTool(menuClearAllBookmarks,  _T("ClearAllBookmarks"),  m_ImageList->GetBitmap(bookmark_clear_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks") );
     WxToolBar1->AddSeparator();
     WxToolBar1->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find") );
     WxToolBar1->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find Next") );

@@ -427,6 +427,7 @@ enum { // menu id
     menuToggleBookmark,       // add: gogo, 21.09.2009
     menuGotoNextBookmark,     // add: gogo, 21.09.2009
     menuGotoPreviousBookmark, // add: gogo, 21.09.2009
+    menuClearAllBookmarks,
     menuSort,
     menuSortAscending,
     menuSortDescending,
@@ -453,8 +454,8 @@ enum { // menu id
     menuTabToSpace,
     menuSpaceToTab,
     menuTrimTrailingSpaces,
-	menuInsertNumbers,
-	menuColumnAlign,
+    menuInsertNumbers,
+    menuColumnAlign,
 
     // search
     menuFindNext,
