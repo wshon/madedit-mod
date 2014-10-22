@@ -71,12 +71,12 @@ Syntax files, Locale files and Settings:
 
 Todo
 Fix Linux build
-Known issue: Hightlight word would not work within string(eg, "Flow")
 
 Mod v0.2.5
 1. Encoding group/filter
 2. Toolbar of bookmark, add ClearAllBookmarks
-3. 
+3. Fixed Linux build(Fedora Core 17)
+4. FIxed some minor coding issues reported by g++
 
 
 Mod v0.2.4
