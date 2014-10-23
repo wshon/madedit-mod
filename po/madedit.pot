@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 17:07+0800\n"
+"POT-Creation-Date: 2014-10-23 10:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -415,71 +415,71 @@ msgid "The format of '%s' is invalid."
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:71
-msgid "Western European "
+msgid "Western European"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:72
-msgid "Central European "
+msgid "Central European"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:73
-msgid "South European "
+msgid "South European"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:74
-msgid "North European "
+msgid "North European"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:75
-msgid "Cyrillic "
+msgid "Cyrillic"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:76
-msgid "Arabic "
+msgid "Arabic"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:77
-msgid "Greek "
+msgid "Greek"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:78
-msgid "Hebrew "
+msgid "Hebrew"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:79
-msgid "Turkish "
+msgid "Turkish"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:80
-msgid "Baltic "
+msgid "Baltic"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:81
-msgid "East Asian "
+msgid "East Asian"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:82
-msgid "Southeast Asian "
+msgid "Southeast Asian"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:83
-msgid "Unicode "
+msgid "Unicode"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:84
-msgid "ISO-8859 "
+msgid "ISO-8859"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:85
-msgid "Windows "
+msgid "Windows"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:86
-msgid "OEM "
+msgid "OEM"
 msgstr ""
 
 #: ../src/MadEdit/MadEncoding.cpp:87
-msgid "Other "
+msgid "Other"
 msgstr ""
 
 #: ../src/MadEditApp.cpp:293

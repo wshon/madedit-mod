@@ -926,6 +926,7 @@ public: // basic functions
     void GotoNextBookmark();
     void GotoPreviousBookmark();
     void ClearAllBookmarks();
+    bool HasBookMark() {return m_Lines->m_LineList.HasBookMark();};
     //----------
 
 public: // advanced functions

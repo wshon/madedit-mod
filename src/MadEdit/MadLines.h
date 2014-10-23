@@ -341,6 +341,7 @@ public:
     int  GetPreviousBookmark( MadLineIterator position ); // return line number from the end to the beginning, or -1
     bool IsBookmarked( MadLineIterator position );
     void ClearAllBookmarks();
+    bool HasBookMark(){return !(m_BookmarkList.empty());}
 
     MadLineIterator erase( MadLineIterator position );
 

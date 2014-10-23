@@ -3400,16 +3400,16 @@ void MadEditFrame::OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
 }
 void MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
 }
 //----------
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 17:07+0800\n"
-"PO-Revision-Date: 2014-10-22 17:13+0800\n"
+"POT-Creation-Date: 2014-10-23 10:52+0800\n"
+"PO-Revision-Date: 2014-10-23 10:53+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -421,71 +421,71 @@ msgid "The format of '%s' is invalid."
 msgstr "'%s' 的格式不正确。"
 
 #: ../src/MadEdit/MadEncoding.cpp:71
-msgid "Western European "
+msgid "Western European"
 msgstr "西欧语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:72
-msgid "Central European "
+msgid "Central European"
 msgstr "中欧语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:73
-msgid "South European "
+msgid "South European"
 msgstr "南欧语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:74
-msgid "North European "
+msgid "North European"
 msgstr "北欧语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:75
-msgid "Cyrillic "
+msgid "Cyrillic"
 msgstr "斯拉夫语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:76
-msgid "Arabic "
+msgid "Arabic"
 msgstr "阿拉伯语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:77
-msgid "Greek "
+msgid "Greek"
 msgstr "希腊语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:78
-msgid "Hebrew "
+msgid "Hebrew"
 msgstr "希伯来语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:79
-msgid "Turkish "
+msgid "Turkish"
 msgstr "土耳其语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:80
-msgid "Baltic "
+msgid "Baltic"
 msgstr "波罗的海语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:81
-msgid "East Asian "
+msgid "East Asian"
 msgstr "东亚语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:82
-msgid "Southeast Asian "
+msgid "Southeast Asian"
 msgstr "东南亚语系"
 
 #: ../src/MadEdit/MadEncoding.cpp:83
-msgid "Unicode "
+msgid "Unicode"
 msgstr "Unicode"
 
 #: ../src/MadEdit/MadEncoding.cpp:84
-msgid "ISO-8859 "
+msgid "ISO-8859"
 msgstr "ISO-8859"
 
 #: ../src/MadEdit/MadEncoding.cpp:85
-msgid "Windows "
+msgid "Windows"
 msgstr "Windows"
 
 #: ../src/MadEdit/MadEncoding.cpp:86
-msgid "OEM "
+msgid "OEM"
 msgstr "OEM"
 
 #: ../src/MadEdit/MadEncoding.cpp:87
-msgid "Other "
+msgid "Other"
 msgstr "其他语系"
 
 #: ../src/MadEditApp.cpp:293
