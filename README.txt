@@ -17,6 +17,8 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
       1. wxWidgets-2.6.1 or higher with Unicode enabled
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
+      4. Python 2.7 or higher
+      5. hunspell 1.3.3 or higher
 
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
@@ -68,15 +70,18 @@ Syntax files, Locale files and Settings:
     2. $(MadEdit execution file directory)/MadEdit.cfg: Windows
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
+  
+  Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
 
 Todo
 Fix Linux build
 
 Mod v0.2.5
-1. Encoding group/filter
-2. Toolbar of bookmark, add ClearAllBookmarks
-3. Fixed Linux build(Fedora Core 17)
-4. FIxed some minor coding issues reported by g++
+1. Add hunspell as spell checker
+2. Encoding group/filter
+3. Toolbar of bookmark, add ClearAllBookmarks
+4. Fixed Linux build(Fedora Core 17)
+5. Fixed some minor coding issues reported by g++
 
 
 Mod v0.2.4

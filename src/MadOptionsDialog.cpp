@@ -145,6 +145,9 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_MENU(ID_MNU___Z_TIME_ZONEABBREVIATION_1194 , MadOptionsDialog::DateTimeMarkClick)
 	EVT_BUTTON(ID_WXBUTTONCANCEL,MadOptionsDialog::WxButtonCancelClick)
 	EVT_BUTTON(ID_WXBUTTONOK,MadOptionsDialog::WxButtonOKClick)
+	EVT_BUTTON(ID_WXBITMAP_DIR,MadOptionsDialog::WxButtonBitmapDirClick)
+	EVT_BUTTON(ID_WXTHESAURI_DIR,MadOptionsDialog::WxButtonThesauriDirClick)
+	EVT_BUTTON(ID_WXDICTIONARY_DIR,MadOptionsDialog::WxButtonDictionaryDirClick)
 	EVT_BUTTON(ID_WXBUTTONSHOWINMENU,MadOptionsDialog::WxButtonShowInMenuClick)
 	EVT_BUTTON(ID_WXBUTTONDELETEKEY,MadOptionsDialog::WxButtonDeleteKeyClick)
 	EVT_BUTTON(ID_WXBUTTONADDKEY,MadOptionsDialog::WxButtonAddKeyClick)
@@ -308,7 +311,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer7->Add(WxCheckBoxDoNotSaveSettings, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxCheckBoxPurgeHistory = new wxCheckBox(WxNoteBookPage1, ID_PURGEHISTORY, _("Purge History while existing"), wxPoint(2, 77), wxSize(400, 20), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeHistory"));
-	WxCheckBoxPurgeHistory->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxCheckBoxPurgeHistory->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer7->Add(WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxALL, 2);
 
 
@@ -646,6 +649,64 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxCheckBoxResetAllKeys->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer26->Add(WxCheckBoxResetAllKeys, 0, wxALIGN_LEFT | wxALL, 5);
 
+	WxNoteBookPage5 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE5, wxPoint(4, 24), wxSize(673, 314));
+	WxNoteBookPage5->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxNotebook1->AddPage(WxNoteBookPage5, _("SpellChecker"));
+
+	WxBoxSizer29 = new wxBoxSizer(wxVERTICAL);
+	WxNoteBookPage5->SetSizer(WxBoxSizer29);
+	WxNoteBookPage5->SetAutoLayout(true);
+
+	wxStaticBox* WxStaticBoxSizer5_StaticBoxObj = new wxStaticBox(WxNoteBookPage5, wxID_ANY, _("Langurage"));
+	WxStaticBoxSizer5 = new wxStaticBoxSizer(WxStaticBoxSizer5_StaticBoxObj, wxHORIZONTAL);
+	WxBoxSizer29->Add(WxStaticBoxSizer5, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxStaticText18 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT18, _("Dictionary:"), wxPoint(10, 22), wxDefaultSize, 0, wxT("WxStaticText18"));
+	WxStaticText18->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxStaticBoxSizer5->Add(WxStaticText18, 0, wxALIGN_CENTER | wxALL, 5);
+
+	wxArrayString arrayStringFor_WxComboBoxDictionary;
+	WxComboBoxDictionary = new wxComboBox(WxNoteBookPage5, ID_WXCOMBOBOXDICTIONARY, wxT(""), wxPoint(74, 20), wxSize(325, 21), arrayStringFor_WxComboBoxDictionary, wxCB_DROPDOWN | wxCB_READONLY, wxTextValidator(wxFILTER_NONE, NULL), wxT("WxComboBoxDictionary"));
+	WxComboBoxDictionary->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxStaticBoxSizer5->Add(WxComboBoxDictionary, 0, wxALIGN_CENTER | wxALL, 5);
+
+	wxStaticBox* WxStaticBoxSizer6_StaticBoxObj = new wxStaticBox(WxNoteBookPage5, wxID_ANY, _("Path Setting"));
+	WxStaticBoxSizer6 = new wxStaticBoxSizer(WxStaticBoxSizer6_StaticBoxObj, wxVERTICAL);
+	WxBoxSizer29->Add(WxStaticBoxSizer6, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxBoxSizer30 = new wxBoxSizer(wxHORIZONTAL);
+	WxStaticBoxSizer6->Add(WxBoxSizer30, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxEditDictionaryDir = new wxTextCtrl(WxNoteBookPage5, ID_WXEDITDICTIONARYDIR, wxT(""), wxPoint(5, 8), wxSize(240, 19), 0, wxTextValidator(wxFILTER_NONE, NULL), wxT("WxEditDictionaryDir"));
+	WxEditDictionaryDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer30->Add(WxEditDictionaryDir, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxButtonDictionaryDir = new wxButton(WxNoteBookPage5, ID_WXDICTIONARY_DIR, wxT("..."), wxPoint(255, 5), wxSize(75, 25), 0, wxDefaultValidator, wxT("WxButtonDictionaryDir"));
+	WxButtonDictionaryDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer30->Add(WxButtonDictionaryDir, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxBoxSizer31 = new wxBoxSizer(wxHORIZONTAL);
+	WxStaticBoxSizer6->Add(WxBoxSizer31, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxEditThesauriDir = new wxTextCtrl(WxNoteBookPage5, ID_WXEDITTHESAURI, wxT(""), wxPoint(5, 8), wxSize(240, 19), 0, wxTextValidator(wxFILTER_NONE, NULL), wxT("WxEditThesauriDir"));
+	WxEditThesauriDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer31->Add(WxEditThesauriDir, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxButtonThesauriDir = new wxButton(WxNoteBookPage5, ID_WXTHESAURI_DIR, wxT("..."), wxPoint(255, 5), wxSize(75, 25), 0, wxDefaultValidator, wxT("WxButtonThesauriDir"));
+	WxButtonThesauriDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer31->Add(WxButtonThesauriDir, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxBoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
+	WxStaticBoxSizer6->Add(WxBoxSizer32, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxEditBitMapDir = new wxTextCtrl(WxNoteBookPage5, ID_WXEDITBITMAPDIR, wxT(""), wxPoint(5, 8), wxSize(240, 19), 0, wxTextValidator(wxFILTER_NONE, NULL), wxT("WxEditBitMapDir"));
+	WxEditBitMapDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer32->Add(WxEditBitMapDir, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxButtonBitmapDir = new wxButton(WxNoteBookPage5, ID_WXBITMAP_DIR, wxT("..."), wxPoint(255, 5), wxSize(75, 25), 0, wxDefaultValidator, wxT("WxButtonBitmapDir"));
+	WxButtonBitmapDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer32->Add(WxButtonBitmapDir, 0, wxALIGN_CENTER | wxALL, 5);
+
 	WxBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -694,6 +755,18 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->AppendSeparator();
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
+
+	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText20"));
+	WxStaticText20->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer31->Add(WxStaticText20, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText19"));
+	WxStaticText19->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer30->Add(WxStaticText19, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText21"));
+	WxStaticText21->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer32->Add(WxStaticText21, 0, wxALIGN_CENTER | wxALL, 5);
 
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
@@ -1421,4 +1494,16 @@ void MadOptionsDialog::DateTimeMarkClick(wxCommandEvent& event)
 
     wxString text=WxEditDateTime->GetValue();
     WxEditDateTime->SetValue(text+str);
+}
+
+void MadOptionsDialog::WxButtonBitmapDirClick(wxCommandEvent& event)
+{
+}
+
+void MadOptionsDialog::WxButtonThesauriDirClick(wxCommandEvent& event)
+{
+}
+
+void MadOptionsDialog::WxButtonDictionaryDirClick(wxCommandEvent& event)
+{
 }

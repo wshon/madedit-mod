@@ -439,7 +439,7 @@ protected:
     // update the two SelectionPos by their .pos
     void UpdateSelectionPos();
 
-    void PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *width, int count, int minleft, int maxright);
+    void PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *width, int count, int minleft, int maxright, bool spellmark=false);
     void PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowcount, const wxColor &bgcolor);
 
     void PaintHexDigit(wxDC *dc, int x, int y, const ucs4_t *hexdigit, const int *width, int count);

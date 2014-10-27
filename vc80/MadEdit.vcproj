@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\mswud&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(BOOST)&quot;;&quot;..\charset-detector\include&quot;;&quot;..\charset-detector\src&quot;;&quot;..\charset-detector\src\tables&quot;;&quot;$(SolutionDir)/../minipython/Include&quot;;&quot;$(SolutionDir)/../minipython/PC&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\lib\vc_lib\mswud&quot;;&quot;$(WXWIN)\include&quot;;&quot;$(BOOST)&quot;;&quot;..\charset-detector\include&quot;;&quot;..\charset-detector\src&quot;;&quot;..\charset-detector\src\tables&quot;;&quot;$(SolutionDir)/../minipython/Include&quot;;&quot;$(SolutionDir)/../minipython/PC&quot;;&quot;$(SolutionDir)\..\spellchecker\hunspell\src&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049 /ignore:4204"
-				AdditionalDependencies="wxmsw28ud_core.lib wxbase28ud.lib wxmsw28ud_aui.lib wxpng.lib wxzlib.lib python27_d.lib libboost_python-vc80-mt-sgyd-1_56.lib libboost_system-vc80-mt-sgyd-1_56.lib comctl32.lib uuid.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
+				AdditionalDependencies="wxmsw28ud_core.lib wxbase28ud.lib wxmsw28ud_aui.lib wxpng.lib wxzlib.lib python27_d.lib libboost_python-vc80-mt-sgyd-1_56.lib libhunspell.lib comctl32.lib uuid.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)stage/lib&quot;"
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049"
-				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib wxmsw28u_aui.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib libboost_system-vc80-mt-s-1_56.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
+				AdditionalDependencies="wxmsw28u_core.lib wxbase28u.lib wxmsw28u_aui.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib libhunspell.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)stage/lib&quot;;$(NOINHERIT)"
@@ -426,6 +426,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\spellchecker\HunspellInterface.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\MadAboutDialog.h"
 				>
 			</File>
@@ -549,6 +553,34 @@
 			>
 			<File
 				RelativePath="..\src\MadEditApp.rc"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="wxSpellChecker"
+			>
+			<File
+				RelativePath="..\spellchecker\SpellCheckEngineInterface.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\spellchecker\spellcheckengineinterface.h"
+				>
+			</File>
+			<File
+				RelativePath="..\spellchecker\SpellCheckEngineOption.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\spellchecker\SpellCheckEngineOption.h"
+				>
+			</File>
+			<File
+				RelativePath="..\spellchecker\SpellCheckUserInterface.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\spellchecker\SpellCheckUserInterface.h"
 				>
 			</File>
 		</Filter>

@@ -1816,8 +1816,9 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
 }
 #endif
 
-void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *width, int count, int minleft, int maxright)
+void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *width, int count, int minleft, int maxright, bool spellmark /*=false*/)
 {
+    int totalwidth = 0;
 #ifdef __WXMSW__
     const ucs4_t  *pu=text;
     const int     *pw=width;
@@ -1832,6 +1833,7 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
     {
         ucs4_t uc=*pu++;
         int ucw=*pw++;
+        totalwidth += ucw;
 
         if(uc<0x10000)
         {
@@ -1894,6 +1896,7 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
         for(int i=count; i>0 && nowright<maxright; --i, ++pu, ++wcount)
         {
             int ucw=*pw++;
+            totalwidth += ucw;
 
             if(nowleftend==false && nowleft+ucw <minleft)
             {
@@ -1932,9 +1935,18 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
                 text1.SetChar(0,*pu);
                 dc->DrawText(text1, nowleft, y);
             }
+            totalwidth += *pw;
         }
     }
 #endif
+    if(spellmark)
+    {
+        wxColour color(255, 0, 0);/*RED*/
+        dc->SetPen(*wxThePenList->FindOrCreatePen(color, 1, wxDOT));
+        //dc->DrawLine(left, rect.GetBottom()-1, rectright, rect.GetBottom()-1);
+        dc->DrawLine(x, y+m_RowHeight-1, x+totalwidth, y+m_RowHeight-1);
+    }
+
 }
 
 template< class T >
@@ -2160,7 +2172,12 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                             dc->SetTextForeground(m_Syntax->nw_Color);
                             dc->SetFont(*(m_Syntax->nw_Font));
 
-                            PaintText(dc, left, text_top, m_WordBuffer, m_WidthBuffer, wordlength, minleft, maxright);
+                            bool spellMark = false;
+                            if(!InPrinting())
+                            {
+                                spellMark = true;
+                            }
+                            PaintText(dc, left, text_top, m_WordBuffer, m_WidthBuffer, wordlength, minleft, maxright, spellMark);
                         }
                     }
 
@@ -2401,7 +2418,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
         ++lineid;
     }
 }
-
 
 void MadEdit::PaintHexDigit(wxDC *dc, int x, int y, const ucs4_t *hexdigit, const int *width, int count)
 {
@@ -2696,7 +2712,6 @@ void MadEdit::PaintHexLines(wxDC *dc, wxRect &rect, int toprow, int rowcount, bo
         }
 
         PaintText(dc, left, top, m_WordBuffer, m_WidthBuffer + 60, idx, minleft, maxright);
-
 
         // paint selection
         if(m_Selection)
@@ -7821,7 +7836,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                 
                 // check for AutoCompletePair
                 int idx;
-                if(m_AutoCompletePair && m_EditMode==emTextMode && (idx=m_Syntax->m_AutoCompleteLeftChar.Find(wxChar(uc)))>=0)
+                if(m_AutoCompletePair/* && m_EditMode==emTextMode*/ && (idx=m_Syntax->m_AutoCompleteLeftChar.Find(wxChar(uc)))>=0)
                 {
                     // insert the AutoCompleteLeftChar
                     InsertString(&uc, 1, true, true, false); 
