@@ -21,6 +21,13 @@
 
 #include <wx/confbase.h>
 #include <string>
+#if __cplusplus <= 199711L
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+#else
+#include <memory>
+using std::shared_ptr;
+#endif
 
 #include "MadLines.h"
 #include "MadEditCommand.h"
@@ -40,6 +47,7 @@ namespace mad_python
 class MadEdit;
 class MadSearchDialog;
 class MadReplaceDialog;
+class wxSpellCheckEngineInterface;
 
 typedef void (*OnSelectionChangedPtr)(MadEdit *madedit);
 typedef void (*OnStatusChangedPtr)(MadEdit *madedit);
@@ -389,6 +397,7 @@ private:
 
     wxMilliClock_t m_lastDoubleClick;
     bool m_mouse_in_window;
+    shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
 
 #ifdef __WXMSW__
     bool m_IsWin98;
@@ -781,7 +790,7 @@ public: // basic functions
 #ifdef __WXMSW__
             return nltDOS;
 #elif __WXMAC__
-			return nltMAC;
+            return nltMAC;
 #else
             return nltUNIX;
 #endif
@@ -796,7 +805,7 @@ public: // basic functions
 #ifdef __WXMSW__
             return nltDOS;
 #elif __WXMAC__
-			return nltMAC;
+            return nltMAC;
 #else
             return nltUNIX;
 #endif
@@ -990,11 +999,27 @@ public:
     {
         m_OnActivate=func;
     }
-
     void SetSearchOptions(bool bUseDefaultSyntax, bool bSearchWholeWord)
     {
         m_UseDefaultSyntax = bUseDefaultSyntax;
         m_SearchWholeWord = bSearchWholeWord;
+    }
+    void SetSpellChecker(shared_ptr<wxSpellCheckEngineInterface> &pSpellChecker)
+    {
+        m_SpellCheckerPtr = pSpellChecker;
+        m_RepaintAll = true;
+        Refresh(false);
+    }
+    void ResetSpellChecker()
+    {
+        m_SpellCheckerPtr.reset();
+        m_RepaintAll = true;
+        Refresh(false);
+    }
+    bool HasSpellChecker() 
+    {
+        if(m_SpellCheckerPtr) return true;
+        return false;
     }
 
 private: // Printing functions

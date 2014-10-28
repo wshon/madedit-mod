@@ -62,7 +62,7 @@ public:
   bool IsInitialized() { return m_bEngineInitialized; }
 
   // Spell Checker Search/Suggestion functions
-    virtual bool IsWordInDictionary(const wxString& strWord) = 0;
+  virtual bool IsWordInDictionary(const wxString& strWord) = 0;
   virtual wxString CheckSpelling(wxString strText) = 0;
   virtual wxArrayString GetSuggestions(const wxString& strMisspelledWord) = 0;
 

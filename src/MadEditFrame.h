@@ -156,6 +156,7 @@ public:
     void OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewColumnMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -275,6 +276,7 @@ public:
     void OnViewTextMode(wxCommandEvent& event);
     void OnViewColumnMode(wxCommandEvent& event);
     void OnViewHexMode(wxCommandEvent& event);
+    void OnViewSpellChecker(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -374,6 +376,7 @@ private:
     int m_LastSelBeg, m_LastSelEnd;
     bool m_MacroDebug;
     shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
+    bool m_SpellCheckerEnabled;
 public:
     MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
     bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
@@ -537,6 +540,7 @@ enum { // menu id
     menuColumnMode,
     menuHexMode,
     menuMacroDebugMode,
+    menuSpellChecker,
 
     // tools
     menuOptions,

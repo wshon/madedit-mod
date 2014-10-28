@@ -43,7 +43,7 @@
 #endif
 #endif
 
-#include <locale.h>
+#include "HunspellInterface.h"
 
 using std::vector;
 using std::list;
@@ -1943,7 +1943,6 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
     {
         wxColour color(255, 0, 0);/*RED*/
         dc->SetPen(*wxThePenList->FindOrCreatePen(color, 1, wxDOT));
-        //dc->DrawLine(left, rect.GetBottom()-1, rectright, rect.GetBottom()-1);
         dc->DrawLine(x, y+m_RowHeight-1, x+totalwidth, y+m_RowHeight-1);
     }
 
@@ -2173,9 +2172,15 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                             dc->SetFont(*(m_Syntax->nw_Font));
 
                             bool spellMark = false;
-                            if(!InPrinting())
+                            if(!InPrinting() && (m_SpellCheckerPtr))
                             {
-                                spellMark = true;
+                                wxString str;
+                                for(int i=0; i<wordlength; ++i)
+                                {
+                                    str << wxChar(m_WordBuffer[i]);
+                                }
+                                if(!m_SpellCheckerPtr->IsWordInDictionary(str))
+                                    spellMark = true;
                             }
                             PaintText(dc, left, text_top, m_WordBuffer, m_WidthBuffer, wordlength, minleft, maxright, spellMark);
                         }
