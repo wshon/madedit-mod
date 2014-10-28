@@ -1942,8 +1942,15 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
     if(spellmark)
     {
         wxColour color(255, 0, 0);/*RED*/
-        dc->SetPen(*wxThePenList->FindOrCreatePen(color, 1, wxDOT));
-        dc->DrawLine(x, y+m_RowHeight-1, x+totalwidth, y+m_RowHeight-1);
+        int delta = 3, yd[2] = {3, 0};
+        dc->SetPen(*wxThePenList->FindOrCreatePen(color, 1, wxSOLID/*wxDOT*/));
+        for(int i = 0; delta < totalwidth; ++i)
+        {
+            dc->DrawLine(x+delta-3, y+m_RowHeight-yd[i%2], x+delta, y+m_RowHeight-yd[(i+1)%2]);
+            delta += 3;
+        }
+        //dc->DrawLine(x, y+m_RowHeight-1, x+totalwidth, y+m_RowHeight-1);
+        
     }
 
 }
@@ -4387,6 +4394,21 @@ void MadEdit::GetHexDataFromClipboard(vector <char> *cs)
             }
         }
     }
+}
+
+void MadEdit::ReplaceWordFromCaretPos(wxString &ws)
+{
+    //SelectWordFromCaretPos(NULL);
+    ucs4string out;
+    vector<ucs4_t> ucs;
+    
+    TranslateText(ws.c_str(), ws.Len(), &ucs, true);
+    
+    for(size_t i=0, size=ucs.size(); i<size; ++i)
+    {
+        out += ucs[i] ;
+    }
+    InsertString(out.c_str(), out.length(), false, true, false);
 }
 
 bool MadEdit::CanPaste()

@@ -182,6 +182,7 @@ int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
 wxStaticText* g_OvrStr = NULL;
 wxStaticText* g_RdOnly = NULL;
+wxArrayString g_SpellSuggestions;
 
 bool g_CheckModTimeForReload=true;
 
@@ -1016,17 +1017,22 @@ void OnEditMouseRightUp(MadEdit *madedit)
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
         wxString str;
-        g_ActiveMadEdit->GetWordFromCaretPos(str);
         shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_MainFrame->GetSpellChecker();
-        wxArrayString suggestions = spellChecker->GetSuggestions(str);
-        size_t count = suggestions.GetCount();
-        for(size_t i = 0; i < count; ++i)
+        g_ActiveMadEdit->GetWordFromCaretPos(str);
+        if(!spellChecker->IsSpellingOk(str))
         {
-            spellItems.push_back(g_Menu_EditPop->Insert(i, menuSpellOption1+i, suggestions[i]));
-        }
-        if(count)
-            spellItems.push_back(g_Menu_EditPop->InsertSeparator(count));
-            
+            g_SpellSuggestions.Clear();
+            g_SpellSuggestions = spellChecker->GetSuggestions(str);
+            size_t count = g_SpellSuggestions.GetCount();
+            if(count)
+            {
+                for(size_t i = 0; i < count; ++i)
+                {
+                    spellItems.push_back(g_Menu_EditPop->Insert(i, menuSpellOption1+i, g_SpellSuggestions[i]));
+                }
+                spellItems.push_back(g_Menu_EditPop->InsertSeparator(count));
+            }
+        }            
     }
     g_MainFrame->PopupMenu(g_Menu_EditPop);//Fixe for the assertion in debug
 
@@ -1889,15 +1895,17 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_LastSelEnd = -1;
     m_MacroDebug = false;
     m_SpellCheckerPtr.reset(new HunspellInterface());
-    
+
+    wxString dicDir = g_MadEditAppDir+wxT("Dictionaries");
+    dicDir += wxFileName::GetPathSeparator();
     SpellCheckEngineOption DictionaryFileOption(
         _T("dict-file"), _T("Dictionary File"),
-        g_MadEditAppDir+wxT("en_US.dic"), SpellCheckEngineOption::FILE
+        dicDir+wxT("en_US.dic"), SpellCheckEngineOption::FILE
     );
     m_SpellCheckerPtr->AddOptionToMap(DictionaryFileOption);
     SpellCheckEngineOption AffixFileOption(
         _T("affix-file"), _T("Affix File"),
-        g_MadEditAppDir+wxT("en_US.aff"), SpellCheckEngineOption::FILE
+        dicDir+wxT("en_US.aff"), SpellCheckEngineOption::FILE
     );
     m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
     m_SpellCheckerPtr->ApplyOptions();
@@ -4791,6 +4799,7 @@ void MadEditFrame::OnEditSpellCheck(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
+        g_ActiveMadEdit->ReplaceWordFromCaretPos(g_SpellSuggestions[event.GetId()-menuSpellOption1]);
     }
 }
 

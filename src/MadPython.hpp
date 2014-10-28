@@ -294,17 +294,17 @@ namespace mad_python
         void InsertStr(const std::string &str)
         {
             wxString wxStr(str.c_str(), wxConvLocal);
-			
-			ucs4string out;
-			vector<ucs4_t> ucs;
+            
+            ucs4string out;
+            vector<ucs4_t> ucs;
 
-			g_ActiveMadEdit->TranslateText(wxStr.c_str(), wxStr.Len(), &ucs, true);
-			
-			for(size_t i=0, size=ucs.size(); i<size; ++i)
-			{
-				out += ucs[i] ;
-			}
-			g_ActiveMadEdit->InsertString(out.c_str(), out.length(), false, true, false);
+            g_ActiveMadEdit->TranslateText(wxStr.c_str(), wxStr.Len(), &ucs, true);
+            
+            for(size_t i=0, size=ucs.size(); i<size; ++i)
+            {
+                out += ucs[i] ;
+            }
+            g_ActiveMadEdit->InsertString(out.c_str(), out.length(), false, true, false);
         }
 
         void InsertIncrementalNumber(int initial, int step, int total, int stepType,

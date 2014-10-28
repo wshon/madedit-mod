@@ -833,6 +833,7 @@ public: // basic functions
 
     void GetWordFromCaretPos(wxString &ws)
     { SelectWordFromCaretPos(&ws); }
+    void ReplaceWordFromCaretPos(wxString &ws);
 
     void Delete() { ProcessCommand(ecDelete); }
     void CutLine() { ProcessCommand(ecCutLine); }
