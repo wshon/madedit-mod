@@ -74,7 +74,7 @@ Syntax files, Locale files and Settings:
   Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
 
 Todo
-Fix Linux build
+Fix Linux build(for SpellChecker)
 
 Mod v0.2.5
 1. Add hunspell as spell checker

@@ -1892,12 +1892,12 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     
     SpellCheckEngineOption DictionaryFileOption(
         _T("dict-file"), _T("Dictionary File"),
-        _T("d:\\dev\\develop\\test\\en_US.dic"), SpellCheckEngineOption::FILE
+        g_MadEditAppDir+wxT("en_US.dic"), SpellCheckEngineOption::FILE
     );
     m_SpellCheckerPtr->AddOptionToMap(DictionaryFileOption);
     SpellCheckEngineOption AffixFileOption(
         _T("affix-file"), _T("Affix File"),
-        _T("d:\\dev\\develop\\test\\en_US.aff"), SpellCheckEngineOption::FILE
+        g_MadEditAppDir+wxT("en_US.aff"), SpellCheckEngineOption::FILE
     );
     m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
     m_SpellCheckerPtr->ApplyOptions();
