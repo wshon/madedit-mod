@@ -242,6 +242,7 @@ public:
     void OnEditTrimTrailingSpaces(wxCommandEvent& event);
     void OnEditInsertNumbers(wxCommandEvent& event);
     void OnEditColumnAlign(wxCommandEvent& event);
+    void OnEditSpellCheck(wxCommandEvent& event);
 
     void OnSearchFind(wxCommandEvent& event);
     void OnSearchFindNext(wxCommandEvent& event);
@@ -397,6 +398,7 @@ public:
     }
     bool HasRecordedScript() {return (m_MadMacroScripts.GetCount()>2);}
     wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
+    shared_ptr<wxSpellCheckEngineInterface> & GetSpellChecker() {return m_SpellCheckerPtr;}
 };
 
 enum { // menu id
@@ -449,6 +451,9 @@ enum { // menu id
     menuSortByOptions,
     menuSortOptions,
     menuAdvanced,
+    menuSpellOption1,
+    menuSpellOption99 = menuSpellOption1 + 98,
+    
     menuCopyAsHexString,
     menuCopyAsHexStringWithSpace,
     menuIncreaseIndent,

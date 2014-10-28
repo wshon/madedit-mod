@@ -118,6 +118,36 @@ int HunspellInterface::SetOption(SpellCheckEngineOption& Option)
   return InitializeSpellCheckEngine();
 }
 
+bool HunspellInterface::IsSpellingOk(wxString strText)
+{
+  if (m_pHunspell == NULL)
+    return false;
+
+  int nDiff = 0;
+
+  strText += _T(" ");
+
+  wxString strDelimiters = _T(" \t\r\n.,?!@#$%^&*()-=_+[]{}\\|;:\"<>/~0123456789");
+  wxStringTokenizer tkz(strText, strDelimiters);
+  while ( tkz.HasMoreTokens() )
+  {
+    wxString token = tkz.GetNextToken();
+    int TokenStart = tkz.GetPosition() - token.Length() - 1;
+    TokenStart += nDiff;  // Take into account any changes to the size of the strText
+
+    // process token here
+    if (!IsWordInDictionary(token))
+    {
+      // If this word is in the always ignore list, then just move on
+      if (m_AlwaysIgnoreList.Index(token) != wxNOT_FOUND)
+        continue;
+      return false;
+    }
+  }
+
+  return true;
+}
+
 wxString HunspellInterface::CheckSpelling(wxString strText)
 {
   if (m_pHunspell == NULL)

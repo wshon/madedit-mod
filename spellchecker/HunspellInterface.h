@@ -56,6 +56,7 @@ public:
     virtual int SetOption(SpellCheckEngineOption& Option);
     virtual void UpdatePossibleValues(SpellCheckEngineOption& OptionDependency, SpellCheckEngineOption& OptionToUpdate);
     virtual wxString CheckSpelling(wxString strText);
+    virtual bool IsSpellingOk(wxString strText);
     wxArrayString GetSuggestions(const wxString& strMisspelledWord);
 
     virtual bool IsWordInDictionary(const wxString& strWord);

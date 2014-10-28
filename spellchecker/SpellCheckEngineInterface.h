@@ -64,6 +64,7 @@ public:
   // Spell Checker Search/Suggestion functions
   virtual bool IsWordInDictionary(const wxString& strWord) = 0;
   virtual wxString CheckSpelling(wxString strText) = 0;
+  virtual bool IsSpellingOk(wxString strText) = 0;
   virtual wxArrayString GetSuggestions(const wxString& strMisspelledWord) = 0;
 
   // Spell Checker Dictionary Manipulation functions (the above functions work on a read-only dictionary

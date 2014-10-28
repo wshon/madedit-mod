@@ -1012,7 +1012,30 @@ void OnEditMouseRightUp(MadEdit *madedit)
     //wxPoint pt=wxGetMousePosition();
     //pt=g_MainFrame->m_Notebook->ScreenToClient(pt);
     //g_MainFrame->PopupMenu(g_Menu_Edit);//, pt);
+    vector<wxMenuItem *> spellItems;
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        wxString str;
+        g_ActiveMadEdit->GetWordFromCaretPos(str);
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_MainFrame->GetSpellChecker();
+        wxArrayString suggestions = spellChecker->GetSuggestions(str);
+        size_t count = suggestions.GetCount();
+        for(size_t i = 0; i < count; ++i)
+        {
+            spellItems.push_back(g_Menu_EditPop->Insert(i, menuSpellOption1+i, suggestions[i]));
+        }
+        if(count)
+            spellItems.push_back(g_Menu_EditPop->InsertSeparator(count));
+            
+    }
     g_MainFrame->PopupMenu(g_Menu_EditPop);//Fixe for the assertion in debug
+
+    vector<wxMenuItem *>::iterator it = spellItems.begin();
+    while(it != spellItems.end())
+    {
+        g_Menu_EditPop->Delete(*it);
+        ++it;
+    }
 }
 
 
@@ -1252,6 +1275,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
+	EVT_MENU_RANGE(menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck)
 	// search
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
@@ -4698,45 +4722,45 @@ void MadEditFrame::OnEditInsertNumbers(wxCommandEvent& event)
 
             switch( sel )
             {
-	            case 1: numStepType = nstExponential; break;
-	            default: break;
+                case 1: numStepType = nstExponential; break;
+                default: break;
             }
 
             sel = g_MadNumberDlg->WxChoiceFormat->GetSelection();       
             switch( sel )
             {
-	            case 1:
+                case 1:
                 {
                     numFormat = nfHEX;
                     strFormat = wxT("MadNumberFormat.HEX");
                 }
                 break;
-	            case 2:
+                case 2:
                 {
                     numFormat = nfBIN;
                     strFormat = wxT("MadNumberFormat.BIN");
                 }
                 break;
-	            case 3:
+                case 3:
                 {
                     numFormat = nfOCT;
                     strFormat = wxT("MadNumberFormat.OCT");
                 }
                 break;
-	            default:
+                default:
                     break;
             }
 
-			sel = g_MadNumberDlg->WxChoiceAlign->GetSelection();        
+            sel = g_MadNumberDlg->WxChoiceAlign->GetSelection();        
             switch( sel )
             {
-	            case 1:
+                case 1:
                 {
                     numAlign = naRight;
                     strAlign = wxT("MadNumberAlign.Right");
                 }
                 break;
-	            default:
+                default:
                     break;
             }
 
@@ -4760,6 +4784,13 @@ void MadEditFrame::OnEditColumnAlign(wxCommandEvent& event)
     {
         g_ActiveMadEdit->ColumnAlign();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("ColumnAlign()")));
+    }
+}
+
+void MadEditFrame::OnEditSpellCheck(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
     }
 }
 
@@ -5146,7 +5177,7 @@ void MadEditFrame::OnViewSyntax(wxCommandEvent& event)
     int idx=event.GetId()-menuSyntax1;
     wxString title=MadSyntax::GetSyntaxTitle(idx);
     g_ActiveMadEdit->SetSyntax(title);
-	RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetSyntax(")) + title + wxT(")"));
+    RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetSyntax(")) + title + wxT(")"));
 }
 
 void MadEditFrame::OnViewFontName(wxCommandEvent& event)

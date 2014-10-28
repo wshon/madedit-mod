@@ -2179,7 +2179,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                                 {
                                     str << wxChar(m_WordBuffer[i]);
                                 }
-                                if(!m_SpellCheckerPtr->IsWordInDictionary(str))
+                                if(!m_SpellCheckerPtr->IsSpellingOk(str))
                                     spellMark = true;
                             }
                             PaintText(dc, left, text_top, m_WordBuffer, m_WidthBuffer, wordlength, minleft, maxright, spellMark);
