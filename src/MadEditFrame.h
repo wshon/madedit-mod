@@ -33,7 +33,13 @@
 #include <wx/treectrl.h>
 
 #include <wx/aui/aui.h> // wxAUI
-
+#if __cplusplus <= 199711L
+#include <boost/shared_ptr.hpp>
+using boost::shared_ptr;
+#else
+#include <memory>
+using std::shared_ptr;
+#endif
 
 ////Dialog Style Start
 #undef MadEditFrame_STYLE
@@ -46,6 +52,7 @@ class wxAuiNotebookEvent;
 class MadEdit;
 class MadTreeCtrl;
 class MadRecentList;
+class wxSpellCheckEngineInterface;
 
 class MadEditFrame : public wxFrame
 {
@@ -366,6 +373,7 @@ private:
     wxArrayString m_MadMacroScripts;
     int m_LastSelBeg, m_LastSelEnd;
     bool m_MacroDebug;
+    shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
 public:
     MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
     bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}

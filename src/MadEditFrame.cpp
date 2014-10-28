@@ -50,6 +50,7 @@
 #include <algorithm>
 
 #include "EmbeddedPython.hpp"
+#include "HunspellInterface.h"
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -1860,6 +1861,20 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_LastSelBeg = -1;
     m_LastSelEnd = -1;
     m_MacroDebug = false;
+    m_SpellCheckerPtr.reset(new HunspellInterface());
+    
+    SpellCheckEngineOption DictionaryFileOption(
+        _T("dict-file"), _T("Dictionary File"),
+        _T("d:\\dev\\develop\test\\en_US.dic"), SpellCheckEngineOption::FILE
+    );
+    m_SpellCheckerPtr->AddOptionToMap(DictionaryFileOption);
+    SpellCheckEngineOption AffixFileOption(
+        _T("affix-file"), _T("Affix File"),
+        _T("d:\\dev\\develop\test\\en_US.aff"), SpellCheckEngineOption::FILE
+    );
+    m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
+    m_SpellCheckerPtr->ApplyOptions();
+
     g_MainFrame=this;
 }
 
@@ -2008,7 +2023,6 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(bookmark_next_xpm));
     m_ImageList->Add(wxBitmap(bookmark_prev_xpm));
     m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
-
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
@@ -2199,8 +2213,8 @@ void MadEditFrame::CreateGUIControls(void)
             for(size_t j=0; j<encGrps.size(); ++j)
             {
                 wxASSERT(encGrps[j]<ENCG_MAX);
-				if (g_Menu_View_EncodingGrps[encGrps[j]] == NULL)
-					g_Menu_View_EncodingGrps[encGrps[j]] = new wxMenu((long)0);
+                if (g_Menu_View_EncodingGrps[encGrps[j]] == NULL)
+                    g_Menu_View_EncodingGrps[encGrps[j]] = new wxMenu((long)0);
                 g_Menu_View_EncodingGrps[encGrps[j]]->Append(menuEncoding1 + int(i), enc+des);
             }
         }
@@ -2503,29 +2517,29 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     g_FileCaretPosManager.Save(m_Config);
 
 // changed: gogo, 30.08.2009 ---
-	int x, y;
+    int x, y;
 #ifdef __WXMSW__
-	//int style=::GetWindowLong((HWND)GetHWND(), GWL_STYLE);
-	//m_Config->Write(wxT("/MadEdit/WindowMaximize"), (style&WS_MAXIMIZE)!=0 );
+    //int style=::GetWindowLong((HWND)GetHWND(), GWL_STYLE);
+    //m_Config->Write(wxT("/MadEdit/WindowMaximize"), (style&WS_MAXIMIZE)!=0 );
 
-	WINDOWPLACEMENT wp;
-	wp.length = sizeof(WINDOWPLACEMENT);
-	GetWindowPlacement( (HWND) GetHWND(), &wp );
-	m_Config->Write( wxT("/MadEdit/WindowMaximize"), wp.showCmd == SW_SHOWMAXIMIZED );
+    WINDOWPLACEMENT wp;
+    wp.length = sizeof(WINDOWPLACEMENT);
+    GetWindowPlacement( (HWND) GetHWND(), &wp );
+    m_Config->Write( wxT("/MadEdit/WindowMaximize"), wp.showCmd == SW_SHOWMAXIMIZED );
 
-	m_Config->Write(wxT("/MadEdit/WindowLeft"),  wp.rcNormalPosition.left );
-	m_Config->Write(wxT("/MadEdit/WindowTop"),   wp.rcNormalPosition.top );
-	m_Config->Write(wxT("/MadEdit/WindowWidth"), wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	m_Config->Write(wxT("/MadEdit/WindowHeight"),wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
+    m_Config->Write(wxT("/MadEdit/WindowLeft"),  wp.rcNormalPosition.left );
+    m_Config->Write(wxT("/MadEdit/WindowTop"),   wp.rcNormalPosition.top );
+    m_Config->Write(wxT("/MadEdit/WindowWidth"), wp.rcNormalPosition.right - wp.rcNormalPosition.left);
+    m_Config->Write(wxT("/MadEdit/WindowHeight"),wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
 //#endif
 #else
-	GetPosition(&x,&y);
-	m_Config->Write(wxT("/MadEdit/WindowLeft"), x );
-	m_Config->Write(wxT("/MadEdit/WindowTop"), y );
+    GetPosition(&x,&y);
+    m_Config->Write(wxT("/MadEdit/WindowLeft"), x );
+    m_Config->Write(wxT("/MadEdit/WindowTop"), y );
 
-	GetSize(&x,&y);
-	m_Config->Write(wxT("/MadEdit/WindowWidth"), x );
-	m_Config->Write(wxT("/MadEdit/WindowHeight"), y );
+    GetSize(&x,&y);
+    m_Config->Write(wxT("/MadEdit/WindowWidth"), x );
+    m_Config->Write(wxT("/MadEdit/WindowHeight"), y );
 #endif
 //------------------
     m_Config->SetPath(wxT("/RecentFiles"));
@@ -2586,9 +2600,12 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     //delete g_PrintData;
     delete g_PageSetupData;
+    g_PageSetupData = NULL;
 
     if(g_OvrStr != NULL) delete g_OvrStr;
     if(g_RdOnly != NULL) delete g_RdOnly;
+    g_OvrStr = NULL;
+    g_RdOnly = NULL;
 
     extern void DeleteConfig();
     DeleteConfig();
@@ -2626,7 +2643,6 @@ void MadEditFrame::MadEditFrameKeyDown(wxKeyEvent& event)
         {
             g_FindInFilesDialog->Show(false);
         }
-
         break;
     }
 
