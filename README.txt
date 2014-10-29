@@ -23,7 +23,7 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommanded, and apply patches)
+      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommended, and apply patches)
          --enable-ipc
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
@@ -74,20 +74,22 @@ Syntax files, Locale files and Settings:
   Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
 
 Todo
-Fix Linux build(for SpellChecker)
+Fix Linux build(for SpellChecker changes)
+Spell checker config(Dictionary path, switch Dictionary)
 
-Mod v0.2.5
-1. Add hunspell as spell checker
-2. Encoding group/filter
-3. Toolbar of bookmark, add ClearAllBookmarks
-4. Fixed Linux build(Fedora Core 17)
-5. Fixed some minor coding issues reported by g++
-
+Mod v0.2.5 Alpha
+1. Add hunspell as spell checker(Hard code en_US as dictionary for preview, under Dictionaries/)
+2. Enable/Disable spell checker(View->Spell Checker)
+3. Encoding group/filter
+4. Toolbar of bookmark, add ClearAllBookmarks
+5. Fixed Linux build(Fedora Core 17)
+6. Fixed some minor coding issues reported by g++
+7. Add ".hxx" as header file of C++
 
 Mod v0.2.4
-1. Colum Align released
+1. Column Align released
 2. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
-3. Improve usibility of FindAll
+3. Improve usability of FindAll
 4. FindAll in Selection
 5. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
 6. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
@@ -111,7 +113,7 @@ Mod v0.2.2.1
 2. Fix wrong tap order of AUINoteBook http://trac.wxwidgets.org/attachment/ticket/10848/
 3. Fix bug in Mouse Select to clipboard
 4. Fix issue that Replace dialog never has chance to replace wrap around
-5. Update simplified chinese translation
+5. Update simplified Chinese translation
 
 Mod v0.2.2
 1. Add "Insert increamental numbers" to edit popup menu
@@ -131,9 +133,9 @@ Mod v0.2.1
 
 Mod v0.2.0
 New features from 0.1.x
-1. Single Instance feature don't compatable with 0.1.x
+1. Single Instance feature don't compatible with 0.1.x
 2. MadPython based on Python 2.7.8 as automation macro(Edit/Record/Run/Save/Load)
-3. Insert incremantal numbers
+3. Insert incremental numbers
 3. Purge history during exiting
 4. Right click on file tab supported
 5. Close to right/left
@@ -146,7 +148,7 @@ New to beta 4
 3. Use InsertString for InsertStr for performance
 4. Export InsertIncrementalNumber to MadPython
 5. Improve MadMacro dialog
-6. Update Simplifed Chinese
+6. Update Simplified Chinese
 Waiting for bug report of MadPython and Incremental numbering:-P
 
 Mod v0.2.0 beta 4
@@ -183,7 +185,7 @@ New to 0.1.5 beta
 4. Fixed issue of extra script because of Search/Replace dialog using MadEdit as TextEdit
 5. Fixed issue of updating StartRecord on Toolbar
 6. Fixed issue of duplicated Find/Replace generated
-7. Fixed issue of loading script with unicode characters, eg, unicode in comments
+7. Fixed issue of loading script with Unicode characters, eg, Unicode in comments
 8. Update translation of Simplified Chinese
 
 Mod v0.1.5 beta 2014.9.11
@@ -219,7 +221,7 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)[Tools->Macros]
-3. Improve behaviour of Search and SearchInFiles
+3. Improve behavior of Search and SearchInFiles
 4. Show search results on status bar
 5. Recoding and Playback(Todo)
 6. Save script/connected with shortcut(?)(Todo)

@@ -804,7 +804,6 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
 {
     ++ms_Count;
 
-    m_mouse_in_window = false;
     m_VScrollBar=new wxScrollBar(this, ID_VSCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL);
     m_HScrollBar=new wxScrollBar(this, ID_HSCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_HORIZONTAL);
 
@@ -1949,10 +1948,7 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
             dc->DrawLine(x+delta-3, y+m_RowHeight-yd[i%2], x+delta, y+m_RowHeight-yd[(i+1)%2]);
             delta += 3;
         }
-        //dc->DrawLine(x, y+m_RowHeight-1, x+totalwidth, y+m_RowHeight-1);
-        
     }
-
 }
 
 template< class T >
@@ -4398,7 +4394,6 @@ void MadEdit::GetHexDataFromClipboard(vector <char> *cs)
 
 void MadEdit::ReplaceWordFromCaretPos(wxString &ws)
 {
-    //SelectWordFromCaretPos(NULL);
     ucs4string out;
     vector<ucs4_t> ucs;
     
@@ -4408,6 +4403,8 @@ void MadEdit::ReplaceWordFromCaretPos(wxString &ws)
     {
         out += ucs[i] ;
     }
+    if(!m_Selection)
+        SelectWordFromCaretPos(NULL);
     InsertString(out.c_str(), out.length(), false, true, false);
 }
 
@@ -9917,12 +9914,6 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
 
-    if (!m_mouse_in_window)
-    {
-        evt.Skip();
-        return;
-    }
-
     ProcessCommand(ecMouseNotify);
 
     if(m_SingleLineMode && evt.m_x==m_LeftClickX && evt.m_y==m_LeftClickY)
@@ -10586,7 +10577,6 @@ void MadEdit::OnMouseWheel(wxMouseEvent &evt)
 void MadEdit::OnMouseEnterWindow(wxMouseEvent &evt)
 {
     UpdateCursor(evt.m_x, evt.m_y);
-    m_mouse_in_window = true;
     evt.Skip();
 }
 
@@ -10601,7 +10591,6 @@ void MadEdit::OnMouseLeaveWindow(wxMouseEvent &evt)
     {
         wxSetCursor(ArrowCursor); // scrollbar
     }
-    m_mouse_in_window = false; 
     evt.Skip();
 }
 
@@ -10612,6 +10601,10 @@ void MadEdit::OnMouseCaptureLost(wxMouseCaptureLostEvent &evt)
     m_MouseAtHexTextArea=false;
     m_DragDrop = false;
     m_DragCopyFlag = false;//default move
+    if(m_MouseMotionTimer->IsRunning())
+    {
+        m_MouseMotionTimer->Stop();
+    }
     //evt.Skip();
 }
 

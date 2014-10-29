@@ -115,6 +115,16 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	charset-detector/src/prmem.h \
 	charset-detector/src/entry/impl.cpp \
 	charset-detector/include/chardetect.h
+	spellchecker/HunspellInterface.cpp
+	spellchecker/HunspellInterface.h
+	spellchecker/PersonalDictionary.cpp
+	spellchecker/PersonalDictionary.h
+	spellchecker/SpellCheckEngineInterface.cpp
+	spellchecker/SpellCheckEngineInterface.h
+	spellchecker/SpellCheckEngineOption.cpp
+	spellchecker/SpellCheckEngineOption.h
+	spellchecker/SpellCheckUserInterface.cpp
+	spellchecker/SpellCheckUserInterface.h
 
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = madedit.xpm

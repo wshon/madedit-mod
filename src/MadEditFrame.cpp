@@ -1018,7 +1018,10 @@ void OnEditMouseRightUp(MadEdit *madedit)
     {
         wxString str;
         shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_MainFrame->GetSpellChecker();
-        g_ActiveMadEdit->GetWordFromCaretPos(str);
+        if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
+            g_ActiveMadEdit->GetSelText(str);
+        else
+            g_ActiveMadEdit->GetWordFromCaretPos(str);
         if(!spellChecker->IsSpellingOk(str))
         {
             g_SpellSuggestions.Clear();
@@ -1664,7 +1667,7 @@ CommandData CommandTable[]=
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
-    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Enable Spell Checker"), wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Spell check")},
+    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Enable Spell checker")},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
@@ -1909,8 +1912,10 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     );
     m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
     m_SpellCheckerPtr->ApplyOptions();
-    m_SpellCheckerPtr->InitializeSpellCheckEngine();
-    m_SpellCheckerEnabled = true;
+    if(m_SpellCheckerPtr->InitializeSpellCheckEngine())
+        m_SpellCheckerEnabled = true;
+    else
+        m_SpellCheckerEnabled = false;
 
     g_MainFrame=this;
 }
@@ -2867,8 +2872,8 @@ void MadEditFrame::OnNotebookPageClosed(bool bZeroPage)
 void MadEditFrame::OnNotebookPageRightDown(wxAuiNotebookEvent& event)
 {
     int now=event.GetSelection();
-	SetPageFocus(now);
-	PopupMenu(g_Menu_FilePop);
+    SetPageFocus(now);
+    PopupMenu(g_Menu_FilePop);
 }
 
 void MadEditFrame::OnSize(wxSizeEvent &evt)
@@ -3661,8 +3666,8 @@ void MadEditFrame::OnUpdateUI_MenuViewMarkBracePair(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit!=NULL);
-    event.Check(m_SpellCheckerEnabled);
+    event.Enable(g_ActiveMadEdit!=NULL && m_SpellCheckerPtr->IsInitialized());
+    event.Check(m_SpellCheckerEnabled && m_SpellCheckerPtr->IsInitialized());
 }
 
 void MadEditFrame::OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event)

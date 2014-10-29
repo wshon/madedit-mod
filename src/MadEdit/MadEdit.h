@@ -396,7 +396,6 @@ private:
     OnActivatePtr         m_OnActivate;
 
     wxMilliClock_t m_lastDoubleClick;
-    bool m_mouse_in_window;
     shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
 
 #ifdef __WXMSW__

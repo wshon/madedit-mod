@@ -127,7 +127,7 @@ bool HunspellInterface::IsSpellingOk(wxString strText)
 
   strText += _T(" ");
 
-  wxString strDelimiters = _T(" \t\r\n.,?!@#$%^&*()-=_+[]{}\\|;:\"<>/~0123456789");
+  wxString strDelimiters = _T(" \t\r\n.,?!@#$%^&*()-=_+[]{}\\|;:\"'`<>/~0123456789");
   wxStringTokenizer tkz(strText, strDelimiters);
   while ( tkz.HasMoreTokens() )
   {
