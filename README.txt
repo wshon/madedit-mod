@@ -85,6 +85,7 @@ Mod v0.2.5 Alpha
 5. Fixed Linux build(Fedora Core 17)
 6. Fixed some minor coding issues reported by g++
 7. Add ".hxx" as header file of C++
+8. Rollback a fix from wxMedit, which is buggy. https://github.com/hltj/wxMEdit/issues/63
 
 Mod v0.2.4
 1. Column Align released
