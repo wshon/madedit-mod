@@ -85,6 +85,7 @@ Mod v0.2.5 Alpha
 5. Fixed Linux build(Fedora Core 17)
 6. Fixed some minor coding issues reported by g++
 7. Add ".hxx" as header file of C++
+8. Rollback a fix from wxMedit, which is buggy. https://github.com/hltj/wxMEdit/issues/63
 
 Mod v0.2.4
 1. Column Align released
@@ -116,8 +117,8 @@ Mod v0.2.2.1
 5. Update simplified Chinese translation
 
 Mod v0.2.2
-1. Add "Insert increamental numbers" to edit popup menu
-2. Column Align(Alpha, Known issue: crash with tab misked with spaces.)
+1. Add "Insert incremental numbers" to edit popup menu
+2. Column Align(Alpha, Known issue: crash with tab mixed with spaces.)
 3. Add attribute check in file change detect. The file would be marked as modified
 if it was deleted, changed attributes.
 4. Improve the code of InsertColumnString
@@ -208,7 +209,7 @@ Mod v0.1.5 alpha 3 2014.9.10
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 2
 1. Fixed Assertion on wxEVT_MOUSE_CAPTURE_LOST
-2. Record/Stop/Playpack/SaveMacro is done(Known issue: SetCaretPosition would get wrong selection beginning
+2. Record/Stop/Playback/SaveMacro is done(Known issue: SetCaretPosition would get wrong selection beginning
 pos and duplicated SetCaretPosition). Not well tested.
 3. Added more apis
 4. Updated MadPython.txt
@@ -230,7 +231,7 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 Mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
 2. Update Simplifed/Traditional Chinese translation
-3. Partially upadate/add translation of Italian/Japanese/Spanish/Russion? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
+3. Partially update/add translation of Italian/Japanese/Spanish/Russian? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
 4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
 Mod v0.1.3 2014.6.23
@@ -461,7 +462,9 @@ MadEdit is released under the GNU General Public License.
 
 Author:
 ------
+MadEdit
 Alston Chen <madedit@gmail.com>
+MadEdit-Mod
 Minggang Li <minggang.li@gmail.com>
 
 Links:

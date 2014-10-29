@@ -376,8 +376,6 @@ private:
     wxArrayString m_MadMacroScripts;
     int m_LastSelBeg, m_LastSelEnd;
     bool m_MacroDebug;
-    shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
-    bool m_SpellCheckerEnabled;
 public:
     MadMacroMode GetMadMacroStatus(){return m_MadMacroStatus;}
     bool IsMacroRunning() {return (m_MadMacroStatus == emMacroRunning);}
@@ -398,7 +396,6 @@ public:
     }
     bool HasRecordedScript() {return (m_MadMacroScripts.GetCount()>2);}
     wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
-    shared_ptr<wxSpellCheckEngineInterface> & GetSpellChecker() {return m_SpellCheckerPtr;}
 };
 
 enum { // menu id

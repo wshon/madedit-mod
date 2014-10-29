@@ -50,6 +50,7 @@
 #include <algorithm>
 
 #include "EmbeddedPython.hpp"
+#include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 
 //Do not add custom headers.
@@ -1017,7 +1018,7 @@ void OnEditMouseRightUp(MadEdit *madedit)
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
         wxString str;
-        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_MainFrame->GetSpellChecker();
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
         if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
             g_ActiveMadEdit->GetSelText(str);
         else
@@ -1897,25 +1898,6 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_LastSelBeg = -1;
     m_LastSelEnd = -1;
     m_MacroDebug = false;
-    m_SpellCheckerPtr.reset(new HunspellInterface());
-
-    wxString dicDir = g_MadEditAppDir+wxT("Dictionaries");
-    dicDir += wxFileName::GetPathSeparator();
-    SpellCheckEngineOption DictionaryFileOption(
-        _T("dict-file"), _T("Dictionary File"),
-        dicDir+wxT("en_US.dic"), SpellCheckEngineOption::FILE
-    );
-    m_SpellCheckerPtr->AddOptionToMap(DictionaryFileOption);
-    SpellCheckEngineOption AffixFileOption(
-        _T("affix-file"), _T("Affix File"),
-        dicDir+wxT("en_US.aff"), SpellCheckEngineOption::FILE
-    );
-    m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
-    m_SpellCheckerPtr->ApplyOptions();
-    if(m_SpellCheckerPtr->InitializeSpellCheckEngine())
-        m_SpellCheckerEnabled = true;
-    else
-        m_SpellCheckerEnabled = false;
 
     g_MainFrame=this;
 }
@@ -3273,7 +3255,6 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     m_RecentEncodings->AddFileToHistory(str);
 
     madedit->SetFocus();
-    if(m_SpellCheckerEnabled) madedit->SetSpellChecker(m_SpellCheckerPtr);
 
     if(g_ActiveMadEdit != madedit)
     {
@@ -3666,8 +3647,8 @@ void MadEditFrame::OnUpdateUI_MenuViewMarkBracePair(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit!=NULL && m_SpellCheckerPtr->IsInitialized());
-    event.Check(m_SpellCheckerEnabled && m_SpellCheckerPtr->IsInitialized());
+    event.Enable(g_ActiveMadEdit!=NULL && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
+    event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetSpellCheckStatus());
 }
 
 void MadEditFrame::OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event)
@@ -5401,18 +5382,7 @@ void MadEditFrame::OnViewSpellChecker(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     size_t total = m_Notebook->GetPageCount(), i = 0;
-    m_SpellCheckerEnabled = event.IsChecked(); 
-    while(i<total)
-    {
-        MadEdit *madedit=(MadEdit*)m_Notebook->GetPage(i);
-        if(m_SpellCheckerEnabled)
-        {
-            madedit->SetSpellChecker(m_SpellCheckerPtr);
-        }
-        else
-            madedit->ResetSpellChecker();
-        ++i;
-    }
+    g_ActiveMadEdit->SetSpellCheck(event.IsChecked());
 }
 
 void MadEditFrame::OnViewTextMode(wxCommandEvent& event)

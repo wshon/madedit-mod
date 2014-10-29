@@ -81,7 +81,7 @@ public:
 
     static int MaxCount;
     static wxString DataDir;
-	static wxString FontDataFile[17];
+    static wxString FontDataFile[17];
     typedef list<FontWidthBuffer> FontWidthBuffers;
     static vector<FontWidthBuffers> FontWidthBuffersVector; //0~16
 
@@ -397,6 +397,7 @@ private:
 
     wxMilliClock_t m_lastDoubleClick;
     shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
+    bool            m_SpellCheck;
 
 #ifdef __WXMSW__
     bool m_IsWin98;
@@ -717,12 +718,15 @@ public: // basic functions
     void SetShowTabChar(bool value);
     void SetShowSpaceChar(bool value);
     void SetMarkActiveLine(bool value);
+    void SetSpellCheck(bool value);
 
     bool GetDisplayLineNumber() { return m_DisplayLineNumber; }
     bool GetShowEndOfLine() { return m_ShowEndOfLine; }
     bool GetShowTabChar() { return m_ShowTabChar; }
     bool GetShowSpaceChar() { return m_ShowSpaceChar; }
     bool GetMarkActiveLine() { return m_MarkActiveLine; }
+    bool GetSpellCheckStatus() { return m_SpellCheck; }
+    shared_ptr<wxSpellCheckEngineInterface> &GetSpellChecker() { return m_SpellCheckerPtr; }
 
     void SetMarkBracePair(bool value);
     bool GetMarkBracePair() { return m_MarkBracePair; }
@@ -1003,23 +1007,6 @@ public:
     {
         m_UseDefaultSyntax = bUseDefaultSyntax;
         m_SearchWholeWord = bSearchWholeWord;
-    }
-    void SetSpellChecker(shared_ptr<wxSpellCheckEngineInterface> &pSpellChecker)
-    {
-        m_SpellCheckerPtr = pSpellChecker;
-        m_RepaintAll = true;
-        Refresh(false);
-    }
-    void ResetSpellChecker()
-    {
-        m_SpellCheckerPtr.reset();
-        m_RepaintAll = true;
-        Refresh(false);
-    }
-    bool HasSpellChecker() 
-    {
-        if(m_SpellCheckerPtr) return true;
-        return false;
     }
 
 private: // Printing functions

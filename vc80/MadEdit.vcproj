@@ -420,7 +420,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="wxSpellChecker"
+				Name="SpellChecker"
 				>
 				<File
 					RelativePath="..\spellchecker\HunspellInterface.cpp"
@@ -452,6 +452,14 @@
 				</File>
 				<File
 					RelativePath="..\spellchecker\SpellCheckEngineOption.h"
+					>
+				</File>
+				<File
+					RelativePath="..\spellchecker\SpellCheckerManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\spellchecker\SpellCheckerManager.h"
 					>
 				</File>
 				<File

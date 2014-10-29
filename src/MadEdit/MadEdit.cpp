@@ -43,6 +43,7 @@
 #endif
 #endif
 
+#include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 
 using std::vector;
@@ -947,6 +948,10 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Config->Read(wxT("AutoCompletePair"), &m_AutoCompletePair, false);
     m_AutoCompleteRightChar = 0;
     m_AutoCompletePos = 0;
+
+    m_Config->Read(wxT("SpellCheck"),   &m_SpellCheck, true);
+    if(m_SpellCheck)
+        m_SpellCheckerPtr = SpellCheckerManager::Instance().GetSpellChecker();        
 
     m_InsertMode=true;
     m_CaretType=ctVerticalLine;
