@@ -72,6 +72,7 @@ Syntax files, Locale files and Settings:
 
 Todo
 Fix Linux build(for SpellChecker changes)
+Personal dictionary
 
 ChangeLog:
 Mod v0.2.5
