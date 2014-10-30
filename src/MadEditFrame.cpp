@@ -161,6 +161,8 @@
 #define bookmark_prev_xpm_idx (bookmark_next_xpm_idx+1)
 #include "../images/bookmark_clear.xpm"
 #define bookmark_clear_xpm_idx (bookmark_prev_xpm_idx+1)
+#include "../images/spellchecker.xpm"
+#define spellchecker_xpm_idx (bookmark_clear_xpm_idx+1)
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1668,7 +1670,7 @@ CommandData CommandTable[]=
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
-    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Enable Spell checker")},
+    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     spellchecker_xpm_idx,                 0,                         _("Enable Spell checker")},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
@@ -2047,6 +2049,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(bookmark_next_xpm));
     m_ImageList->Add(wxBitmap(bookmark_prev_xpm));
     m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
+    m_ImageList->Add(wxBitmap(spellchecker_xpm));
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
@@ -2445,6 +2448,8 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Stop Recording") );
     WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Playback") );
     WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro") );
+    WxToolBar1->AddSeparator();
+    WxToolBar1->AddTool(menuSpellChecker,  _T("SpellChecker"),  m_ImageList->GetBitmap(spellchecker_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Enable Spell Checker") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);

@@ -88,6 +88,7 @@ public:
     void Load();
     void Save();
     wxString GetLanguageName(const wxString& language_id);
+    wxString GetDictionaryName(const wxString& dictDesc);
 
     void ScanForDictionaries();
 
@@ -128,6 +129,7 @@ private:
     std::vector<wxString> m_dictionaries;
     int selectedDictionary;
     std::map<wxString, wxString> m_LanguageNamesMap;
+    std::map<wxString, wxString> m_DictionaryNamesMap;
     SpellCheckerMap m_SpellCheckerMap;
     wxConfigBase    *m_Config;
 };

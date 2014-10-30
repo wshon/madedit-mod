@@ -8,14 +8,15 @@
 #include "MadOptionsDialog.h"
 #include <wx/fileconf.h>
 #include <wx/config.h>
+#include <wx/dir.h>
+#include "wx/aui/auibook.h"
 #include "MadEdit/MadEncoding.h"
 #include "MadEdit/MadEditCommand.h"
 #include "MadEdit/MadEdit.h"
 #include "MadEditFrame.h"
 #include "MadUtils.h"
-#include "wx/aui/auibook.h"
-
 #include "MadEdit/MadEditPv.h"
+#include "SpellCheckerManager.h"
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -26,11 +27,12 @@ MadOptionsDialog *g_OptionsDialog=NULL;
 
 extern wxChar *g_LanguageString[];
 extern const size_t g_LanguageCount;
+extern wxString g_MadEditAppDir;
 
 TreeItemData *g_SelectedCommandItem=NULL;
 int g_SelectedKeyId=-1;
 TreeItemData *g_CommandItemOfNewKey=NULL;
-
+#define ENABLE_BITMAP 0
 
 class KeyTextCtrl : public wxTextCtrl
 {
@@ -145,9 +147,11 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_MENU(ID_MNU___Z_TIME_ZONEABBREVIATION_1194 , MadOptionsDialog::DateTimeMarkClick)
 	EVT_BUTTON(ID_WXBUTTONCANCEL,MadOptionsDialog::WxButtonCancelClick)
 	EVT_BUTTON(ID_WXBUTTONOK,MadOptionsDialog::WxButtonOKClick)
-	EVT_BUTTON(ID_WXBITMAP_DIR,MadOptionsDialog::WxButtonBitmapDirClick)
+//	EVT_BUTTON(ID_WXBITMAP_DIR,MadOptionsDialog::WxButtonBitmapDirClick)
 	EVT_BUTTON(ID_WXTHESAURI_DIR,MadOptionsDialog::WxButtonThesauriDirClick)
 	EVT_BUTTON(ID_WXDICTIONARY_DIR,MadOptionsDialog::WxButtonDictionaryDirClick)
+	EVT_TEXT_ENTER(ID_WXEDITDICTIONARYDIR,MadOptionsDialog::OnDictionaryDirChange)
+	EVT_CHOICE(ID_WXCHOICEDICTIONARY,MadOptionsDialog::OnSelectDictionary)
 	EVT_BUTTON(ID_WXBUTTONSHOWINMENU,MadOptionsDialog::WxButtonShowInMenuClick)
 	EVT_BUTTON(ID_WXBUTTONDELETEKEY,MadOptionsDialog::WxButtonDeleteKeyClick)
 	EVT_BUTTON(ID_WXBUTTONADDKEY,MadOptionsDialog::WxButtonAddKeyClick)
@@ -665,11 +669,6 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText18->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer5->Add(WxStaticText18, 0, wxALIGN_CENTER | wxALL, 5);
 
-	wxArrayString arrayStringFor_WxComboBoxDictionary;
-	WxComboBoxDictionary = new wxComboBox(WxNoteBookPage5, ID_WXCOMBOBOXDICTIONARY, wxT(""), wxPoint(74, 20), wxSize(325, 21), arrayStringFor_WxComboBoxDictionary, wxCB_DROPDOWN | wxCB_READONLY, wxTextValidator(wxFILTER_NONE, NULL), wxT("WxComboBoxDictionary"));
-	WxComboBoxDictionary->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxStaticBoxSizer5->Add(WxComboBoxDictionary, 0, wxALIGN_CENTER | wxALL, 5);
-
 	wxStaticBox* WxStaticBoxSizer6_StaticBoxObj = new wxStaticBox(WxNoteBookPage5, wxID_ANY, _("Path Setting"));
 	WxStaticBoxSizer6 = new wxStaticBoxSizer(WxStaticBoxSizer6_StaticBoxObj, wxVERTICAL);
 	WxBoxSizer29->Add(WxStaticBoxSizer6, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
@@ -685,6 +684,10 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonDictionaryDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer30->Add(WxButtonDictionaryDir, 0, wxALIGN_CENTER | wxALL, 5);
 
+	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText19"));
+	WxStaticText19->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxBoxSizer30->Add(WxStaticText19, 0, wxALIGN_CENTER | wxALL, 5);
+
 	WxBoxSizer31 = new wxBoxSizer(wxHORIZONTAL);
 	WxStaticBoxSizer6->Add(WxBoxSizer31, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
 
@@ -696,6 +699,10 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonThesauriDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer31->Add(WxButtonThesauriDir, 0, wxALIGN_CENTER | wxALL, 5);
 
+	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText20"));
+	WxStaticText20->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxBoxSizer31->Add(WxStaticText20, 0, wxALIGN_CENTER | wxALL, 5);
+#if ENABLE_BITMAP
 	WxBoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
 	WxStaticBoxSizer6->Add(WxBoxSizer32, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
 
@@ -707,6 +714,10 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonBitmapDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer32->Add(WxButtonBitmapDir, 0, wxALIGN_CENTER | wxALL, 5);
 
+	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText21"));
+	WxStaticText21->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
+	WxBoxSizer32->Add(WxStaticText21, 0, wxALIGN_CENTER | wxALL, 5);
+#endif
 	WxBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -756,17 +767,11 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
 
-	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText20"));
-	WxStaticText20->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer31->Add(WxStaticText20, 0, wxALIGN_CENTER | wxALL, 5);
-
-	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText19"));
-	WxStaticText19->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer30->Add(WxStaticText19, 0, wxALIGN_CENTER | wxALL, 5);
-
-	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText21"));
-	WxStaticText21->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer32->Add(WxStaticText21, 0, wxALIGN_CENTER | wxALL, 5);
+	wxArrayString arrayStringFor_WxChoiceDictionary;
+	WxChoiceDictionary = new wxChoice(WxNoteBookPage5, ID_WXCHOICEDICTIONARY, wxPoint(74, 20), wxSize(320, 21), arrayStringFor_WxChoiceDictionary, 0, wxDefaultValidator, wxT(""));
+	WxChoiceDictionary->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxChoiceDictionary->SetSelection(-1);
+	WxStaticBoxSizer5->Add(WxChoiceDictionary, 0, wxALIGN_LEFT | wxALL, 5);
 
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
@@ -951,6 +956,8 @@ void MadOptionsDialog::CreateGUIControls(void)
     }
     while(cd->command > 0);
 
+    InitDictionaryChoice();
+
     WxNotebook1->SetWindowStyleFlag(wxAUI_NB_TOP|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS);
 
     WxButtonCancel->SetId(wxID_CANCEL);
@@ -1124,6 +1131,14 @@ void MadOptionsDialog::LoadOptions(void)
     cfg->Read(wxT("PageFooterRight"), &ss);
     WxEditFooterRight->SetValue(ss);
 
+    cfg->SetPath(wxT("/SpellChecker"));
+    cfg->Read(wxT("DictPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    WxEditDictionaryDir->SetValue(ss);
+    cfg->Read(wxT("ThesPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    WxEditThesauriDir->SetValue(ss);
+    //cfg->Read(wxT("BitmPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    //WxEditBitMapDir->SetValue(ss);
+
 
     extern bool g_ResetAllKeys;
     WxCheckBoxResetAllKeys->SetValue(g_ResetAllKeys);
@@ -1207,6 +1222,23 @@ void MadOptionsDialog::WxButtonOKClick(wxCommandEvent& event)
         error=true;
     }
 
+    wxString path = WxEditDictionaryDir->GetValue();
+    if ( wxDir::Exists( path ) )
+    {
+        InitDictionaryChoice( path );
+    }
+    else
+    {
+        WxChoiceDictionary->Clear();
+    }
+
+    wxString dictDesc = WxChoiceDictionary->GetString(WxChoiceDictionary->GetSelection());
+    wxString dictName = SpellCheckerManager::Instance().GetDictionaryName(dictDesc);
+    if(!dictName.IsEmpty())
+    {
+        SpellCheckerManager::Instance().SetDictionaryName(dictName);
+    }
+
     if(!error) EndModal(wxID_OK);
 }
 
@@ -1215,7 +1247,7 @@ void MadOptionsDialog::WxButtonOKClick(wxCommandEvent& event)
  */
 void MadOptionsDialog::WxButtonCancelClick(wxCommandEvent& event)
 {
-	EndModal(wxID_CANCEL);
+    EndModal(wxID_CANCEL);
 }
 
 void MadOptionsDialog::PrintMarkButtonClick(wxCommandEvent& event)
@@ -1496,14 +1528,73 @@ void MadOptionsDialog::DateTimeMarkClick(wxCommandEvent& event)
     WxEditDateTime->SetValue(text+str);
 }
 
+#if ENABLE_BITMAP
 void MadOptionsDialog::WxButtonBitmapDirClick(wxCommandEvent& event)
 {
 }
-
+#endif
 void MadOptionsDialog::WxButtonThesauriDirClick(wxCommandEvent& event)
 {
+    wxString defdir=SpellCheckerManager::Instance().GetThesaurusPath();
+    if(defdir.IsEmpty()) defdir=wxGetCwd();
+    wxDirDialog dlg(this, _("Choose a directory"), defdir);
+    if(dlg.ShowModal()==wxID_OK)
+    {
+        WxEditThesauriDir->SetValue(dlg.GetPath());
+        SpellCheckerManager::Instance().SetThesaurusPath(dlg.GetPath());
+        InitDictionaryChoice();
+    }
 }
 
 void MadOptionsDialog::WxButtonDictionaryDirClick(wxCommandEvent& event)
 {
+    wxString defdir=SpellCheckerManager::Instance().GetDictionaryPath();
+    if(defdir.IsEmpty()) defdir=wxGetCwd();
+    wxDirDialog dlg(this, _("Choose a directory"), defdir);
+    if(dlg.ShowModal()==wxID_OK)
+    {
+        WxEditDictionaryDir->SetValue(dlg.GetPath());
+        SpellCheckerManager::Instance().SetDictionaryPath(dlg.GetPath());
+        InitDictionaryChoice();
+    }
+}
+
+void MadOptionsDialog::InitDictionaryChoice(const wxString &path/* = wxEmptyString*/)
+{
+    if ( !path.IsEmpty() )
+        SpellCheckerManager::Instance().SetDictionaryPath(path);
+    SpellCheckerManager::Instance().ScanForDictionaries();
+
+    std::vector<wxString> dics = SpellCheckerManager::Instance().GetPossibleDictionaries();
+    int sel = SpellCheckerManager::Instance().GetSelectedDictionaryNumber();
+
+    WxChoiceDictionary->Clear();
+    for ( unsigned int i = 0 ; i < dics.size(); i++ )
+        WxChoiceDictionary->AppendString(SpellCheckerManager::Instance().GetLanguageName(dics[i]));
+
+    if ( sel != -1 )
+        WxChoiceDictionary->Select(sel);
+}
+
+void MadOptionsDialog::OnDictionaryDirChange(wxCommandEvent& event)
+{
+    wxString path = WxEditDictionaryDir->GetValue();
+    if ( wxDir::Exists( path ) )
+    {
+        InitDictionaryChoice( path );
+    }
+    else
+    {
+        WxChoiceDictionary->Clear();
+    }
+}
+
+void MadOptionsDialog::OnSelectDictionary(wxCommandEvent& event)
+{
+    wxString dictDesc = WxChoiceDictionary->GetString(WxChoiceDictionary->GetSelection());
+    wxString dictName = SpellCheckerManager::Instance().GetDictionaryName(dictDesc);
+    if(!dictName.IsEmpty())
+    {
+        SpellCheckerManager::Instance().SetDictionaryName(dictName);
+    }
 }

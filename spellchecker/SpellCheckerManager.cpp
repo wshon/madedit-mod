@@ -306,6 +306,67 @@ void SpellCheckerManager::PopulateLanguageNamesMap()
     m_LanguageNamesMap[_T("tn_ZA")] = _T("Tswana (South Africa)");
     m_LanguageNamesMap[_T("uk_UA")] = _T("Ukrainian (Ukraine)");
     m_LanguageNamesMap[_T("zu_ZA")] = _T("Zulu (South Africa)");
+
+    m_DictionaryNamesMap[_T("Afrikaans (South Africa)")        ] = _T("af_ZA");
+    m_DictionaryNamesMap[_T("Bulgarian (Bulgaria)")            ] = _T("bg_BG");
+    m_DictionaryNamesMap[_T("Catalan (Spain)")                 ] = _T("ca_ES");
+    m_DictionaryNamesMap[_T("Czech (Czech Republic)")          ] = _T("cz_CZ");
+    m_DictionaryNamesMap[_T("Welsh (Wales)")                   ] = _T("cy_GB");
+    m_DictionaryNamesMap[_T("Danish (Denmark)")                ] = _T("da_DK");
+    m_DictionaryNamesMap[_T("German (Austria)")                ] = _T("de_AT");
+    m_DictionaryNamesMap[_T("German (Switzerland)")            ] = _T("de_CH");
+    m_DictionaryNamesMap[_T("German (Germany-orig dict)")      ] = _T("de_DE");
+    m_DictionaryNamesMap[_T("German (Germany-old & neu ortho)")] = _T("de_DE_comb");
+    m_DictionaryNamesMap[_T("German (Germany-neu ortho)")      ] = _T("de_DE_neu");
+    m_DictionaryNamesMap[_T("Greek (Greece)")                  ] = _T("el_GR");
+    m_DictionaryNamesMap[_T("English")                         ] = _T("en");
+    m_DictionaryNamesMap[_T("English (Australia)")             ] = _T("en_AU");
+    m_DictionaryNamesMap[_T("English (Canada)")                ] = _T("en_CA");
+    m_DictionaryNamesMap[_T("English (United Kingdom)")        ] = _T("en_GB");
+    m_DictionaryNamesMap[_T("English (New Zealand)")           ] = _T("en_NZ");
+    m_DictionaryNamesMap[_T("English (United States)")         ] = _T("en_US");
+    m_DictionaryNamesMap[_T("English (South Africa)")          ] = _T("en_ZA");
+    m_DictionaryNamesMap[_T("Esperanto (Anywhere)")            ] = _T("eo_l3");
+    m_DictionaryNamesMap[_T("Spanish (Spain-etal)")            ] = _T("es_ES");
+    m_DictionaryNamesMap[_T("Spanish (Mexico)")                ] = _T("es_MX");
+    m_DictionaryNamesMap[_T("Faroese (Faroese Islands)")       ] = _T("fo_FO");
+    m_DictionaryNamesMap[_T("French (France)")                 ] = _T("fr_FR");
+    m_DictionaryNamesMap[_T("Irish (Ireland)")                 ] = _T("ga_IE");
+    m_DictionaryNamesMap[_T("Scottish Gaelic (Scotland)")      ] = _T("gd_GB");
+    m_DictionaryNamesMap[_T("Galician (Spain)")                ] = _T("gl_ES");
+    m_DictionaryNamesMap[_T("Hebrew (Israel)")                 ] = _T("he_IL");
+    m_DictionaryNamesMap[_T("Croatian (Croatia)")              ] = _T("hr_HR");
+    m_DictionaryNamesMap[_T("Hungarian (Hungaria)")            ] = _T("hu_HU");
+    m_DictionaryNamesMap[_T("Interligua (x-register)")         ] = _T("ia");
+    m_DictionaryNamesMap[_T("Indonesian (Indonesia)")          ] = _T("id_ID");
+    m_DictionaryNamesMap[_T("Italian (Italy)")                 ] = _T("it_IT");
+    m_DictionaryNamesMap[_T("Latin (x-register)")              ] = _T("la");
+    m_DictionaryNamesMap[_T("Lithuanian (Lithuania)")          ] = _T("lt_LT");
+    m_DictionaryNamesMap[_T("Latvian (Latvia)")                ] = _T("lv_LV");
+    m_DictionaryNamesMap[_T("Malagasy (Madagascar)")           ] = _T("mg_MG");
+    m_DictionaryNamesMap[_T("Maori (New Zealand)")             ] = _T("mi_NZ");
+    m_DictionaryNamesMap[_T("Malay (Malaysia)")                ] = _T("ms_MY");
+    m_DictionaryNamesMap[_T("Norwegian Bokmaal (Norway)")      ] = _T("nb_NO");
+    m_DictionaryNamesMap[_T("Dutch (Nederlands)")              ] = _T("nl_NL");
+    m_DictionaryNamesMap[_T("Norwegian Nynorsk (Norway)")      ] = _T("nn_NO");
+    m_DictionaryNamesMap[_T("Chichewa (Malawi)")               ] = _T("ny_MW");
+    m_DictionaryNamesMap[_T("Polish (Poland)")                 ] = _T("pl_PL");
+    m_DictionaryNamesMap[_T("Portuguese (Brazil)")             ] = _T("pt_BR");
+    m_DictionaryNamesMap[_T("Portuguese (Portugal)")           ] = _T("pt_PT");
+    m_DictionaryNamesMap[_T("Romanian (Romania)")              ] = _T("ro_RO");
+    m_DictionaryNamesMap[_T("Russian (Russia)")                ] = _T("ru_RU");
+    m_DictionaryNamesMap[_T("Russian ye (Russia)")             ] = _T("ru_RU_ye");
+    m_DictionaryNamesMap[_T("Russian yo (Russia)")             ] = _T("ru_RU_yo");
+    m_DictionaryNamesMap[_T("Kinyarwanda (Rwanda)")            ] = _T("rw_RW");
+    m_DictionaryNamesMap[_T("Slovak (Slovakia)")               ] = _T("sk_SK");
+    m_DictionaryNamesMap[_T("Slovenian (Slovenia)")            ] = _T("sl_SI");
+    m_DictionaryNamesMap[_T("Swedish (Sweden)")                ] = _T("sv_SW");
+    m_DictionaryNamesMap[_T("Swahili (Kenya)")                 ] = _T("sw_KE");
+    m_DictionaryNamesMap[_T("Tetum (Indonesia)")               ] = _T("tet_ID");
+    m_DictionaryNamesMap[_T("Tagalog (Philippines)")           ] = _T("tl_PH");
+    m_DictionaryNamesMap[_T("Tswana (South Africa)")           ] = _T("tn_ZA");
+    m_DictionaryNamesMap[_T("Ukrainian (Ukraine)")             ] = _T("uk_UA");
+    m_DictionaryNamesMap[_T("Zulu (South Africa)")             ] = _T("zu_ZA");
 }
 wxString SpellCheckerManager::GetLanguageName(const wxString& language_id)
 {
@@ -344,6 +405,21 @@ wxString SpellCheckerManager::GetLanguageName(const wxString& language_id)
 
     return language_id;
 }
+
+wxString SpellCheckerManager::GetDictionaryName(const wxString& dictDesc)
+{
+    if(dictDesc.empty())
+        return dictDesc;
+
+    std::map<wxString, wxString>::iterator it;
+    // m_DictionaryNamesMap[] is probably obsolete because of FindLanguageInfo()... consider removing m_DictionaryNamesMap[]
+    it = m_DictionaryNamesMap.find(dictDesc);
+    if (it != m_DictionaryNamesMap.end() )
+        return it->second;
+
+    return dictDesc;
+}
+
 shared_ptr<wxSpellCheckEngineInterface> &SpellCheckerManager::GetSpellChecker()
 {
     SpellCheckerMap::iterator it = m_SpellCheckerMap.find(m_strDictionaryName);
@@ -357,12 +433,12 @@ shared_ptr<wxSpellCheckEngineInterface> &SpellCheckerManager::GetSpellChecker()
 
     SpellCheckEngineOption DictionaryFileOption(
         _T("dict-file"), _T("Dictionary File"),
-        m_DictPath+m_strDictionaryName+wxT(".dic"), SpellCheckEngineOption::FILE
+        m_DictPath+wxFileName::GetPathSeparator()+m_strDictionaryName+wxT(".dic"), SpellCheckEngineOption::FILE
     );
     spellCheckerPtr->AddOptionToMap(DictionaryFileOption);
     SpellCheckEngineOption AffixFileOption(
         _T("affix-file"), _T("Affix File"),
-        m_DictPath+m_strDictionaryName+wxT(".aff"), SpellCheckEngineOption::FILE
+        m_DictPath+wxFileName::GetPathSeparator()+m_strDictionaryName+wxT(".aff"), SpellCheckEngineOption::FILE
     );
     spellCheckerPtr->AddOptionToMap(AffixFileOption);
     spellCheckerPtr->ApplyOptions();

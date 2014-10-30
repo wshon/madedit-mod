@@ -1052,6 +1052,7 @@ void MadEdit::SetInsertMode(bool mode)
 
 void MadEdit::SetSpellCheck(bool value)
 {
+    if(m_SingleLineMode) return;
     if(value!=m_SpellCheck)
     {
         m_SpellCheck=value;
