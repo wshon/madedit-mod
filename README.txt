@@ -80,7 +80,7 @@ Mod v0.2.5
 2. Spell checker config(Dictionary path, switch Dictionary(Tools->Options))
 3. Different dictionary for different document(would not save in config)
 4. Detect possible dictionaries under some directories
-5. Fix typo in README.txt using Spell Checker
+5. Fix typo in README.txt by using Spell Checker
 
 Mod v0.2.5 Alpha
 1. Add hunspell as spell checker(Hard code en_US as dictionary for preview, under Dictionaries/)
