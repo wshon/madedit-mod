@@ -36,12 +36,9 @@ B. MS Windows (__WXMSW__):
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
 
-P.S.: Don't use VS.Net 2010 which has bugs to crash MadEdit(with wxWidgets-2.8.12 and 3.0.1). Use
-      VS.Net 2003, 2005 or 2013 instead(2008 might has the same issue as 2010)
 P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
       or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
-P.S.: Since MadEdit v0.2.2, Xpressive is attached in MadEdit sources package.
 P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
 P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
       wxWidgets
@@ -75,7 +72,14 @@ Syntax files, Locale files and Settings:
 
 Todo
 Fix Linux build(for SpellChecker changes)
-Spell checker config(Dictionary path, switch Dictionary)
+
+ChangeLog:
+Mod v0.2.5
+1. Spell checker released
+2. Spell checker config(Dictionary path, switch Dictionary(Tools->Options))
+3. Different dictionary for different document(would not save in config)
+4. Detect possible dictionaries under some directories
+5. Fix typo in README.txt using Spell Checker
 
 Mod v0.2.5 Alpha
 1. Add hunspell as spell checker(Hard code en_US as dictionary for preview, under Dictionaries/)
@@ -94,7 +98,7 @@ Mod v0.2.4
 4. FindAll in Selection
 5. Fix issue that cannot open the files "a b" and "a\xC0b" simultaneously
 6. Fix issue of wxFileHistory by porting wxRecentList from wxMEdit
-7. Fix crash issue while buiding with VS2010
+7. Fix crash issue while building with VS2010
 8. Fix issue that \xC0 matches spaces under Windows with Chinese Locale
 9. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
 10. Fix issue introduced by FindAll that it would be found if the matched text was at the beginning
@@ -164,7 +168,7 @@ Mod v0.2.0 beta 3
 This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
 2. Fixed MadPython insert char issue in column mode
-3. Change behave while string has illegal zero. ie. change 0x00(NUL) to 0x2400 uncode NUL
+3. Change behave while string has illegal zero. ie. change 0x00(NUL) to 0x2400 Unicode NUL
 4. Fixed Caret issue of search/replace(introduced by MadEdit): Caret would blink on wrong place, which 
 would be shown in right place if you iconize/restore the window
 5. Added MadPython syntax file and MadPython API added in the file
@@ -174,7 +178,7 @@ Known issue: MadPython not work well in column mode, eg. insert char in column m
 1. Fixed wxAUIBook bug with patch(http://trac.wxwidgets.org/attachment/ticket/10848/)
 2. Add Close All To The Left/Right feature
 3. Add default sting in MadMacroDlg, say, medit = MadEdit()
-4. Fixed hang issue caused by empty (), [] and {} in regluar expression
+4. Fixed hang issue caused by empty (), [] and {} in regular expression
 5. More missed commands was recorded, eg, SetEditMode
 
 Mod v0.2.0 beta 2014.9.12
@@ -230,12 +234,12 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 
 Mod v0.1.4 2014.6.29
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
-2. Update Simplifed/Traditional Chinese translation
+2. Update Simplified/Traditional Chinese translation
 3. Partially update/add translation of Italian/Japanese/Spanish/Russian? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
 4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
 Mod v0.1.3 2014.6.23
-Nothing changed. Rebuid with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
+Nothing changed. Rebuild with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
 
 Mod v0.1.2
 1. Adding extra checking code for UTF8(From CodeBlocks)
@@ -266,7 +270,6 @@ Mod v0.1.2
 1.Fixed issues in Search/Replace in Selection
 2.Removed the confusing From/To on Search/Replace dialog
 
-ChangeLog:
 v0.2.9 Mod
 1.Fixed several critical/crash bugs in Madedit 0.2.9.
 2.New features added.

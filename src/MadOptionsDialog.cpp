@@ -684,7 +684,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonDictionaryDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer30->Add(WxButtonDictionaryDir, 0, wxALIGN_CENTER | wxALL, 5);
 
-	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText19"));
+	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText19"));
 	WxStaticText19->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
 	WxBoxSizer30->Add(WxStaticText19, 0, wxALIGN_CENTER | wxALL, 5);
 
@@ -699,7 +699,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonThesauriDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer31->Add(WxButtonThesauriDir, 0, wxALIGN_CENTER | wxALL, 5);
 
-	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText20"));
+	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText20"));
 	WxStaticText20->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
 	WxBoxSizer31->Add(WxStaticText20, 0, wxALIGN_CENTER | wxALL, 5);
 #if ENABLE_BITMAP
@@ -714,7 +714,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxButtonBitmapDir->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer32->Add(WxButtonBitmapDir, 0, wxALIGN_CENTER | wxALL, 5);
 
-	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, _("WxStaticText21"));
+	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText21"));
 	WxStaticText21->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
 	WxBoxSizer32->Add(WxStaticText21, 0, wxALIGN_CENTER | wxALL, 5);
 #endif

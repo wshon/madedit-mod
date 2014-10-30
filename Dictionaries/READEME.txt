@@ -1,0 +1,4 @@
+Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
+
+You can change your dictionary name to en_US for 0.2.5 Alpha release if you need a different language. The name
+was HARD CODE for preview release.(0.2.5 would be coming soon :D)
