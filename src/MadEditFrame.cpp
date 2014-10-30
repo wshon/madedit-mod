@@ -2449,7 +2449,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Playback") );
     WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro") );
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuSpellChecker,  _T("SpellChecker"),  m_ImageList->GetBitmap(spellchecker_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Enable Spell Checker") );
+    WxToolBar1->AddTool(menuSpellChecker,  _T("SpellChecker"),  m_ImageList->GetBitmap(spellchecker_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Spell Checker") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);
