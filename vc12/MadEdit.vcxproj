@@ -115,6 +115,7 @@
     <ClInclude Include="..\spellchecker\PersonalDictionary.h" />
     <ClInclude Include="..\spellchecker\SpellCheckEngineInterface.h" />
     <ClInclude Include="..\spellchecker\SpellCheckEngineOption.h" />
+    <ClInclude Include="..\spellchecker\SpellCheckerManager.h" />
     <ClInclude Include="..\spellchecker\SpellCheckUserInterface.h" />
     <ClInclude Include="..\src\MadAboutDialog.h" />
     <ClInclude Include="..\src\MadCommand.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="..\spellchecker\PersonalDictionary.cpp" />
     <ClCompile Include="..\spellchecker\SpellCheckEngineInterface.cpp" />
     <ClCompile Include="..\spellchecker\SpellCheckEngineOption.cpp" />
+    <ClCompile Include="..\spellchecker\SpellCheckerManager.cpp" />
     <ClCompile Include="..\spellchecker\SpellCheckUserInterface.cpp" />
     <ClCompile Include="..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\src\MadAboutDialog.cpp" />
