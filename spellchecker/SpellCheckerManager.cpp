@@ -427,7 +427,7 @@ shared_ptr<wxSpellCheckEngineInterface> &SpellCheckerManager::GetSpellChecker()
         return it->second;
     std::pair<SpellCheckerMap::iterator, bool> ret;
     ret = m_SpellCheckerMap.insert(std::pair<wxString, shared_ptr<wxSpellCheckEngineInterface> >(m_strDictionaryName,
-        shared_ptr<wxSpellCheckEngineInterface>(new HunspellInterface())));
+                                   shared_ptr<wxSpellCheckEngineInterface>(new HunspellInterface())));
     wxASSERT(ret.second);
     shared_ptr<wxSpellCheckEngineInterface> spellCheckerPtr = (ret.first)->second;
 
