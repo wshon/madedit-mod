@@ -963,8 +963,6 @@ void MadOptionsDialog::CreateGUIControls(void)
     }
     while(cd->command > 0);
 
-    InitDictionaryChoice();
-
     WxNotebook1->SetWindowStyleFlag(wxAUI_NB_TOP|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS);
 
     WxButtonCancel->SetId(wxID_CANCEL);
@@ -1138,12 +1136,13 @@ void MadOptionsDialog::LoadOptions(void)
     cfg->Read(wxT("PageFooterRight"), &ss);
     WxEditFooterRight->SetValue(ss);
 
-    cfg->SetPath(wxT("/SpellChecker"));
-    cfg->Read(wxT("DictPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
-    WxEditDictionaryDir->SetValue(ss);
-    //cfg->Read(wxT("ThesPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    bb = SpellCheckerManager::Instance().GeEnablePersonalDictionary();
+    WxCheckBoxPersonalDict->SetValue(bb);
+    WxEditDictionaryDir->SetValue(SpellCheckerManager::Instance().GetDictionaryPath());
+    InitDictionaryChoice();
+    //cfg->Read(wxT("ThesPath"), &ss, dictDir);
     //WxEditThesauriDir->SetValue(ss);
-    //cfg->Read(wxT("BitmPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    //cfg->Read(wxT("BitmPath"), &ss, dictDir);
     //WxEditBitMapDir->SetValue(ss);
 
 
@@ -1227,23 +1226,6 @@ void MadOptionsDialog::WxButtonOKClick(wxCommandEvent& event)
     {
         wxLogError(errtext, WxStaticText6->GetLabel().c_str(), WxEditIndentColumns->GetValue().c_str());
         error=true;
-    }
-
-    wxString path = WxEditDictionaryDir->GetValue();
-    if ( wxDir::Exists( path ) )
-    {
-        InitDictionaryChoice( path );
-    }
-    else
-    {
-        WxChoiceDictionary->Clear();
-    }
-
-    wxString dictDesc = WxChoiceDictionary->GetString(WxChoiceDictionary->GetSelection());
-    wxString dictName = SpellCheckerManager::Instance().GetDictionaryName(dictDesc);
-    if(!dictName.IsEmpty())
-    {
-        SpellCheckerManager::Instance().SetDictionaryName(dictName);
     }
 
     if(!error) EndModal(wxID_OK);
@@ -1561,16 +1543,17 @@ void MadOptionsDialog::WxButtonDictionaryDirClick(wxCommandEvent& event)
     if(dlg.ShowModal()==wxID_OK)
     {
         WxEditDictionaryDir->SetValue(dlg.GetPath());
-        SpellCheckerManager::Instance().SetDictionaryPath(dlg.GetPath());
-        InitDictionaryChoice();
+        InitDictionaryChoice(dlg.GetPath());
     }
 }
 
 void MadOptionsDialog::InitDictionaryChoice(const wxString &path/* = wxEmptyString*/)
 {
     if ( !path.IsEmpty() )
+    {
         SpellCheckerManager::Instance().SetDictionaryPath(path);
-    SpellCheckerManager::Instance().ScanForDictionaries();
+        SpellCheckerManager::Instance().ScanForDictionaries();
+    }
 
     std::vector<wxString> dics = SpellCheckerManager::Instance().GetPossibleDictionaries();
     int sel = SpellCheckerManager::Instance().GetSelectedDictionaryNumber();

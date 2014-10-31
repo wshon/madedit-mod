@@ -360,13 +360,11 @@ public:
     TreeItemData* FindKeyInList(const wxString &key); // find key in TreeItemDataList
     bool FindItemInList(TreeItemData* tid, const list<TreeItemData*> &tlist);
     void UpdateKeyHint();
+    void InitDictionaryChoice(const wxString &path = wxEmptyString);
 
 #ifdef __WXMSW__
     wxCheckBox *WxCheckBoxRightClickMenu;
 #endif
-private:
-    void InitDictionaryChoice(const wxString &path = wxEmptyString);
-
 public:
 	void MadOptionsDialogClose(wxCloseEvent& event);
 	void CreateGUIControls(void);

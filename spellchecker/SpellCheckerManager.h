@@ -80,6 +80,14 @@ public:
     {
         m_strDictionaryName = val;
     }
+    const bool GeEnablePersonalDictionary()const
+    {
+        return m_EnablePersonalDictionary;
+    }
+    void SetEnablePersonalDictionary(bool val)
+    {
+        m_EnablePersonalDictionary = val;
+    }
     int GetSelectedDictionaryNumber()const
     {
         return selectedDictionary;
@@ -123,6 +131,7 @@ private:
     wxString m_ThesPath;
     wxString m_BitmPath;
     bool m_EnableOnlineChecker;
+    bool m_EnablePersonalDictionary;
     bool m_EnableSpellTooltips;
     bool m_EnableThesaurusTooltips;
     wxString m_strDictionaryName;

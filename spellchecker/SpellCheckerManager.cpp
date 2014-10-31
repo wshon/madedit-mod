@@ -28,6 +28,7 @@
 extern wxString g_MadEditAppDir;
 
 #define CFG_SPELLCHECK_ENABLE_ONLINE_CHECK      _T("EnableOnlineChecker")
+#define CFG_SPELLCHECK_ENABLE_PERSONAL_DICT     _T("EnablePersonalDictionary")
 #define CFG_SPELLCHECK_SPELL_TOOLTIPS_CHECK     _T("SpellTooltips")
 #define CFG_SPELLCHECK_THESAURUS_TOOLTIPS_CHECK _T("ThesTooltips")
 #define CFG_SPELLCHECK_DICTIONARY_NAME          _T("Dictionary")
@@ -71,8 +72,6 @@ SpellCheckerManager::SpellCheckerManager()
     :selectedDictionary(-1)
 {
     m_Config=wxConfigBase::Get(false);
-    m_Config->SetPath(wxT("/SpellChecker"));
-
     Load();
     ScanForDictionaries();
     PopulateLanguageNamesMap();
@@ -221,14 +220,21 @@ void SpellCheckerManager::Load()
     if (!m_strDictionaryName.StartsWith(_T("en"))) // default language is English (system designation preferred)
         m_strDictionaryName = _T("en_US");
     {
-        bool tmpbool = false;
+        wxString oldpath=m_Config->GetPath();
+        m_Config->SetPath(wxT("/SpellChecker"));
+        wxString dictDir = g_MadEditAppDir+wxT("Dictionaries");
         m_Config->Read(CFG_SPELLCHECK_ENABLE_ONLINE_CHECK, &m_EnableOnlineChecker, false);
+        m_Config->Read(CFG_SPELLCHECK_ENABLE_PERSONAL_DICT, &m_EnablePersonalDictionary, false);
         m_Config->Read(CFG_SPELLCHECK_SPELL_TOOLTIPS_CHECK, &m_EnableSpellTooltips, false);
         m_Config->Read(CFG_SPELLCHECK_THESAURUS_TOOLTIPS_CHECK, &m_EnableThesaurusTooltips, false);
         m_Config->Read(CFG_SPELLCHECK_DICTIONARY_NAME, &m_strDictionaryName, _T("en_US"));
-        m_Config->Read(CFG_SPELLCHECK_DICTIONARY_PATH, &m_DictPath, g_MadEditAppDir+wxT("Dictionaries"));
-        m_Config->Read(CFG_SPELLCHECK_THESAURI_PATH, &m_ThesPath, g_MadEditAppDir+wxT("Dictionaries"));
-        m_Config->Read(CFG_SPELLCHECK_BITMAPS_PATH, &m_BitmPath, g_MadEditAppDir+wxT("Dictionaries"));
+        m_Config->Read(CFG_SPELLCHECK_DICTIONARY_PATH, &m_DictPath, dictDir);
+        if(!wxDir::Exists(m_DictPath)) m_DictPath = wxEmptyString;
+        m_Config->Read(CFG_SPELLCHECK_THESAURI_PATH, &m_ThesPath, dictDir);
+        if(!wxDir::Exists(m_ThesPath)) m_ThesPath = wxEmptyString;
+        m_Config->Read(CFG_SPELLCHECK_BITMAPS_PATH, &m_BitmPath, dictDir);
+        if(!wxDir::Exists(m_BitmPath)) m_BitmPath = wxEmptyString;
+        m_Config->SetPath(oldpath);
     }
 
     DetectDictionaryPath();
@@ -236,13 +242,17 @@ void SpellCheckerManager::Load()
 }
 void SpellCheckerManager::Save()
 {
+    wxString oldpath=m_Config->GetPath();
+    m_Config->SetPath(wxT("/SpellChecker"));
     m_Config->Write(CFG_SPELLCHECK_ENABLE_ONLINE_CHECK, m_EnableOnlineChecker);
+    m_Config->Write(CFG_SPELLCHECK_ENABLE_PERSONAL_DICT, m_EnablePersonalDictionary);
     m_Config->Write(CFG_SPELLCHECK_SPELL_TOOLTIPS_CHECK, m_EnableSpellTooltips);
     m_Config->Write(CFG_SPELLCHECK_THESAURUS_TOOLTIPS_CHECK, m_EnableThesaurusTooltips);
     m_Config->Write(CFG_SPELLCHECK_DICTIONARY_NAME, m_strDictionaryName);
     m_Config->Write(CFG_SPELLCHECK_DICTIONARY_PATH, m_DictPath);
     m_Config->Write(CFG_SPELLCHECK_THESAURI_PATH, m_ThesPath);
     m_Config->Write(CFG_SPELLCHECK_BITMAPS_PATH, m_BitmPath);
+    m_Config->SetPath(oldpath);
 }
 void SpellCheckerManager::PopulateLanguageNamesMap()
 {

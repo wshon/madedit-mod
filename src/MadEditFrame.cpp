@@ -5560,6 +5560,25 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         ss=g_OptionsDialog->WxEditFooterRight->GetValue();
         m_Config->Write(wxT("PageFooterRight"), ss);
 
+        wxString path = g_OptionsDialog->WxEditDictionaryDir->GetValue();
+        if ( wxDir::Exists( path ) )
+        {
+            SpellCheckerManager::Instance().SetDictionaryPath(path);
+            SpellCheckerManager::Instance().ScanForDictionaries();
+        }
+        
+        wxString dictDesc = g_OptionsDialog->WxChoiceDictionary->GetString(g_OptionsDialog->WxChoiceDictionary->GetSelection());
+        wxString dictName = SpellCheckerManager::Instance().GetDictionaryName(dictDesc);
+        if(!dictName.IsEmpty())
+        {
+            SpellCheckerManager::Instance().SetDictionaryName(dictName);
+        }
+
+        SpellCheckerManager::Instance().SetEnablePersonalDictionary(g_OptionsDialog->WxCheckBoxPersonalDict->GetValue());
+
+        // SpellChecker
+        SpellCheckerManager::Instance().Save();
+
         int count=int(m_Notebook->GetPageCount());
         for(int i=0;i<count;++i)
         {
