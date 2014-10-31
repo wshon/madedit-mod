@@ -70,16 +70,16 @@ Syntax files, Locale files and Settings:
   
   Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
 
-Todo
+Next release:
+-------------
 Fix Linux build(for SpellChecker changes)
 Personal dictionary
 
 ChangeLog:
-Mod Next Release
-Mod v0.2.6
-1. Disable Spell Checker/Bookmark in Hex Mode
-
-
+----------
+Mod v0.2.5.1
+1. Fix bugs of Spell Checker config save/load
+3. Disable Spell Checker/Bookmark in Hex Mode
 
 Mod v0.2.5
 1. Spell checker released
