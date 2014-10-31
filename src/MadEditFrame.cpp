@@ -3652,7 +3652,8 @@ void MadEditFrame::OnUpdateUI_MenuViewMarkBracePair(wxUpdateUIEvent& event)
 
 void MadEditFrame::OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit!=NULL && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
+        && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetSpellCheckStatus());
 }
 
