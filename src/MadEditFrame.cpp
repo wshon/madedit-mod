@@ -50,6 +50,7 @@
 #include <algorithm>
 
 #include "EmbeddedPython.hpp"
+#include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 
 //Do not add custom headers.
@@ -160,6 +161,8 @@
 #define bookmark_prev_xpm_idx (bookmark_next_xpm_idx+1)
 #include "../images/bookmark_clear.xpm"
 #define bookmark_clear_xpm_idx (bookmark_prev_xpm_idx+1)
+#include "../images/spellchecker.xpm"
+#define spellchecker_xpm_idx (bookmark_clear_xpm_idx+1)
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1014,10 +1017,10 @@ void OnEditMouseRightUp(MadEdit *madedit)
     //pt=g_MainFrame->m_Notebook->ScreenToClient(pt);
     //g_MainFrame->PopupMenu(g_Menu_Edit);//, pt);
     vector<wxMenuItem *> spellItems;
-    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->GetSpellCheckStatus())
     {
         wxString str;
-        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_MainFrame->GetSpellChecker();
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
         if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
             g_ActiveMadEdit->GetSelText(str);
         else
@@ -1033,8 +1036,12 @@ void OnEditMouseRightUp(MadEdit *madedit)
                 {
                     spellItems.push_back(g_Menu_EditPop->Insert(i, menuSpellOption1+i, g_SpellSuggestions[i]));
                 }
-                spellItems.push_back(g_Menu_EditPop->InsertSeparator(count));
+                spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
             }
+
+            wxString label = _("Igore \"") + str + _("\" for this session");
+            spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellIgnore, label));
+            spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
         }            
     }
     g_MainFrame->PopupMenu(g_Menu_EditPop);//Fixe for the assertion in debug
@@ -1196,6 +1203,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuColumnMode, MadEditFrame::OnUpdateUI_MenuViewColumnMode)
 	EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
 	EVT_UPDATE_UI(menuSpellChecker, MadEditFrame::OnUpdateUI_MenuViewSpellChecker)
+	EVT_UPDATE_UI(menuSpellIgnore, MadEditFrame::OnUpdateUI_MenuSpellIgnore)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
@@ -1254,10 +1262,10 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuSelectAll, MadEditFrame::OnEditSelectAll)
 	EVT_MENU(menuInsertTabChar, MadEditFrame::OnEditInsertTabChar)
 	EVT_MENU(menuInsertDateTime, MadEditFrame::OnEditInsertDateTime)
-    EVT_MENU(menuToggleBookmark, MadEditFrame::OnEditToggleBookmark)
+	EVT_MENU(menuToggleBookmark, MadEditFrame::OnEditToggleBookmark)
 	EVT_MENU(menuGotoNextBookmark, MadEditFrame::OnEditGotoNextBookmark)
-    EVT_MENU(menuGotoPreviousBookmark, MadEditFrame::OnEditGotoPreviousBookmark)
-    EVT_MENU(menuClearAllBookmarks, MadEditFrame::OnEditClearAllBookmarks)
+	EVT_MENU(menuGotoPreviousBookmark, MadEditFrame::OnEditGotoPreviousBookmark)
+	EVT_MENU(menuClearAllBookmarks, MadEditFrame::OnEditClearAllBookmarks)
 	EVT_MENU(menuSortAscending, MadEditFrame::OnEditSortAscending)
 	EVT_MENU(menuSortDescending, MadEditFrame::OnEditSortDescending)
 	EVT_MENU(menuSortAscendingCase, MadEditFrame::OnEditSortAscendingCase)
@@ -1320,6 +1328,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuColumnMode, MadEditFrame::OnViewColumnMode)
 	EVT_MENU(menuHexMode, MadEditFrame::OnViewHexMode)
 	EVT_MENU(menuSpellChecker, MadEditFrame::OnViewSpellChecker)
+	EVT_MENU(menuSpellIgnore, MadEditFrame::OnSpellCheckIgnore)
 	// tools
 	EVT_MENU(menuOptions, MadEditFrame::OnToolsOptions)
 	EVT_MENU(menuHighlighting, MadEditFrame::OnToolsHighlighting)
@@ -1667,7 +1676,7 @@ CommandData CommandTable[]=
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
-    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Enable Spell checker")},
+    { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     spellchecker_xpm_idx,                 0,       _("Spell checker")},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
@@ -1897,25 +1906,6 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_LastSelBeg = -1;
     m_LastSelEnd = -1;
     m_MacroDebug = false;
-    m_SpellCheckerPtr.reset(new HunspellInterface());
-
-    wxString dicDir = g_MadEditAppDir+wxT("Dictionaries");
-    dicDir += wxFileName::GetPathSeparator();
-    SpellCheckEngineOption DictionaryFileOption(
-        _T("dict-file"), _T("Dictionary File"),
-        dicDir+wxT("en_US.dic"), SpellCheckEngineOption::FILE
-    );
-    m_SpellCheckerPtr->AddOptionToMap(DictionaryFileOption);
-    SpellCheckEngineOption AffixFileOption(
-        _T("affix-file"), _T("Affix File"),
-        dicDir+wxT("en_US.aff"), SpellCheckEngineOption::FILE
-    );
-    m_SpellCheckerPtr->AddOptionToMap(AffixFileOption);
-    m_SpellCheckerPtr->ApplyOptions();
-    if(m_SpellCheckerPtr->InitializeSpellCheckEngine())
-        m_SpellCheckerEnabled = true;
-    else
-        m_SpellCheckerEnabled = false;
 
     g_MainFrame=this;
 }
@@ -2065,6 +2055,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(bookmark_next_xpm));
     m_ImageList->Add(wxBitmap(bookmark_prev_xpm));
     m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
+    m_ImageList->Add(wxBitmap(spellchecker_xpm));
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
@@ -2463,6 +2454,8 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Stop Recording") );
     WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Playback") );
     WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro") );
+    WxToolBar1->AddSeparator();
+    WxToolBar1->AddTool(menuSpellChecker,  _T("SpellChecker"),  m_ImageList->GetBitmap(spellchecker_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Spell Checker") );
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);
@@ -3273,7 +3266,6 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     m_RecentEncodings->AddFileToHistory(str);
 
     madedit->SetFocus();
-    if(m_SpellCheckerEnabled) madedit->SetSpellChecker(m_SpellCheckerPtr);
 
     if(g_ActiveMadEdit != madedit)
     {
@@ -3454,21 +3446,21 @@ void MadEditFrame::OnUpdateUI_MenuEditInsertDateTime(wxUpdateUIEvent& event)
 //
 void MadEditFrame::OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
 void MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event)
 {
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->HasBookMark() );
+    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
 //----------
 
@@ -3663,11 +3655,16 @@ void MadEditFrame::OnUpdateUI_MenuViewMarkBracePair(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetMarkBracePair());
 }
-
 void MadEditFrame::OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit!=NULL && m_SpellCheckerPtr->IsInitialized());
-    event.Check(m_SpellCheckerEnabled && m_SpellCheckerPtr->IsInitialized());
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
+        && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
+    event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetSpellCheckStatus());
+}
+void MadEditFrame::OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
+        && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
 }
 
 void MadEditFrame::OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event)
@@ -5399,19 +5396,22 @@ void MadEditFrame::OnViewMarkBracePair(wxCommandEvent& event)
 
 void MadEditFrame::OnViewSpellChecker(wxCommandEvent& event)
 {
-    if(g_ActiveMadEdit==NULL) return;
-    size_t total = m_Notebook->GetPageCount(), i = 0;
-    m_SpellCheckerEnabled = event.IsChecked(); 
-    while(i<total)
+    if(g_ActiveMadEdit)
+        g_ActiveMadEdit->SetSpellCheck(event.IsChecked());
+}
+
+void MadEditFrame::OnSpellCheckIgnore(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
-        MadEdit *madedit=(MadEdit*)m_Notebook->GetPage(i);
-        if(m_SpellCheckerEnabled)
-        {
-            madedit->SetSpellChecker(m_SpellCheckerPtr);
-        }
+        wxString str;
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
+        if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
+            g_ActiveMadEdit->GetSelText(str);
         else
-            madedit->ResetSpellChecker();
-        ++i;
+            g_ActiveMadEdit->GetWordFromCaretPos(str);
+        spellChecker->GetUserCorrection(str);
+        g_ActiveMadEdit->SetSpellCheck(true);
     }
 }
 
@@ -5821,14 +5821,14 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
                 g_MadMacroDlg = new MadMacroDlg(this, m_MacroDebug);
             }
 
-			wxString endline(wxT("\r"));
-			if (g_ActiveMadEdit->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
-			else if (g_ActiveMadEdit->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
-			pyscript = wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline;
-			pyscript += m_MadMacroScripts[0] + endline;
+            wxString endline(wxT("\r"));
+            if (g_ActiveMadEdit->GetInsertNewLineType() == nltDOS) endline += wxT("\n");
+            else if (g_ActiveMadEdit->GetInsertNewLineType() == nltUNIX) endline = wxT("\n");
+            pyscript = wxString(wxT("#Create MadEdit Object for active edit")) + endline + wxT("medit = MadEdit()") + endline + endline;
+            pyscript += m_MadMacroScripts[0] + endline;
             for(size_t i = 1; i < total; ++i)
-				pyscript += (medit + m_MadMacroScripts[i] + endline);
-			g_MadMacroDlg->SetPyScript(pyscript);
+                pyscript += (medit + m_MadMacroScripts[i] + endline);
+            g_MadMacroDlg->SetPyScript(pyscript);
             g_MadMacroDlg->ShowModal();
             if(g_ActiveMadEdit)
             {

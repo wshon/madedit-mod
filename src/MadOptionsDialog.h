@@ -20,6 +20,7 @@
 //wx-dvcpp designer will remove them
 ////Header Include Start
 #include <wx/menu.h>
+#include <wx/choice.h>
 #include <wx/listbox.h>
 #include <wx/treectrl.h>
 #include <wx/radiobox.h>
@@ -80,25 +81,25 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
-		wxStaticText *WxStaticText21;
-		wxStaticText *WxStaticText19;
-		wxStaticText *WxStaticText20;
 		wxMenu *WxPopupMenuPrintMark;
 		wxMenu *WxPopupMenuDateTimeMark;
 		wxButton *WxButtonCancel;
 		wxButton *WxButtonOK;
 		wxBoxSizer *WxBoxSizer2;
+		wxStaticText *WxStaticText21;
 		wxButton *WxButtonBitmapDir;
 		wxTextCtrl *WxEditBitMapDir;
 		wxBoxSizer *WxBoxSizer32;
+		wxStaticText *WxStaticText20;
 		wxButton *WxButtonThesauriDir;
 		wxTextCtrl *WxEditThesauriDir;
 		wxBoxSizer *WxBoxSizer31;
+		wxStaticText *WxStaticText19;
 		wxButton *WxButtonDictionaryDir;
 		wxTextCtrl *WxEditDictionaryDir;
 		wxBoxSizer *WxBoxSizer30;
 		wxStaticBoxSizer *WxStaticBoxSizer6;
-		wxComboBox *WxComboBoxDictionary;
+		wxChoice *WxChoiceDictionary;
 		wxStaticText *WxStaticText18;
 		wxStaticBoxSizer *WxStaticBoxSizer5;
 		wxBoxSizer *WxBoxSizer29;
@@ -226,9 +227,6 @@ public:
 	enum {
 ////GUI Enum Control ID Start
 			ID_DUMMY_START = 1000,
-			ID_WXSTATICTEXT21,
-			ID_WXSTATICTEXT19,
-			ID_WXSTATICTEXT20,
 			ID_MNU_MENUITEM1_1110,
 			ID_MNU___P__PATHNAME_1111,
 			ID_MNU_MENUITEM3_1112,
@@ -266,13 +264,16 @@ public:
 			
 			ID_WXBUTTONCANCEL,
 			ID_WXBUTTONOK,
+			ID_WXSTATICTEXT21,
 			ID_WXBITMAP_DIR,
 			ID_WXEDITBITMAPDIR,
+			ID_WXSTATICTEXT20,
 			ID_WXTHESAURI_DIR,
 			ID_WXEDITTHESAURI,
+			ID_WXSTATICTEXT19,
 			ID_WXDICTIONARY_DIR,
 			ID_WXEDITDICTIONARYDIR,
-			ID_WXCOMBOBOXDICTIONARY,
+			ID_WXCHOICEDICTIONARY,
 			ID_WXSTATICTEXT18,
 			ID_WXNOTEBOOKPAGE5,
 			ID_WXCHECKBOXRESETALLKEYS,
@@ -360,10 +361,12 @@ public:
 #ifdef __WXMSW__
     wxCheckBox *WxCheckBoxRightClickMenu;
 #endif
+private:
+    void InitDictionaryChoice(const wxString &path = wxEmptyString);
 
 public:
-    void MadOptionsDialogClose(wxCloseEvent& event);
-    void CreateGUIControls(void);
+	void MadOptionsDialogClose(wxCloseEvent& event);
+	void CreateGUIControls(void);
 	void MadOptionsDialogActivate(wxActivateEvent& event);
 	void LoadOptions(void);
 	void WxButtonOKClick(wxCommandEvent& event);
@@ -371,16 +374,17 @@ public:
 	void PrintMarkClick(wxCommandEvent& event);
 	void PrintMarkButtonClick(wxCommandEvent& event);
 	void DateTimeMarkClick(wxCommandEvent& event);
-	
 	void WxTreeCtrl1SelChanged(wxTreeEvent& event);
 	void WxButtonAddKeyClick(wxCommandEvent& event);
 	void WxListBoxKeysSelected(wxCommandEvent& event);
 	void WxButtonDeleteKeyClick(wxCommandEvent& event);
 	void WxButtonDateTimeClick(wxCommandEvent& event);
 	void WxButtonShowInMenuClick(wxCommandEvent& event);
-	void WxButtonBitmapDirClick(wxCommandEvent& event);
-	void WxButtonThesauriDirClick(wxCommandEvent& event);
+//	void WxButtonBitmapDirClick(wxCommandEvent& event);
+//	void WxButtonThesauriDirClick(wxCommandEvent& event);
 	void WxButtonDictionaryDirClick(wxCommandEvent& event);
+	void OnDictionaryDirChange(wxCommandEvent& event);
+	void OnSelectDictionary(wxCommandEvent& event);
 };
 
 

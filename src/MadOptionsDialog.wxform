@@ -3260,9 +3260,9 @@ object frmNewForm: TfrmNewForm
           Wx_IDValue = 1202
           Wx_Alignment = [wxALIGN_LEFT, wxALIGN_CENTER_VERTICAL, wxEXPAND]
           object WxStaticBoxSizer5: TWxStaticBoxSizer
-            Left = 5
+            Left = 6
             Top = 5
-            Width = 409
+            Width = 404
             Height = 51
             TabOrder = 0
             Wx_Caption = 'Langurage'
@@ -3304,26 +3304,26 @@ object frmNewForm: TfrmNewForm
               Wx_Floating_X_Pos = 0
               Wx_Floating_Y_Pos = 0
             end
-            object WxComboBoxDictionary: TWxComboBox
+            object WxChoiceDictionary: TWxChoice
               Left = 74
               Top = 20
-              Width = 325
+              Width = 320
               Height = 21
               ItemHeight = 13
               TabOrder = 2
+              Text = 'WxChoiceDictionary'
+              EVT_CHOICE = 'OnSelectDictionary'
               Wx_BGColor = clBlack
-              Wx_Class = 'wxComboBox'
-              Wx_ComboboxStyle = [wxCB_DROPDOWN, wxCB_READONLY]
-              Wx_EditStyle = []
+              Wx_Class = 'wxChoice'
               Wx_ControlOrientation = wxControlVertical
               Wx_FGColor = clBlack
-              Wx_GeneralStyle = []
+              Wx_GeneralStyle = [wxVSCROLL]
               Wx_Hidden = False
-              Wx_IDName = 'ID_WXCOMBOBOXDICTIONARY'
-              Wx_IDValue = 1228
-              Wx_Validator = 'wxTextValidator(wxFILTER_NONE, NULL)'
-              Wx_PaneCaption = 'WxComboBox1'
-              Wx_PaneName = 'WxComboBox1_Pane'
+              Wx_IDName = 'ID_WXCHOICEDICTIONARY'
+              Wx_IDValue = 1232
+              Wx_Alignment = [wxALIGN_LEFT]
+              Wx_PaneCaption = 'WxChoice1'
+              Wx_PaneName = 'WxChoice1_Pane'
               Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
               Wx_Aui_Dockable_Direction = []
               Wx_Aui_Pane_Style = []
@@ -3341,7 +3341,7 @@ object frmNewForm: TfrmNewForm
             end
           end
           object WxStaticBoxSizer6: TWxStaticBoxSizer
-            Left = 6
+            Left = 5
             Top = 66
             Width = 406
             Height = 125
@@ -3373,6 +3373,7 @@ object frmNewForm: TfrmNewForm
                 BevelOuter = bvNone
                 AutoSize = False
                 TabOrder = 0
+                EVT_TEXT_ENTER = 'OnDictionaryDirChange'
                 Wx_BGColor = clBlack
                 Wx_Class = 'wxTextCtrl'
                 Wx_ControlOrientation = wxControlVertical
@@ -3594,7 +3595,7 @@ object frmNewForm: TfrmNewForm
               end
             end
             object WxBoxSizer32: TWxBoxSizer
-              Left = 10
+              Left = 12
               Top = 85
               Width = 382
               Height = 35
