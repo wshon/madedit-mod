@@ -661,6 +661,13 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxNoteBookPage5->SetSizer(WxBoxSizer29);
 	WxNoteBookPage5->SetAutoLayout(true);
 
+	WxBoxSizer33 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer29->Add(WxBoxSizer33, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
+
+	WxCheckBoxPersonalDict = new wxCheckBox(WxNoteBookPage5, ID_WXCHECKBOXPERSONALDICT, _("Enable Personal Dictionary"), wxPoint(5, 5), wxSize(209, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPersonalDict"));
+	WxCheckBoxPersonalDict->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer33->Add(WxCheckBoxPersonalDict, 0, wxALIGN_LEFT | wxALL, 5);
+
 	wxStaticBox* WxStaticBoxSizer5_StaticBoxObj = new wxStaticBox(WxNoteBookPage5, wxID_ANY, _("Langurage"));
 	WxStaticBoxSizer5 = new wxStaticBoxSizer(WxStaticBoxSizer5_StaticBoxObj, wxHORIZONTAL);
 	WxBoxSizer29->Add(WxStaticBoxSizer5, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
@@ -1134,8 +1141,8 @@ void MadOptionsDialog::LoadOptions(void)
     cfg->SetPath(wxT("/SpellChecker"));
     cfg->Read(wxT("DictPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
     WxEditDictionaryDir->SetValue(ss);
-    cfg->Read(wxT("ThesPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
-    WxEditThesauriDir->SetValue(ss);
+    //cfg->Read(wxT("ThesPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
+    //WxEditThesauriDir->SetValue(ss);
     //cfg->Read(wxT("BitmPath"), &ss, g_MadEditAppDir+wxT("Dictionaries"));
     //WxEditBitMapDir->SetValue(ss);
 

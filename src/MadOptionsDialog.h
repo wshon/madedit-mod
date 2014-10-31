@@ -19,8 +19,8 @@
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
 ////Header Include Start
-#include <wx/menu.h>
 #include <wx/choice.h>
+#include <wx/menu.h>
 #include <wx/listbox.h>
 #include <wx/treectrl.h>
 #include <wx/radiobox.h>
@@ -81,11 +81,6 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
-		wxMenu *WxPopupMenuPrintMark;
-		wxMenu *WxPopupMenuDateTimeMark;
-		wxButton *WxButtonCancel;
-		wxButton *WxButtonOK;
-		wxBoxSizer *WxBoxSizer2;
 		wxStaticText *WxStaticText21;
 		wxButton *WxButtonBitmapDir;
 		wxTextCtrl *WxEditBitMapDir;
@@ -102,6 +97,13 @@ public:
 		wxChoice *WxChoiceDictionary;
 		wxStaticText *WxStaticText18;
 		wxStaticBoxSizer *WxStaticBoxSizer5;
+		wxCheckBox *WxCheckBoxPersonalDict;
+		wxBoxSizer *WxBoxSizer33;
+		wxMenu *WxPopupMenuPrintMark;
+		wxMenu *WxPopupMenuDateTimeMark;
+		wxButton *WxButtonCancel;
+		wxButton *WxButtonOK;
+		wxBoxSizer *WxBoxSizer2;
 		wxBoxSizer *WxBoxSizer29;
 		wxPanel *WxNoteBookPage5;
 		wxCheckBox *WxCheckBoxResetAllKeys;
@@ -275,6 +277,7 @@ public:
 			ID_WXEDITDICTIONARYDIR,
 			ID_WXCHOICEDICTIONARY,
 			ID_WXSTATICTEXT18,
+			ID_WXCHECKBOXPERSONALDICT,
 			ID_WXNOTEBOOKPAGE5,
 			ID_WXCHECKBOXRESETALLKEYS,
 			ID_WXBUTTONSHOWINMENU,
