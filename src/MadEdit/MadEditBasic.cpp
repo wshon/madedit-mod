@@ -1066,10 +1066,9 @@ void MadEdit::SetSpellCheck(bool value)
             m_Config->Write(wxT("/MadEdit/SpellCheck"), value);
             m_Config->SetPath(oldpath);
         }
-
-        m_RepaintAll=true;
-        Refresh(false);
     }
+    m_RepaintAll=true;
+    Refresh(false);
 }
 
 void MadEdit::GetCaretPosition(int &line, int &subrow, wxFileOffset &column)

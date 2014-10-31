@@ -75,6 +75,12 @@ Fix Linux build(for SpellChecker changes)
 Personal dictionary
 
 ChangeLog:
+Mod Next Release
+Mod v0.2.6
+1. Disable Spell Checker/Bookmark in Hex Mode
+
+
+
 Mod v0.2.5
 1. Spell checker released
 2. Spell checker config(Dictionary path, switch Dictionary(Tools->Options))

@@ -1954,7 +1954,7 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
         dc->SetPen(*wxThePenList->FindOrCreatePen(color, 1, wxSOLID/*wxDOT*/));
         for(int i = 0; delta < totalwidth; ++i)
         {
-            dc->DrawLine(x+delta-3, y+m_RowHeight-yd[i%2], x+delta, y+m_RowHeight-yd[(i+1)%2]);
+            dc->DrawLine(x+delta-3, y+m_RowHeight-yd[i%2]-1, x+delta, y+m_RowHeight-yd[(i+1)%2]-1);
             delta += 3;
         }
     }

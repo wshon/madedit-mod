@@ -157,6 +157,7 @@ public:
     void OnUpdateUI_MenuViewColumnMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -278,6 +279,7 @@ public:
     void OnViewColumnMode(wxCommandEvent& event);
     void OnViewHexMode(wxCommandEvent& event);
     void OnViewSpellChecker(wxCommandEvent& event);
+    void OnSpellCheckIgnore(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -448,8 +450,6 @@ enum { // menu id
     menuSortByOptions,
     menuSortOptions,
     menuAdvanced,
-    menuSpellOption1,
-    menuSpellOption99 = menuSpellOption1 + 98,
     
     menuCopyAsHexString,
     menuCopyAsHexStringWithSpace,
@@ -543,6 +543,10 @@ enum { // menu id
     menuHexMode,
     menuMacroDebugMode,
     menuSpellChecker,
+    menuSpellIgnore,
+    menuSpellAdd2Dict,
+    menuSpellOption1,
+    menuSpellOption99 = menuSpellOption1 + 98,
 
     // tools
     menuOptions,

@@ -486,6 +486,11 @@ wxString HunspellInterface::GetCharacterEncoding()
     return encoding;
 }
 
+int HunspellInterface::GetUserCorrection(const wxString& strMisspelling)
+{
+    m_AlwaysIgnoreList.Add(strMisspelling);
+    return wxSpellCheckUserInterface::ACTION_IGNORE_ALWAYS;
+}
 
 ///////////// Options /////////////////
 // "dictionary-path" - location of dictionary files

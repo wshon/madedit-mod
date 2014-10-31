@@ -381,7 +381,7 @@ public:
 	void WxButtonDateTimeClick(wxCommandEvent& event);
 	void WxButtonShowInMenuClick(wxCommandEvent& event);
 //	void WxButtonBitmapDirClick(wxCommandEvent& event);
-	void WxButtonThesauriDirClick(wxCommandEvent& event);
+//	void WxButtonThesauriDirClick(wxCommandEvent& event);
 	void WxButtonDictionaryDirClick(wxCommandEvent& event);
 	void OnDictionaryDirChange(wxCommandEvent& event);
 	void OnSelectDictionary(wxCommandEvent& event);

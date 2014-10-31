@@ -76,8 +76,8 @@ public:
     {
         m_CustomMySpellDictionaryMap.clear();
     }
-
     virtual wxString GetCharacterEncoding();
+    virtual int GetUserCorrection(const wxString& strMisspelling);
 
 private:
     void PopulateDictionaryMap(StringToStringMap* pLookupMap, const wxString& strDictionaryPath);

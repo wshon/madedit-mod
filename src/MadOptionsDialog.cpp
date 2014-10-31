@@ -32,7 +32,7 @@ extern wxString g_MadEditAppDir;
 TreeItemData *g_SelectedCommandItem=NULL;
 int g_SelectedKeyId=-1;
 TreeItemData *g_CommandItemOfNewKey=NULL;
-#define ENABLE_BITMAP 0
+#define ENABLE_BITMAP_THUARI 0
 
 class KeyTextCtrl : public wxTextCtrl
 {
@@ -148,7 +148,7 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_BUTTON(ID_WXBUTTONCANCEL,MadOptionsDialog::WxButtonCancelClick)
 	EVT_BUTTON(ID_WXBUTTONOK,MadOptionsDialog::WxButtonOKClick)
 //	EVT_BUTTON(ID_WXBITMAP_DIR,MadOptionsDialog::WxButtonBitmapDirClick)
-	EVT_BUTTON(ID_WXTHESAURI_DIR,MadOptionsDialog::WxButtonThesauriDirClick)
+//	EVT_BUTTON(ID_WXTHESAURI_DIR,MadOptionsDialog::WxButtonThesauriDirClick)
 	EVT_BUTTON(ID_WXDICTIONARY_DIR,MadOptionsDialog::WxButtonDictionaryDirClick)
 	EVT_TEXT_ENTER(ID_WXEDITDICTIONARYDIR,MadOptionsDialog::OnDictionaryDirChange)
 	EVT_CHOICE(ID_WXCHOICEDICTIONARY,MadOptionsDialog::OnSelectDictionary)
@@ -687,7 +687,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText19 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT19, _("Dictionary"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText19"));
 	WxStaticText19->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
 	WxBoxSizer30->Add(WxStaticText19, 0, wxALIGN_CENTER | wxALL, 5);
-
+#if ENABLE_BITMAP_THUARI
 	WxBoxSizer31 = new wxBoxSizer(wxHORIZONTAL);
 	WxStaticBoxSizer6->Add(WxBoxSizer31, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
 
@@ -702,7 +702,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText20 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT20, _("Thesauri"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText20"));
 	WxStaticText20->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, _("MS Sans Serif")));
 	WxBoxSizer31->Add(WxStaticText20, 0, wxALIGN_CENTER | wxALL, 5);
-#if ENABLE_BITMAP
+
 	WxBoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
 	WxStaticBoxSizer6->Add(WxBoxSizer32, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
 
@@ -1528,11 +1528,10 @@ void MadOptionsDialog::DateTimeMarkClick(wxCommandEvent& event)
     WxEditDateTime->SetValue(text+str);
 }
 
-#if ENABLE_BITMAP
+#if ENABLE_BITMAP_THUARI
 void MadOptionsDialog::WxButtonBitmapDirClick(wxCommandEvent& event)
 {
 }
-#endif
 void MadOptionsDialog::WxButtonThesauriDirClick(wxCommandEvent& event)
 {
     wxString defdir=SpellCheckerManager::Instance().GetThesaurusPath();
@@ -1545,6 +1544,7 @@ void MadOptionsDialog::WxButtonThesauriDirClick(wxCommandEvent& event)
         InitDictionaryChoice();
     }
 }
+#endif
 
 void MadOptionsDialog::WxButtonDictionaryDirClick(wxCommandEvent& event)
 {
