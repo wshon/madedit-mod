@@ -1050,27 +1050,6 @@ void MadEdit::SetInsertMode(bool mode)
     DoStatusChanged();
 }
 
-void MadEdit::SetSpellCheck(bool value)
-{
-    if(m_SingleLineMode) return;
-    if(value!=m_SpellCheck)
-    {
-        m_SpellCheck=value;
-        if(m_SpellCheck) 
-            m_SpellCheckerPtr = SpellCheckerManager::Instance().GetSpellChecker();
-        else
-            m_SpellCheckerPtr.reset();
-        if(m_StorePropertiesToGlobalConfig)
-        {
-            wxString oldpath=m_Config->GetPath();
-            m_Config->Write(wxT("/MadEdit/SpellCheck"), value);
-            m_Config->SetPath(oldpath);
-        }
-    }
-    m_RepaintAll=true;
-    Refresh(false);
-}
-
 void MadEdit::GetCaretPosition(int &line, int &subrow, wxFileOffset &column)
 {
     line = m_CaretPos.lineid;

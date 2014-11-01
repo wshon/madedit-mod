@@ -719,6 +719,7 @@ public: // basic functions
     void SetShowSpaceChar(bool value);
     void SetMarkActiveLine(bool value);
     void SetSpellCheck(bool value);
+    void AddtoDictionary(wxString & misSpell);
 
     bool GetDisplayLineNumber() { return m_DisplayLineNumber; }
     bool GetShowEndOfLine() { return m_ShowEndOfLine; }

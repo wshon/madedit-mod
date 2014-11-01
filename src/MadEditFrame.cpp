@@ -1041,6 +1041,11 @@ void OnEditMouseRightUp(MadEdit *madedit)
 
             wxString label = _("Igore \"") + str + _("\" for this session");
             spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellIgnore, label));
+            if(SpellCheckerManager::Instance().GeEnablePersonalDictionary())
+            {
+                label = _("Add \"") + str + _("\" to dictionary");
+                spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellAdd2Dict, label));
+            }
             spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
         }            
     }
@@ -1204,6 +1209,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
 	EVT_UPDATE_UI(menuSpellChecker, MadEditFrame::OnUpdateUI_MenuViewSpellChecker)
 	EVT_UPDATE_UI(menuSpellIgnore, MadEditFrame::OnUpdateUI_MenuSpellIgnore)
+	EVT_UPDATE_UI(menuSpellAdd2Dict, MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
@@ -1329,6 +1335,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuHexMode, MadEditFrame::OnViewHexMode)
 	EVT_MENU(menuSpellChecker, MadEditFrame::OnViewSpellChecker)
 	EVT_MENU(menuSpellIgnore, MadEditFrame::OnSpellCheckIgnore)
+	EVT_MENU(menuSpellAdd2Dict, MadEditFrame::OnSpellAdd2Dict)
 	// tools
 	EVT_MENU(menuOptions, MadEditFrame::OnToolsOptions)
 	EVT_MENU(menuHighlighting, MadEditFrame::OnToolsHighlighting)
@@ -3667,6 +3674,11 @@ void MadEditFrame::OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event)
         && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
 }
 
+void MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
+        && SpellCheckerManager::Instance().GeEnablePersonalDictionary());
+}
 void MadEditFrame::OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL);
@@ -5412,6 +5424,21 @@ void MadEditFrame::OnSpellCheckIgnore(wxCommandEvent& event)
             g_ActiveMadEdit->GetWordFromCaretPos(str);
         spellChecker->GetUserCorrection(str);
         g_ActiveMadEdit->SetSpellCheck(true);
+    }
+}
+
+void MadEditFrame::OnSpellAdd2Dict(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        wxString str;
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
+        if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
+            g_ActiveMadEdit->GetSelText(str);
+        else
+            g_ActiveMadEdit->GetWordFromCaretPos(str);
+        //spellChecker->GetUserCorrection(str);
+        //g_ActiveMadEdit->SetSpellCheck(true);
     }
 }
 

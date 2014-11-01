@@ -473,7 +473,9 @@ void HunspellInterface::AddCustomMySpellDictionary(const wxString& strDictionary
 
 void HunspellInterface::OpenPersonalDictionary(const wxString& strPersonalDictionaryFile)
 {
-    m_PersonalDictionary.SetDictionaryFileName(strPersonalDictionaryFile);
+    wxString dictName = strPersonalDictionaryFile;
+    if(dictName.IsEmpty()) dictName = wxT("MadDictionary.dat");
+    m_PersonalDictionary.SetDictionaryFileName(m_strDictionaryPath + wxFILE_SEP_PATH + dictName);
     m_PersonalDictionary.LoadPersonalDictionary();
 }
 
@@ -490,6 +492,16 @@ int HunspellInterface::GetUserCorrection(const wxString& strMisspelling)
 {
     m_AlwaysIgnoreList.Add(strMisspelling);
     return wxSpellCheckUserInterface::ACTION_IGNORE_ALWAYS;
+}
+
+void HunspellInterface::ClosePersonalDictionary()
+{
+    if (m_bPersonalDictionaryModified)
+    {
+        //if (wxYES == ::wxMessageBox(_T("Would you like to save any of your changes to your personal dictionary?"), _T("Save Changes"), wxYES_NO | wxICON_QUESTION))
+        m_PersonalDictionary.SavePersonalDictionary();
+    }
+
 }
 
 ///////////// Options /////////////////

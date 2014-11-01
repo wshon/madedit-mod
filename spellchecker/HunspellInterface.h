@@ -66,7 +66,8 @@ public:
     virtual int AddWordToDictionary(const wxString& strWord);
     virtual int RemoveWordFromDictionary(const wxString& strWord);
     virtual wxArrayString GetWordListAsArray();
-    void OpenPersonalDictionary(const wxString& strPersonalDictionaryFile);
+    virtual void OpenPersonalDictionary(const wxString& strPersonalDictionaryFile=wxEmptyString);    
+    virtual void ClosePersonalDictionary();
     PersonalDictionary* GetPersonalDictionary()
     {
         return &m_PersonalDictionary;
