@@ -42,7 +42,7 @@ bool PersonalDictionary::LoadPersonalDictionary()
             if (strWord.IsEmpty() || strWord == _T(";"))
                 continue;
 
-            m_DictionaryWords.Add(strWord);
+            m_DictionaryWords.Add(strWord.Lower());
         }
         // Handle the last line
         strWord.Trim(FALSE); // Trim on the left
@@ -55,7 +55,6 @@ bool PersonalDictionary::LoadPersonalDictionary()
     DictFile.Close();
     return true;
 }
-
 
 bool PersonalDictionary::SavePersonalDictionary()
 {
@@ -87,18 +86,24 @@ bool PersonalDictionary::SavePersonalDictionary()
 
 bool PersonalDictionary::IsWordInDictionary(const wxString& strWord)
 {
-    return (m_DictionaryWords.Index(strWord) != wxNOT_FOUND);
+    wxString word = strWord.Lower();
+    if(word.IsEmpty()) return false;
+    return (m_DictionaryWords.Index(strWord.Lower()) != wxNOT_FOUND);
 }
 
 void PersonalDictionary::AddWord(const wxString& strWord)
 {
-    m_DictionaryWords.Add(strWord);
+    wxString word = strWord.Lower();
+    if(word.IsEmpty()) return;
+    m_DictionaryWords.Add(strWord.Lower());
     m_DictionaryWords.Sort();
 }
 
 void PersonalDictionary::RemoveWord(const wxString& strWord)
 {
-    m_DictionaryWords.Remove(strWord);
+    wxString word = strWord.Lower();
+    if(word.IsEmpty()) return;
+    m_DictionaryWords.Remove(strWord.Lower());
 }
 
 wxArrayString PersonalDictionary::GetWordListAsArray()
