@@ -66,8 +66,8 @@ public:
     virtual int AddWordToDictionary(const wxString& strWord);
     virtual int RemoveWordFromDictionary(const wxString& strWord);
     virtual wxArrayString GetWordListAsArray();
-    virtual void OpenPersonalDictionary(const wxString& strPersonalDictionaryFile=wxEmptyString);    
-    virtual void ClosePersonalDictionary();
+    void OpenPersonalDictionary(const wxString& strPersonalDictionaryFile=wxEmptyString);    
+    virtual void SetEnablePersonalDictionary(bool enable);
     PersonalDictionary* GetPersonalDictionary()
     {
         return &m_PersonalDictionary;
@@ -96,6 +96,7 @@ private:
     wxString m_strDictionaryPath;
 
     PersonalDictionary m_PersonalDictionary;
+    bool m_EnablePersonalDictionary;
 };
 
 #endif  // __MYSPELL_CHECK_INTERFACE__

@@ -1041,7 +1041,7 @@ void OnEditMouseRightUp(MadEdit *madedit)
 
             wxString label = _("Igore \"") + str + _("\" for this session");
             spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellIgnore, label));
-            if(SpellCheckerManager::Instance().GeEnablePersonalDictionary())
+            if(SpellCheckerManager::Instance().GetEnablePersonalDictionary())
             {
                 label = _("Add \"") + str + _("\" to dictionary");
                 spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellAdd2Dict, label));
@@ -3677,7 +3677,7 @@ void MadEditFrame::OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event)
 void MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
-        && SpellCheckerManager::Instance().GeEnablePersonalDictionary());
+        && SpellCheckerManager::Instance().GetEnablePersonalDictionary());
 }
 void MadEditFrame::OnUpdateUI_MenuViewTextMode(wxUpdateUIEvent& event)
 {
@@ -5437,8 +5437,7 @@ void MadEditFrame::OnSpellAdd2Dict(wxCommandEvent& event)
             g_ActiveMadEdit->GetSelText(str);
         else
             g_ActiveMadEdit->GetWordFromCaretPos(str);
-        //spellChecker->GetUserCorrection(str);
-        //g_ActiveMadEdit->SetSpellCheck(true);
+        g_ActiveMadEdit->AddtoDictionary(str);
     }
 }
 
@@ -5601,7 +5600,11 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             SpellCheckerManager::Instance().SetDictionaryName(dictName);
         }
 
-        SpellCheckerManager::Instance().SetEnablePersonalDictionary(g_OptionsDialog->WxCheckBoxPersonalDict->GetValue());
+		if (SpellCheckerManager::Instance().GetEnablePersonalDictionary()
+            != g_OptionsDialog->WxCheckBoxPersonalDict->GetValue())
+        {
+            SpellCheckerManager::Instance().SetEnablePersonalDictionary(g_OptionsDialog->WxCheckBoxPersonalDict->GetValue());
+        }
 
         // SpellChecker
         SpellCheckerManager::Instance().Save();

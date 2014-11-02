@@ -1136,7 +1136,7 @@ void MadOptionsDialog::LoadOptions(void)
     cfg->Read(wxT("PageFooterRight"), &ss);
     WxEditFooterRight->SetValue(ss);
 
-    bb = SpellCheckerManager::Instance().GeEnablePersonalDictionary();
+    bb = SpellCheckerManager::Instance().GetEnablePersonalDictionary();
     WxCheckBoxPersonalDict->SetValue(bb);
     WxEditDictionaryDir->SetValue(SpellCheckerManager::Instance().GetDictionaryPath());
     InitDictionaryChoice();

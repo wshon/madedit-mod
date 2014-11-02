@@ -80,14 +80,11 @@ public:
     {
         m_strDictionaryName = val;
     }
-    const bool GeEnablePersonalDictionary()const
+    const bool GetEnablePersonalDictionary()const
     {
         return m_EnablePersonalDictionary;
     }
-    void SetEnablePersonalDictionary(bool val)
-    {
-        m_EnablePersonalDictionary = val;
-    }
+	void SetEnablePersonalDictionary(bool val);
     int GetSelectedDictionaryNumber()const
     {
         return selectedDictionary;

@@ -33,6 +33,7 @@ HunspellInterface::HunspellInterface(wxSpellCheckUserInterface* pDlg /* = NULL *
 
     m_pHunspell = NULL;
     m_bPersonalDictionaryModified = false;
+    m_EnablePersonalDictionary = false;
 }
 
 HunspellInterface::~HunspellInterface()
@@ -473,9 +474,7 @@ void HunspellInterface::AddCustomMySpellDictionary(const wxString& strDictionary
 
 void HunspellInterface::OpenPersonalDictionary(const wxString& strPersonalDictionaryFile)
 {
-    wxString dictName = strPersonalDictionaryFile;
-    if(dictName.IsEmpty()) dictName = wxT("MadDictionary.dat");
-    m_PersonalDictionary.SetDictionaryFileName(m_strDictionaryPath + wxFILE_SEP_PATH + dictName);
+	m_PersonalDictionary.SetDictionaryFileName(m_strDictionaryPath + wxFILE_SEP_PATH + strPersonalDictionaryFile);
     m_PersonalDictionary.LoadPersonalDictionary();
 }
 
@@ -494,14 +493,33 @@ int HunspellInterface::GetUserCorrection(const wxString& strMisspelling)
     return wxSpellCheckUserInterface::ACTION_IGNORE_ALWAYS;
 }
 
-void HunspellInterface::ClosePersonalDictionary()
+void HunspellInterface::SetEnablePersonalDictionary(bool enable)
 {
-    if (m_bPersonalDictionaryModified)
+    if(enable)
     {
-        //if (wxYES == ::wxMessageBox(_T("Would you like to save any of your changes to your personal dictionary?"), _T("Save Changes"), wxYES_NO | wxICON_QUESTION))
-        m_PersonalDictionary.SavePersonalDictionary();
-    }
+        m_EnablePersonalDictionary = true;
 
+        wxFileName sPath(GetDictionaryFileName());
+        sPath.MakeAbsolute();
+        wxString dictName = wxT("MadDict.")+sPath.GetName();
+        m_PersonalDictionary.SetDictionaryFileName(sPath.GetPath() + wxFILE_SEP_PATH + dictName);
+        wxTextFile DictFile(m_PersonalDictionary.GetDictionaryFileName());
+        if (!DictFile.Exists())
+        {
+            DictFile.Create();
+        }
+        m_PersonalDictionary.LoadPersonalDictionary();
+    }
+    else
+    {
+        m_EnablePersonalDictionary = false;
+        if (m_bPersonalDictionaryModified)
+        {
+            //if (wxYES == ::wxMessageBox(_T("Would you like to save any of your changes to your personal dictionary?"), _T("Save Changes"), wxYES_NO | wxICON_QUESTION))
+            m_PersonalDictionary.SavePersonalDictionary();
+            m_bPersonalDictionaryModified = false;
+        }
+    }
 }
 
 ///////////// Options /////////////////

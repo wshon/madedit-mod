@@ -453,7 +453,19 @@ shared_ptr<wxSpellCheckEngineInterface> &SpellCheckerManager::GetSpellChecker()
     spellCheckerPtr->AddOptionToMap(AffixFileOption);
     spellCheckerPtr->ApplyOptions();
     spellCheckerPtr->InitializeSpellCheckEngine();
+    spellCheckerPtr->SetEnablePersonalDictionary(m_EnablePersonalDictionary);
 
     return (ret.first)->second;
+}
+
+void SpellCheckerManager::SetEnablePersonalDictionary(bool val)
+{
+    m_EnablePersonalDictionary = val;
+    SpellCheckerMap::iterator it = m_SpellCheckerMap.begin();
+    while(it != m_SpellCheckerMap.end())
+    {
+		it->second->SetEnablePersonalDictionary(val);
+        ++it;
+    }
 }
 

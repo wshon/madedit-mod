@@ -21,9 +21,7 @@ bool PersonalDictionary::LoadPersonalDictionary()
     wxTextFile DictFile(sPath.GetFullPath());
     if (!DictFile.Exists())
     {
-		wxTextFile dict(m_strDictionaryFileName);
-        dict.Create();
-        //return false;
+        return false;
     }
     if (!DictFile.Open())
     {

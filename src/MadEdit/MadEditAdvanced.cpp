@@ -3065,5 +3065,8 @@ void MadEdit::SetSpellCheck(bool value)
 void MadEdit::AddtoDictionary(wxString & misSpell)
 {
     if(m_SingleLineMode || !m_SpellCheckerPtr) return;
+	m_SpellCheckerPtr->AddWordToDictionary(misSpell);
+    m_RepaintAll=true;
+    Refresh(false);
 }
 

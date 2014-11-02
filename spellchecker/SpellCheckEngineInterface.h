@@ -97,6 +97,7 @@ public:
     wxString ConvertFromUnicode(const char* inputBuffer);
 
     virtual wxString GetCharacterEncoding() = 0;
+    virtual void SetEnablePersonalDictionary(bool enable) = 0;
 
     class MisspellingContext
     {
