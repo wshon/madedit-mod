@@ -1039,11 +1039,11 @@ void OnEditMouseRightUp(MadEdit *madedit)
                 spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
             }
 
-            wxString label = _("Igore \"") + str + _("\" for this session");
+            wxString label = _("Ignore '") + str + _("' for this session");
             spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellIgnore, label));
             if(SpellCheckerManager::Instance().GetEnablePersonalDictionary())
             {
-                label = _("Add \"") + str + _("\" to dictionary");
+                label = _("Add '") + str + _("' to dictionary");
                 spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellAdd2Dict, label));
             }
             spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
@@ -2263,7 +2263,7 @@ void MadEditFrame::CreateGUIControls(void)
         for(int encgid = 0; encgid < ENCG_MAX; ++encgid)
         {
             if(g_Menu_View_EncodingGrps[encgid])
-                g_Menu_View_Encoding->Append(menuEncodingGroup1 + encgid, MadEncodingGrpName[encgid], g_Menu_View_EncodingGrps[encgid]);
+                g_Menu_View_Encoding->Append(menuEncodingGroup1 + encgid, MadEncoding::GetGroupNameById(encgid), g_Menu_View_EncodingGrps[encgid]);
         }
     }
 

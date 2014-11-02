@@ -23,6 +23,7 @@
 #include <wx/string.h>
 #include "ucs4_t.h"
 #include <vector>
+#include <map>
 
 enum MadEncodingType
 { etSingleByte, etDoubleByte, etUTF8, etUTF16LE, etUTF16BE, etUTF32LE, etUTF32BE };
@@ -75,6 +76,7 @@ class MadEncoding
 private:
     static size_t ms_SystemEncodingIndex;
     static MadEncoding *ms_SystemEncoding;
+    static std::map<int, wxString>MadEncodingGrpName;
 
 public:
     static void     InitEncodings(); // must call this before use MadEncoding
@@ -88,6 +90,11 @@ public:
     static wxString EncodingToName(wxFontEncoding enc);
     static wxFontEncoding NameToEncoding(const wxString &name);
     static MadEncoding *GetSystemEncoding();
+    static wxString GetGroupNameById(int id)
+    {
+        if(id<ENCG_WESTERNEUROPE || id>=ENCG_MAX) return wxEmptyString;
+        return MadEncodingGrpName[id];
+    }
 
 private:
     MadEncodingInfo *m_Info;

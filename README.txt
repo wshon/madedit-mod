@@ -83,6 +83,7 @@ Mod v0.2.5.1
 2. Personal dictionary(Add)/temporary ignore by right click
 3. Disable Spell Checker/Bookmark in Hex Mode
 4. Fix case sensitive issue of Personal dictionary
+5. Fix typo and translation issue
 
 Mod v0.2.5
 1. Spell checker released

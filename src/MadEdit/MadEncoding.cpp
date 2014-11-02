@@ -8,8 +8,9 @@
 #include "MadEncoding.h"
 #include "chardetect.h"
 #include <wx/config.h>
-#include <vector>
+
 using std::vector;
+using std::map;
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -66,28 +67,8 @@ using std::vector;
 // UTF_32LE ==> (ENCG_UNICODE))
 // UTF_32BE ==> (ENCG_UNICODE))
 
-wxString MadEncodingGrpName[ENCG_MAX] =
-{
-    /*ENCG_WESTERNEUROPE, */_("Western European"),
-    /*ENCG_CENTRALEUROPE, */_("Central European"),
-    /*ENCG_SOUTHEUROPE,   */_("South European"),
-    /*ENCG_NORTHEUROPE,   */_("North European"),
-    /*ENCG_CYRILLIC,      */_("Cyrillic"),
-    /*ENCG_ARABIC,        */_("Arabic"),
-    /*ENCG_GREEK,         */_("Greek"),
-    /*ENCG_HEBREW,        */_("Hebrew"),
-    /*ENCG_TURKISH,       */_("Turkish"),
-    /*ENCG_BALTIC,        */_("Baltic"),
-    /*ENCG_EASTASIA,      */_("East Asian"),
-    /*ENCG_SOUTHEASTASIA, */_("Southeast Asian"),
-    /*ENCG_UNICODE,       */_("Unicode"),
-    /*ENCG_ISO8859,       */_("ISO-8859"),
-    /*ENCG_WINDOWS,       */_("Windows"),
-    /*ENCG_OEM,           */_("OEM"),
-    /*ENCG_DEFAULT,       */_("Other"),
-};
-
 static vector<MadEncodingInfo> EncodingsTable;
+map<int, wxString>MadEncoding::MadEncodingGrpName;
 
 wxChar TestEncoding(const wxChar *name, wxFontEncoding enc, wxByte *mb)
 {
@@ -140,6 +121,25 @@ MadEncoding *MadEncoding::ms_SystemEncoding=NULL;
 void MadEncoding::InitEncodings()
 {
     wxLogNull nolog;
+
+    MadEncodingGrpName[ENCG_WESTERNEUROPE] = _("Western European");
+    MadEncodingGrpName[ENCG_CENTRALEUROPE] = _("Central European");
+    MadEncodingGrpName[ENCG_SOUTHEUROPE  ] = _("South European");
+    MadEncodingGrpName[ENCG_NORTHEUROPE  ] = _("North European");
+    MadEncodingGrpName[ENCG_CYRILLIC     ] = _("Cyrillic");
+    MadEncodingGrpName[ENCG_ARABIC       ] = _("Arabic");
+    MadEncodingGrpName[ENCG_GREEK        ] = _("Greek");
+    MadEncodingGrpName[ENCG_HEBREW       ] = _("Hebrew");
+    MadEncodingGrpName[ENCG_TURKISH      ] = _("Turkish");
+    MadEncodingGrpName[ENCG_BALTIC       ] = _("Baltic");
+    MadEncodingGrpName[ENCG_EASTASIA     ] = _("East Asian");
+    MadEncodingGrpName[ENCG_SOUTHEASTASIA] = _("Southeast Asian");
+    MadEncodingGrpName[ENCG_UNICODE      ] = _("Unicode");
+    MadEncodingGrpName[ENCG_ISO8859      ] = _("ISO-8859");
+    MadEncodingGrpName[ENCG_WINDOWS      ] = _("Windows");
+    MadEncodingGrpName[ENCG_OEM          ] = _("OEM");
+    MadEncodingGrpName[ENCG_DEFAULT      ] = _("Other");
+    MadEncodingGrpName[ENCG_MAX          ] = _("Invalid");
 
     wxFontEncoding sysenc=wxLocale::GetSystemEncoding();
 
