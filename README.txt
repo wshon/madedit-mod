@@ -43,7 +43,7 @@ P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
 P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
       wxWidgets
 P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error
-
+P.S.: madedit.pot has been uploaded to the top directory. Any translation for MadEdit-Mod is welcome.
 
 
 Syntax files, Locale files and Settings:
@@ -79,8 +79,9 @@ ChangeLog:
 ----------
 Mod v0.2.5.1
 1. Fix bugs of Spell Checker config save/load
-2. Multiple dictionary supported(different )
-2. Personal dictionary(Add)/temporary ignore by right click
+2. Multiple dictionary supported(different files with different dictionaries at the same time)
+2. Personal dictionary(AddWord)/temporary ignore by right click(Enable it @Tools->Options->
+   spellChecker)
 3. Disable Spell Checker/Bookmark in Hex Mode
 4. Fix case sensitive issue of Personal dictionary
 5. Fix typo and translation issue

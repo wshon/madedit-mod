@@ -314,7 +314,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxCheckBoxDoNotSaveSettings->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer7->Add(WxCheckBoxDoNotSaveSettings, 0, wxALIGN_LEFT | wxALL, 2);
 
-	WxCheckBoxPurgeHistory = new wxCheckBox(WxNoteBookPage1, ID_PURGEHISTORY, _("Purge History while existing"), wxPoint(2, 77), wxSize(400, 20), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeHistory"));
+	WxCheckBoxPurgeHistory = new wxCheckBox(WxNoteBookPage1, ID_PURGEHISTORY, _("Purge History while exiting"), wxPoint(2, 77), wxSize(400, 20), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeHistory"));
 	WxCheckBoxPurgeHistory->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer7->Add(WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxALL, 2);
 
