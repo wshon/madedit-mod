@@ -61,7 +61,7 @@ AC_ARG_WITH(xpressive,
 AC_ARG_WITH(boost, 
     [  --with-boost=PATH       use additional Boost library path,
                           otherwise use system include path],
-    [CXXFLAGS="$CXXFLAGS -I$withval"].
+    [CXXFLAGS="$CXXFLAGS -I$withval"]
     [LIBS="$LIBS -L$withval/stage/lib -lboost_python"])
 
 
@@ -102,17 +102,25 @@ else
 fi
 
 # Make sure we have X11, and also have it added to LIBS
-#AC_CHECK_LIB([X11], [main],[ac_X11="yes"],[ac_X11="no"])
-#if test "x$ac_X11" = "xno"; then
-#   AC_MSG_ERROR([Could not find XOpenDisplay in X11.])
-#else
-#   LIBS="$LIBS -lX11"
-#fi
-LIBS="$LIBS -lX11"
+AC_CHECK_LIB([X11], [XKeycodeToKeysym],[ac_X11="yes"],[ac_X11="no"])
+if test "x$ac_X11" = "xno"; then
+   AC_MSG_ERROR([Could not find XOpenDisplay in X11.])
+else
+   LIBS="$LIBS -lX11"
+fi
+#LIBS="$LIBS -lX11"
 
 # Make sure we have hunspell, and also have it added to LIBS
 # Checks for header files.
-AC_CHECK_HEADERS([hunspell/hunspell.hxx])
+#AC_CHECK_HEADERS([hunspell/hunspell.hxx])
+#LIBS="$LIBS -lhunspell"
+if test "x$IS_MACOS" == "x"; then
+    PKG_CHECK_MODULES(hunspell, [
+            hunspell >= 1.3
+    ])
+    CXXFLAGS="$CXXFLAGS $hunspell_CFLAGS"
+    LIBS="$LIBS $hunspell_LIBS"
+fi
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])

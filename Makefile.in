@@ -115,7 +115,13 @@ am_madedit_OBJECTS = madedit-MadAboutDialog.$(OBJEXT) \
 	madedit-nsSBCSGroupProber.$(OBJEXT) \
 	madedit-nsSJISProber.$(OBJEXT) \
 	madedit-nsUniversalDetector.$(OBJEXT) \
-	madedit-nsUTF8Prober.$(OBJEXT) madedit-impl.$(OBJEXT)
+	madedit-nsUTF8Prober.$(OBJEXT) madedit-impl.$(OBJEXT) \
+	madedit-HunspellInterface.$(OBJEXT) \
+	madedit-PersonalDictionary.$(OBJEXT) \
+	madedit-SpellCheckEngineInterface.$(OBJEXT) \
+	madedit-SpellCheckEngineOption.$(OBJEXT) \
+	madedit-SpellCheckUserInterface.$(OBJEXT) \
+	madedit-SpellCheckerManager.$(OBJEXT)
 madedit_OBJECTS = $(am_madedit_OBJECTS)
 madedit_LDADD = $(LDADD)
 madedit_LINK = $(CXXLD) $(madedit_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
@@ -367,6 +373,8 @@ host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
 htmldir = @htmldir@
+hunspell_CFLAGS = @hunspell_CFLAGS@
+hunspell_LIBS = @hunspell_LIBS@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
@@ -392,7 +400,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = syntax po
-INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-detector/src -I$(top_srcdir)/charset-detector/src/tables
+INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-detector/src -I$(top_srcdir)/charset-detector/src/tables -I$(top_srcdir)/spellchecker -I$(top_srcdir)/spellchecker/hunspell/src
 madedit_CXXFLAGS = -DDATA_DIR=\"${datadir}\"
 madedit_SOURCES = src/MadAboutDialog.cpp \
 	src/MadAboutDialog.h \
@@ -505,7 +513,19 @@ madedit_SOURCES = src/MadAboutDialog.cpp \
 	charset-detector/src/nsUTF8Prober.h \
 	charset-detector/src/prmem.h \
 	charset-detector/src/entry/impl.cpp \
-	charset-detector/include/chardetect.h
+	charset-detector/include/chardetect.h \
+	spellchecker/HunspellInterface.cpp \
+	spellchecker/HunspellInterface.h \
+	spellchecker/PersonalDictionary.cpp \
+	spellchecker/PersonalDictionary.h \
+	spellchecker/SpellCheckEngineInterface.cpp \
+	spellchecker/SpellCheckEngineInterface.h \
+	spellchecker/SpellCheckEngineOption.cpp \
+	spellchecker/SpellCheckEngineOption.h \
+	spellchecker/SpellCheckUserInterface.cpp \
+	spellchecker/SpellCheckUserInterface.h \
+	spellchecker/SpellCheckerManager.cpp \
+	spellchecker/SpellCheckerManager.h
 
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = madedit.xpm
@@ -744,6 +764,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-CharDistribution.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-EmbeddedPython.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-HunspellInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-JpCntx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-LangBulgarianModel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-LangCyrillicModel.Po@am__quote@
@@ -779,6 +800,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-MadUndo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-MadUtils.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-MadWordCountDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-PersonalDictionary.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-SpellCheckEngineInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-SpellCheckEngineOption.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-SpellCheckUserInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-SpellCheckerManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-TradSimp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-caret_new.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/madedit-clipbrd_gtk.Po@am__quote@
@@ -1626,6 +1652,90 @@ madedit-impl.obj: charset-detector/src/entry/impl.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='charset-detector/src/entry/impl.cpp' object='madedit-impl.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-impl.obj `if test -f 'charset-detector/src/entry/impl.cpp'; then $(CYGPATH_W) 'charset-detector/src/entry/impl.cpp'; else $(CYGPATH_W) '$(srcdir)/charset-detector/src/entry/impl.cpp'; fi`
+
+madedit-HunspellInterface.o: spellchecker/HunspellInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-HunspellInterface.o -MD -MP -MF $(DEPDIR)/madedit-HunspellInterface.Tpo -c -o madedit-HunspellInterface.o `test -f 'spellchecker/HunspellInterface.cpp' || echo '$(srcdir)/'`spellchecker/HunspellInterface.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-HunspellInterface.Tpo $(DEPDIR)/madedit-HunspellInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/HunspellInterface.cpp' object='madedit-HunspellInterface.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-HunspellInterface.o `test -f 'spellchecker/HunspellInterface.cpp' || echo '$(srcdir)/'`spellchecker/HunspellInterface.cpp
+
+madedit-HunspellInterface.obj: spellchecker/HunspellInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-HunspellInterface.obj -MD -MP -MF $(DEPDIR)/madedit-HunspellInterface.Tpo -c -o madedit-HunspellInterface.obj `if test -f 'spellchecker/HunspellInterface.cpp'; then $(CYGPATH_W) 'spellchecker/HunspellInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/HunspellInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-HunspellInterface.Tpo $(DEPDIR)/madedit-HunspellInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/HunspellInterface.cpp' object='madedit-HunspellInterface.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-HunspellInterface.obj `if test -f 'spellchecker/HunspellInterface.cpp'; then $(CYGPATH_W) 'spellchecker/HunspellInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/HunspellInterface.cpp'; fi`
+
+madedit-PersonalDictionary.o: spellchecker/PersonalDictionary.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-PersonalDictionary.o -MD -MP -MF $(DEPDIR)/madedit-PersonalDictionary.Tpo -c -o madedit-PersonalDictionary.o `test -f 'spellchecker/PersonalDictionary.cpp' || echo '$(srcdir)/'`spellchecker/PersonalDictionary.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-PersonalDictionary.Tpo $(DEPDIR)/madedit-PersonalDictionary.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/PersonalDictionary.cpp' object='madedit-PersonalDictionary.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-PersonalDictionary.o `test -f 'spellchecker/PersonalDictionary.cpp' || echo '$(srcdir)/'`spellchecker/PersonalDictionary.cpp
+
+madedit-PersonalDictionary.obj: spellchecker/PersonalDictionary.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-PersonalDictionary.obj -MD -MP -MF $(DEPDIR)/madedit-PersonalDictionary.Tpo -c -o madedit-PersonalDictionary.obj `if test -f 'spellchecker/PersonalDictionary.cpp'; then $(CYGPATH_W) 'spellchecker/PersonalDictionary.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/PersonalDictionary.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-PersonalDictionary.Tpo $(DEPDIR)/madedit-PersonalDictionary.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/PersonalDictionary.cpp' object='madedit-PersonalDictionary.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-PersonalDictionary.obj `if test -f 'spellchecker/PersonalDictionary.cpp'; then $(CYGPATH_W) 'spellchecker/PersonalDictionary.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/PersonalDictionary.cpp'; fi`
+
+madedit-SpellCheckEngineInterface.o: spellchecker/SpellCheckEngineInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckEngineInterface.o -MD -MP -MF $(DEPDIR)/madedit-SpellCheckEngineInterface.Tpo -c -o madedit-SpellCheckEngineInterface.o `test -f 'spellchecker/SpellCheckEngineInterface.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckEngineInterface.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckEngineInterface.Tpo $(DEPDIR)/madedit-SpellCheckEngineInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckEngineInterface.cpp' object='madedit-SpellCheckEngineInterface.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckEngineInterface.o `test -f 'spellchecker/SpellCheckEngineInterface.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckEngineInterface.cpp
+
+madedit-SpellCheckEngineInterface.obj: spellchecker/SpellCheckEngineInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckEngineInterface.obj -MD -MP -MF $(DEPDIR)/madedit-SpellCheckEngineInterface.Tpo -c -o madedit-SpellCheckEngineInterface.obj `if test -f 'spellchecker/SpellCheckEngineInterface.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckEngineInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckEngineInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckEngineInterface.Tpo $(DEPDIR)/madedit-SpellCheckEngineInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckEngineInterface.cpp' object='madedit-SpellCheckEngineInterface.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckEngineInterface.obj `if test -f 'spellchecker/SpellCheckEngineInterface.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckEngineInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckEngineInterface.cpp'; fi`
+
+madedit-SpellCheckEngineOption.o: spellchecker/SpellCheckEngineOption.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckEngineOption.o -MD -MP -MF $(DEPDIR)/madedit-SpellCheckEngineOption.Tpo -c -o madedit-SpellCheckEngineOption.o `test -f 'spellchecker/SpellCheckEngineOption.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckEngineOption.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckEngineOption.Tpo $(DEPDIR)/madedit-SpellCheckEngineOption.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckEngineOption.cpp' object='madedit-SpellCheckEngineOption.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckEngineOption.o `test -f 'spellchecker/SpellCheckEngineOption.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckEngineOption.cpp
+
+madedit-SpellCheckEngineOption.obj: spellchecker/SpellCheckEngineOption.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckEngineOption.obj -MD -MP -MF $(DEPDIR)/madedit-SpellCheckEngineOption.Tpo -c -o madedit-SpellCheckEngineOption.obj `if test -f 'spellchecker/SpellCheckEngineOption.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckEngineOption.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckEngineOption.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckEngineOption.Tpo $(DEPDIR)/madedit-SpellCheckEngineOption.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckEngineOption.cpp' object='madedit-SpellCheckEngineOption.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckEngineOption.obj `if test -f 'spellchecker/SpellCheckEngineOption.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckEngineOption.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckEngineOption.cpp'; fi`
+
+madedit-SpellCheckUserInterface.o: spellchecker/SpellCheckUserInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckUserInterface.o -MD -MP -MF $(DEPDIR)/madedit-SpellCheckUserInterface.Tpo -c -o madedit-SpellCheckUserInterface.o `test -f 'spellchecker/SpellCheckUserInterface.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckUserInterface.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckUserInterface.Tpo $(DEPDIR)/madedit-SpellCheckUserInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckUserInterface.cpp' object='madedit-SpellCheckUserInterface.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckUserInterface.o `test -f 'spellchecker/SpellCheckUserInterface.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckUserInterface.cpp
+
+madedit-SpellCheckUserInterface.obj: spellchecker/SpellCheckUserInterface.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckUserInterface.obj -MD -MP -MF $(DEPDIR)/madedit-SpellCheckUserInterface.Tpo -c -o madedit-SpellCheckUserInterface.obj `if test -f 'spellchecker/SpellCheckUserInterface.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckUserInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckUserInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckUserInterface.Tpo $(DEPDIR)/madedit-SpellCheckUserInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckUserInterface.cpp' object='madedit-SpellCheckUserInterface.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckUserInterface.obj `if test -f 'spellchecker/SpellCheckUserInterface.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckUserInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckUserInterface.cpp'; fi`
+
+madedit-SpellCheckerManager.o: spellchecker/SpellCheckerManager.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckerManager.o -MD -MP -MF $(DEPDIR)/madedit-SpellCheckerManager.Tpo -c -o madedit-SpellCheckerManager.o `test -f 'spellchecker/SpellCheckerManager.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckerManager.cpp
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckerManager.Tpo $(DEPDIR)/madedit-SpellCheckerManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckerManager.cpp' object='madedit-SpellCheckerManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckerManager.o `test -f 'spellchecker/SpellCheckerManager.cpp' || echo '$(srcdir)/'`spellchecker/SpellCheckerManager.cpp
+
+madedit-SpellCheckerManager.obj: spellchecker/SpellCheckerManager.cpp
+@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -MT madedit-SpellCheckerManager.obj -MD -MP -MF $(DEPDIR)/madedit-SpellCheckerManager.Tpo -c -o madedit-SpellCheckerManager.obj `if test -f 'spellchecker/SpellCheckerManager.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckerManager.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckerManager.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/madedit-SpellCheckerManager.Tpo $(DEPDIR)/madedit-SpellCheckerManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spellchecker/SpellCheckerManager.cpp' object='madedit-SpellCheckerManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(madedit_CXXFLAGS) $(CXXFLAGS) -c -o madedit-SpellCheckerManager.obj `if test -f 'spellchecker/SpellCheckerManager.cpp'; then $(CYGPATH_W) 'spellchecker/SpellCheckerManager.cpp'; else $(CYGPATH_W) '$(srcdir)/spellchecker/SpellCheckerManager.cpp'; fi`
 install-appDATA: $(app_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(app_DATA)'; test -n "$(appdir)" || list=; \
