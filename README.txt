@@ -72,12 +72,15 @@ Syntax files, Locale files and Settings:
 
 Next release:
 -------------
-Fix Linux build(for SpellChecker changes)
+Fix build issue with WX 3.0 under Fedora
 
 ChangeLog:
 ----------
 Mod v0.2.5.2
 1. Remove word from Personal dictionary
+2. Fix Linux build(for SpellChecker changes)
+3. Fix X11 detection issue
+4. Update Simplified Chinese
 
 Mod v0.2.5.1
 1. Fix bugs of Spell Checker config save/load
