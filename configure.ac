@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([madedit-mod], [0.2.4], [liminggang@gmail.com])
+AC_INIT([madedit-mod], [0.2.5], [liminggang@gmail.com])
 AC_CONFIG_SRCDIR([src/MadEditApp.cpp])
 AC_CONFIG_HEADER([config.h])
 AC_PREFIX_DEFAULT([/usr])
@@ -109,6 +109,14 @@ fi
 #   LIBS="$LIBS -lX11"
 #fi
 LIBS="$LIBS -lX11"
+
+# Make sure we have hunspell, and also have it added to LIBS
+AC_CHECK_LIB([hunspell], [spell],[ac_hunspell="yes"],[ac_hunspell="no"])
+if test "x$ac_hunspell" = "xno"; then
+   AC_MSG_ERROR([Could not find hunspell.])
+else
+   LIBS="$LIBS -lhunspell"
+fi
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])
