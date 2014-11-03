@@ -111,12 +111,8 @@ fi
 LIBS="$LIBS -lX11"
 
 # Make sure we have hunspell, and also have it added to LIBS
-AC_CHECK_LIB([hunspell], [spell],[ac_hunspell="yes"],[ac_hunspell="no"])
-if test "x$ac_hunspell" = "xno"; then
-   AC_MSG_ERROR([Could not find hunspell.])
-else
-   LIBS="$LIBS -lhunspell"
-fi
+# Checks for header files.
+AC_CHECK_HEADERS([hunspell/hunspell.hxx])
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])
