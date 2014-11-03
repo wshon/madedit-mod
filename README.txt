@@ -80,11 +80,11 @@ ChangeLog:
 Mod v0.2.5.1
 1. Fix bugs of Spell Checker config save/load
 2. Multiple dictionary supported(different files with different dictionaries at the same time)
-2. Personal dictionary(AddWord)/temporary ignore by right click(Enable it @Tools->Options->
+3. Personal dictionary(AddWord)/temporary ignore by right click(Enable it @Tools->Options->
    spellChecker)
-3. Disable Spell Checker/Bookmark in Hex Mode
-4. Fix case sensitive issue of Personal dictionary
-5. Fix typo and translation issue
+4. Disable Spell Checker/Bookmark in Hex Mode
+5. Fix case sensitive issue of Personal dictionary
+6. Fix typo and translation issue
 
 Mod v0.2.5
 1. Spell checker released
@@ -158,7 +158,7 @@ New features from 0.1.x
 5. Close to right/left
 6. Fixed bugs found including hang issue caused by empty (), [] and {} in regluar expression
 
-Mod v0.2.0
+Mod v0.2.0 beta 5
 New to beta 4
 1. Changed error message of Options Dialog
 2. Add Incremental numbering feature in Edit->Advanced for column numbering at current caret pos
