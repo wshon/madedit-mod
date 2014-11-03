@@ -118,6 +118,7 @@ public:
     void OnUpdateUI_MenuEditDeleteLine(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditInsertTabChar(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditInsertDateTime(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuEditToggleReadOnly(wxUpdateUIEvent& event);
 
     // add: gogo, 21.09.2009
     void OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event);
@@ -224,6 +225,7 @@ public:
     void OnEditSortDescendingCase(wxCommandEvent& event);
     void OnEditSortByOptions(wxCommandEvent& event);
     void OnEditSortOptions(wxCommandEvent& event);
+    void OnEditToggleReadOnly(wxCommandEvent& event);
 
     void OnEditCopyAsHexString(wxCommandEvent& event);
     void OnEditCopyAsHexStringWithSpace(wxCommandEvent& event);
@@ -454,6 +456,7 @@ enum { // menu id
     menuSortByOptions,
     menuSortOptions,
     menuAdvanced,
+    menuToggleReadOnly,
     
     menuCopyAsHexString,
     menuCopyAsHexStringWithSpace,

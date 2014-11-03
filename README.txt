@@ -43,7 +43,9 @@ P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
 P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
       wxWidgets
 P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error
+
 P.S.: madedit.pot has been uploaded to the top directory. Any translation for MadEdit-Mod is welcome.
+P.S.: Please open a ticket for bug of MadEdit-Mod at http://sourceforge.net/projects/madedit-mod/
 
 
 Syntax files, Locale files and Settings:
@@ -70,16 +72,20 @@ Syntax files, Locale files and Settings:
   
   Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
 
-Next release:
--------------
+Feature/issues to be released in next release:
+----------------------------------------------
 Fix build issue with WX 3.0 under Fedora
 
 ChangeLog:
 ----------
+Mod v0.2.5.3
+1. Clear ReadOnly flag of the file instead of change outside and close/open again
+2. Update Simplified Chinese
+
 Mod v0.2.5.2
 1. Remove word from Personal dictionary
 2. Fix Linux build(for SpellChecker changes)
-3. Fix X11 detection issue
+3. Fix X11 detection issue of configure script
 4. Update Simplified Chinese
 
 Mod v0.2.5.1

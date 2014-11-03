@@ -52,6 +52,11 @@
 #include "EmbeddedPython.hpp"
 #include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
+#ifdef __WXMSW__
+#include <io.h>
+#else
+#include <sys/stat.h>
+#endif
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -1184,6 +1189,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_ColumnAlign)
+	EVT_UPDATE_UI(menuToggleReadOnly, MadEditFrame::OnUpdateUI_MenuEditToggleReadOnly)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuFindNext, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1307,6 +1313,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
 	EVT_MENU_RANGE(menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck)
+	EVT_MENU(menuToggleReadOnly, MadEditFrame::OnEditToggleReadOnly)
 	// search
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
@@ -1517,6 +1524,8 @@ CommandData CommandTable[]=
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuSortByOptions,            wxT("menuSortByOptions"),            _("Sort Lines by &Current Options"),          wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Sort the selected or all lines by using current options")},
     { 0,                2, menuSortOptions,              wxT("menuSortOptions"),              _("Sort &Options..."),                        wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Set the sort options")},
+    { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
+    { 0,                1, menuToggleReadOnly,           wxT("menuToggleReadOnly"),           _("Set/clear ReadOnly flag"),                    0,                   wxITEM_NORMAL,    -1,                0,                     _("Set/clear ReadOnly flag of the file")},
 
     // Search
     { 0, 0, 0, 0, _("&Search"), 0, wxITEM_NORMAL, 0, &g_Menu_Search, 0},
@@ -3438,6 +3447,12 @@ void MadEditFrame::OnUpdateUI_MenuEditPaste(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL); // workaround for high CPU loading in Linux
 #endif
 }
+
+void MadEditFrame::OnUpdateUI_MenuEditToggleReadOnly(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL);
+}
+
 void MadEditFrame::OnUpdateUI_Menu_CheckSize(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit && g_ActiveMadEdit->GetFileSize());
@@ -4345,6 +4360,41 @@ void MadEditFrame::OnEditInsertDateTime(wxCommandEvent& event)
     {
         g_ActiveMadEdit->InsertDateTime();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("InsertDateTime()")));
+    }
+}
+
+void MadEditFrame::OnEditToggleReadOnly(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit)
+    {
+        if(g_ActiveMadEdit->IsReadOnly())
+        {
+#if wxMAJOR_VERSION <3
+#ifdef __WXMSW__
+            _wchmod(g_ActiveMadEdit->GetFileName().fn_str(), _S_IREAD | _S_IWRITE);
+#else
+            chmod(g_ActiveMadEdit->GetFileName().fn_str(), S_IRUSR | S_IWUSR)
+#endif
+#else
+            wxFileName fname(g_ActiveMadEdit->GetFileName());
+            fname.SetPermissions(wxPOSIX_USER_READ | wxPOSIX_USER_WRITE);
+#endif
+            g_ActiveMadEdit->SetReadOnly(false);
+        }
+        else
+        {
+#if wxMAJOR_VERSION <3
+#ifdef __WXMSW__
+            _wchmod(g_ActiveMadEdit->GetFileName().fn_str(), _S_IREAD);
+#else
+            chmod(g_ActiveMadEdit->GetFileName().fn_str(), S_IRUSR)
+#endif
+#else
+            wxFileName fname(g_ActiveMadEdit->GetFileName());
+            fname.SetPermissions(wxPOSIX_USER_READ);
+#endif
+            g_ActiveMadEdit->SetReadOnly(true);
+        }
     }
 }
 

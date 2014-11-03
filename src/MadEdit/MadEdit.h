@@ -820,7 +820,7 @@ public: // basic functions
     bool IsModified() { return m_Modified; }
     time_t GetModificationTime() { return m_ModificationTime; }
 
-    void SetReadOnly(bool value) { m_ReadOnly=value; }
+    void SetReadOnly(bool value) { m_ReadOnly=value; m_Lines->m_ReadOnly = value;}
     bool IsReadOnly() { return m_ReadOnly||m_Lines->m_ReadOnly; }
     bool IsTextFile() { return m_Lines->m_MaxLineWidth>=0; }
 
