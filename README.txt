@@ -73,10 +73,12 @@ Syntax files, Locale files and Settings:
 Next release:
 -------------
 Fix Linux build(for SpellChecker changes)
-Remove word from Personal dictionary??
 
 ChangeLog:
 ----------
+Mod v0.2.5.2
+1. Remove word from Personal dictionary
+
 Mod v0.2.5.1
 1. Fix bugs of Spell Checker config save/load
 2. Multiple dictionary supported(different files with different dictionaries at the same time)

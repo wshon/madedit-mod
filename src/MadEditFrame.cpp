@@ -1019,17 +1019,18 @@ void OnEditMouseRightUp(MadEdit *madedit)
     vector<wxMenuItem *> spellItems;
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->GetSpellCheckStatus())
     {
-        wxString str;
+        wxString misspelledStr;
         shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
         if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
-            g_ActiveMadEdit->GetSelText(str);
+            g_ActiveMadEdit->GetSelText(misspelledStr);
         else
-            g_ActiveMadEdit->GetWordFromCaretPos(str);
-        if(!spellChecker->IsSpellingOk(str))
+            g_ActiveMadEdit->GetWordFromCaretPos(misspelledStr);
+        size_t count = 0;
+        if(!spellChecker->IsSpellingOk(misspelledStr))
         {
             g_SpellSuggestions.Clear();
-            g_SpellSuggestions = spellChecker->GetSuggestions(str);
-            size_t count = g_SpellSuggestions.GetCount();
+            g_SpellSuggestions = spellChecker->GetSuggestions(misspelledStr);
+            count = g_SpellSuggestions.GetCount();
             if(count)
             {
                 for(size_t i = 0; i < count; ++i)
@@ -1039,15 +1040,21 @@ void OnEditMouseRightUp(MadEdit *madedit)
                 spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
             }
 
-            wxString label = _("Ignore '") + str + _("' for this session");
+            wxString label = _("Ignore '") + misspelledStr + _("' for this session");
             spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellIgnore, label));
             if(SpellCheckerManager::Instance().GetEnablePersonalDictionary())
             {
-                label = _("Add '") + str + _("' to dictionary");
+                label = _("Add '") + misspelledStr + _("' to dictionary");
                 spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellAdd2Dict, label));
             }
             spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
-        }            
+        }
+        else if(spellChecker->IsWordInPersonalDictionary(misspelledStr))
+        {
+            wxString label = _("Remove '") + misspelledStr + _("' from dictionary");
+            spellItems.push_back(g_Menu_EditPop->Insert(count++, menuSpellRemoveFromDict, label));
+            spellItems.push_back(g_Menu_EditPop->InsertSeparator(count++));
+        }
     }
     g_MainFrame->PopupMenu(g_Menu_EditPop);//Fixe for the assertion in debug
 
@@ -1210,6 +1217,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSpellChecker, MadEditFrame::OnUpdateUI_MenuViewSpellChecker)
 	EVT_UPDATE_UI(menuSpellIgnore, MadEditFrame::OnUpdateUI_MenuSpellIgnore)
 	EVT_UPDATE_UI(menuSpellAdd2Dict, MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict)
+	EVT_UPDATE_UI(menuSpellRemoveFromDict, MadEditFrame::OnUpdateUI_MenuSpellRemoveFromDict)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
@@ -1336,6 +1344,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuSpellChecker, MadEditFrame::OnViewSpellChecker)
 	EVT_MENU(menuSpellIgnore, MadEditFrame::OnSpellCheckIgnore)
 	EVT_MENU(menuSpellAdd2Dict, MadEditFrame::OnSpellAdd2Dict)
+	EVT_MENU(menuSpellRemoveFromDict, MadEditFrame::OnSpellCheckRemoveFromDict)
 	// tools
 	EVT_MENU(menuOptions, MadEditFrame::OnToolsOptions)
 	EVT_MENU(menuHighlighting, MadEditFrame::OnToolsHighlighting)
@@ -3674,6 +3683,12 @@ void MadEditFrame::OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event)
         && SpellCheckerManager::Instance().GetSelectedDictionaryNumber() != -1);
 }
 
+void MadEditFrame::OnUpdateUI_MenuSpellRemoveFromDict(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
+        && SpellCheckerManager::Instance().GetEnablePersonalDictionary());
+}
+
 void MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode
@@ -5423,6 +5438,21 @@ void MadEditFrame::OnSpellCheckIgnore(wxCommandEvent& event)
         else
             g_ActiveMadEdit->GetWordFromCaretPos(str);
         spellChecker->GetUserCorrection(str);
+        g_ActiveMadEdit->SetSpellCheck(true);
+    }
+}
+
+void MadEditFrame::OnSpellCheckRemoveFromDict(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        wxString str;
+        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
+        if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
+            g_ActiveMadEdit->GetSelText(str);
+        else
+            g_ActiveMadEdit->GetWordFromCaretPos(str);
+        spellChecker->RemoveWordFromDictionary(str);
         g_ActiveMadEdit->SetSpellCheck(true);
     }
 }

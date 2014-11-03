@@ -63,6 +63,7 @@ public:
     wxArrayString GetSuggestions(const wxString& strMisspelledWord);
 
     virtual bool IsWordInDictionary(const wxString& strWord);
+    virtual bool IsWordInPersonalDictionary(const wxString& strWord);
     virtual int AddWordToDictionary(const wxString& strWord);
     virtual int RemoveWordFromDictionary(const wxString& strWord);
     virtual wxArrayString GetWordListAsArray();

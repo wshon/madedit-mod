@@ -159,6 +159,7 @@ public:
     void OnUpdateUI_MenuViewSpellChecker(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuSpellRemoveFromDict(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -282,6 +283,7 @@ public:
     void OnViewSpellChecker(wxCommandEvent& event);
     void OnSpellCheckIgnore(wxCommandEvent& event);
     void OnSpellAdd2Dict(wxCommandEvent& event);
+    void OnSpellCheckRemoveFromDict(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -547,6 +549,7 @@ enum { // menu id
     menuSpellChecker,
     menuSpellIgnore,
     menuSpellAdd2Dict,
+    menuSpellRemoveFromDict,
     menuSpellOption1,
     menuSpellOption99 = menuSpellOption1 + 98,
 
