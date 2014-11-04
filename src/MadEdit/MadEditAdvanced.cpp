@@ -2882,6 +2882,33 @@ void MadEdit::ColumnAlign()
                     undo->m_Undos.push_back(dudata);
                 }
             }
+            else //Insert spaces for the 'short' line
+            {
+                MadInsertUndoData *indata = new MadInsertUndoData;
+                MadBlock blk(m_Lines->m_MemData, -1, 0);
+                int spaces = columns - startpos;
+                if(spaces)
+                {
+                    ucs4_t *sp = new ucs4_t[spaces];
+                    for(int i = 0; i < spaces; ++i)
+                    sp[i] = 0x20;
+                
+                    UCStoBlock(sp, spaces, blk);
+                    delete[]sp;
+                }
+                indata->m_Pos = pos+rowpos;
+                indata->m_Size = blk.m_Size;
+                indata->m_Data.push_back(blk);
+
+                lit = DeleteInsertData(indata->m_Pos, 0, NULL, indata->m_Size, &indata->m_Data);
+                
+                if(undo == NULL)
+                {
+                    undo = m_UndoBuffer->Add();
+                    undo->m_CaretPosBefore=m_CaretPos.pos;
+                }
+                undo->m_Undos.push_back(indata);
+            }
 
             --count;
             if(count > 0)

@@ -78,8 +78,11 @@ Fix build issue with WX 3.0 under Fedora
 
 ChangeLog:
 ----------
+Mod v0.2.5.4
+1. ColumnAlign to align the 'short line'(EOL is ahead of the caret position)
+
 Mod v0.2.5.3
-1. Clear ReadOnly flag of the file instead of change outside and close/open again
+1. Clear/Set ReadOnly flag of the file instead of change outside and close/open again
 2. Update Simplified Chinese
 
 Mod v0.2.5.2
