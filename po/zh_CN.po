@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-03 16:22+0800\n"
-"PO-Revision-Date: 2014-11-03 20:13+0800\n"
+"POT-Creation-Date: 2014-11-04 14:07+0800\n"
+"PO-Revision-Date: 2014-11-04 14:08+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -2018,6 +2018,14 @@ msgid "Memory allocation failed"
 msgstr "分配内存失败"
 
 #: ../src/MadEditFrame.cpp:6316
+msgid ""
+"Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
+"OpenOffice.org/contrib/dictionaries/"
+msgstr ""
+"字典获取地址 http://archive.services.openoffice.org/pub/mirror/OpenOffice."
+"org/contrib/dictionaries/"
+
+#: ../src/MadEditFrame.cpp:6317
 msgid "Press OK to visit our HomePage."
 msgstr "按「确定」可以浏览我们的主页。"
 
@@ -2948,6 +2956,12 @@ msgstr "运行"
 #: ../src/MadMacroDlg.cpp:91
 msgid "Error"
 msgstr "错误"
+
+#~ msgid ""
+#~ "Please open a ticket for bug of MadEdit-Mod at http://sourceforge.net/"
+#~ "projects/madedit-mod/"
+#~ msgstr ""
+#~ "请在 http://sourceforge.net/projects/madedit-mod/ 报告 MadEdit-Mod 的问题"
 
 #, fuzzy
 #~ msgid "WxStaticText19"

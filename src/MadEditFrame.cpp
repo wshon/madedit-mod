@@ -6312,9 +6312,8 @@ void MadEditFrame::OnHelpAbout(wxCommandEvent& event)
 {
     MadAboutDialog dlg(this);
     dlg.WxMemo1->AppendText(g_MadEdit_Version + wxT("\n\n")+
-                            g_MadEditMod_URL + wxT("\n")+
-                            _("Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/")+wxT("\n")+
-                            _("Please open a ticket for bug of MadEdit-Mod at http://sourceforge.net/projects/madedit-mod/") + wxT("\n\n")+
+                            g_MadEditMod_URL + wxT("\n\n")+
+                            _("Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/")+wxT("\n\n")+
                             _("Press OK to visit our HomePage."));
 
     if(dlg.ShowModal()==wxID_OK)
