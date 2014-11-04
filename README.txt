@@ -80,6 +80,7 @@ ChangeLog:
 ----------
 Mod v0.2.5.4
 1. ColumnAlign to align the 'short line'(EOL is ahead of the caret position)
+2. Add URL of dictionary download in About Dialog
 
 Mod v0.2.5.3
 1. Clear/Set ReadOnly flag of the file instead of change outside and close/open again
