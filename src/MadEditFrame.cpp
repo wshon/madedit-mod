@@ -1428,6 +1428,8 @@ CommandData CommandTable[]=
     { 0, 1, menuCloseAllButThis,     wxT("menuCloseAllButThis"),    _("Close All But This"),     wxT(""),  wxITEM_NORMAL,    -1,         0,                        _("Close all files but this")},
     { 0, 1, menuCloseAllToTheLeft,   wxT("menuCloseAllToTheLeft"),  _("Close All To The Left"),  wxT(""),  wxITEM_NORMAL,    -1,         0,                        _("Close all files to the left")},
     { 0, 1, menuCloseAllToTheRight,  wxT("menuCloseAllToTheRight"), _("Close All To The Right"), wxT(""),  wxITEM_NORMAL,    -1,         0,                        _("Close all files to the right")},
+    { 0, 1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
+    { 0, 1, menuToggleReadOnly,           wxT("menuToggleReadOnly"),           _("Set/clear ReadOnly flag"),                 0,                   wxITEM_NORMAL,    -1,                0,                     _("Set/clear ReadOnly flag of the file")},
     { 0, 1, 0,                0,                       0,                      0,                   wxITEM_SEPARATOR, -1,                0,                        0},
     { 0, 1, menuPageSetup,    wxT("menuPageSetup"),    _("Page Set&up..."),    wxT(""),             wxITEM_NORMAL,    -1,                0,                        _("Setup the pages for printing")},
     { 0, 1, menuPrintPreview, wxT("menuPrintPreview"), _("Print Previe&w..."), wxT(""),             wxITEM_NORMAL,    preview_xpm_idx,   0,                        _("Preview the result of printing")},
@@ -1524,8 +1526,6 @@ CommandData CommandTable[]=
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuSortByOptions,            wxT("menuSortByOptions"),            _("Sort Lines by &Current Options"),          wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Sort the selected or all lines by using current options")},
     { 0,                2, menuSortOptions,              wxT("menuSortOptions"),              _("Sort &Options..."),                        wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Set the sort options")},
-    { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
-    { 0,                1, menuToggleReadOnly,           wxT("menuToggleReadOnly"),           _("Set/clear ReadOnly flag"),                    0,                   wxITEM_NORMAL,    -1,                0,                     _("Set/clear ReadOnly flag of the file")},
 
     // Search
     { 0, 0, 0, 0, _("&Search"), 0, wxITEM_NORMAL, 0, &g_Menu_Search, 0},
