@@ -74,13 +74,14 @@ Syntax files, Locale files and Settings:
 
 Feature/issues to be released in next release:
 ----------------------------------------------
-Fix build issue with WX 3.0 under Fedora
 
 ChangeLog:
 ----------
 Mod v0.2.5.4
 1. ColumnAlign to align the 'short line'(EOL is ahead of the caret position)
 2. Add URL of dictionary download in About Dialog
+3. Fix build issue with WX 3.0 under Fedora Core 17(Just follow the original way----to be investigated)
+4. Move Clear/Set ReadOnly flag to File menu
 
 Mod v0.2.5.3
 1. Clear/Set ReadOnly flag of the file instead of change outside and close/open again

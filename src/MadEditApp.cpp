@@ -405,7 +405,6 @@ bool MadEditApp::OnInit()
         }
     }
 
-
     // load FontWidth buffers
     cfg->Read(wxT("/MadEdit/FontWidthBufferMaxCount"), &FontWidthManager::MaxCount, 10);
     if(FontWidthManager::MaxCount < 4) FontWidthManager::MaxCount=4;
