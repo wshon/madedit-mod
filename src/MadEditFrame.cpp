@@ -69,8 +69,6 @@
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
-
-
 #if !defined(__WXMSW__) && !defined(__WXPM__)
 #   include "../images/Mad.xpm"
 #   include "../images/Mad2.xpm"
@@ -168,6 +166,8 @@
 #define bookmark_clear_xpm_idx (bookmark_prev_xpm_idx+1)
 #include "../images/spellchecker.xpm"
 #define spellchecker_xpm_idx (bookmark_clear_xpm_idx+1)
+#include "../images/showsymbol.xpm"
+#define showsymbol_xpm_idx (spellchecker_xpm_idx+1)
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1215,6 +1215,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuShowEndOfLine, MadEditFrame::OnUpdateUI_MenuViewShowEndOfLine)
 	EVT_UPDATE_UI(menuShowTabChar, MadEditFrame::OnUpdateUI_MenuViewShowTabChar)
 	EVT_UPDATE_UI(menuShowSpaceChar, MadEditFrame::OnUpdateUI_MenuViewShowSpaceChar)
+	EVT_UPDATE_UI(menuShowAllChars, MadEditFrame::OnUpdateUI_MenuViewShowAllChars)
 	EVT_UPDATE_UI(menuMarkActiveLine, MadEditFrame::OnUpdateUI_MenuViewMarkActiveLine)
 	EVT_UPDATE_UI(menuMarkBracePair, MadEditFrame::OnUpdateUI_MenuViewMarkBracePair)
 	EVT_UPDATE_UI(menuTextMode, MadEditFrame::OnUpdateUI_MenuViewTextMode)
@@ -1343,6 +1344,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuShowEndOfLine, MadEditFrame::OnViewShowEndOfLine)
 	EVT_MENU(menuShowTabChar, MadEditFrame::OnViewShowTabChar)
 	EVT_MENU(menuShowSpaceChar, MadEditFrame::OnViewShowSpaceChar)
+	EVT_MENU(menuShowAllChars, MadEditFrame::OnViewShowAllChars)
 	EVT_MENU(menuMarkActiveLine, MadEditFrame::OnViewMarkActiveLine)
 	EVT_MENU(menuMarkBracePair, MadEditFrame::OnViewMarkBracePair)
 	EVT_MENU(menuTextMode, MadEditFrame::OnViewTextMode)
@@ -1699,6 +1701,7 @@ CommandData CommandTable[]=
     { 0,              1, menuShowEndOfLine,     wxT("menuShowEndOfLine"),     _("Show End Of Line"),     wxT("Ctrl-Alt-L"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of EndOfLine")},
     { 0,              1, menuShowTabChar,       wxT("menuShowTabChar"),       _("Show Tab Char"),        wxT("Ctrl-Alt-T"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Tab char")},
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
+    { 0,              1, menuShowAllChars,       wxT("menuShowAllChar"),      _("Show All Chars"),       wxT(""),             wxITEM_CHECK,     showsymbol_xpm_idx, 0,                         _("Show the sign of all characters")},
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
     { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT(""),             wxITEM_CHECK,     spellchecker_xpm_idx,                 0,       _("Spell checker")},
@@ -2081,6 +2084,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(bookmark_prev_xpm));
     m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
     m_ImageList->Add(wxBitmap(spellchecker_xpm));
+    m_ImageList->Add(wxBitmap(showsymbol_xpm));
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
@@ -2469,6 +2473,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar1->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("No Line Wrap") );
     WxToolBar1->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window") );
     WxToolBar1->AddTool(menuWrapByColumn, _T("WrapByColumn"), m_ImageList->GetBitmap(wrapbycol_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Max Columns") );
+    WxToolBar1->AddTool(menuShowAllChars,  _T("ShowAllChars"),  m_ImageList->GetBitmap(showsymbol_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Show All Characters") );
     WxToolBar1->AddSeparator();
     WxToolBar1->AddTool(menuTextMode, _T("TextMode"), m_ImageList->GetBitmap(textmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Text Mode") );
     WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Column Mode") );
@@ -3675,6 +3680,12 @@ void MadEditFrame::OnUpdateUI_MenuViewShowSpaceChar(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetShowSpaceChar());
+}
+void MadEditFrame::OnUpdateUI_MenuViewShowAllChars(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL);
+    event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetShowSpaceChar() && g_ActiveMadEdit->GetShowTabChar()
+        && g_ActiveMadEdit->GetShowEndOfLine());
 }
 void MadEditFrame::OnUpdateUI_MenuViewMarkActiveLine(wxUpdateUIEvent& event)
 {
@@ -5449,6 +5460,26 @@ void MadEditFrame::OnViewShowSpaceChar(wxCommandEvent& event)
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(True)")));
     else
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(False)")));
+}
+void MadEditFrame::OnViewShowAllChars(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+
+    g_ActiveMadEdit->SetShowTabChar(event.IsChecked());
+    g_ActiveMadEdit->SetShowEndOfLine(event.IsChecked());
+    g_ActiveMadEdit->SetShowSpaceChar(event.IsChecked());
+    if(event.IsChecked())
+    {
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowTabChar(True)")));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(True)")));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowEndOfLine(True)")));
+    }
+    else
+    {
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowTabChar(False)")));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowSpaceChar(False)")));
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetShowEndOfLine(False)")));
+    }
 }
 void MadEditFrame::OnViewMarkActiveLine(wxCommandEvent& event)
 {
