@@ -1131,7 +1131,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_AUINOTEBOOK_PAGE_CHANGING(ID_NOTEBOOK, MadEditFrame::OnNotebookPageChanging)
 	EVT_AUINOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, MadEditFrame::OnNotebookPageChanged)
 	EVT_AUINOTEBOOK_PAGE_CLOSE(ID_NOTEBOOK, MadEditFrame::OnNotebookPageClosing)
-	EVT_AUINOTEBOOK_TAB_RIGHT_DOWN(ID_NOTEBOOK, MadEditFrame::OnNotebookPageRightDown)
+	EVT_AUINOTEBOOK_TAB_RIGHT_UP(ID_NOTEBOOK, MadEditFrame::OnNotebookPageRightUp)
 	//EVT_AUINOTEBOOK_PAGE_CLOSE(ID_NOTEBOOK, MadEditFrame::OnNotebookPageClosed)
 	//EVT_CHAR(MadEditFrame::OnChar)
 	// file
@@ -2892,7 +2892,7 @@ void MadEditFrame::OnNotebookPageClosed(bool bZeroPage)
     }
 }
 
-void MadEditFrame::OnNotebookPageRightDown(wxAuiNotebookEvent& event)
+void MadEditFrame::OnNotebookPageRightUp(wxAuiNotebookEvent& event)
 {
     int now=event.GetSelection();
     SetPageFocus(now);

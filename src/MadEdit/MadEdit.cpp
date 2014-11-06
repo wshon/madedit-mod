@@ -888,8 +888,8 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Config->Read(wxT("AutoCompletePair"), &m_AutoCompletePair, false);
     m_AutoCompleteRightChar = 0;
     m_AutoCompletePos = 0;
-
     m_SpellCheck = false;
+
     if(!m_SingleLineMode)
     {
         m_Config->Read(wxT("SpellCheck"),   &m_SpellCheck, true);
@@ -9598,7 +9598,6 @@ void MadEdit::OnKeyUp(wxKeyEvent& evt)
 void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
-
     ProcessCommand(ecMouseNotify);
 
     if(m_SingleLineMode && evt.m_x==m_LeftClickX && evt.m_y==m_LeftClickY)
@@ -10024,7 +10023,6 @@ void MadEdit::OnKillFocus(wxFocusEvent &evt)
         if(m_SingleLineMode && m_Selection)
         {
             m_Selection=false;
-            m_DragDrop = false;
             m_RepaintAll=true;
             Refresh();
         }
@@ -10035,6 +10033,7 @@ void MadEdit::OnKillFocus(wxFocusEvent &evt)
         }
 #endif
     }
+    m_DragDrop = false;
     m_MouseLeftDown = false;
     evt.Skip();
 }
@@ -10281,10 +10280,20 @@ void MadEdit::OnMouseLeaveWindow(wxMouseEvent &evt)
 
 void MadEdit::OnMouseCaptureLost(wxMouseCaptureLostEvent &evt)
 {
-    m_MouseLeftDown=false;
+    if(m_MouseLeftDown)
+    {
+        if(!m_DragDrop)
+        {
+            EndUpdateSelection(true);
+        }
+    }
+
+    if(GetCapture() == this)
+        ReleaseMouse();
     m_MouseLeftDoubleClick=false;
-    m_MouseAtHexTextArea=false;
+    m_MouseLeftDown=false;
     m_DragDrop = false;
+    m_MouseAtHexTextArea=false;
     m_DragCopyFlag = false;//default move
     if(m_MouseMotionTimer->IsRunning())
     {

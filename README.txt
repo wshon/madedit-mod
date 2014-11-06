@@ -79,7 +79,9 @@ ChangeLog:
 ----------
 Mod v0.2.6
 1. Add shortcut to Show All Chars(Space, Tab and EOL)
-. Update Simplified Chinese
+2. Fixed the mouse issue http://sourceforge.net/p/madedit/bugs/10/, which might cause crash if you click
+   on the edit area then click on menu or toolbar
+3. Update Simplified Chinese
 
 Mod v0.2.5.4
 1. ColumnAlign to align the 'short line'(EOL is ahead of the caret position)

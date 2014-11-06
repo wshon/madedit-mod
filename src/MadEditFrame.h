@@ -353,7 +353,7 @@ protected:
     void OnNotebookPageChanged(wxAuiNotebookEvent& event);
     void OnNotebookPageClosing(wxAuiNotebookEvent& event);
     void OnNotebookPageClosed(bool bZeroPage=false);//wxAuiNotebookEvent& event); //wxAUI doesn't support this event
-    void OnNotebookPageRightDown(wxAuiNotebookEvent& event);
+    void OnNotebookPageRightUp(wxAuiNotebookEvent& event);
 
     void OnSize(wxSizeEvent &evt);
     //void OnChar(wxKeyEvent& evt);

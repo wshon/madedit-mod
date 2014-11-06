@@ -397,7 +397,7 @@ private:
 
     wxMilliClock_t m_lastDoubleClick;
     shared_ptr<wxSpellCheckEngineInterface> m_SpellCheckerPtr;
-    bool            m_SpellCheck;
+    bool           m_SpellCheck;
 
 #ifdef __WXMSW__
     bool m_IsWin98;

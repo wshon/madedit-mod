@@ -2507,6 +2507,10 @@ bool MadEdit::ReloadByModificationTime()
         return false;
     }
 
+    wxMouseCaptureLostEvent mevt(GetId());
+    mevt.SetEventObject(this);
+    AddPendingEvent( mevt ); 
+
     // YES, reload it.
     return Reload();
 }

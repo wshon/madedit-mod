@@ -29,7 +29,7 @@ BEGIN_EVENT_TABLE(MadAboutDialog,wxDialog)
 END_EVENT_TABLE()
     ////Event Table End
 
-wxString g_MadEdit_Version(wxT("MadEdit Mod 0.2.5.4"));
+wxString g_MadEdit_Version(wxT("MadEdit Mod 0.2.5.5"));
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));
 wxString g_MadEditMod_URL(wxT("http://sourceforge.net/projects/madedit-mod/"));
 
