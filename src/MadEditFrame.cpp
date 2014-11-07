@@ -188,8 +188,10 @@ MadEditFrame *g_MainFrame=NULL;
 MadEdit *g_ActiveMadEdit=NULL;
 int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
+#if wxMAJOR_VERSION <3
 wxStaticText* g_OvrStr = NULL;
 wxStaticText* g_RdOnly = NULL;
+#endif
 wxArrayString g_SpellSuggestions;
 
 bool g_CheckModTimeForReload=true;
@@ -949,6 +951,7 @@ void OnEditStatusChanged(MadEdit *madedit)
             }
             g_StatusBar->SetStatusText(enc, 4);
 
+#if wxMAJOR_VERSION <3
             if(madedit->IsReadOnly())
             {
                 if(g_RdOnly == NULL)
@@ -993,7 +996,28 @@ void OnEditStatusChanged(MadEdit *madedit)
                 }
                 g_OvrStr->Show(true);
             }
+#else
+            if(madedit->IsReadOnly())
+            {
+                static wxString rostr(_("ReadOnly"));
+                g_StatusBar->SetStatusText(rostr, 5);
+            }
+            else
+            {
+                g_StatusBar->SetStatusText(wxEmptyString, 5);
+            }
 
+            if(madedit->GetInsertMode())
+            {
+                static wxString insstr(_("INS"));
+                g_StatusBar->SetStatusText(insstr, 6);
+            }
+            else
+            {
+                static wxString ovrstr(_("OVR"));
+                g_StatusBar->SetStatusText(ovrstr, 6);
+            }
+#endif
             g_StatusBar->Update(); // repaint immediately
 
 
@@ -2666,12 +2690,12 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     //delete g_PrintData;
     delete g_PageSetupData;
     g_PageSetupData = NULL;
-
+#if wxMAJOR_VERSION <3
     if(g_OvrStr != NULL) delete g_OvrStr;
     if(g_RdOnly != NULL) delete g_RdOnly;
     g_OvrStr = NULL;
     g_RdOnly = NULL;
-
+#endif
     extern void DeleteConfig();
     DeleteConfig();
 
