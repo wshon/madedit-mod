@@ -77,7 +77,7 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
-Mod v0.2.6
+Mod v0.2.5.5
 1. Add shortcut to Show All Chars(Space, Tab and EOL)
 2. Fixed the mouse issue http://sourceforge.net/p/madedit/bugs/10/, which might cause crash if you click
    on the edit area then click on menu or toolbar(It should be a bug of wxWidgets)
