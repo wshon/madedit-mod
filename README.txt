@@ -88,7 +88,7 @@ Mod v0.2.5.4
 2. Add URL of dictionary download in About Dialog
 3. Fix build issue with WX 3.0 under Fedora Core 17(Just follow the original way----to be investigated)
 4. Move Clear/Set ReadOnly flag to File menu
-5. Add GUN ASM syntax file
+5. Add GNU ASM syntax file
 6. Update Simplified Chinese
 
 Mod v0.2.5.3
