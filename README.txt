@@ -77,6 +77,12 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.2.6
+1. Start/End select to mark a start and end of selection
+2. Capitalize words in selection
+3. Add Capitalize to MadPython
+4. Update Simplified Chinese
+
 Mod v0.2.5.5
 1. Add shortcut to Show All Chars(Space, Tab and EOL)
 2. Fixed the mouse issue http://sourceforge.net/p/madedit/bugs/10/, which might cause crash if you click

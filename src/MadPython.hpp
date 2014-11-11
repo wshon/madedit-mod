@@ -1143,6 +1143,10 @@ namespace mad_python
         {
             g_ActiveMadEdit->InvertCase();
         }
+        void Capitalize()
+        {
+            g_ActiveMadEdit->Capitalize();
+        }
         void ToHalfWidth(bool ascii=true, bool japanese=true, bool korean=true, bool other=true)
         {
             g_ActiveMadEdit->ToHalfWidth(ascii, japanese, korean, other);
@@ -1374,6 +1378,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ToLowerCase", &PyMadEdit::ToLowerCase, "")
 
         .def("InvertCase", &PyMadEdit::InvertCase, "")
+        .def("Capitalize", &PyMadEdit::Capitalize, "")
         .def("TrimTrailingSpaces", &PyMadEdit::TrimTrailingSpaces, "")
         .def("SortLines", &PyMadEdit::SortLines, "")
         .def("ConvertWordWrapToNewLine", &PyMadEdit::ConvertWordWrapToNewLine, "")

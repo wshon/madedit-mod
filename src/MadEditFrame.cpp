@@ -1180,6 +1180,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuToUpperCase, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuToLowerCase, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuInvertCase , MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
+	EVT_UPDATE_UI(menuCapitalize , MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuToHalfWidth, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuToHalfWidthByOptions, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuToFullWidth, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
@@ -1305,6 +1306,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuToUpperCase, MadEditFrame::OnEditToUpperCase)
 	EVT_MENU(menuToLowerCase, MadEditFrame::OnEditToLowerCase)
 	EVT_MENU(menuInvertCase , MadEditFrame::OnEditInvertCase)
+	EVT_MENU(menuCapitalize , MadEditFrame::OnEditCapitalize)
 	EVT_MENU(menuToHalfWidth, MadEditFrame::OnEditToHalfWidth)
 	EVT_MENU(menuToHalfWidthByOptions, MadEditFrame::OnEditToHalfWidthByOptions)
 	EVT_MENU(menuToFullWidth, MadEditFrame::OnEditToFullWidth)
@@ -1508,6 +1510,7 @@ CommandData CommandTable[]=
     { ecToUpperCase,    2, menuToUpperCase,              wxT("menuToUpperCase"),              _("To U&pperCase"),                           wxT("Ctrl-U"),       wxITEM_NORMAL,    -1,                0,                     _("Convert the selection to uppercase")},
     { ecToLowerCase,    2, menuToLowerCase,              wxT("menuToLowerCase"),              _("To L&owerCase"),                           wxT("Ctrl-Shift-U"), wxITEM_NORMAL,    -1,                0,                     _("Convert the selection to lowercase")},
     { ecInvertCase ,    2, menuInvertCase ,              wxT("menuInvertCase") ,              _("Inver&t Case"),                            wxT("Ctrl-Alt-U"),   wxITEM_NORMAL,    -1,                0,                     _("Invert the case of the selection")},
+    { 0,                2, menuCapitalize ,              wxT("menuCapitalize") ,              _("Capitalize"),                              0,                   wxITEM_NORMAL,    -1,                0,                     _("Capitalize words of the selection")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecToHalfWidth,    2, menuToHalfWidth,              wxT("menuToHalfWidth"),              _("To H&alfwidth"),                           wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert the selection to halfwidth")},
     { 0,                2, menuToHalfWidthByOptions,     wxT("menuToHalfWidthByOptions"),     _("To Halfwidth by Options..."),              wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert the selection to halfwidth by options")},
@@ -2142,6 +2145,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_EditSubAdv->Append(menuToUpperCase, _("To U&pperCase"));
     g_Menu_EditSubAdv->Append(menuToLowerCase, _("To L&owerCase"));
     g_Menu_EditSubAdv->Append(menuInvertCase, _("Inver&t Case"));
+    g_Menu_EditSubAdv->Append(menuCapitalize, _("Capitalize"));
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append(menuToHalfWidth, _("To H&alfwidth"));
     g_Menu_EditSubAdv->Append(menuToHalfWidthByOptions, _("To Halfwidth by Options..."));
@@ -4645,6 +4649,15 @@ void MadEditFrame::OnEditInvertCase(wxCommandEvent& event)
     {
         g_ActiveMadEdit->InvertCase();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("InvertCase()")));
+    }
+}
+
+void MadEditFrame::OnEditCapitalize(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit) 
+    {
+        g_ActiveMadEdit->Capitalize();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("Capitalize()")));
     }
 }
 

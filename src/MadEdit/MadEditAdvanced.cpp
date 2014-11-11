@@ -13,6 +13,8 @@
 #include <cwctype>
 #include <cctype>
 #include <locale>
+#include <wx/tokenzr.h>
+
 #include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 
@@ -867,7 +869,7 @@ void MadEdit::ToLowerCase()
         int nc=0;
 #if defined(__WXMSW__)
         if(c<=0xFF)
-        nc=std::tolower(c);
+            nc=std::tolower(c);
         else 
 #endif
         nc=std::towlower(c);
@@ -942,6 +944,80 @@ void MadEdit::InvertCase()
             modified=true;
         }
         ++i;
+    }
+
+    if(modified)
+    {
+        vector<ucs4_t> ucs;
+        TranslateText(text.c_str(), text.Len(), &ucs, true);
+
+        if(m_EditMode==emColumnMode)
+        {
+            int colcount = m_SelectionEnd->rowid - m_SelectionBegin->rowid + 1;
+            InsertColumnString(&ucs[0], ucs.size(), colcount, false, true);
+        }
+        else
+        {
+            InsertString(&ucs[0], ucs.size(), false, false, true);
+        }
+    }
+}
+
+void MadEdit::Capitalize()
+{
+    if(IsReadOnly() || !m_Selection)
+        return;
+
+    wxString text;
+    GetSelText(text);
+    bool modified=false;
+
+    wxString strDelimiters = _T(" \t\r\n.,?!@#$%^&*()-=_+[]{}\\|;:\"<>/~0123456789");
+    wxStringTokenizer tkz(text, strDelimiters);
+    size_t lastPos = text.Length();
+    while ( tkz.HasMoreTokens() )
+    {
+        wxString token = tkz.GetNextToken();
+        if(!token.IsEmpty())
+        {
+            size_t pos = tkz.GetPosition();
+            size_t TokenStart = pos - token.Length();
+            if(pos != lastPos)  TokenStart -= 1;
+            size_t i=TokenStart, count=token.Length()+TokenStart;
+
+            int c=text[i];
+            int nc=0;
+#if defined(__WXMSW__)
+            if(c<=0xFF)
+               nc=std::toupper(c);
+            else 
+#endif
+            nc=std::towupper(c);
+            if(nc != c)
+            {
+                text.SetChar(i, nc);
+                modified=true;
+            }
+            ++i;
+            while(i<count)
+            {
+                int c=text[i];
+                int nc=0;
+#if defined(__WXMSW__)
+                if(c<=0xFF)
+                    nc=std::tolower(c);
+                else 
+#endif
+                nc=std::towlower(c);
+                
+                if(nc != c)
+                {
+                    text.SetChar(i, nc);
+                    modified=true;
+                }
+                ++i;
+            }
+        }
     }
 
     if(modified)

@@ -963,6 +963,7 @@ public: // advanced functions
     void ToUpperCase();
     void ToLowerCase();
     void InvertCase();
+    void Capitalize();
     void ToHalfWidth(bool ascii=true, bool japanese=true, bool korean=true, bool other=true);
     void ToFullWidth(bool ascii=true, bool japanese=true, bool korean=true, bool other=true);
 

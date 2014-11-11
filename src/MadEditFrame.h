@@ -235,6 +235,7 @@ public:
     void OnEditToUpperCase(wxCommandEvent& event);
     void OnEditToLowerCase(wxCommandEvent& event);
     void OnEditInvertCase(wxCommandEvent& event);
+    void OnEditCapitalize(wxCommandEvent& event);
     void OnEditToHalfWidth(wxCommandEvent& event);
     void OnEditToHalfWidthByOptions(wxCommandEvent& event);
     void OnEditToFullWidth(wxCommandEvent& event);
@@ -468,6 +469,7 @@ enum { // menu id
     menuToUpperCase,
     menuToLowerCase,
     menuInvertCase,
+    menuCapitalize,
     menuToHalfWidth,
     menuToHalfWidthByOptions,
     menuToFullWidth,
