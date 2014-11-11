@@ -1154,15 +1154,16 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuCopy, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelection)
 	EVT_UPDATE_UI(menuPaste, MadEditFrame::OnUpdateUI_MenuEditPaste)
 	EVT_UPDATE_UI(menuDelete, MadEditFrame::OnUpdateUI_Menu_CheckSize)
-	EVT_UPDATE_UI(menuCutLine, MadEditFrame::OnUpdateUI_MenuEditDeleteLine)
-	EVT_UPDATE_UI(menuDeleteLine, MadEditFrame::OnUpdateUI_MenuEditDeleteLine)
+	EVT_UPDATE_UI(menuCutLine, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuDeleteLine, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSelectAll, MadEditFrame::OnUpdateUI_Menu_CheckSize)
-	EVT_UPDATE_UI(menuInsertTabChar, MadEditFrame::OnUpdateUI_MenuEditInsertTabChar)
-	EVT_UPDATE_UI(menuInsertDateTime, MadEditFrame::OnUpdateUI_MenuEditInsertDateTime)
-	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_MenuEditToggleBookmark)
+	EVT_UPDATE_UI(menuStartEndSelction, MadEditFrame::OnUpdateUI_MenuEditStartEndSelction)
+	EVT_UPDATE_UI(menuInsertTabChar, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuInsertDateTime, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
-	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoPreviousBookmark)
-	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks)
+	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
+	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
 	EVT_UPDATE_UI(menuSortAscending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortDescending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortAscendingCase, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
@@ -1187,7 +1188,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSpaceToTab, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
-	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_ColumnAlign)
+	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuToggleReadOnly, MadEditFrame::OnUpdateUI_MenuEditToggleReadOnly)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1280,6 +1281,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuCutLine, MadEditFrame::OnEditCutLine)
 	EVT_MENU(menuDeleteLine, MadEditFrame::OnEditDeleteLine)
 	EVT_MENU(menuSelectAll, MadEditFrame::OnEditSelectAll)
+	EVT_MENU(menuStartEndSelction, MadEditFrame::OnEditStartEndSelction)
 	EVT_MENU(menuInsertTabChar, MadEditFrame::OnEditInsertTabChar)
 	EVT_MENU(menuInsertDateTime, MadEditFrame::OnEditInsertDateTime)
 	EVT_MENU(menuToggleBookmark, MadEditFrame::OnEditToggleBookmark)
@@ -1470,6 +1472,7 @@ CommandData CommandTable[]=
 
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecSelectAll,      1, menuSelectAll,                wxT("menuSelectAll"),                _("Select &All"),                             wxT("Ctrl-A"),       wxITEM_NORMAL,    -1,                0,                     _("Select all data")},
+    { 0,                1, menuStartEndSelction,         wxT("menuStartEndSelction"),         _("Begin/End Select"),                        0,                   wxITEM_CHECK,     -1,                0,                     _("Select all data")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
 
     { ecInsertTabChar,  1, menuInsertTabChar,            wxT("menuInsertTabChar"),            _("Insert Ta&b Char"),
@@ -3460,38 +3463,16 @@ void MadEditFrame::OnUpdateUI_Menu_CheckSize(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit && g_ActiveMadEdit->GetFileSize());
 }
 
-void MadEditFrame::OnUpdateUI_MenuEditDeleteLine(wxUpdateUIEvent& event)
-{
-    event.Enable(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode);
-}
 
-void MadEditFrame::OnUpdateUI_MenuEditInsertTabChar(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuEditStartEndSelction(wxUpdateUIEvent& event)
 {
-    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
-}
-
-void MadEditFrame::OnUpdateUI_MenuEditInsertDateTime(wxUpdateUIEvent& event)
-{
-    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
+    event.Enable(g_ActiveMadEdit!=NULL);
+    event.Check(g_ActiveMadEdit&&g_ActiveMadEdit->IsSelecting());
 }
 
 // add: gogo, 21.09.2009
-//
-void MadEditFrame::OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event)
-{
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
-}
-
-void MadEditFrame::OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event)
-{
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
-}
-
+//----------
 void MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event)
-{
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
-}
-void MadEditFrame::OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event)
 {
     event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
@@ -3504,11 +3485,6 @@ void MadEditFrame::OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event)
 void MadEditFrame::OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()==emColumnMode);
-}
-
-void MadEditFrame::OnUpdateUI_Menu_ColumnAlign(wxUpdateUIEvent& event)
-{
-    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode);
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event)
@@ -4350,6 +4326,14 @@ void MadEditFrame::OnEditSelectAll(wxCommandEvent& event)
     {
         g_ActiveMadEdit->SelectAll();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("DeleteLine()")));
+    }
+}
+
+void MadEditFrame::OnEditStartEndSelction(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit) 
+    {
+        g_ActiveMadEdit->StartEndSelction();
     }
 }
 

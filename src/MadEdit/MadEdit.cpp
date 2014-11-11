@@ -833,6 +833,8 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_UpdateValidPos=0;
 
     m_Selection=false;
+    m_SelectionStart = false;
+    m_SelectionStartPos = -1;
     m_SelFirstRow=INT_MAX;
     m_SelLastRow=-1;
 

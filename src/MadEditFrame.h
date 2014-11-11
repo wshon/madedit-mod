@@ -115,20 +115,15 @@ public:
     void OnUpdateUI_MenuEditCopy(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditPaste(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_CheckSize(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditDeleteLine(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditInsertTabChar(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditInsertDateTime(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditToggleReadOnly(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuEditStartEndSelction(wxUpdateUIEvent& event);
 
     // add: gogo, 21.09.2009
     void OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditGotoPreviousBookmark(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditClearAllBookmarks(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
-    void OnUpdateUI_Menu_ColumnAlign(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuIndent(wxUpdateUIEvent& event);
@@ -210,6 +205,7 @@ public:
     void OnEditCutLine(wxCommandEvent& event);
     void OnEditDeleteLine(wxCommandEvent& event);
     void OnEditSelectAll(wxCommandEvent& event);
+    void OnEditStartEndSelction(wxCommandEvent& event);
     void OnEditInsertTabChar(wxCommandEvent& event);
     void OnEditInsertDateTime(wxCommandEvent& event);
 
@@ -459,7 +455,8 @@ enum { // menu id
     menuSortOptions,
     menuAdvanced,
     menuToggleReadOnly,
-    
+    menuStartEndSelction,
+
     menuCopyAsHexString,
     menuCopyAsHexStringWithSpace,
     menuIncreaseIndent,

@@ -276,6 +276,8 @@ private:
     bool            m_Selection;
     MadCaretPos     m_SelectionPos1, m_SelectionPos2;
     MadCaretPos     *m_SelectionBegin, *m_SelectionEnd;
+    bool            m_SelectionStart;
+    wxFileOffset    m_SelectionStartPos;
 
     //hacking for drag&drop
     bool            m_DragDrop;
@@ -942,7 +944,8 @@ public: // basic functions
     void ClearAllBookmarks();
     bool HasBookMark() {return m_Lines->m_LineList.HasBookMark();};
     //----------
-
+    bool IsSelecting() {return m_SelectionStart;}
+    void StartEndSelction();
 public: // advanced functions
     void ConvertEncoding(const wxString &newenc, MadConvertEncodingFlag flag);
     void ConvertChinese(MadConvertEncodingFlag flag);

@@ -1588,6 +1588,38 @@ void MadEdit::SelectAll()
     }
 }
 
+void MadEdit::StartEndSelction()
+{
+    if(!m_SelectionStart)
+    {
+        m_SelectionStart = true;
+        m_SelectionStartPos = GetCaretPosition();
+    }
+    else
+    {
+        wxFileOffset ends =  GetCaretPosition();
+        m_SelectionStart = false;
+        if(ends != m_SelectionStartPos)
+        {
+            wxFileOffset starts = -1;
+            if(ends > m_SelectionStartPos) 
+            {
+                starts = m_SelectionStartPos;
+            }
+            else
+            {
+                starts = ends;
+                ends = m_SelectionStartPos;
+            }
+            SetSelection(starts, ends, false);
+
+            m_RepaintSelection = true;
+            Refresh(false);
+        }
+        m_SelectionStartPos = -1;
+    }
+}
+
 void MadEdit::CutToClipboard()
 {
     if(m_Selection)
