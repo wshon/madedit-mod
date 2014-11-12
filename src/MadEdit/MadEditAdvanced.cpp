@@ -3245,6 +3245,79 @@ void MadEdit::CutBookmarkedLines()
 
 void MadEdit::DeleteBookmarkedLines()
 {
+#if 0
+    wxFileOffset pos = 0;
+    MadUCQueue ucqueue;
+    wxString ws;
+    bool firstline = false;
+
+    if(!m_Lines->m_LineList.HasBookMark()) return;
+    list<MadLineIterator> lineList = m_Lines->m_LineList.GetBookmarkedLines();
+    list<MadLineIterator>::reverse_iterator rit = lineList.rbegin();
+
+    //while(rit != lineList.rend())
+    {
+        wxFileOffset beginpos = (*rit)->m_RowIndices.front().m_Start;
+        wxFileOffset endpos = beginpos+(*rit)->m_Size;
+        
+        m_SelectionPos1.pos = beginpos;
+        m_SelectionPos2.pos = endpos;
+        m_SelectionBegin = &m_SelectionPos1;
+        m_SelectionEnd = &m_SelectionPos2;
+        
+        if(m_SelectionPos1.pos == m_SelectionPos2.pos)
+        {
+            m_Selection = false;
+        }
+        else
+        {
+            m_Selection = true;
+            m_RepaintSelection = true;
+        
+            m_SelFirstRow = m_SelectionBegin->rowid;
+            m_SelLastRow = m_SelectionEnd->rowid;
+        
+            if(m_EditMode == emColumnMode)
+            {
+                if(m_SelectionPos1.xpos < m_SelectionPos2.xpos)
+                {
+                    m_SelLeftXPos = m_SelectionPos1.xpos;
+                    m_SelRightXPos = m_SelectionPos2.xpos;
+                }
+                else
+                {
+                    m_SelLeftXPos = m_SelectionPos2.xpos;
+                    m_SelRightXPos = m_SelectionPos1.xpos;
+                }
+            }
+        }
+        if(m_SelectionBegin->pos == m_SelectionEnd->pos)
+        {
+            m_CaretPos=*m_SelectionBegin;
+            AppearCaret();
+            UpdateScrollBarPos();
+            m_LastCaretXPos = m_CaretPos.xpos;
+        
+            DoSelectionChanged();
+        }
+        else
+        {
+            MadEditMode em=m_EditMode;
+            m_EditMode=emTextMode;
+            //if(command==ecCutLine)
+            {
+                CopyToClipboard();
+            }
+            DeleteSelection(true, NULL, false);
+            m_EditMode=em;
+        }
+        ++rit;
+    }
+    
+    m_Selection=false;
+    m_RepaintAll=true;
+    Refresh(false);
+#endif
 }
 
 void MadEdit::DeleteUnmarkedLines()
