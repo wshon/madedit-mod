@@ -115,12 +115,12 @@ public:
     void OnUpdateUI_MenuEditCopy(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditPaste(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_CheckSize(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditToggleReadOnly(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuFileToggleReadOnly(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuEditStartEndSelction(wxUpdateUIEvent& event);
 
     // add: gogo, 21.09.2009
     void OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuSearchCheckBookmark(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
@@ -195,6 +195,7 @@ public:
     void OnCopyFilePath(wxCommandEvent& event);
     void OnCopyFileName(wxCommandEvent& event);
     void OnCopyFileDir(wxCommandEvent& event);
+    void OnFileToggleReadOnly(wxCommandEvent& event);
 
     void OnEditUndo(wxCommandEvent& event);
     void OnEditRedo(wxCommandEvent& event);
@@ -210,10 +211,10 @@ public:
     void OnEditInsertDateTime(wxCommandEvent& event);
 
     // add: gogo, 21.09.2009
-    void OnEditToggleBookmark(wxCommandEvent& event);
-    void OnEditGotoNextBookmark(wxCommandEvent& event);
-    void OnEditGotoPreviousBookmark(wxCommandEvent& event);
-    void OnEditClearAllBookmarks(wxCommandEvent& event);
+    void OnSearchToggleBookmark(wxCommandEvent& event);
+    void OnSearchGotoNextBookmark(wxCommandEvent& event);
+    void OnSearchGotoPreviousBookmark(wxCommandEvent& event);
+    void OnSearchClearAllBookmarks(wxCommandEvent& event);
     //----------
 
     void OnEditSortAscending(wxCommandEvent& event);
@@ -222,7 +223,6 @@ public:
     void OnEditSortDescendingCase(wxCommandEvent& event);
     void OnEditSortByOptions(wxCommandEvent& event);
     void OnEditSortOptions(wxCommandEvent& event);
-    void OnEditToggleReadOnly(wxCommandEvent& event);
 
     void OnEditCopyAsHexString(wxCommandEvent& event);
     void OnEditCopyAsHexStringWithSpace(wxCommandEvent& event);
@@ -246,6 +246,11 @@ public:
     void OnEditInsertNumbers(wxCommandEvent& event);
     void OnEditColumnAlign(wxCommandEvent& event);
     void OnEditSpellCheck(wxCommandEvent& event);
+    void OnEditBookmarkCopy(wxCommandEvent& event);
+    void OnEditBookmarkCut(wxCommandEvent& event);
+    void OnEditBookmarkDel(wxCommandEvent& event);
+    void OnEditBookmarkDelUnmarked(wxCommandEvent& event);
+    void OnEditBookmarkReplace(wxCommandEvent& event);
 
     void OnSearchFind(wxCommandEvent& event);
     void OnSearchFindNext(wxCommandEvent& event);
@@ -443,10 +448,12 @@ enum { // menu id
     menuDeleteLine,
     menuInsertTabChar,
     menuInsertDateTime,
-    menuToggleBookmark,       // add: gogo, 21.09.2009
-    menuGotoNextBookmark,     // add: gogo, 21.09.2009
-    menuGotoPreviousBookmark, // add: gogo, 21.09.2009
-    menuClearAllBookmarks,
+    menuBookmark,
+    menuBookmarkCopy,
+    menuBookmarkCut,
+    menuBookmarkDel,
+    menuBookmarkDelUnmarked,
+    menuBookmarkReplace,
     menuSort,
     menuSortAscending,
     menuSortDescending,
@@ -489,6 +496,10 @@ enum { // menu id
     menuGoToPosition,
     menuLeftBrace,
     menuRightBrace,
+    menuToggleBookmark,       // add: gogo, 21.09.2009
+    menuGotoNextBookmark,     // add: gogo, 21.09.2009
+    menuGotoPreviousBookmark, // add: gogo, 21.09.2009
+    menuClearAllBookmarks,
 
     // view
     menuEncoding,

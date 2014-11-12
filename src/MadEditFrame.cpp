@@ -206,6 +206,7 @@ wxMenu *g_Menu_Tools = NULL;
 wxMenu *g_Menu_Window = NULL;
 wxMenu *g_Menu_Help = NULL;
 wxMenu *g_Menu_File_RecentFiles = NULL;
+wxMenu *g_Menu_Edit_Bookmark = NULL;
 wxMenu *g_Menu_Edit_Sort = NULL;
 wxMenu *g_Menu_Edit_Advanced = NULL;
 wxMenu *g_Menu_View_Encoding = NULL;
@@ -1147,6 +1148,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuPrintPreview, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuPrint, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuRecentFiles, MadEditFrame::OnUpdateUI_MenuFileRecentFiles)
+	EVT_UPDATE_UI(menuToggleReadOnly, MadEditFrame::OnUpdateUI_MenuFileToggleReadOnly)
 	// edit
 	EVT_UPDATE_UI(menuUndo, MadEditFrame::OnUpdateUI_MenuEditUndo)
 	EVT_UPDATE_UI(menuRedo, MadEditFrame::OnUpdateUI_MenuEditRedo)
@@ -1160,10 +1162,6 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuStartEndSelction, MadEditFrame::OnUpdateUI_MenuEditStartEndSelction)
 	EVT_UPDATE_UI(menuInsertTabChar, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertDateTime, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
-	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
-	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark)
 	EVT_UPDATE_UI(menuSortAscending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortDescending, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortAscendingCase, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
@@ -1190,7 +1188,11 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuToggleReadOnly, MadEditFrame::OnUpdateUI_MenuEditToggleReadOnly)
+	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkCut, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkDel, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkDelUnmarked, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkReplace, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuFindNext, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1200,6 +1202,10 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuGoToPosition, MadEditFrame::OnUpdateUI_MenuSearchGoTo)
 	EVT_UPDATE_UI(menuLeftBrace, MadEditFrame::OnUpdateUI_MenuSearchGoToBrace)
 	EVT_UPDATE_UI(menuRightBrace, MadEditFrame::OnUpdateUI_MenuSearchGoToBrace)
+	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
 	// view
 	EVT_UPDATE_UI(menuEncoding, MadEditFrame::OnUpdateUI_MenuViewEncoding)
 	EVT_UPDATE_UI(menuSyntax, MadEditFrame::OnUpdateUI_MenuViewSyntax)
@@ -1272,6 +1278,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuCopyFilePath, MadEditFrame::OnCopyFilePath)
 	EVT_MENU(menuCopyFileName, MadEditFrame::OnCopyFileName)
 	EVT_MENU(menuCopyFileDir, MadEditFrame::OnCopyFileDir)
+	EVT_MENU(menuToggleReadOnly, MadEditFrame::OnFileToggleReadOnly)
 	// edit
 	EVT_MENU(menuUndo, MadEditFrame::OnEditUndo)
 	EVT_MENU(menuRedo, MadEditFrame::OnEditRedo)
@@ -1285,10 +1292,6 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuStartEndSelction, MadEditFrame::OnEditStartEndSelction)
 	EVT_MENU(menuInsertTabChar, MadEditFrame::OnEditInsertTabChar)
 	EVT_MENU(menuInsertDateTime, MadEditFrame::OnEditInsertDateTime)
-	EVT_MENU(menuToggleBookmark, MadEditFrame::OnEditToggleBookmark)
-	EVT_MENU(menuGotoNextBookmark, MadEditFrame::OnEditGotoNextBookmark)
-	EVT_MENU(menuGotoPreviousBookmark, MadEditFrame::OnEditGotoPreviousBookmark)
-	EVT_MENU(menuClearAllBookmarks, MadEditFrame::OnEditClearAllBookmarks)
 	EVT_MENU(menuSortAscending, MadEditFrame::OnEditSortAscending)
 	EVT_MENU(menuSortDescending, MadEditFrame::OnEditSortDescending)
 	EVT_MENU(menuSortAscendingCase, MadEditFrame::OnEditSortAscendingCase)
@@ -1317,7 +1320,11 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
 	EVT_MENU_RANGE(menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck)
-	EVT_MENU(menuToggleReadOnly, MadEditFrame::OnEditToggleReadOnly)
+	EVT_MENU(menuBookmarkCopy, MadEditFrame::OnEditBookmarkCopy)
+	EVT_MENU(menuBookmarkCut, MadEditFrame::OnEditBookmarkCut)
+	EVT_MENU(menuBookmarkDel, MadEditFrame::OnEditBookmarkDel)
+	EVT_MENU(menuBookmarkDelUnmarked, MadEditFrame::OnEditBookmarkDelUnmarked)
+	EVT_MENU(menuBookmarkReplace, MadEditFrame::OnEditBookmarkReplace)
 	// search
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
@@ -1329,6 +1336,10 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuGoToPosition, MadEditFrame::OnSearchGoToPosition)
 	EVT_MENU(menuLeftBrace, MadEditFrame::OnSearchGoToLeftBrace)
 	EVT_MENU(menuRightBrace, MadEditFrame::OnSearchGoToRightBrace)
+	EVT_MENU(menuToggleBookmark, MadEditFrame::OnSearchToggleBookmark)
+	EVT_MENU(menuGotoNextBookmark, MadEditFrame::OnSearchGotoNextBookmark)
+	EVT_MENU(menuGotoPreviousBookmark, MadEditFrame::OnSearchGotoPreviousBookmark)
+	EVT_MENU(menuClearAllBookmarks, MadEditFrame::OnSearchClearAllBookmarks)
 	// view
 	EVT_MENU_RANGE(menuEncoding1, menuEncoding99, MadEditFrame::OnViewEncoding)
 	EVT_MENU_RANGE(menuRecentEncoding1, menuRecentEncoding9, MadEditFrame::OnViewRecentEncoding)
@@ -1489,10 +1500,12 @@ CommandData CommandTable[]=
 
     // add: gogo, 21.09.2009
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
-    { 0,                1, menuToggleBookmark,           wxT("menuToggleBookmark"),           _("Toggle/Remove Bookmark "),                 wxT("Ctrl-F2"),      wxITEM_NORMAL,    bookmark_toggle_xpm_idx, 0,               _("Toggle Bookmark at current line")},
-    { 0,                1, menuGotoNextBookmark,         wxT("menuGotoNextBookmark"),         _("Go To Next Bookmark"),                     wxT("F2"),           wxITEM_NORMAL,    bookmark_next_xpm_idx,   0,               _("Go to the next bookmark")},
-    { 0,                1, menuGotoPreviousBookmark,     wxT("menuGotoPreviousBookmark"),     _("Go To Previous Bookmark"),                 wxT("Shift-F2"),     wxITEM_NORMAL,    bookmark_prev_xpm_idx,   0,               _("Go to the previous bookmark")},
-    { 0,                1, menuClearAllBookmarks,        wxT("menuClearAllBookmarks"),        _("Clear All Bookmarks"),                     wxT(""),             wxITEM_NORMAL,    bookmark_clear_xpm_idx,   0,              _("Clear All Bookmarks")},
+    { 0,                1, menuBookmark,                 wxT("menuBookmark"),                 _("Bookmark"),                                0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Bookmark, 0},
+    { 0,                2, menuBookmarkCopy,             wxT("menuBookmarkCopy"),             _("Copy Bookmarked Lines"),                   0,                   wxITEM_NORMAL,    -1,                0,                     _("Copy Bookmarked Lines")},
+    { 0,                2, menuBookmarkCut,              wxT("menuBookmarkCut"),              _("Cut Bookmarked Lines"),                    0,                   wxITEM_NORMAL,    -1,                0,                     _("Cut Bookmarked Lines")},
+    { 0,                2, menuBookmarkDel,              wxT("menuBookmarkDel"),              _("Delete Bookmarked Lines"),                 0,                   wxITEM_NORMAL,    -1,                0,                     _("Delete Bookmarked Lines")},
+    { 0,                2, menuBookmarkDelUnmarked,      wxT("menuBookmarkDelUnmarked"),      _("Delete Unmarked Lines"),                   0,                   wxITEM_NORMAL,    -1,                0,                     _("Delete Unmarked Lines")},
+    { 0,                2, menuBookmarkReplace,          wxT("menuBookmarkReplace"),          _("Replace Bookmarked Lines"),                0,                   wxITEM_NORMAL,    -1,                0,                     _("Replace Bookmarked Lines")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuAdvanced,                 wxT("menuAdvanced"),                 _("Ad&vanced"),                               0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Advanced, 0},
     { 0,                2, menuCopyAsHexString,          wxT("menuCopyAsHexString"),          _("Copy As &Hex String"),                     wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection as hex-string")},
@@ -1550,6 +1563,11 @@ CommandData CommandTable[]=
     { 0,            1, 0,                          0,                                 0,                                                    0,                   wxITEM_SEPARATOR, -1,               0, 0},
     { ecLeftBrace,  1, menuLeftBrace,              wxT("menuLeftBrace"),              _("Go To L&eft Brace"),                               wxT("Ctrl-["),       wxITEM_NORMAL,    -1,               0, _("Go to left brace")},
     { ecRightBrace, 1, menuRightBrace,             wxT("menuRightBrace"),             _("Go To R&ight Brace"),                              wxT("Ctrl-]"),       wxITEM_NORMAL,    -1,               0, _("Go to right brace")},
+    { 0,            1, 0,                          0,                                 0,                                                    0,                   wxITEM_SEPARATOR, -1,               0, 0},
+    { 0,            1, menuToggleBookmark,         wxT("menuToggleBookmark"),         _("Toggle/Remove Bookmark "),                         wxT("Ctrl-F2"),      wxITEM_NORMAL,    bookmark_toggle_xpm_idx, 0,               _("Toggle Bookmark at current line")},
+    { 0,            1, menuGotoNextBookmark,       wxT("menuGotoNextBookmark"),       _("Go To Next Bookmark"),                             wxT("F2"),           wxITEM_NORMAL,    bookmark_next_xpm_idx,   0,               _("Go to the next bookmark")},
+    { 0,            1, menuGotoPreviousBookmark,   wxT("menuGotoPreviousBookmark"),   _("Go To Previous Bookmark"),                         wxT("Shift-F2"),     wxITEM_NORMAL,    bookmark_prev_xpm_idx,   0,               _("Go to the previous bookmark")},
+    { 0,            1, menuClearAllBookmarks,      wxT("menuClearAllBookmarks"),      _("Clear All Bookmarks"),                             wxT(""),             wxITEM_NORMAL,    bookmark_clear_xpm_idx,  0,              _("Clear All Bookmarks")},
 
     // View
     { 0, 0, 0, 0, _("&View"), 0, wxITEM_NORMAL, 0, &g_Menu_View, 0},
@@ -2178,6 +2196,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_File_RecentFiles = new wxMenu((long)0);
     g_Menu_Edit_Sort = new wxMenu((long)0);
     g_Menu_Edit_Advanced = new wxMenu((long)0);
+    g_Menu_Edit_Bookmark = new wxMenu((long)0);
     g_Menu_View_Encoding = new wxMenu((long)0);
     g_Menu_View_AllEncodings = new wxMenu((long)0);
     g_Menu_View_Syntax = new wxMenu((long)0);
@@ -3457,7 +3476,7 @@ void MadEditFrame::OnUpdateUI_MenuEditPaste(wxUpdateUIEvent& event)
 #endif
 }
 
-void MadEditFrame::OnUpdateUI_MenuEditToggleReadOnly(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuFileToggleReadOnly(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL);
 }
@@ -3476,7 +3495,7 @@ void MadEditFrame::OnUpdateUI_MenuEditStartEndSelction(wxUpdateUIEvent& event)
 
 // add: gogo, 21.09.2009
 //----------
-void MadEditFrame::OnUpdateUI_MenuEditGotoNextBookmark(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark(wxUpdateUIEvent& event)
 {
     event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
@@ -4359,7 +4378,7 @@ void MadEditFrame::OnEditInsertDateTime(wxCommandEvent& event)
     }
 }
 
-void MadEditFrame::OnEditToggleReadOnly(wxCommandEvent& event)
+void MadEditFrame::OnFileToggleReadOnly(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit)
     {
@@ -4396,7 +4415,7 @@ void MadEditFrame::OnEditToggleReadOnly(wxCommandEvent& event)
 
 // add: gogo, 21.09.2009
 //
-void MadEditFrame::OnEditToggleBookmark(wxCommandEvent& event)
+void MadEditFrame::OnSearchToggleBookmark(wxCommandEvent& event)
 {
     if ( g_ActiveMadEdit )
     {
@@ -4405,7 +4424,7 @@ void MadEditFrame::OnEditToggleBookmark(wxCommandEvent& event)
     }
 }
 
-void MadEditFrame::OnEditGotoNextBookmark(wxCommandEvent& event)
+void MadEditFrame::OnSearchGotoNextBookmark(wxCommandEvent& event)
 {
     if ( g_ActiveMadEdit )
     {
@@ -4414,7 +4433,7 @@ void MadEditFrame::OnEditGotoNextBookmark(wxCommandEvent& event)
     }
 }
 
-void MadEditFrame::OnEditGotoPreviousBookmark(wxCommandEvent& event)
+void MadEditFrame::OnSearchGotoPreviousBookmark(wxCommandEvent& event)
 {
     if ( g_ActiveMadEdit )
     {
@@ -4423,7 +4442,7 @@ void MadEditFrame::OnEditGotoPreviousBookmark(wxCommandEvent& event)
     }
 }
 
-void MadEditFrame::OnEditClearAllBookmarks(wxCommandEvent& event)
+void MadEditFrame::OnSearchClearAllBookmarks(wxCommandEvent& event)
 {
     if ( g_ActiveMadEdit )
     {
@@ -4884,6 +4903,46 @@ void MadEditFrame::OnEditSpellCheck(wxCommandEvent& event)
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
         g_ActiveMadEdit->ReplaceWordFromCaretPos(g_SpellSuggestions[event.GetId()-menuSpellOption1]);
+    }
+}
+
+void MadEditFrame::OnEditBookmarkCopy(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->CopyBookmarkedLines();
+    }
+}
+
+void MadEditFrame::OnEditBookmarkCut(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->CutBookmarkedLines();
+    }
+}
+
+void MadEditFrame::OnEditBookmarkDel(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->DeleteBookmarkedLines();
+    }
+}
+
+void MadEditFrame::OnEditBookmarkDelUnmarked(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->DeleteUnmarkedLines();
+    }
+}
+
+void MadEditFrame::OnEditBookmarkReplace(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->ReplaceBookmarkedLines();
     }
 }
 

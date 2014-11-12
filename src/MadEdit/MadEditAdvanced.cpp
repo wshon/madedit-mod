@@ -3036,10 +3036,10 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
 
     if(zeroPad) padchar = '0';
     if(total && align == naRight && fmt != nfBIN)
-	{
-		if(zeroPad) numFmt<<wxT("0");
-		numFmt<<total;
-	}
+    {
+        if(zeroPad) numFmt<<wxT("0");
+        numFmt<<total;
+    }
     switch(fmt)
     {
         case nfHEX:
@@ -3168,8 +3168,91 @@ void MadEdit::SetSpellCheck(bool value)
 void MadEdit::AddtoDictionary(wxString & misSpell)
 {
     if(m_SingleLineMode || !m_SpellCheckerPtr) return;
-	m_SpellCheckerPtr->AddWordToDictionary(misSpell);
+    m_SpellCheckerPtr->AddWordToDictionary(misSpell);
     m_RepaintAll=true;
     Refresh(false);
 }
+
+void MadEdit::CopyBookmarkedLines()
+{
+    wxFileOffset pos = 0;
+    MadUCQueue ucqueue;
+    wxString ws;
+    bool firstline = false;
+
+    if(!m_Lines->m_LineList.HasBookMark()) return;
+    list<MadLineIterator> lineList = m_Lines->m_LineList.GetBookmarkedLines();
+    list<MadLineIterator>::iterator it = lineList.begin();
+
+    //MadLineIterator lit = m_Lines->m_LineList.begin();
+    firstline = (m_Lines->m_LineList.begin()==*it);
+    wxString newline(wxT("\r"));
+    if (GetInsertNewLineType() == nltDOS) newline += wxT("\n");
+    else if (GetInsertNewLineType() == nltUNIX) newline = wxT("\n");
+
+    while(it != lineList.end())
+    {
+        MadLineIterator lit = *it;
+        if(firstline) // if first line has BOM, we will ignore it
+        {
+            pos = lit->m_RowIndices.front().m_Start;
+            firstline = false;
+        }
+
+        if(pos < m_Lines->m_Size)
+        {
+            MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+            m_Lines->InitNextUChar(lit, pos);
+            while(1)
+            {
+                if(!(m_Lines->*NextUChar)(ucqueue))
+                {
+                    break;
+                }
+
+                ucs4_t uc=ucqueue.back().first;
+                if(uc==0x0D || uc==0x0A)
+                {
+                    ws+=newline;
+                    break;
+                }
+
+#ifdef __WXMSW__
+                if(uc>=0x10000)
+                {
+                    wchar_t wbuf[2];
+                    m_Encoding->UCS4toUTF16LE_U10000(uc, (wxByte*)wbuf);
+                    ws<<wbuf[0];
+                    ws<<wbuf[1];
+                }
+                else
+                {
+                    ws<<wxChar(uc);
+                }
+#else
+                ws<<wxChar(uc);
+#endif
+            }
+        }
+        ++it;
+    }
+    if(!ws.IsEmpty()) PutTextToClipboard(ws);
+}
+
+void MadEdit::CutBookmarkedLines()
+{
+}
+
+void MadEdit::DeleteBookmarkedLines()
+{
+}
+
+void MadEdit::DeleteUnmarkedLines()
+{
+}
+
+void MadEdit::ReplaceBookmarkedLines()
+{
+}
+
 

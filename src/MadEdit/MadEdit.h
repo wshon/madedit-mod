@@ -850,9 +850,12 @@ public: // basic functions
                         MadNumberFormat fmt, MadNumberAlign align, bool zeroPad);
 
     void ColumnAlign();
-
     void HighlightWords();
-
+    void CopyBookmarkedLines();
+    void CutBookmarkedLines();
+    void DeleteBookmarkedLines();
+    void DeleteUnmarkedLines();
+    void ReplaceBookmarkedLines();
     void SelectAll();
     void CutToClipboard();
     void CopyToClipboard();
