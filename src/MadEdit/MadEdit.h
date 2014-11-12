@@ -852,8 +852,7 @@ public: // basic functions
     void ColumnAlign();
     void HighlightWords();
     void CopyBookmarkedLines();
-    void CutBookmarkedLines();
-    void DeleteBookmarkedLines();
+    void CutDelBookmarkedLines(bool copyLines = false);
     void DeleteUnmarkedLines();
     void ReplaceBookmarkedLines();
     void SelectAll();

@@ -4918,7 +4918,7 @@ void MadEditFrame::OnEditBookmarkCut(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
-        g_ActiveMadEdit->CutBookmarkedLines();
+        g_ActiveMadEdit->CutDelBookmarkedLines(true);
     }
 }
 
@@ -4926,7 +4926,7 @@ void MadEditFrame::OnEditBookmarkDel(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
-        g_ActiveMadEdit->DeleteBookmarkedLines();
+        g_ActiveMadEdit->CutDelBookmarkedLines();
     }
 }
 

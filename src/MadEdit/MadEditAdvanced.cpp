@@ -3184,7 +3184,6 @@ void MadEdit::CopyBookmarkedLines()
     list<MadLineIterator> lineList = m_Lines->m_LineList.GetBookmarkedLines();
     list<MadLineIterator>::iterator it = lineList.begin();
 
-    //MadLineIterator lit = m_Lines->m_LineList.begin();
     firstline = (m_Lines->m_LineList.begin()==*it);
     wxString newline(wxT("\r"));
     if (GetInsertNewLineType() == nltDOS) newline += wxT("\n");
@@ -3239,85 +3238,102 @@ void MadEdit::CopyBookmarkedLines()
     if(!ws.IsEmpty()) PutTextToClipboard(ws);
 }
 
-void MadEdit::CutBookmarkedLines()
+void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
 {
-}
-
-void MadEdit::DeleteBookmarkedLines()
-{
-#if 0
-    wxFileOffset pos = 0;
-    MadUCQueue ucqueue;
-    wxString ws;
-    bool firstline = false;
+    MadUndo *undo = NULL;
 
     if(!m_Lines->m_LineList.HasBookMark()) return;
-    list<MadLineIterator> lineList = m_Lines->m_LineList.GetBookmarkedLines();
-    list<MadLineIterator>::reverse_iterator rit = lineList.rbegin();
+    list<MadLineIterator> &lineList = m_Lines->m_LineList.GetBookmarkedLines();
 
-    //while(rit != lineList.rend())
+    MadLineIterator lit;
+    wxString ws;
+    wxString newline(wxT("\r"));
+    MadUCQueue ucqueue;
+    wxFileOffset pos = 0;
+    if (GetInsertNewLineType() == nltDOS) newline += wxT("\n");
+    else if (GetInsertNewLineType() == nltUNIX) newline = wxT("\n");
+
+    while(!lineList.empty())
     {
-        wxFileOffset beginpos = (*rit)->m_RowIndices.front().m_Start;
-        wxFileOffset endpos = beginpos+(*rit)->m_Size;
-        
-        m_SelectionPos1.pos = beginpos;
-        m_SelectionPos2.pos = endpos;
-        m_SelectionBegin = &m_SelectionPos1;
-        m_SelectionEnd = &m_SelectionPos2;
-        
-        if(m_SelectionPos1.pos == m_SelectionPos2.pos)
+        lit = lineList.back();
+        lineList.pop_back();
+        if(lit->m_Size!=0) // this line is not a empty line
         {
-            m_Selection = false;
-        }
-        else
-        {
-            m_Selection = true;
-            m_RepaintSelection = true;
-        
-            m_SelFirstRow = m_SelectionBegin->rowid;
-            m_SelLastRow = m_SelectionEnd->rowid;
-        
-            if(m_EditMode == emColumnMode)
+            if(copyLines)
             {
-                if(m_SelectionPos1.xpos < m_SelectionPos2.xpos)
+                bool firstline = (m_Lines->m_LineList.begin()==lit);
+
+                if(firstline) // if first line has BOM, we will ignore it
                 {
-                    m_SelLeftXPos = m_SelectionPos1.xpos;
-                    m_SelRightXPos = m_SelectionPos2.xpos;
+                    pos = lit->m_RowIndices.front().m_Start;
+                    firstline = false;
                 }
-                else
+
+                if(pos < m_Lines->m_Size)
                 {
-                    m_SelLeftXPos = m_SelectionPos2.xpos;
-                    m_SelRightXPos = m_SelectionPos1.xpos;
-                }
-            }
-        }
-        if(m_SelectionBegin->pos == m_SelectionEnd->pos)
-        {
-            m_CaretPos=*m_SelectionBegin;
-            AppearCaret();
-            UpdateScrollBarPos();
-            m_LastCaretXPos = m_CaretPos.xpos;
-        
-            DoSelectionChanged();
-        }
-        else
-        {
-            MadEditMode em=m_EditMode;
-            m_EditMode=emTextMode;
-            //if(command==ecCutLine)
-            {
-                CopyToClipboard();
-            }
-            DeleteSelection(true, NULL, false);
-            m_EditMode=em;
-        }
-        ++rit;
-    }
-    
-    m_Selection=false;
-    m_RepaintAll=true;
-    Refresh(false);
+                    MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
+                    m_Lines->InitNextUChar(lit, pos);
+                    while(1)
+                    {
+                        if(!(m_Lines->*NextUChar)(ucqueue))
+                        {
+                            break;
+                        }
+
+                        ucs4_t uc=ucqueue.back().first;
+                        if(uc==0x0D || uc==0x0A)
+                        {
+                            ws+=newline;
+                            break;
+                        }
+
+#ifdef __WXMSW__
+                        if(uc>=0x10000)
+                        {
+                            wchar_t wbuf[2];
+                            m_Encoding->UCS4toUTF16LE_U10000(uc, (wxByte*)wbuf);
+                            ws<<wbuf[0];
+                            ws<<wbuf[1];
+                        }
+                        else
+                        {
+                            ws<<wxChar(uc);
+                        }
+#else
+                        ws<<wxChar(uc);
 #endif
+                    }
+                }
+            }
+            MadDeleteUndoData *dudata = new MadDeleteUndoData;
+            
+            dudata->m_Pos = lit->m_Blocks[0].m_Pos;
+            dudata->m_Size = lit->m_Size;
+            
+            DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+            if(undo == NULL)
+            {
+                undo = m_UndoBuffer->Add();
+                undo->m_CaretPosBefore=m_CaretPos.pos;
+            }
+            undo->m_Undos.push_back(dudata);
+        }
+    }
+
+    if(copyLines)
+    {
+        if(!ws.IsEmpty()) PutTextToClipboard(ws);
+    }
+
+    ReformatAll();
+    if(undo)
+    {
+        m_Modified = true;
+    }
+    m_Selection = false;
+    m_RepaintAll = true;
+    Refresh(false);
 }
 
 void MadEdit::DeleteUnmarkedLines()
