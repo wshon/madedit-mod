@@ -80,10 +80,10 @@ ChangeLog:
 Mod v0.2.6
 1. Enhanced bookmark edit functions(copy/cut/delete/replace)
 2. Move Toggle/Goto/clear bookmarks to Search because they are not edit functions
-2. Start/End select to mark a start and end of selection by menu
-3. Capitalize words in selection
-4. Add Capitalize to MadPython
-5. Update Simplified Chinese
+3. Start/End select to mark a start and end of selection by menu
+4. Capitalize words in selection
+5. Add Capitalize to MadPython
+6. Update Simplified Chinese
 
 Mod v0.2.5.5
 1. Add shortcut to Show All Chars(Space, Tab and EOL)

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-12 22:23+0800\n"
-"PO-Revision-Date: 2014-11-12 22:36+0800\n"
+"PO-Revision-Date: 2014-11-12 22:44+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -799,23 +799,23 @@ msgstr "书签"
 
 #: ../src/MadEditFrame.cpp:1504
 msgid "Copy Bookmarked Lines"
-msgstr "拷贝书签标记过的行"
+msgstr "拷贝书签行"
 
 #: ../src/MadEditFrame.cpp:1505
 msgid "Cut Bookmarked Lines"
-msgstr "剪切书签标记过的行"
+msgstr "剪切书签行"
 
 #: ../src/MadEditFrame.cpp:1506
 msgid "Delete Bookmarked Lines"
-msgstr "删除书签标记过的行"
+msgstr "删除书签行"
 
 #: ../src/MadEditFrame.cpp:1507
 msgid "Delete Unmarked Lines"
-msgstr "删除未标记过的行"
+msgstr "删除未标记行"
 
 #: ../src/MadEditFrame.cpp:1508
 msgid "Replace Bookmarked Lines"
-msgstr "替换书签标记过的行"
+msgstr "替换书签行"
 
 #: ../src/MadEditFrame.cpp:1510 ../src/MadEditFrame.cpp:2179
 msgid "Ad&vanced"

@@ -3247,6 +3247,7 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
 
     MadLineIterator lit;
     wxString ws;
+    list<wxString> lines;
     wxString newline(wxT("\r"));
     MadUCQueue ucqueue;
     wxFileOffset pos = 0;
@@ -3304,6 +3305,11 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
 #endif
                     }
                 }
+                if(!ws.IsEmpty())
+                {
+                    lines.push_front(ws);
+                    ws.Empty();
+                }
             }
             MadDeleteUndoData *dudata = new MadDeleteUndoData;
             
@@ -3323,7 +3329,16 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
 
     if(copyLines)
     {
-        if(!ws.IsEmpty()) PutTextToClipboard(ws);
+        if(!lines.empty())
+        {
+            ws.Empty();
+            list<wxString>::iterator it=lines.begin();
+            for(; it != lines.end(); ++it)
+            {
+                ws += *it;
+            }
+            PutTextToClipboard(ws);
+        }
     }
 
     ReformatAll();
