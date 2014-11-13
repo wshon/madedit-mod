@@ -15,6 +15,12 @@
 #include <locale>
 #include <wx/tokenzr.h>
 
+#ifdef __WXGTK__
+#   include "clipbrd_gtk.h"
+#else
+#   include <wx/clipbrd.h>
+#endif
+
 #include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 
@@ -3343,18 +3349,18 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
         }
     }
 
-    ReformatAll();
     if(undo)
     {
+        ReformatAll();
         m_Modified = true;
+        m_Selection = false;
+        m_RepaintAll = true;
+        bool sc= (oldModified==false);
+        
+        DoSelectionChanged();
+        if(sc) DoStatusChanged();
+        Refresh(false);
     }
-    m_Selection = false;
-    m_RepaintAll = true;
-    bool sc= (oldModified==false);
-   
-    DoSelectionChanged();
-    if(sc) DoStatusChanged();
-    Refresh(false);
 }
 
 void MadEdit::DeleteUnmarkedLines()
@@ -3416,23 +3422,108 @@ void MadEdit::DeleteUnmarkedLines()
         m_CaretPos.pos = 0;
     }
 
-    ReformatAll();
     if(undo)
     {
+        ReformatAll();
         m_Modified = true;
+        m_Selection = false;
+        m_RepaintAll = true;
+        bool sc= (oldModified==false);
+        
+        DoSelectionChanged();
+        if(sc) DoStatusChanged();
+        Refresh(false);
     }
-    m_Selection = false;
-    m_RepaintAll = true;
-    bool sc= (oldModified==false);
-   
-    DoSelectionChanged();
-    if(sc) DoStatusChanged();
-    Refresh(false);
-
 }
 
 void MadEdit::ReplaceBookmarkedLines()
 {
+    MadUndo *undo = NULL;
+    bool oldModified = m_Modified;
+    MadLineIterator lit;
+    MadMemData *md=m_Lines->m_MemData;
+    wxString strText;
+    wxString newline(wxT("\r"));
+
+    if (GetInsertNewLineType() == nltDOS) newline += wxT("\n");
+    else if (GetInsertNewLineType() == nltUNIX) newline = wxT("\n");
+    
+    if(wxTheClipboard->Open())
+    {
+        if(wxTheClipboard->IsSupported(wxDF_UNICODETEXT))
+        {
+            wxTextDataObject data;
+            wxTheClipboard->GetData( data );
+            strText=data.GetText();
+        }
+        wxTheClipboard->Close();
+    }
+    
+    if(strText.IsEmpty()) return;
+
+    wxString strDelimiters = _T("\r\n");
+    wxStringTokenizer tkz(strText, strDelimiters);
+    list<wxString> strLines;
+    list<MadLineIterator> &lineList = m_Lines->m_LineList.GetBookmarkedLines();
+    size_t totalBmk = lineList.size(), i=0;
+
+    while ( tkz.HasMoreTokens() && (i++ < totalBmk))
+    {
+        strLines.push_front(tkz.GetNextToken()+newline);
+    }
+
+    list<wxString>::iterator strit = strLines.begin();
+    list<MadLineIterator>::reverse_iterator rit = lineList.rbegin();
+    while(strLines.size()<totalBmk)
+    {
+        --totalBmk;
+        ++rit;
+    }
+
+    while(totalBmk)
+    {
+        lit = *rit;
+        MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+        MadBlock blk(md, -1, 0);
+        oudata->m_Pos = lit->m_Blocks[0].m_Pos;
+        oudata->m_DelSize = lit->m_Size;
+        vector<ucs4_t> ucs;
+        TranslateText(strit->c_str(), strit->Len(), &ucs, true);
+
+        UCStoBlock(&ucs[0], ucs.size(), blk);
+        oudata->m_InsSize = blk.m_Size;
+        oudata->m_InsData.push_back(blk);
+        
+        DeleteInsertData(oudata->m_Pos,
+                            oudata->m_DelSize, &oudata->m_DelData,
+                            oudata->m_InsSize, &oudata->m_InsData);
+        
+        if(undo == NULL)
+        {
+            undo = m_UndoBuffer->Add();
+            undo->m_CaretPosBefore=m_CaretPos.pos;
+        }
+        undo->m_CaretPosAfter=oudata->m_Pos + oudata->m_InsSize;
+        undo->m_Undos.push_back(oudata);
+
+        m_CaretPos.pos = oudata->m_Pos;
+
+        --totalBmk;
+        ++rit;
+        ++strit;
+    }
+    if(undo)
+    {
+        ReformatAll();
+        m_Modified = true;
+        m_Selection = false;
+        m_RepaintAll = true;
+        bool sc= (oldModified==false);
+        
+        DoSelectionChanged();
+        if(sc) DoStatusChanged();
+        Refresh(false);
+    }
 }
 
 
