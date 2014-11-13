@@ -3245,6 +3245,7 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
     if(!m_Lines->m_LineList.HasBookMark()) return;
     list<MadLineIterator> &lineList = m_Lines->m_LineList.GetBookmarkedLines();
 
+    bool oldModified = m_Modified;
     MadLineIterator lit;
     wxString ws;
     list<wxString> lines;
@@ -3324,6 +3325,7 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
                 undo->m_CaretPosBefore=m_CaretPos.pos;
             }
             undo->m_Undos.push_back(dudata);
+            m_CaretPos.pos = dudata->m_Pos;
         }
     }
 
@@ -3348,11 +3350,85 @@ void MadEdit::CutDelBookmarkedLines(bool copyLines/*= false*/)
     }
     m_Selection = false;
     m_RepaintAll = true;
+    bool sc= (oldModified==false);
+   
+    DoSelectionChanged();
+    if(sc) DoStatusChanged();
     Refresh(false);
 }
 
 void MadEdit::DeleteUnmarkedLines()
 {
+    MadUndo *undo = NULL;
+
+    if(!m_Lines->m_LineList.HasBookMark()) return;
+    list<MadLineIterator> &lineList = m_Lines->m_LineList.GetBookmarkedLines();
+
+    bool oldModified = m_Modified;
+    MadLineIterator lit;
+    MadUCQueue ucqueue;
+    wxFileOffset posBeg = 0, posEnd = m_Lines->m_Size;
+
+    while(!lineList.empty())
+    {
+        lit = lineList.back();
+        lineList.pop_back();
+        posBeg = lit->m_Blocks[0].m_Pos+lit->m_Size;
+        if(lit->m_Size!=0 && posBeg!=posEnd) // this line is not a empty line
+        {
+            MadDeleteUndoData *dudata = new MadDeleteUndoData;
+            
+            dudata->m_Pos = posBeg;
+            dudata->m_Size = posEnd - posBeg;
+            posEnd = lit->m_Blocks[0].m_Pos;
+            
+            DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+            if(undo == NULL)
+            {
+                undo = m_UndoBuffer->Add();
+                undo->m_CaretPosBefore=m_CaretPos.pos;
+            }
+            undo->m_Undos.push_back(dudata);
+            m_CaretPos.pos = dudata->m_Pos;
+        }
+        else
+        {
+            posEnd = lit->m_Blocks[0].m_Pos;
+        }
+    }
+
+    if(posEnd>0)
+    {
+        MadDeleteUndoData *dudata = new MadDeleteUndoData;
+            
+        dudata->m_Pos = 0;
+        dudata->m_Size = posEnd;
+        
+        DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+        if(undo == NULL)
+        {
+            undo = m_UndoBuffer->Add();
+            undo->m_CaretPosBefore=m_CaretPos.pos;
+        }
+        undo->m_Undos.push_back(dudata);
+        m_CaretPos.pos = 0;
+    }
+
+    ReformatAll();
+    if(undo)
+    {
+        m_Modified = true;
+    }
+    m_Selection = false;
+    m_RepaintAll = true;
+    bool sc= (oldModified==false);
+   
+    DoSelectionChanged();
+    if(sc) DoStatusChanged();
+    Refresh(false);
+
 }
 
 void MadEdit::ReplaceBookmarkedLines()
