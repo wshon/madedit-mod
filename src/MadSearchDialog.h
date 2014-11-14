@@ -53,6 +53,10 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+		wxCheckBox *WxCheckBoxPurgeBookmark;
+		wxCheckBox *WxCheckBoxBookmarkLine;
+		wxStaticBoxSizer *WxStaticBoxSizer1;
+		wxCheckBox *WxCheckBoxSearchInSelection;
 		wxMenu *WxPopupMenuRecentFindText;
 		wxButton *WxButtonClose;
 		wxButton *WxButtonReplace;
@@ -61,8 +65,6 @@ public:
 		wxButton *WxButtonFindPrev;
 		wxButton *WxButtonFindNext;
 		wxBoxSizer *WxBoxSizer3;
-		wxCheckBox *WxCheckBoxSearchInSelection;
-		wxBoxSizer *WxBoxSizer6;
 		wxCheckBox *WxCheckBoxSearchThrEndOfFile;
 		wxCheckBox *WxCheckBoxFindHex;
 		wxCheckBox *WxCheckBoxRegex;
@@ -83,13 +85,15 @@ public:
     //Try copy pasting the below block in your old Form header Files.
 	enum {
 ////GUI Enum Control ID Start
+			ID_WXCHECKBOXPURGEBOOKMARK = 33,
+			ID_WXCHECKBOXBOOKMARKLINE = 32,
+			ID_WXCHECKBOXSEARCHINSELECTION = 26,
 			ID_WXBUTTONCLOSE = 13,
 			ID_WXBUTTONREPLACE = 12,
 			ID_WXBUTTONCOUNT = 23,
 			ID_WXBUTTONFINDALL = 24,
 			ID_WXBUTTONFINDPREV = 11,
 			ID_WXBUTTONFINDNEXT = 10,
-			ID_WXCHECKBOXSEARCHINSELECTION = 18,
 			ID_WXCHECKBOXSEARCHTHRENDOFFILE = 25,
 			ID_WXCHECKBOXFINDHEX = 9,
 			ID_WXCHECKBOXREGEX = 8,
