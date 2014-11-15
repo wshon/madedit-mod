@@ -420,10 +420,14 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                 break;
             }
             rangeFrom = WxCheckBoxSearchInSelection->IsChecked()? m_SearchFrom : 0;
+            rangeTo = WxCheckBoxSearchInSelection->IsChecked()? m_SearchTo: g_ActiveMadEdit->GetFileSize();
             if(WxCheckBoxSearchInSelection->IsChecked())
             {
                 g_ActiveMadEdit->SetSelection(m_SearchFrom, m_SearchTo);
             }
+            
+            if(WxCheckBoxPurgeBookmark->IsChecked())
+                g_ActiveMadEdit->ClearAllBookmarks();
         }
     }
 
@@ -536,6 +540,9 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
             }
             rangeTo = WxCheckBoxSearchInSelection->IsChecked()? m_SearchTo: g_ActiveMadEdit->GetFileSize();
             rangeFrom = WxCheckBoxSearchInSelection->IsChecked()? m_SearchFrom: 0;
+
+            if(WxCheckBoxPurgeBookmark->IsChecked())
+                g_ActiveMadEdit->ClearAllBookmarks();
         }
     }
 

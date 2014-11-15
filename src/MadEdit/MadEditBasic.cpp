@@ -2726,7 +2726,7 @@ MadSearchResult MadEdit::FindTextPrevious(const wxString &text,
             while(Search(bpos1, epos1, text, bRegex, bCaseSensitive, bWholeWord));
 
             SetSelection(bp.pos, ep.pos, true);
-			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
+			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bp.iter);
             return SR_YES;
         }
 
@@ -2946,7 +2946,7 @@ MadSearchResult MadEdit::FindHexPrevious(const wxString &hexstr,
             while(SearchHex(bpos1, epos1, &hex[0], hex.size()));
 
             SetSelection(bp.pos, ep.pos, true);
-			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
+			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bp.iter);
             return SR_YES;
         }
 
