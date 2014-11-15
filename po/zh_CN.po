@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-12 22:23+0800\n"
-"PO-Revision-Date: 2014-11-14 10:16+0800\n"
+"POT-Creation-Date: 2014-11-15 17:36+0800\n"
+"PO-Revision-Date: 2014-11-15 17:39+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -404,7 +404,7 @@ msgstr "OEM"
 msgid "Other"
 msgstr "其他"
 
-#: ../src/MadEdit/MadEditAdvanced.cpp:1788
+#: ../src/MadEdit/MadEditAdvanced.cpp:1794
 msgid "Invalid Unicode Characters"
 msgstr "不正确的 Unicode 字符"
 
@@ -456,11 +456,11 @@ msgstr "这个文件被其它程序修改过了。"
 msgid "Do you want to reload it?"
 msgstr "要重载这个文件吗？"
 
-#: ../src/MadEdit/MadEditBasic.cpp:2775
+#: ../src/MadEdit/MadEditBasic.cpp:2778
 msgid "The input string is not a valid Hex-String:"
 msgstr "这个不是正确的十六进制字符串："
 
-#: ../src/MadEdit/MadEditBasic.cpp:3406 ../src/MadSearchDialog.cpp:993
+#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadSearchDialog.cpp:1019
 #, c-format
 msgid "Found %d matched texts..."
 msgstr "找到 %d 个符合筛选条件的文本..."
@@ -793,7 +793,7 @@ msgstr "插入日期与时间(&E)"
 msgid "Insert date and time at current position"
 msgstr "插入日期与时间到现在的位置"
 
-#: ../src/MadEditFrame.cpp:1503
+#: ../src/MadEditFrame.cpp:1503 ../src/MadSearchDialog.cpp:143
 msgid "Bookmark"
 msgstr "书签编辑"
 
@@ -1052,7 +1052,7 @@ msgstr "查找(&F)..."
 msgid "Find a string"
 msgstr "查找字符串"
 
-#: ../src/MadEditFrame.cpp:1553 ../src/MadSearchDialog.cpp:149
+#: ../src/MadEditFrame.cpp:1553 ../src/MadSearchDialog.cpp:154
 #: ../src/MadReplaceDialog.cpp:130
 msgid "Find &Next"
 msgstr "查找下一个(&N)"
@@ -1061,7 +1061,7 @@ msgstr "查找下一个(&N)"
 msgid "Find next occurrence"
 msgstr "到字符串下一个出现的地方"
 
-#: ../src/MadEditFrame.cpp:1554 ../src/MadSearchDialog.cpp:153
+#: ../src/MadEditFrame.cpp:1554 ../src/MadSearchDialog.cpp:158
 msgid "Find &Previous"
 msgstr "查找上一个(&P)"
 
@@ -1893,12 +1893,12 @@ msgstr "取消注释"
 msgid "Find"
 msgstr "查找"
 
-#: ../src/MadEditFrame.cpp:2494 ../src/MadSearchDialog.cpp:396
-#: ../src/MadReplaceDialog.cpp:616
+#: ../src/MadEditFrame.cpp:2494 ../src/MadSearchDialog.cpp:414
+#: ../src/MadReplaceDialog.cpp:602
 msgid "Find Next"
 msgstr "查找下一个"
 
-#: ../src/MadEditFrame.cpp:2495 ../src/MadSearchDialog.cpp:513
+#: ../src/MadEditFrame.cpp:2495 ../src/MadSearchDialog.cpp:533
 msgid "Find Previous"
 msgstr "查找上一个"
 
@@ -2067,11 +2067,13 @@ msgstr "分配内存失败"
 
 #: ../src/MadEditFrame.cpp:6400
 msgid ""
-"Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
-"OpenOffice.org/contrib/dictionaries/"
+"Download dictionary at \n"
+"http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/"
+"dictionaries/"
 msgstr ""
-"字典获取地址 http://archive.services.openoffice.org/pub/mirror/OpenOffice."
-"org/contrib/dictionaries/"
+"字典获取地址\n"
+" http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/"
+"dictionaries/"
 
 #: ../src/MadEditFrame.cpp:6401
 msgid "Press OK to visit our HomePage."
@@ -2150,7 +2152,7 @@ msgstr "替换(&R)"
 msgid "&Enable Replace"
 msgstr "启用“替换”(&E)"
 
-#: ../src/MadFindInFilesDialog.cpp:154 ../src/MadSearchDialog.cpp:169
+#: ../src/MadFindInFilesDialog.cpp:154 ../src/MadSearchDialog.cpp:174
 #: ../src/MadReplaceDialog.cpp:142 ../src/MadMacroDlg.cpp:62
 msgid "Close"
 msgstr "关闭"
@@ -2206,12 +2208,12 @@ msgstr "选择的目录不存在。"
 msgid "Processing %d of %d files..."
 msgstr "第 %d 个文件处理中（共有 %d 个）... "
 
-#: ../src/MadFindInFilesDialog.cpp:850 ../src/MadSearchDialog.cpp:380
-#: ../src/MadSearchDialog.cpp:497 ../src/MadSearchDialog.cpp:924
+#: ../src/MadFindInFilesDialog.cpp:850 ../src/MadSearchDialog.cpp:398
+#: ../src/MadSearchDialog.cpp:517 ../src/MadSearchDialog.cpp:947
 msgid "Cannot find the matched string"
 msgstr "找不到匹配的字符串"
 
-#: ../src/MadFindInFilesDialog.cpp:855 ../src/MadSearchDialog.cpp:929
+#: ../src/MadFindInFilesDialog.cpp:855 ../src/MadSearchDialog.cpp:952
 #, c-format
 msgid "%d results"
 msgstr "%d 个结果"
@@ -2312,75 +2314,83 @@ msgstr "将输入焦点移动到编辑器窗口(&M)"
 msgid "Search Through &End of File"
 msgstr "到达文件末尾时继续从头开始查找(&T)"
 
-#: ../src/MadSearchDialog.cpp:142 ../src/MadReplaceDialog.cpp:123
+#: ../src/MadSearchDialog.cpp:139 ../src/MadReplaceDialog.cpp:123
 msgid "Search In &Selection"
 msgstr "只在选取数据中查找(&S)"
 
-#: ../src/MadSearchDialog.cpp:157
+#: ../src/MadSearchDialog.cpp:147
+msgid "Bookmark line"
+msgstr "标记文本行"
+
+#: ../src/MadSearchDialog.cpp:162
 msgid "Find &All"
 msgstr "查找全部(&A)"
 
-#: ../src/MadSearchDialog.cpp:161
+#: ../src/MadSearchDialog.cpp:166
 msgid "C&ount"
 msgstr "计算次数(&O)"
 
-#: ../src/MadSearchDialog.cpp:165
+#: ../src/MadSearchDialog.cpp:170
 msgid "&Replace >>"
 msgstr "替换(&R) >>"
 
-#: ../src/MadSearchDialog.cpp:176
-msgid "Search"
-msgstr "查找"
+#: ../src/MadSearchDialog.cpp:181
+msgid "Bookmark only(Find All)"
+msgstr "仅标记不显示结果（查找所有时）"
 
-#: ../src/MadSearchDialog.cpp:370 ../src/MadSearchDialog.cpp:487
+#: ../src/MadSearchDialog.cpp:185
+msgid "Purge mark for each search(Find All)"
+msgstr "每次清空标记（查找所有时）"
+
+#: ../src/MadSearchDialog.cpp:388 ../src/MadSearchDialog.cpp:507
 msgid "Passed the end of the file"
 msgstr "已经过了文件末尾"
 
-#: ../src/MadSearchDialog.cpp:390 ../src/MadSearchDialog.cpp:507
+#: ../src/MadSearchDialog.cpp:408 ../src/MadSearchDialog.cpp:527
 msgid "Cannot find the matched string."
 msgstr "找不到符合的字符串。"
 
-#: ../src/MadSearchDialog.cpp:393 ../src/MadReplaceDialog.cpp:613
+#: ../src/MadSearchDialog.cpp:411 ../src/MadReplaceDialog.cpp:599
 msgid "Do you want to find from begin of selection?"
 msgstr "要从所选取数据的开头重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:394 ../src/MadReplaceDialog.cpp:614
+#: ../src/MadSearchDialog.cpp:412 ../src/MadReplaceDialog.cpp:600
 msgid "Do you want to find from begin of file?"
 msgstr "要从文件的开头重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:510
+#: ../src/MadSearchDialog.cpp:530
 msgid "Do you want to find from end of selection?"
 msgstr "要从所选取数据的結尾重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:511
+#: ../src/MadSearchDialog.cpp:531
 msgid "Do you want to find from end of file?"
 msgstr "要从文件的結尾重新找起吗？"
 
-#: ../src/MadSearchDialog.cpp:851
+#: ../src/MadSearchDialog.cpp:874
 #, c-format
 msgid "'%s' was found %d times."
 msgstr "'%s' 找到 %d 次。"
 
-#: ../src/MadSearchDialog.cpp:882
+#: ../src/MadSearchDialog.cpp:905
 #, c-format
 msgid "Preparing %d of %d results..."
 msgstr "正在准备第 %d 个结果（共有 %d 个）... "
 
-#: ../src/MadSearchDialog.cpp:895
+#: ../src/MadSearchDialog.cpp:918
 #, c-format
 msgid "Line(%d): "
 msgstr "行（%d）："
 
-#: ../src/MadSearchDialog.cpp:899
+#: ../src/MadSearchDialog.cpp:922
 #, c-format
 msgid "Offset(%s): "
 msgstr "位置（%s）："
 
-#: ../src/MadSearchDialog.cpp:900
+#: ../src/MadSearchDialog.cpp:923
 msgid "Binary file matches"
 msgstr "二进制数据匹配（相同）"
 
-#: ../src/MadSearchDialog.cpp:995
+#: ../src/MadSearchDialog.cpp:1021
 msgid "Preparing Results"
 msgstr "正在准备结果"
 
@@ -2412,7 +2422,7 @@ msgstr "排序选项"
 msgid "Replace &All"
 msgstr "替换全部(&A)"
 
-#: ../src/MadReplaceDialog.cpp:610
+#: ../src/MadReplaceDialog.cpp:596
 msgid ""
 "Cannot find the matched string.\n"
 "Replace is finished."
@@ -2420,11 +2430,11 @@ msgstr ""
 "找不到符合的字符串。\n"
 "「替换」结束。"
 
-#: ../src/MadReplaceDialog.cpp:690
+#: ../src/MadReplaceDialog.cpp:676
 msgid "Cannot find any matched string."
 msgstr "找不到符合的字符串。"
 
-#: ../src/MadReplaceDialog.cpp:692
+#: ../src/MadReplaceDialog.cpp:678
 #, c-format
 msgid "%d string(s) were replaced."
 msgstr "%d 个字符串已被替换。"
@@ -3004,6 +3014,9 @@ msgstr "运行"
 #: ../src/MadMacroDlg.cpp:91
 msgid "Error"
 msgstr "错误"
+
+#~ msgid "Search"
+#~ msgstr "查找"
 
 #~ msgid ""
 #~ "Please open a ticket for bug of MadEdit-Mod at http://sourceforge.net/"

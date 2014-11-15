@@ -326,20 +326,6 @@ void MadReplaceDialog::ReadWriteSettings(bool bRead)
         m_Config->Read(wxT("/MadEdit/SearchInSelection"), &bb, false);
         WxCheckBoxSearchInSelection->SetValue(bb);
         UpdateSearchInSelection(bb);
-
-        if(g_ActiveMadEdit!=NULL)
-        {
-        	m_SearchFrom = wxLongLong(g_ActiveMadEdit->GetSelectionBeginPos()).GetValue();
-			m_SearchTo = wxLongLong(g_ActiveMadEdit->GetSelectionEndPos()).GetValue();
-        }
-        else
-        {
-            wxString str;
-            m_Config->Read(wxT("/MadEdit/SearchFrom"), &str, wxEmptyString);
-			StrToInt64(str, m_SearchFrom);
-            m_Config->Read(wxT("/MadEdit/SearchTo"), &str, wxEmptyString);
-			StrToInt64(str, m_SearchTo);
-        }
     }
     else
     {
@@ -350,8 +336,8 @@ void MadReplaceDialog::ReadWriteSettings(bool bRead)
         m_Config->Write(wxT("/MadEdit/SearchHex"), WxCheckBoxFindHex->GetValue());
 
         m_Config->Write(wxT("/MadEdit/SearchInSelection"), WxCheckBoxSearchInSelection->GetValue());
-        m_Config->Write(wxT("/MadEdit/SearchFrom"), (wxLongLong(m_SearchFrom)).ToString());
-        m_Config->Write(wxT("/MadEdit/SearchTo"), (wxLongLong(m_SearchTo)).ToString());
+        //m_Config->Write(wxT("/MadEdit/SearchFrom"), (wxLongLong(m_SearchFrom)).ToString());
+        //m_Config->Write(wxT("/MadEdit/SearchTo"), (wxLongLong(m_SearchTo)).ToString());
     }
 
     m_Config->SetPath(oldpath);
@@ -714,6 +700,11 @@ void MadReplaceDialog::UpdateSearchInSelection(bool check)
     {
         m_SearchFrom = wxLongLong(g_ActiveMadEdit->GetSelectionBeginPos()).GetValue();
         m_SearchTo = wxLongLong(g_ActiveMadEdit->GetSelectionEndPos()).GetValue();
+    }
+    else
+    {
+        m_SearchFrom = -1;
+        m_SearchTo = -1;
     }
 }
 

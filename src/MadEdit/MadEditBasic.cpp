@@ -2625,6 +2625,8 @@ MadSearchResult MadEdit::FindTextNext(const wxString &text,
     if(state==SR_YES)
     {
         SetSelection(bpos.pos, epos.pos);
+        
+		if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
     }
 
     return state;
@@ -2724,6 +2726,7 @@ MadSearchResult MadEdit::FindTextPrevious(const wxString &text,
             while(Search(bpos1, epos1, text, bRegex, bCaseSensitive, bWholeWord));
 
             SetSelection(bp.pos, ep.pos, true);
+			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
             return SR_YES;
         }
 
@@ -2852,6 +2855,7 @@ MadSearchResult MadEdit::FindHexNext(const wxString &hexstr,
     if(SR_YES==SearchHex(bpos, epos, &hex[0], hex.size()))
     {
         SetSelection(bpos.pos, epos.pos);
+		if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
         return SR_YES;
     }
 
@@ -2942,6 +2946,7 @@ MadSearchResult MadEdit::FindHexPrevious(const wxString &hexstr,
             while(SearchHex(bpos1, epos1, &hex[0], hex.size()));
 
             SetSelection(bp.pos, ep.pos, true);
+			if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
             return SR_YES;
         }
 
@@ -3411,6 +3416,9 @@ int MadEdit::FindTextAll(const wxString &expr,
         if(pbegpos) pbegpos->push_back(bpos.pos);
         if(pendpos) pendpos->push_back(epos.pos);
         ++count;
+
+		if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
+
         if(bFirstOnly) break;
 
         bpos=epos;
@@ -3475,6 +3483,7 @@ int MadEdit::FindHexAll(const wxString &expr, bool bFirstOnly,
         if(pbegpos) pbegpos->push_back(bpos.pos);
         if(pendpos) pendpos->push_back(epos.pos);
         ++count;
+		if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
         if(bFirstOnly) break;
 
         bpos=epos;
@@ -3483,13 +3492,6 @@ int MadEdit::FindHexAll(const wxString &expr, bool bFirstOnly,
 
     return count;
 }
-
-
-
-
-
-
-
 
 /******** Printing Functions ********/
 void MadEdit::BeginPrint(const wxRect &printRect)

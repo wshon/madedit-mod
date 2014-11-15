@@ -52,7 +52,7 @@ object frmNewForm: TfrmNewForm
       Left = 0
       Top = 0
       Width = 324
-      Height = 279
+      Height = 300
       TabOrder = 0
       Orientation = wxVertical
       Wx_Class = 'wxBoxSizer'
@@ -76,7 +76,7 @@ object frmNewForm: TfrmNewForm
         Left = 0
         Top = 20
         Width = 324
-        Height = 259
+        Height = 280
         TabOrder = 0
         Orientation = wxVertical
         Wx_Class = 'wxBoxSizer'
@@ -336,7 +336,7 @@ object frmNewForm: TfrmNewForm
           Left = 5
           Top = 187
           Width = 314
-          Height = 67
+          Height = 88
           TabOrder = 7
           Orientation = wxVertical
           Wx_Caption = 'Bookmark'
@@ -380,12 +380,12 @@ object frmNewForm: TfrmNewForm
             Wx_Floating_X_Pos = 0
             Wx_Floating_Y_Pos = 0
           end
-          object WxCheckBoxPurgeBookmark: TWxCheckBox
+          object WxCheckBoxBookmarkOnly: TWxCheckBox
             Left = 7
             Top = 43
             Width = 300
             Height = 17
-            Caption = 'Purge mark for each search(Find All)'
+            Caption = 'Bookmark only(Find All)'
             TabOrder = 2
             Wx_BGColor = clBlack
             Wx_CheckBoxStyle = []
@@ -394,8 +394,42 @@ object frmNewForm: TfrmNewForm
             Wx_FGColor = clBlack
             Wx_GeneralStyle = []
             Wx_Hidden = False
+            Wx_IDName = 'ID_WXCHECKBOXBOOKMARKONLY'
+            Wx_IDValue = 34
+            Wx_Border = 2
+            Wx_PaneCaption = 'WxCheckBox1'
+            Wx_PaneName = 'WxCheckBox1_Pane'
+            Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+            Wx_Aui_Dockable_Direction = []
+            Wx_Aui_Pane_Style = []
+            Wx_Aui_Pane_Buttons = []
+            Wx_BestSize_Height = 0
+            Wx_BestSize_Width = 0
+            Wx_MinSize_Height = 0
+            Wx_MinSize_Width = 0
+            Wx_MaxSize_Height = 0
+            Wx_MaxSize_Width = 0
+            Wx_Floating_Height = 0
+            Wx_Floating_Width = 0
+            Wx_Floating_X_Pos = 0
+            Wx_Floating_Y_Pos = 0
+          end
+          object WxCheckBoxPurgeBookmark: TWxCheckBox
+            Left = 7
+            Top = 64
+            Width = 300
+            Height = 17
+            Caption = 'Purge mark for each search(Find All)'
+            TabOrder = 3
+            Wx_BGColor = clBlack
+            Wx_CheckBoxStyle = []
+            Wx_Class = 'wxCheckBox'
+            Wx_ControlOrientation = wxControlVertical
+            Wx_FGColor = clBlack
+            Wx_GeneralStyle = []
+            Wx_Hidden = False
             Wx_IDName = 'ID_WXCHECKBOXPURGEBOOKMARK'
-            Wx_IDValue = 33
+            Wx_IDValue = 35
             Wx_Border = 2
             Wx_PaneCaption = 'WxCheckBox2'
             Wx_PaneName = 'WxCheckBox2_Pane'
@@ -419,7 +453,7 @@ object frmNewForm: TfrmNewForm
     end
     object WxBoxSizer3: TWxBoxSizer
       Left = 324
-      Top = 43
+      Top = 54
       Width = 104
       Height = 192
       TabOrder = 1

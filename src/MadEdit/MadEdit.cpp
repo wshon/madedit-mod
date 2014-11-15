@@ -891,6 +891,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_AutoCompleteRightChar = 0;
     m_AutoCompletePos = 0;
     m_SpellCheck = false;
+    m_BookmarkInSearch = false;
 
     if(!m_SingleLineMode)
     {
