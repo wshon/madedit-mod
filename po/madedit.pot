@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 18:26+0800\n"
+"POT-Creation-Date: 2014-11-15 23:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1464,7 +1464,7 @@ msgid "Convert the file format to DOS format"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1760
-msgid "Convert To CR/0D (&MAC)"
+msgid "Convert To CR/0D (Old &MAC)"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1760
@@ -1472,7 +1472,7 @@ msgid "Convert the file format to MAC format"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1761
-msgid "Convert To LF/0A (&UNIX)"
+msgid "Convert To LF/0A (&UNIX/OSX)"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1761
@@ -1492,7 +1492,7 @@ msgid "Insert CR&LF chars when pressing Enter key"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1764
-msgid "Insert CR/0D (&MAC)"
+msgid "Insert CR/0D (Old &MAC)"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1764
@@ -1500,7 +1500,7 @@ msgid "Insert CR char when pressing Enter key"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1765
-msgid "Insert LF/0A (&UNIX)"
+msgid "Insert LF/0A (&UNIX/OSX)"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1765

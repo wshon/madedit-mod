@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 18:26+0800\n"
-"PO-Revision-Date: 2014-11-15 18:27+0800\n"
+"POT-Creation-Date: 2014-11-15 23:11+0800\n"
+"PO-Revision-Date: 2014-11-15 23:15+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -1472,16 +1472,16 @@ msgid "Convert the file format to DOS format"
 msgstr "转换文件格式为 DOS 的格式"
 
 #: ../src/MadEditFrame.cpp:1760
-msgid "Convert To CR/0D (&MAC)"
-msgstr "转换到 CR/0D (&MAC)"
+msgid "Convert To CR/0D (Old &MAC)"
+msgstr "转换到 CR/0D (老式 &MAC)"
 
 #: ../src/MadEditFrame.cpp:1760
 msgid "Convert the file format to MAC format"
 msgstr "转换文件格式为 MAC 的格式"
 
 #: ../src/MadEditFrame.cpp:1761
-msgid "Convert To LF/0A (&UNIX)"
-msgstr "转换到 LF/0A (&UNIX)"
+msgid "Convert To LF/0A (&UNIX/OSX)"
+msgstr "转换到 LF/0A (&UNIX/OSX)"
 
 #: ../src/MadEditFrame.cpp:1761
 msgid "Convert the file format to UNIX format"
@@ -1500,16 +1500,16 @@ msgid "Insert CR&LF chars when pressing Enter key"
 msgstr "按 Enter 键时插入 CR&LF 字符"
 
 #: ../src/MadEditFrame.cpp:1764
-msgid "Insert CR/0D (&MAC)"
-msgstr "插入 CR/0D (&MAC)"
+msgid "Insert CR/0D (Old &MAC)"
+msgstr "插入 CR/0D (老式 &MAC)"
 
 #: ../src/MadEditFrame.cpp:1764
 msgid "Insert CR char when pressing Enter key"
 msgstr "按 Enter 键时插入 CR 字符"
 
 #: ../src/MadEditFrame.cpp:1765
-msgid "Insert LF/0A (&UNIX)"
-msgstr "插入 LF/0A (&UNIX)"
+msgid "Insert LF/0A (&UNIX/OSX)"
+msgstr "插入 LF/0A (&UNIX/OSX)"
 
 #: ../src/MadEditFrame.cpp:1765
 msgid "Insert LF char when pressing Enter key"
