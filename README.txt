@@ -77,6 +77,10 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.2.7
+1. Bookmar while searching
+. Update Simplified Chinese
+
 Mod v0.2.6
 1. Enhanced bookmark edit functions(copy/cut/delete/replace) under Edit menu
 2. Move Toggle/Goto/clear bookmarks to Search because they are not edit functions
