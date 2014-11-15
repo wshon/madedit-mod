@@ -730,7 +730,7 @@ namespace mad_python
         }
         void SetInsertNewLineType(int type)
         {
-			g_ActiveMadEdit->SetInsertNewLineType((MadNewLineType)type);
+            g_ActiveMadEdit->SetInsertNewLineType((MadNewLineType)type);
         }
 
         int GetNewLineType()
