@@ -85,6 +85,20 @@ Mod v0.2.6
 5. Add Capitalize to MadPython
 6. Update Simplified Chinese
 
+What's new from v0.2.5
+Enhanced bookmark edit functions(copy/cut/delete/replace) under Edit menu
+Move Toggle/Goto/clear bookmarks to Search because they are not edit functions
+Start/End select to mark a start and end of selection by menu
+Capitalize words in selection
+Add Capitalize to MadPython
+Multiple dictionary supported, Add/Remove word from Personal dictionary
+Clear/Set ReadOnly flag of the file
+ColumnAlign to align the 'short line'
+Add GNU ASM syntax file
+Fix build issue with WX 3.0 under Fedora Core 17
+Add shortcut to Show/Hide All Chars(Space, Tab and EOL)
+Bug fixes
+
 Mod v0.2.5.5
 1. Add shortcut to Show All Chars(Space, Tab and EOL)
 2. Fixed the mouse issue http://sourceforge.net/p/madedit/bugs/10/, which might cause crash if you click
