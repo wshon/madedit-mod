@@ -78,7 +78,7 @@ Feature/issues to be released in next release:
 ChangeLog:
 ----------
 Mod v0.2.7
-1. Bookmar while searching
+1. Bookmark while searching(toggle bookmark/)
 . Update Simplified Chinese
 
 Mod v0.2.6

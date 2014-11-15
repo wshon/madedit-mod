@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-15 17:36+0800\n"
+"POT-Creation-Date: 2014-11-15 18:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,7 +456,7 @@ msgstr ""
 msgid "The input string is not a valid Hex-String:"
 msgstr ""
 
-#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadSearchDialog.cpp:1019
+#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadSearchDialog.cpp:1026
 #, c-format
 msgid "Found %d matched texts..."
 msgstr ""
@@ -1890,7 +1890,7 @@ msgstr ""
 msgid "Find Next"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2495 ../src/MadSearchDialog.cpp:533
+#: ../src/MadEditFrame.cpp:2495 ../src/MadSearchDialog.cpp:537
 msgid "Find Previous"
 msgstr ""
 
@@ -2194,11 +2194,11 @@ msgid "Processing %d of %d files..."
 msgstr ""
 
 #: ../src/MadFindInFilesDialog.cpp:850 ../src/MadSearchDialog.cpp:398
-#: ../src/MadSearchDialog.cpp:517 ../src/MadSearchDialog.cpp:947
+#: ../src/MadSearchDialog.cpp:521 ../src/MadSearchDialog.cpp:954
 msgid "Cannot find the matched string"
 msgstr ""
 
-#: ../src/MadFindInFilesDialog.cpp:855 ../src/MadSearchDialog.cpp:952
+#: ../src/MadFindInFilesDialog.cpp:855 ../src/MadSearchDialog.cpp:959
 #, c-format
 msgid "%d results"
 msgstr ""
@@ -2324,14 +2324,18 @@ msgid "Bookmark only(Find All)"
 msgstr ""
 
 #: ../src/MadSearchDialog.cpp:185
-msgid "Purge mark for each search(Find All)"
+msgid "Purge mark for each search session"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:388 ../src/MadSearchDialog.cpp:507
+#: ../src/MadSearchDialog.cpp:189
+msgid "Search"
+msgstr ""
+
+#: ../src/MadSearchDialog.cpp:388 ../src/MadSearchDialog.cpp:511
 msgid "Passed the end of the file"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:408 ../src/MadSearchDialog.cpp:527
+#: ../src/MadSearchDialog.cpp:408 ../src/MadSearchDialog.cpp:531
 msgid "Cannot find the matched string."
 msgstr ""
 
@@ -2343,39 +2347,39 @@ msgstr ""
 msgid "Do you want to find from begin of file?"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:530
+#: ../src/MadSearchDialog.cpp:534
 msgid "Do you want to find from end of selection?"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:531
+#: ../src/MadSearchDialog.cpp:535
 msgid "Do you want to find from end of file?"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:874
+#: ../src/MadSearchDialog.cpp:881
 #, c-format
 msgid "'%s' was found %d times."
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:905
+#: ../src/MadSearchDialog.cpp:912
 #, c-format
 msgid "Preparing %d of %d results..."
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:918
+#: ../src/MadSearchDialog.cpp:925
 #, c-format
 msgid "Line(%d): "
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:922
+#: ../src/MadSearchDialog.cpp:929
 #, c-format
 msgid "Offset(%s): "
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:923
+#: ../src/MadSearchDialog.cpp:930
 msgid "Binary file matches"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:1021
+#: ../src/MadSearchDialog.cpp:1028
 msgid "Preparing Results"
 msgstr ""
 

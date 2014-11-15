@@ -419,7 +419,7 @@ object frmNewForm: TfrmNewForm
             Top = 64
             Width = 300
             Height = 17
-            Caption = 'Purge mark for each search(Find All)'
+            Caption = 'Purge mark for each search session'
             TabOrder = 3
             Wx_BGColor = clBlack
             Wx_CheckBoxStyle = []
