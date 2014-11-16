@@ -77,6 +77,9 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.2.7
+Will move to wx3.0 since then
+
 Mod v0.2.6.1
 1. Bookmark while searching(toggle bookmark/bookmark all/don't show results in results window)
 . Update Simplified Chinese
