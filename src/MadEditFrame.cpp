@@ -1186,6 +1186,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTabToSpace, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuSpaceToTab, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuDeleteEmptyLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
@@ -1317,6 +1319,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTabToSpace, MadEditFrame::OnEditTabToSpace)
 	EVT_MENU(menuSpaceToTab, MadEditFrame::OnEditSpaceToTab)
 	EVT_MENU(menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces)
+	EVT_MENU(menuDeleteEmptyLines, MadEditFrame::OnEditDeleteEmptyLines)
+	EVT_MENU(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnEditDeleteEmptyLinesWithSpaces)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
 	EVT_MENU_RANGE(menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck)
@@ -1534,6 +1538,8 @@ CommandData CommandTable[]=
     { 0,                2, menuSpaceToTab,               wxT("menuSpaceToTab"),               _("Space Chars To Tab Chars"),                wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert Space chars to Tab chars in the selection")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT("menuTrimTrailingSpaces"),       _("Tri&m Trailing Spaces"),                   wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Trim trailing spaces at the end of lines")},
+    { 0,                2, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
+    { 0,                2, menuDeleteEmptyLinesWithSpaces, wxT("menuDeleteEmptyLinesWithSpaces"), _("Delete Empty Lines With Spaces"),      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines with spaces")},
     { 0,                2, menuInsertNumbers,            wxT("menuInsertNumbers"),            _("Insert Incremental numbers..."),           wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Insert incremental numbers with step and padding at current caret")},
     { 0,                2, menuColumnAlign,              wxT("menuColumnAlign"),              _("Column Align"),                            wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Column Align")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
@@ -2174,7 +2180,9 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_EditSubAdv->Append(menuSpaceToTab, _("Space Chars To Tab Chars"));
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append(menuTrimTrailingSpaces, _("Tri&m Trailing Spaces"));
-    g_Menu_EditSubAdv->Append(menuInsertNumbers, _("Insert incremental numbers..."));
+    g_Menu_EditSubAdv->Append(menuDeleteEmptyLines, _("Delete Empty Lines"));
+    g_Menu_EditSubAdv->Append(menuDeleteEmptyLinesWithSpaces, _("Delete Empty Lines with Spaces"));
+    g_Menu_EditSubAdv->Append(menuInsertNumbers, _("Insert Incremental Numbers..."));
     g_Menu_EditSubAdv->Append(menuColumnAlign, _("Column Align"));
     g_Menu_EditPop->AppendSubMenu(g_Menu_EditSubAdv, _("Ad&vanced"));
     g_Menu_EditSubSort = new wxMenu((long)0);
@@ -4811,6 +4819,24 @@ void MadEditFrame::OnEditTrimTrailingSpaces(wxCommandEvent& event)
     {
         g_ActiveMadEdit->TrimTrailingSpaces();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("TrimTrailingSpaces()")));
+    }
+}
+
+void MadEditFrame::OnEditDeleteEmptyLines(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->DeleteEmptyLines();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("DeleteEmptyLines()")));
+    }
+}
+
+void MadEditFrame::OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->DeleteEmptyLinesWithSpaces();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("DeleteEmptyLinesWithSpaces()")));
     }
 }
 

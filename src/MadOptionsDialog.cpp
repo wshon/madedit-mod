@@ -783,7 +783,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
 	
-	Layout();
+	GetSizer()->Layout();
 	GetSizer()->Fit(this);
 	
     ////GUI Items Creation End

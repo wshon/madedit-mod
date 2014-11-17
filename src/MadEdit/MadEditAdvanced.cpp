@@ -1804,6 +1804,23 @@ void MadEdit::TrimTrailingSpaces()
     ReplaceTextAll(wxT("[ \t]+(\r|\n|$)"), wxT("$1"), true, true, false);
 }
 
+void MadEdit::DeleteEmptyLines()
+{
+    if(IsReadOnly() || m_EditMode==emHexMode)
+        return;
+    
+    // use Regular Expressions to delete all empty lines
+    ReplaceTextAll(wxT("^(\r\n|\r|\n|$)"), wxT(""), true, true, false);
+}
+
+void MadEdit::DeleteEmptyLinesWithSpaces()
+{
+    if(IsReadOnly() || m_EditMode==emHexMode)
+        return;
+    
+    // use Regular Expressions to delete all empty lines(with spcaces)
+    ReplaceTextAll(wxT("^[ \t]+(\r\n|\r|\n|$)"), wxT(""), true, true, false);
+}
 
 //==============================================================================
 struct SortLineData

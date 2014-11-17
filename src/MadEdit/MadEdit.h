@@ -972,6 +972,8 @@ public: // advanced functions
     void ToFullWidth(bool ascii=true, bool japanese=true, bool korean=true, bool other=true);
 
     void TrimTrailingSpaces();
+    void DeleteEmptyLines();
+    void DeleteEmptyLinesWithSpaces();
 
     // startline<0 : sort all lines; otherwise sort [beginline, endline]
     void SortLines(MadSortFlags flags, int beginline, int endline);

@@ -243,6 +243,8 @@ public:
     void OnEditTabToSpace(wxCommandEvent& event);
     void OnEditSpaceToTab(wxCommandEvent& event);
     void OnEditTrimTrailingSpaces(wxCommandEvent& event);
+    void OnEditDeleteEmptyLines(wxCommandEvent& event);
+    void OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event);
     void OnEditInsertNumbers(wxCommandEvent& event);
     void OnEditColumnAlign(wxCommandEvent& event);
     void OnEditSpellCheck(wxCommandEvent& event);
@@ -484,6 +486,8 @@ enum { // menu id
     menuTabToSpace,
     menuSpaceToTab,
     menuTrimTrailingSpaces,
+    menuDeleteEmptyLines,
+    menuDeleteEmptyLinesWithSpaces,
     menuInsertNumbers,
     menuColumnAlign,
 
