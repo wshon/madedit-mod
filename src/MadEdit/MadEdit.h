@@ -974,6 +974,7 @@ public: // advanced functions
     void TrimTrailingSpaces();
     void DeleteEmptyLines();
     void DeleteEmptyLinesWithSpaces();
+    void JoinLines();
 
     // startline<0 : sort all lines; otherwise sort [beginline, endline]
     void SortLines(MadSortFlags flags, int beginline, int endline);

@@ -245,6 +245,7 @@ public:
     void OnEditTrimTrailingSpaces(wxCommandEvent& event);
     void OnEditDeleteEmptyLines(wxCommandEvent& event);
     void OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event);
+    void OnEditJoinLines(wxCommandEvent& event);
     void OnEditInsertNumbers(wxCommandEvent& event);
     void OnEditColumnAlign(wxCommandEvent& event);
     void OnEditSpellCheck(wxCommandEvent& event);
@@ -488,6 +489,7 @@ enum { // menu id
     menuTrimTrailingSpaces,
     menuDeleteEmptyLines,
     menuDeleteEmptyLinesWithSpaces,
+    menuJoinLines,
     menuInsertNumbers,
     menuColumnAlign,
 

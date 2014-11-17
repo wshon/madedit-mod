@@ -1161,6 +1161,22 @@ namespace mad_python
             g_ActiveMadEdit->TrimTrailingSpaces();
         }
 
+        void DeleteEmptyLines()
+        {
+            g_ActiveMadEdit->DeleteEmptyLines();
+        }
+
+        
+        void DeleteEmptyLinesWithSpaces()
+        {
+            g_ActiveMadEdit->DeleteEmptyLinesWithSpaces();
+        }
+
+        void JoinLines()
+        {
+            g_ActiveMadEdit->JoinLines();
+        }
+
         // startline<0 : sort all lines otherwise sort [beginline, endline]
         void SortLines(MadSortFlags flags, int beginline, int endline)
         {
@@ -1380,6 +1396,9 @@ BOOST_PYTHON_MODULE(madpython)
         .def("InvertCase", &PyMadEdit::InvertCase, "")
         .def("Capitalize", &PyMadEdit::Capitalize, "")
         .def("TrimTrailingSpaces", &PyMadEdit::TrimTrailingSpaces, "")
+        .def("DeleteEmptyLinesWithSpaces", &PyMadEdit::DeleteEmptyLinesWithSpaces, "")
+        .def("DeleteEmptyLines", &PyMadEdit::DeleteEmptyLines, "")
+        .def("JoinLines", &PyMadEdit::JoinLines, "")
         .def("SortLines", &PyMadEdit::SortLines, "")
         .def("ConvertWordWrapToNewLine", &PyMadEdit::ConvertWordWrapToNewLine, "")
         .def("ConvertNewLineToWordWrap", &PyMadEdit::ConvertNewLineToWordWrap, "")

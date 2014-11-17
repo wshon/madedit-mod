@@ -1188,6 +1188,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
@@ -1321,6 +1322,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces)
 	EVT_MENU(menuDeleteEmptyLines, MadEditFrame::OnEditDeleteEmptyLines)
 	EVT_MENU(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnEditDeleteEmptyLinesWithSpaces)
+	EVT_MENU(menuJoinLines, MadEditFrame::OnEditJoinLines)
 	EVT_MENU(menuInsertNumbers, MadEditFrame::OnEditInsertNumbers)
 	EVT_MENU(menuColumnAlign, MadEditFrame::OnEditColumnAlign)
 	EVT_MENU_RANGE(menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck)
@@ -1487,6 +1489,9 @@ CommandData CommandTable[]=
 #endif
                                                                                                                                                                  wxITEM_NORMAL,    -1,                0,                     _("Delete the selected lines")},
 
+    { 0,                1, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
+    { 0,                1, menuDeleteEmptyLinesWithSpaces, wxT("menuDeleteEmptyLinesWithSpaces"), _("Delete Empty Lines With Spaces"),      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines with spaces")},
+    { 0,                1, menuJoinLines,                wxT("menuJoinLines"),                _("Join Lines"),                              wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Join selected lines into one")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecSelectAll,      1, menuSelectAll,                wxT("menuSelectAll"),                _("Select &All"),                             wxT("Ctrl-A"),       wxITEM_NORMAL,    -1,                0,                     _("Select all data")},
     { 0,                1, menuStartEndSelction,         wxT("menuStartEndSelction"),         _("Begin/End Select"),                        0,                   wxITEM_CHECK,     -1,                0,                     _("Select all data")},
@@ -1538,8 +1543,6 @@ CommandData CommandTable[]=
     { 0,                2, menuSpaceToTab,               wxT("menuSpaceToTab"),               _("Space Chars To Tab Chars"),                wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Convert Space chars to Tab chars in the selection")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT("menuTrimTrailingSpaces"),       _("Tri&m Trailing Spaces"),                   wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Trim trailing spaces at the end of lines")},
-    { 0,                2, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
-    { 0,                2, menuDeleteEmptyLinesWithSpaces, wxT("menuDeleteEmptyLinesWithSpaces"), _("Delete Empty Lines With Spaces"),      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines with spaces")},
     { 0,                2, menuInsertNumbers,            wxT("menuInsertNumbers"),            _("Insert Incremental numbers..."),           wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Insert incremental numbers with step and padding at current caret")},
     { 0,                2, menuColumnAlign,              wxT("menuColumnAlign"),              _("Column Align"),                            wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Column Align")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
@@ -2146,6 +2149,9 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_EditPop->AppendSeparator();
     g_Menu_EditPop->Append(menuCutLine, _("Cut L&ine"));
     g_Menu_EditPop->Append(menuDeleteLine, _("Delete &Line"));
+    g_Menu_EditPop->Append(menuDeleteEmptyLines, _("Delete Empty Lines"));
+    g_Menu_EditPop->Append(menuDeleteEmptyLinesWithSpaces, _("Delete Empty Lines with Spaces"));
+    g_Menu_EditPop->Append(menuJoinLines, _("Join Lines"));
     g_Menu_EditPop->AppendSeparator();
     g_Menu_EditPop->Append(menuSelectAll, _("Select &All"));
     g_Menu_EditPop->AppendSeparator();
@@ -2180,8 +2186,6 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_EditSubAdv->Append(menuSpaceToTab, _("Space Chars To Tab Chars"));
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append(menuTrimTrailingSpaces, _("Tri&m Trailing Spaces"));
-    g_Menu_EditSubAdv->Append(menuDeleteEmptyLines, _("Delete Empty Lines"));
-    g_Menu_EditSubAdv->Append(menuDeleteEmptyLinesWithSpaces, _("Delete Empty Lines with Spaces"));
     g_Menu_EditSubAdv->Append(menuInsertNumbers, _("Insert Incremental Numbers..."));
     g_Menu_EditSubAdv->Append(menuColumnAlign, _("Column Align"));
     g_Menu_EditPop->AppendSubMenu(g_Menu_EditSubAdv, _("Ad&vanced"));
@@ -4837,6 +4841,15 @@ void MadEditFrame::OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event)
     {
         g_ActiveMadEdit->DeleteEmptyLinesWithSpaces();
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("DeleteEmptyLinesWithSpaces()")));
+    }
+}
+
+void MadEditFrame::OnEditJoinLines(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
+    {
+        g_ActiveMadEdit->JoinLines();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("JoinLines()")));
     }
 }
 

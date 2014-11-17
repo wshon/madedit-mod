@@ -3417,7 +3417,7 @@ int MadEdit::FindTextAll(const wxString &expr,
         if(pendpos) pendpos->push_back(epos.pos);
         ++count;
 
-		if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
+        if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
 
         if(bFirstOnly) break;
 

@@ -1822,6 +1822,15 @@ void MadEdit::DeleteEmptyLinesWithSpaces()
     ReplaceTextAll(wxT("^[ \t]+(\r\n|\r|\n|$)"), wxT(""), true, true, false);
 }
 
+void MadEdit::JoinLines()
+{
+    if(IsReadOnly() || m_EditMode==emHexMode || !m_Selection)
+        return;
+    
+    // use Regular Expressions to join all selected lines
+    ReplaceTextAll(wxT("(\r\n|\r|\n)"), wxT(" "), true, true, false, NULL, NULL, m_SelectionBegin->pos, m_SelectionEnd->pos);
+}
+
 //==============================================================================
 struct SortLineData
 {
