@@ -82,7 +82,7 @@ Will move to wx3.0 since then
 1. Delete empty lines supported
 2. Delete empty lines(with spaces) supported
 3. Join selected lines
-4. Fix a bug that would hang Option Dialog
+4. Fix a bug that would hang Option Dialog(wx3.0.2)
 5. Update Simplified Chinese
 
 
