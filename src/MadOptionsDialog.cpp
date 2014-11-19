@@ -956,6 +956,7 @@ void MadOptionsDialog::CreateGUIControls(void)
     WxCheckBoxRightClickMenu = new wxCheckBox(WxNoteBookPage1, -1, _("Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry from Windows Registry)"), wxPoint(5,5), wxSize(400,20), 0, wxDefaultValidator, _T("WxCheckBoxRightClickMenu"));
     WxBoxSizer7->Add(WxCheckBoxRightClickMenu,0,wxALIGN_LEFT | wxALL,2);
     ResizeItem(WxBoxSizer7, WxCheckBoxRightClickMenu, 25, 4);
+    SET_CONTROLPARENT(WxCheckBoxRightClickMenu);
 #endif
 
     wxSize size=WxBoxSizer1->GetMinSize();
