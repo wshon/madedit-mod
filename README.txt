@@ -79,10 +79,16 @@ ChangeLog:
 ----------
 Mod v0.2.7
 Will move to wx3.0 since then
+1. Delete empty lines supported
+2. Delete empty lines(with spaces) supported
+3. Join selected lines
+4. Fix a bug that would hang Option Dialog
+5. Update Simplified Chinese
+
 
 Mod v0.2.6.1
 1. Bookmark while searching(toggle bookmark/bookmark all/don't show results in results window)
-. Update Simplified Chinese
+2. Update Simplified Chinese
 
 Mod v0.2.6
 1. Enhanced bookmark edit functions(copy/cut/delete/replace) under Edit menu
