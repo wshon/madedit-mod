@@ -188,8 +188,6 @@ MadEditFrame *g_MainFrame=NULL;
 MadEdit *g_ActiveMadEdit=NULL;
 int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
-wxStaticText* g_OvrStr = NULL;
-wxStaticText* g_RdOnly = NULL;
 wxArrayString g_SpellSuggestions;
 
 bool g_CheckModTimeForReload=true;
@@ -952,47 +950,23 @@ void OnEditStatusChanged(MadEdit *madedit)
 
             if(madedit->IsReadOnly())
             {
-                if(g_RdOnly == NULL)
-                {
-                //static wxString rostr(_("ReadOnly"));
-                    wxRect rect;
-                    g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
-                    g_StatusBar->GetFieldRect(5, rect);
-                    wxPoint pos = rect.GetPosition();
-                    pos.y += 2;
-                    pos.x += 4;
-                    g_RdOnly = new wxStaticText(g_StatusBar, wxID_ANY, _("ReadOnly"), pos, wxDefaultSize, 0);
-                    //g_StatusBar->SetStatusText(ovrstr, 6);
-                }
-                g_RdOnly->Show(true);
+                static wxString rostr(_("ReadOnly"));
+                g_StatusBar->SetStatusText(rostr, 5);
             }
             else
             {
-                if(g_RdOnly != NULL) g_RdOnly->Show(false);
                 g_StatusBar->SetStatusText(wxEmptyString, 5);
             }
 
             if(madedit->GetInsertMode())
             {
                 static wxString insstr(_("INS"));
-                if(g_OvrStr != NULL) g_OvrStr->Show(false);
                 g_StatusBar->SetStatusText(insstr, 6);
             }
             else
             {
-                //static wxString ovrstr(_("OVR"));
-                if(g_OvrStr == NULL)
-                {
-                    wxRect rect;
-                    g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
-                    g_StatusBar->GetFieldRect(6, rect);
-                    wxPoint pos = rect.GetPosition();
-                    pos.y += 2;
-                    pos.x += 4;
-                    g_OvrStr = new wxStaticText(g_StatusBar, wxID_ANY, _("OVR"), pos, wxDefaultSize, 0);
-                    //g_StatusBar->SetStatusText(ovrstr, 6);
-                }
-                g_OvrStr->Show(true);
+                static wxString ovrstr(_("OVR"));
+                g_StatusBar->SetStatusText(ovrstr, 6);
             }
             g_StatusBar->Update(); // repaint immediately
 
@@ -2703,10 +2677,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     //delete g_PrintData;
     delete g_PageSetupData;
     g_PageSetupData = NULL;
-    if(g_OvrStr != NULL) delete g_OvrStr;
-    if(g_RdOnly != NULL) delete g_RdOnly;
-    g_OvrStr = NULL;
-    g_RdOnly = NULL;
     extern void DeleteConfig();
     DeleteConfig();
 
