@@ -5004,6 +5004,8 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
 
+    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+
     g_SearchDialog->Show();
     g_SearchDialog->SetFocus();
     g_SearchDialog->Raise();
@@ -5064,6 +5066,7 @@ void MadEditFrame::OnSearchFindNext(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
+    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
