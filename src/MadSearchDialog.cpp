@@ -356,7 +356,7 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                 sr=g_ActiveMadEdit->FindHexNext(text, rangeFrom, rangeTo);
                 if(sr != SR_EXPR_ERROR)
                 {
-                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexNext(\"%s\", %d, %d)"), text.c_str(), rangeFrom, rangeTo));
+                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexNext(\"%s\", %s, %s)"), text.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
                 }
             }
             else
@@ -368,10 +368,10 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                     rangeFrom, rangeTo);
                 if(sr != SR_EXPR_ERROR)
                 {
-                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextNext(\"%s\", %s, %s, %s, %d, %d)"), text.c_str(),
+                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextNext(\"%s\", %s, %s, %s, %s, %s)"), text.c_str(),
                                 WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                                 WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
-                                WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
+                                WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
                 }
             }
 
@@ -483,7 +483,7 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
             if(WxCheckBoxFindHex->GetValue())
             {
                 sr=g_ActiveMadEdit->FindHexPrevious(text, rangeTo, rangeFrom);
-                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexPrevious(\"%s\", %d, %d)"), text.c_str(), rangeFrom, rangeTo));
+                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexPrevious(\"%s\", %s, %s)"), text.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
             }
             else
             {
@@ -492,10 +492,10 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
                     WxCheckBoxCaseSensitive->GetValue(),
                     WxCheckBoxWholeWord->GetValue(),
                     rangeTo, rangeFrom);
-                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextPrevious(\"%s\", %s, %s, %s, %d, %d)"), text.c_str(),
+                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextPrevious(\"%s\", %s, %s, %s, %s, %s)"), text.c_str(),
                             WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
-                            WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), rangeFrom, rangeTo));
+                            WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
             }
 
             if(sr!=SR_NO)
@@ -737,19 +737,8 @@ void MadSearchDialog::WxCheckBoxFindHexClick(wxCommandEvent& event)
         else
         {
             wxString ws;
-            unsigned int i = 0;
-            bool withSpace = true;
-            while( i < text.Len())
-            {
-                ws<< wxChar(::ToHex(((char)text[i]>>4)&0xF));
-                ws<< wxChar(::ToHex((char)text[i]&0xf));
-        
-                if(withSpace)
-                {
-                    ws<< wxChar(' ');
-                }
-                ++i;
-            }
+            m_FindText->SelectAll();
+            m_FindText->GetSelHexString(ws, true);
             m_FindText->SetText(ws);
         }
     }

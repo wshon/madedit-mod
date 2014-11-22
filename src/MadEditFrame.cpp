@@ -5102,7 +5102,7 @@ void MadEditFrame::OnSearchFindPrevious(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-
+    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
     if(g_ActiveMadEdit->IsSelected())
@@ -5142,6 +5142,9 @@ void MadEditFrame::OnSearchReplace(wxCommandEvent& event)
     }
 
     g_SearchDialog->Show(false);
+
+    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    g_ReplaceDialog->m_ReplaceText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_ReplaceDialog->Show();
     g_ReplaceDialog->SetFocus();
