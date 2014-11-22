@@ -356,7 +356,8 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                 sr=g_ActiveMadEdit->FindHexNext(text, rangeFrom, rangeTo);
                 if(sr != SR_EXPR_ERROR)
                 {
-                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexNext(\"%s\", %s, %s)"), text.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
+                    RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindHexNext(\"%s\", %s, %s)"), text.c_str(),
+                                (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
                 }
             }
             else
@@ -954,7 +955,6 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 {
     extern MadEdit *g_ActiveMadEdit;
     //wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
-    int ResultCount=0;
 
     if(g_ActiveMadEdit==NULL)
         return;
@@ -1009,7 +1009,7 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                             WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False")));
         }
 
-        if(ok<=0) return;
+        if(ok<0) return;
 
         Show(false);
         wxString msg = _("Found %d matched texts...");
@@ -1026,6 +1026,19 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         if(!WxCheckBoxBookmarkOnly->IsChecked())
         {
             DisplayFindAllResult(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
+        }
+        else
+        {
+            if(!ok)
+            {
+                g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
+            }
+            else
+            {
+                wxString smsg;
+                smsg.Printf(_("%d results"), ok);
+                g_StatusBar->SetStatusText(smsg, 0 );
+            }
         }
 
         dialog.Update(ok);

@@ -1188,7 +1188,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_JoinLines)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
@@ -3522,6 +3522,11 @@ void MadEditFrame::OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()==emColumnMode);
 }
 
+void MadEditFrame::OnUpdateUI_Menu_JoinLines(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode&&g_ActiveMadEdit->IsSelected());
+}
+
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit && //g_ActiveMadEdit->GetEditMode()==emHexMode &&
@@ -4997,14 +5002,15 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
     g_ReplaceDialog->Show(false);
 
     static wxString text(_("Search Results"));
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
 
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_SearchDialog->Show();
     g_SearchDialog->SetFocus();
@@ -5066,7 +5072,10 @@ void MadEditFrame::OnSearchFindNext(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
@@ -5105,7 +5114,11 @@ void MadEditFrame::OnSearchFindPrevious(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
     if(g_ActiveMadEdit->IsSelected())
@@ -5143,6 +5156,9 @@ void MadEditFrame::OnSearchReplace(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
+
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
 
     g_SearchDialog->Show(false);
 
@@ -5216,6 +5232,9 @@ void MadEditFrame::OnSearchFindInFiles(wxCommandEvent& event)
     static wxString text(_("Find/Replace in Files Results"));
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
+
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->Show(false);
 
     g_FindInFilesDialog->Show();
     g_FindInFilesDialog->SetFocus();

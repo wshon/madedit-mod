@@ -124,6 +124,7 @@ public:
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
+    void OnUpdateUI_Menu_JoinLines(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuIndent(wxUpdateUIEvent& event);
