@@ -80,11 +80,12 @@ ChangeLog:
 Mod v0.2.7
 Will move to wx3.0 since then
 1. Delete empty lines supported
-2. Delete empty lines(with spaces) supported
+2. Delete empty lines(with spaces) supported(More line functions?)
 3. Join selected lines
-4. Fix a bug that would hang Option Dialog(wx3.0.2)
+4. Fix a bug that would hang Option Dialog(wx3.0.2), MS Windows only
 5. Update Simplified Chinese
-
+Note: Fixed the bug or issue I found with wx3.0 but there might be issue with wx3.0. So, take your own risk to
+try 0.2.7.
 
 Mod v0.2.6.1
 1. Bookmark while searching(toggle bookmark/bookmark all/don't show results in results window)

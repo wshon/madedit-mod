@@ -188,8 +188,6 @@ MadEditFrame *g_MainFrame=NULL;
 MadEdit *g_ActiveMadEdit=NULL;
 int g_PrevPageID=-1;
 wxStatusBar *g_StatusBar=NULL;
-wxStaticText* g_OvrStr = NULL;
-wxStaticText* g_RdOnly = NULL;
 wxArrayString g_SpellSuggestions;
 
 bool g_CheckModTimeForReload=true;
@@ -952,47 +950,23 @@ void OnEditStatusChanged(MadEdit *madedit)
 
             if(madedit->IsReadOnly())
             {
-                if(g_RdOnly == NULL)
-                {
-                //static wxString rostr(_("ReadOnly"));
-                    wxRect rect;
-                    g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
-                    g_StatusBar->GetFieldRect(5, rect);
-                    wxPoint pos = rect.GetPosition();
-                    pos.y += 2;
-                    pos.x += 4;
-                    g_RdOnly = new wxStaticText(g_StatusBar, wxID_ANY, _("ReadOnly"), pos, wxDefaultSize, 0);
-                    //g_StatusBar->SetStatusText(ovrstr, 6);
-                }
-                g_RdOnly->Show(true);
+                static wxString rostr(_("ReadOnly"));
+                g_StatusBar->SetStatusText(rostr, 5);
             }
             else
             {
-                if(g_RdOnly != NULL) g_RdOnly->Show(false);
                 g_StatusBar->SetStatusText(wxEmptyString, 5);
             }
 
             if(madedit->GetInsertMode())
             {
                 static wxString insstr(_("INS"));
-                if(g_OvrStr != NULL) g_OvrStr->Show(false);
                 g_StatusBar->SetStatusText(insstr, 6);
             }
             else
             {
-                //static wxString ovrstr(_("OVR"));
-                if(g_OvrStr == NULL)
-                {
-                    wxRect rect;
-                    g_StatusBar->SetForegroundColour(wxColour(wxT("RED"))); 
-                    g_StatusBar->GetFieldRect(6, rect);
-                    wxPoint pos = rect.GetPosition();
-                    pos.y += 2;
-                    pos.x += 4;
-                    g_OvrStr = new wxStaticText(g_StatusBar, wxID_ANY, _("OVR"), pos, wxDefaultSize, 0);
-                    //g_StatusBar->SetStatusText(ovrstr, 6);
-                }
-                g_OvrStr->Show(true);
+                static wxString ovrstr(_("OVR"));
+                g_StatusBar->SetStatusText(ovrstr, 6);
             }
             g_StatusBar->Update(); // repaint immediately
 
@@ -1188,7 +1162,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_JoinLines)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
@@ -2703,10 +2677,6 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     //delete g_PrintData;
     delete g_PageSetupData;
     g_PageSetupData = NULL;
-    if(g_OvrStr != NULL) delete g_OvrStr;
-    if(g_RdOnly != NULL) delete g_RdOnly;
-    g_OvrStr = NULL;
-    g_RdOnly = NULL;
     extern void DeleteConfig();
     DeleteConfig();
 
@@ -3520,6 +3490,11 @@ void MadEditFrame::OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event)
 void MadEditFrame::OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()==emColumnMode);
+}
+
+void MadEditFrame::OnUpdateUI_Menu_JoinLines(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode&&g_ActiveMadEdit->IsSelected());
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event)
@@ -4997,14 +4972,15 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
     g_ReplaceDialog->Show(false);
 
     static wxString text(_("Search Results"));
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
 
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_SearchDialog->Show();
     g_SearchDialog->SetFocus();
@@ -5066,7 +5042,10 @@ void MadEditFrame::OnSearchFindNext(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
@@ -5105,7 +5084,11 @@ void MadEditFrame::OnSearchFindPrevious(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-    g_ReplaceDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
     g_SearchDialog->UpdateCheckBoxByCBHex(g_SearchDialog->WxCheckBoxFindHex->GetValue());
 
     if(g_ActiveMadEdit->IsSelected())
@@ -5143,6 +5126,9 @@ void MadEditFrame::OnSearchReplace(wxCommandEvent& event)
     {
         g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
+
+    if(g_FindInFilesDialog!=NULL)
+        g_FindInFilesDialog->Show(false);
 
     g_SearchDialog->Show(false);
 
@@ -5216,6 +5202,9 @@ void MadEditFrame::OnSearchFindInFiles(wxCommandEvent& event)
     static wxString text(_("Find/Replace in Files Results"));
     int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
     m_InfoNotebook->SetPageText(pid, text);
+
+    g_ReplaceDialog->Show(false);
+    g_SearchDialog->Show(false);
 
     g_FindInFilesDialog->Show();
     g_FindInFilesDialog->SetFocus();

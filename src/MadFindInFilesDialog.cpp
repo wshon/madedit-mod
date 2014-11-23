@@ -613,9 +613,6 @@ public:
 void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
 {
     //wxLogNull nolog;
-
-    int ResultCount=0;
-
     const int max=1000;
     fmtmsg1 = _("Found %d file(s) matched the filters...");
     fmtmsg1 += wxT("                                        \n");
@@ -844,17 +841,6 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
     dialog.Update(max);
     g_ProgressDialog=NULL;
     g_FileNameList.clear();
-
-    if(!ResultCount)
-    {
-        g_StatusBar->SetStatusText( _("Cannot find the matched string"), 0 );
-    }
-    else
-    {
-        wxString smsg;
-        smsg.Printf(_("%d results"), ResultCount);
-        g_StatusBar->SetStatusText(smsg, 0 );
-    }
 }
 
 /*
