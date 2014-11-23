@@ -2409,12 +2409,17 @@ void MadEditFrame::CreateGUIControls(void)
 
 
     // status bar field widths
+#if (wxMAJOR_VERSION < 3)
     int width0= GetClientSize().GetWidth() - g_StatusWidth_1_6;
     if(width0<0) width0=0;
     g_StatusWidths[0]= width0;
+#else
+    g_StatusWidths[0]=-1;
+#endif
     WxStatusBar1->SetFieldsCount(7, g_StatusWidths);
-    //int styles[6]={wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED};
-    //WxStatusBar1->SetStatusStyles(6, styles);
+    //WxStatusBar1->SetFieldsCount(7, g_StatusWidths);
+    //int styles[7]={wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED, wxSB_RAISED};
+    //WxStatusBar1->SetStatusStyles(7, styles);
 
 
 
@@ -2908,9 +2913,13 @@ void MadEditFrame::OnSize(wxSizeEvent &evt)
 {
     evt.Skip();
 
+#if (wxMAJOR_VERSION < 3)
     int width0= g_MainFrame->GetClientSize().GetWidth() - g_StatusWidth_1_6;
     if(width0<0) width0=0;
     g_StatusWidths[0]= width0;
+#else
+    g_StatusWidths[0]=-1;
+#endif
     g_MainFrame->WxStatusBar1->SetFieldsCount(7, g_StatusWidths);
 
     //static int n=0;

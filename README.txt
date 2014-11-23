@@ -83,8 +83,13 @@ Will move to wx3.0 since then
 2. Delete empty lines(with spaces) supported(More line functions?)
 3. Join selected lines
 4. Fix a bug that would hang Option Dialog(wx3.0.2), MS Windows only
-5. Update Simplified Chinese
-Note: Fixed the bug or issue I found with wx3.0 but there might be issue with wx3.0. So, take your own risk to
+5. Improve usability of Search/Replace/Search In Files
+6. Fix issue of SearchAll that would not should results if none found
+7. Fix issue of statusbar working under wx3.0
+8. Fix issue of check/uncheck FindHex of search
+9. Fix issue of check/uncheck FindHex of Replace
+10. Update Simplified Chinese
+Note: Fixed the bugs or issues under wx3.0 I found but there still might be issue with wx3.0. So, take your own risk to
 try 0.2.7.
 
 Mod v0.2.6.1
