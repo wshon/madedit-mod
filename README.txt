@@ -14,8 +14,8 @@ Supported Platforms:
 A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
    a. GNU C++ 3.x/4.x:
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled
-      2. Boost-1.33.0 or higher
+      1. wxWidgets-2.6.1 or higher with Unicode and IPC enabled
+      2. Boost-1.33.0 or higher(build Boost-Python)
       3. Boost.Xpressive latest version
       4. Python 2.7 or higher
       5. hunspell 1.3.3 or higher
@@ -24,14 +24,13 @@ B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
       1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommended, and apply patches)
-         --enable-ipc
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
-   b. Visual C++ 7.1 (VS.Net 2003):
+   b. Visual C++ 7.1 (VS.Net 2003) or higher:
       Required Libraries to compile:
       1. wxWidgets-2.6.1 or higher with Unicode enabled
-      2. Boost-1.33.0 or higher(Source code is enough for MadEdit)
+      2. Boost-1.33.0 or higher(Source code is enough for MadEdit, build Boost-Python)
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
