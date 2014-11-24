@@ -241,6 +241,7 @@ bool MadEditApp::OnInit()
     g_MadEditAppDir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
     
     m_SigleAppChecker = 0;
+    m_AppServer = 0;
 #ifdef __WXMSW__
     g_MadEditHomeDir=g_MadEditAppDir;
 #else //linux: ~/.madedit
