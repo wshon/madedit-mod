@@ -2687,6 +2687,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     m_AuiManager.UnInit();
 
+    g_MainFrame = 0;
 #ifndef __WXMSW__
     // it will crash randomly under linux.
     // so we must call exit() to quit the app.
