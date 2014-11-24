@@ -310,7 +310,7 @@ public:
         const wxString &name0 = name;
 #endif
         unsigned long hash = wxStringHash::wxCharStringHash(name0);
-        if(files.size()==0)
+        if(files.empty())
         {
             files.push_back(FilePosData(name0, pos, hash, encoding, fontname, fontsize));
         }
@@ -461,7 +461,7 @@ public:
         unsigned long hash = wxStringHash::wxCharStringHash(name0);
         wxFileOffset pos = 0;
         fontsize = 0;
-        if(files.size() != 0)
+        if(!files.empty())
         {
             std::list<FilePosData>::iterator it = files.begin();
             std::list<FilePosData>::iterator itend = files.end();
