@@ -79,6 +79,7 @@ ChangeLog:
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
 2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod')
+3. Update Translation, MadPython
 
 
 Mod v0.2.7
