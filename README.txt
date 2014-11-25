@@ -76,6 +76,10 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.2.8
+1. Fix the issue that Toolbar was not flat under wx3.0
+
+
 Mod v0.2.7
 Will move to wx3.0 since then
 1. Delete empty lines supported

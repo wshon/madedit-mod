@@ -1841,7 +1841,7 @@ void LoadDefaultSettings(wxConfigBase *m_Config)
 
     long orien;
     m_Config->Read(wxT("PageOrientation"), &orien, wxPORTRAIT);
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
+#if (wxMAJOR_VERSION < 3)
     g_PageSetupData->GetPrintData().SetOrientation(orien);
 #else
     g_PageSetupData->GetPrintData().SetOrientation((wxPrintOrientation)orien);
@@ -1986,7 +1986,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxStatusBar1->SetFont(*pf);
 #endif
 
-    WxToolBar1 = new wxToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29));
+    WxToolBar1 = new wxToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29), wxTB_DEFAULT_STYLE);
 
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
