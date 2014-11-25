@@ -464,6 +464,53 @@ void MadEdit::CopyAsHexString(bool withSpace)
     PutTextToClipboard(ws);
 }
 
+void MadEdit::CopyRevertHex()
+{
+    if(!m_Selection) return;
+
+    wxString strText;
+
+    GetSelText(strText);
+    size_t strLen = strText.Length();
+    if(strLen<2) return;
+    wxString strDelimiters = _T(" \t.,?!@#$%^&*()-=_+[]{}\\|;:\"'`<>/~");
+    wxStringTokenizer tkz(strText, strDelimiters);
+    bool noToken = false;
+    std::string locStr;
+    while ( tkz.HasMoreTokens() )
+    {
+        wxString token = tkz.GetNextToken();
+        if(token.Length() == strLen)
+        {
+            noToken = true;
+            break;
+        }
+        else if(token.Length() != 2)
+        {
+            return;
+        }
+        unsigned long value;
+        token.ToULong(&value, 16);
+        if(value > 255) return;
+        locStr+=(char)value;
+    }
+
+    if(noToken)
+    {
+        size_t i = 0;
+        while(i < (strLen-1))
+        {
+            wxString subs = strText.SubString(i, i+1);
+            unsigned long value;
+            subs.ToULong(&value, 16);
+            if(value > 255) return;
+            locStr+=(char)value;
+            i += 2;
+        }
+    }
+    wxString ws(locStr.c_str(), wxConvLocal);
+    PutTextToClipboard(ws);
+}
 
 void MadEdit::IncreaseDecreaseIndent(bool incIndent)
 {

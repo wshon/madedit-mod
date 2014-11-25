@@ -227,6 +227,7 @@ public:
 
     void OnEditCopyAsHexString(wxCommandEvent& event);
     void OnEditCopyAsHexStringWithSpace(wxCommandEvent& event);
+    void OnEditCopyRevertHex(wxCommandEvent& event);
     void OnEditIncIndent(wxCommandEvent& event);
     void OnEditDecIndent(wxCommandEvent& event);
     void OnEditComment(wxCommandEvent& event);
@@ -471,6 +472,7 @@ enum { // menu id
 
     menuCopyAsHexString,
     menuCopyAsHexStringWithSpace,
+    menuCopyRevertHex,
     menuIncreaseIndent,
     menuDecreaseIndent,
     menuComment,

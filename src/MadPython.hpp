@@ -1208,6 +1208,11 @@ namespace mad_python
             g_ActiveMadEdit->CopyAsHexString(withSpace);
         }
 
+        void CopyRevertHex()
+        {
+            g_ActiveMadEdit->CopyRevertHex();
+        }
+
         mad_py::tuple WordCount(bool selection)
         {
             int words = 0, chars = 0, spaces = 0, lines = 0, halfwidths = 0, fullwidths = 0;
@@ -1405,6 +1410,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("ConvertSpaceToTab", &PyMadEdit::ConvertSpaceToTab, "")
         .def("ConvertTabToSpace", &PyMadEdit::ConvertTabToSpace, "")
         .def("CopyAsHexString", &PyMadEdit::CopyAsHexString, "")
+        .def("CopyRevertHex", &PyMadEdit::CopyRevertHex, "")
         .def("WordCount", &PyMadEdit::WordCount, return_value_policy<return_by_value>(), "")
         .def("SetFontA", &PyMadEdit::SetFontA, "Doc")
         .def("CopyToClipboardA", &PyMadEdit::CopyToClipboardA, "")

@@ -1143,6 +1143,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSortByOptions, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuCopyAsHexString, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
 	EVT_UPDATE_UI(menuCopyAsHexStringWithSpace, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
+	EVT_UPDATE_UI(menuCopyRevertHex, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
 	EVT_UPDATE_UI(menuIncreaseIndent, MadEditFrame::OnUpdateUI_MenuIndent)
 	EVT_UPDATE_UI(menuDecreaseIndent, MadEditFrame::OnUpdateUI_MenuIndent)
 	EVT_UPDATE_UI(menuComment, MadEditFrame::OnUpdateUI_MenuComment)
@@ -1277,6 +1278,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuSortOptions, MadEditFrame::OnEditSortOptions)
 	EVT_MENU(menuCopyAsHexString, MadEditFrame::OnEditCopyAsHexString)
 	EVT_MENU(menuCopyAsHexStringWithSpace, MadEditFrame::OnEditCopyAsHexStringWithSpace)
+	EVT_MENU(menuCopyRevertHex, MadEditFrame::OnEditCopyRevertHex)
 	EVT_MENU(menuIncreaseIndent, MadEditFrame::OnEditIncIndent)
 	EVT_MENU(menuDecreaseIndent, MadEditFrame::OnEditDecIndent)
 	EVT_MENU(menuComment, MadEditFrame::OnEditComment)
@@ -1493,6 +1495,7 @@ CommandData CommandTable[]=
     { 0,                1, menuAdvanced,                 wxT("menuAdvanced"),                 _("Ad&vanced"),                               0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Advanced, 0},
     { 0,                2, menuCopyAsHexString,          wxT("menuCopyAsHexString"),          _("Copy As &Hex String"),                     wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection as hex-string")},
     { 0,                2, menuCopyAsHexStringWithSpace, wxT("menuCopyAsHexStringWithSpace"), _("Copy As He&x String with Space"),          wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection as hex-string with space")},
+    { 0,                2, menuCopyRevertHex,            wxT("menuCopyRevertHex"),            _("Copy Value &Reverted from Hex String"),    wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Copy the selection reverted from hex-string")},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecIncreaseIndent, 2, menuIncreaseIndent,           wxT("menuIncreaseIndent"),           _("&Increase Indent"),                        wxT(""),             wxITEM_NORMAL,    indent_xpm_idx,    0,                     _("Increase the indent of seleted lines")},
     { ecDecreaseIndent, 2, menuDecreaseIndent,           wxT("menuDecreaseIndent"),           _("&Decrease Indent"),                        wxT("Shift-TAB"),    wxITEM_NORMAL,    unindent_xpm_idx,  0,                     _("Decrease the indent of seleted lines")},
@@ -2136,6 +2139,7 @@ void MadEditFrame::CreateGUIControls(void)
     
     g_Menu_EditSubAdv->Append(menuCopyAsHexString, _("Copy As &Hex String"));
     g_Menu_EditSubAdv->Append(menuCopyAsHexStringWithSpace, _("Copy As He&x String with Space"));
+    g_Menu_EditSubAdv->Append(menuCopyRevertHex, _("Copy Value &Reverted from Hex String"));
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append(menuIncreaseIndent, _("&Increase Indent"));
     g_Menu_EditSubAdv->Append(menuDecreaseIndent, _("&Decrease Indent"));
@@ -4581,12 +4585,22 @@ void MadEditFrame::OnEditCopyAsHexString(wxCommandEvent& event)
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("CopyAsHexString(False)")));
     }
 }
+
 void MadEditFrame::OnEditCopyAsHexStringWithSpace(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit) 
     {
         g_ActiveMadEdit->CopyAsHexString(true);
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("CopyAsHexString(True)")));
+    }
+}
+
+void MadEditFrame::OnEditCopyRevertHex(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit)
+    {
+        g_ActiveMadEdit->CopyRevertHex();
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("CopyRevertHex()")));
     }
 }
 
