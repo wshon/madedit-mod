@@ -610,6 +610,8 @@ public:
         : filename(fn), pageid(pid), bpos(b), epos(e) {}
 };
 
+extern wxProgressDialog *g_SearchProgressDialog;
+extern bool OnSearchProgressUpdate(int value, const wxString &newmsg=wxEmptyString, bool *skip=NULL);
 void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
 {
     //wxLogNull nolog;
@@ -736,7 +738,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
         wxString fmt(_("Processing %d of %d files..."));
         vector<wxFileOffset> begpos, endpos;
         MadFileNameList::iterator fnit=g_FileNameList.begin();
-        bool cont = true;
+        bool cont = true, hide_process = false;
         for(size_t i = 0; i < totalfiles && cont; ++i)
         {
             MadEdit *madedit = NULL;
@@ -832,7 +834,32 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 if(ok<0) break;
             }
 
-            DisplayFindAllResult(begpos, endpos, madedit, false);
+            if(ok > 1000)
+            {
+                wxString msg = _("Found %d matched texts...");
+                msg += wxT("                                \n");
+                wxProgressDialog tmpdialog(_("Preparing Results"),
+                                            wxString::Format(msg, 0),
+                                            ok,    // range
+                                            this,   // parent
+                                            wxPD_CAN_ABORT |
+                                            wxPD_AUTO_HIDE |
+                                            wxPD_APP_MODAL);
+                g_SearchProgressDialog = &tmpdialog;
+                dialog.Show(false);
+                hide_process = true;
+            }
+
+            DisplayFindAllResult(begpos, endpos, madedit, false, &OnSearchProgressUpdate);
+
+            if(g_SearchProgressDialog)
+            {
+                g_SearchProgressDialog->Update(ok);
+                g_SearchProgressDialog = NULL;
+
+                dialog.Show(true);
+                hide_process = false;
+            }
         }
         
         if(tempedit) delete tempedit;
