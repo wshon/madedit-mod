@@ -33,7 +33,7 @@ MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxSt
     bSizer1 = new wxBoxSizer( wxVERTICAL );
 	WxStaticBoxSizer1->Add(bSizer1, 1, wxALIGN_CENTER | wxALIGN_TOP | wxEXPAND | wxALL, 5);
 
-    m_pymacro=new MadEdit(this, ID_MADEDIT, wxDefaultPosition, wxDefaultSize);
+    m_pymacro=new MadEdit(this, ID_MADEDIT, wxDefaultPosition, wxSize(640, 480));
     m_pymacro->SetFixedWidthMode(false);
     m_pymacro->SetRecordCaretMovements(false);
     m_pymacro->SetInsertSpacesInsteadOfTab(false);

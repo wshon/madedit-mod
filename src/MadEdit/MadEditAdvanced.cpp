@@ -492,7 +492,6 @@ void MadEdit::CopyRevertHex()
         wxString subs = strText.SubString(i, i+1);
         unsigned long value;
         subs.ToULong(&value, 16);
-        if(value > 255) return;
         locStr+=(char)value;
         i += 2;
     }

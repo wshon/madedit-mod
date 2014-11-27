@@ -69,7 +69,9 @@ Syntax files, Locale files and Settings:
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
   
-  Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
+  * Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
+  * Use MadEdit-Mod in other applications like CPPCheck, Visual Studio, madedit %f*lineNum
+
 
 Feature/issues to be released in next release:
 ----------------------------------------------
@@ -78,8 +80,8 @@ ChangeLog:
 ----------
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
-2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod')
-3. Improve progress handling of FindInFiles(Break in results handling of each file)
+2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for Asian lan)
+3. Change default size of MadMacro dialog to 640*480
 4. Update Translation, MadPython
 
 Mod v0.2.7
