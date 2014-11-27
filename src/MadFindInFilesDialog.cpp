@@ -834,32 +834,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 if(ok<0) break;
             }
 
-            if(ok > 1000)
-            {
-                wxString msg = _("Found %d matched texts...");
-                msg += wxT("                                \n");
-                wxProgressDialog tmpdialog(_("Preparing Results"),
-                                            wxString::Format(msg, 0),
-                                            ok,    // range
-                                            this,   // parent
-                                            wxPD_CAN_ABORT |
-                                            wxPD_AUTO_HIDE |
-                                            wxPD_APP_MODAL);
-                g_SearchProgressDialog = &tmpdialog;
-                dialog.Show(false);
-                hide_process = true;
-            }
-
-            DisplayFindAllResult(begpos, endpos, madedit, false, &OnSearchProgressUpdate);
-
-            if(g_SearchProgressDialog)
-            {
-                g_SearchProgressDialog->Update(ok);
-                g_SearchProgressDialog = NULL;
-
-                dialog.Show(true);
-                hide_process = false;
-            }
+            DisplayFindAllResult(begpos, endpos, madedit, false);
         }
         
         if(tempedit) delete tempedit;
