@@ -38,7 +38,7 @@ B. MS Windows (__WXMSW__):
 P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
       or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
-P.S.: wxAUIBook patch http://trac.wxwidgets.org/attachment/ticket/10848/
+P.S.: wxAUIBook patch for wxWidgets 2.8.x http://trac.wxwidgets.org/attachment/ticket/10848/
 P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
       wxWidgets
 P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error
@@ -70,7 +70,7 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
   
   * Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
-  * Use MadEdit-Mod in other applications like CPPCheck, Visual Studio, madedit %f*lineNum
+  * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try 'madedit %f*lineNum'
 
 
 Feature/issues to be released in next release:
@@ -82,14 +82,14 @@ Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
 2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for Asian lan)
 3. Change default size of MadMacro dialog to 640*480
-4. Improve usability of dialogs. Eg, hide modaless dialog before show another dialog
+4. Improve usability of dialogs. Eg, hide modeless dialog before show another model/ess one
 5. Update Translation for wx3.0, MadPython
 
 Mod v0.2.7
 Will move to wx3.0 since then
 1. Delete empty lines supported
 2. Delete empty lines(with spaces) supported(More line functions?)
-3. Join selected lines
+3. Join selected lines(replace EOL with space)
 4. Fix a bug that would hang Option Dialog(wx3.0.2), MS Windows only
 5. Improve usability of Search/Replace/Search In Files
 6. Fix issue of SearchAll that would not should results if none found
