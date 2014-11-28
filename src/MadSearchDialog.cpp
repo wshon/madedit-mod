@@ -1012,22 +1012,36 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         if(ok<0) return;
 
         Show(false);
-        wxString msg = _("Found %d matched texts...");
-        msg += wxT("                                \n");
-        wxProgressDialog dialog(_("Preparing Results"),
-                                    wxString::Format(msg, 0),
-                                    ok,    // range
-                                    this,   // parent
-                                    wxPD_CAN_ABORT |
-                                    wxPD_AUTO_HIDE |
-                                    wxPD_APP_MODAL);
-        g_SearchProgressDialog = &dialog;
-
-        if(!WxCheckBoxBookmarkOnly->IsChecked())
+        if(ok > 2000)
         {
-            DisplayFindAllResult(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
+            wxString msg = _("Found %d matched texts...");
+            msg += wxT("                                \n");
+            wxProgressDialog dialog(_("Preparing Results"),
+                                        wxString::Format(msg, 0),
+                                        ok,    // range
+                                        this,   // parent
+                                        wxPD_CAN_ABORT |
+                                        wxPD_AUTO_HIDE |
+                                        wxPD_APP_MODAL);
+            g_SearchProgressDialog = &dialog;
+
+            if(!WxCheckBoxBookmarkOnly->IsChecked())
+            {
+                DisplayFindAllResult(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
+            }
+
+            dialog.Update(ok);
+            g_SearchProgressDialog = NULL;
         }
         else
+        {
+            if(!WxCheckBoxBookmarkOnly->IsChecked())
+            {
+                DisplayFindAllResult(begpos, endpos, madedit, true);
+            }
+        }
+
+        if(WxCheckBoxBookmarkOnly->IsChecked())
         {
             if(!ok)
             {
@@ -1040,9 +1054,6 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
                 g_StatusBar->SetStatusText(smsg, 0 );
             }
         }
-
-        dialog.Update(ok);
-        g_SearchProgressDialog = NULL;
         //Show(true);
     }
 }

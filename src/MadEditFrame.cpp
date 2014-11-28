@@ -5323,19 +5323,27 @@ void MadEditFrame::OnSearchReplace(wxCommandEvent& event)
 
 void MadEditFrame::OnSearchFindInFiles(wxCommandEvent& event)
 {
-    // Hide Modaless Dialog
-    if(g_SearchDialog && g_SearchDialog->IsShown())
+    if(g_SearchDialog==NULL)
     {
-        g_SearchDialog->Show(false);
+        g_SearchDialog=new MadSearchDialog(this, -1);
     }
-    if(g_ReplaceDialog && g_ReplaceDialog->IsShown())
+    if(g_ReplaceDialog==NULL)
     {
-        g_ReplaceDialog->Show(false);
+        g_ReplaceDialog=new MadReplaceDialog(this, -1);
     }
-
     if(g_FindInFilesDialog==NULL)
     {
         g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+    }
+
+    // Hide Modaless Dialog
+    if(g_SearchDialog->IsShown())
+    {
+        g_SearchDialog->Show(false);
+    }
+    if(g_ReplaceDialog->IsShown())
+    {
+        g_ReplaceDialog->Show(false);
     }
 
     static wxString text(_("Find/Replace in Files Results"));
@@ -5410,7 +5418,8 @@ void MadEditFrame::OnSearchGoToLine(wxCommandEvent& event)
     }
 
     static wxString defstr;
-    wxString str=wxGetTextFromUser(_("Line Number: (you can input HexNumber: 0xNNN)"), _("Go To Line"), defstr);
+    int lineCount = g_ActiveMadEdit->GetLineCount();
+    wxString str=wxGetTextFromUser(wxString::Format(_("Line Number(1~%d): (you can input HexNumber(0x1~0x%X): 0xNNN)"), lineCount, lineCount ), _("Go To Line"), defstr);
 
     if(!str.IsEmpty())
     {
@@ -5426,7 +5435,10 @@ void MadEditFrame::OnSearchGoToLine(wxCommandEvent& event)
     if(!str.IsEmpty() && str.ToLong(&line, base))
     {
         g_ActiveMadEdit->GoToLine(line);
-        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("GoToLine(%d)"), line));
+        if(base==16)
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("GoToLine(0x%X)"), line));
+        else
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("GoToLine(%d)"), line));
     }
 }
 
@@ -5449,7 +5461,8 @@ void MadEditFrame::OnSearchGoToPosition(wxCommandEvent& event)
     }
 
     static wxString defstr;
-    wxString str=wxGetTextFromUser(_("Position: (you can input HexNumber: 0xNNN)"), _("Go To Position"), defstr);
+    wxLongLong wxPos(g_ActiveMadEdit->GetFileSize());
+    wxString str=wxGetTextFromUser(wxString::Format(_("Position(0~%s): (you can input HexNumber: 0xNNN)"), (wxPos.ToString()).c_str()), _("Go To Position"), defstr);
     if(!str.IsEmpty())
     {
         defstr=str;
@@ -5458,7 +5471,8 @@ void MadEditFrame::OnSearchGoToPosition(wxCommandEvent& event)
         if(StrToInt64(str, pos))
         {
             g_ActiveMadEdit->SetCaretPosition(pos);
-            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetCaretPosition(%d)"), pos));
+            wxLongLong wxPos1(pos);
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetCaretPosition(%s)"), (wxPos1.ToString()).c_str()));
         }
     }
 }

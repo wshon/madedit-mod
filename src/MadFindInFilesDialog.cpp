@@ -739,6 +739,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
         vector<wxFileOffset> begpos, endpos;
         MadFileNameList::iterator fnit=g_FileNameList.begin();
         bool cont = true, hide_process = false;
+        Show(false);
         for(size_t i = 0; i < totalfiles && cont; ++i)
         {
             MadEdit *madedit = NULL;
@@ -834,13 +835,35 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 if(ok<0) break;
             }
 
-            DisplayFindAllResult(begpos, endpos, madedit, false);
+            if(ok > 2000)
+            {
+                wxString msg = _("Found %d matched texts...");
+                msg += wxT("                                \n");
+                wxProgressDialog tmpdialog(_("Preparing Results"),
+                                            wxString::Format(msg, 0),
+                                            ok,    // range
+                                            this,   // parent
+                                            wxPD_CAN_ABORT |
+                                            wxPD_AUTO_HIDE |
+                                            wxPD_APP_MODAL);
+                g_SearchProgressDialog = &tmpdialog;
+                dialog.Show(false);
+                DisplayFindAllResult(begpos, endpos, madedit, false, &OnSearchProgressUpdate);
+
+                g_SearchProgressDialog->Update(ok);
+                g_SearchProgressDialog = NULL;
+
+                dialog.Show(true);
+            }
+            else
+                DisplayFindAllResult(begpos, endpos, madedit, false);
         }
         
         if(tempedit) delete tempedit;
     }
 
     dialog.Update(max);
+    Show(true);
     g_ProgressDialog=NULL;
     g_FileNameList.clear();
 }
