@@ -44,7 +44,7 @@
 
 ////Dialog Style Start
 #undef MadFindInFilesDialog_STYLE
-#define MadFindInFilesDialog_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxCLOSE_BOX
+#define MadFindInFilesDialog_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX
 ////Dialog Style End
 
 class MadEdit;
