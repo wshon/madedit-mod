@@ -910,7 +910,7 @@ void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
                     if(line!=oldline)
                     {
                         linetext.Empty();
-                        madedit->GetLine(linetext, line, 512);
+                        madedit->GetLine(linetext, line, 1024);
                     }
                     loc.Printf(_("Line(%d): "), line+1);
                 }
@@ -946,7 +946,7 @@ void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
     else
     {
         wxString smsg;
-        smsg.Printf(_("%d results"), ResultCount);
+        smsg.Printf(_("%d results"), begpos.size());
         g_StatusBar->SetStatusText(smsg, 0 );
     }
 }

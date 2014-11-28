@@ -845,7 +845,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 wxProgressDialog tmpdialog(_("Preparing Results"),
                                             wxString::Format(msg, 0),
                                             ok,    // range
-                                            g_ProgressDialog,   // parent
+                                            g_MainFrame,   // parent
                                             wxPD_CAN_ABORT |
                                             wxPD_AUTO_HIDE |
                                             wxPD_APP_MODAL);
