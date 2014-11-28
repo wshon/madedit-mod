@@ -989,7 +989,7 @@ public: // advanced functions
 
     void CopyAsHexString(bool withSpace);
 
-    void CopyRevertHex();
+    void CopyRevertHex(wxString &delimiters);
 
     void WordCount(bool selection, int &wordCount, int &charCount, int &spaceCount,
                    int &halfWidthCount, int &fullWidthCount, int &lineCount,

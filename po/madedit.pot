@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:14+0800\n"
+"POT-Creation-Date: 2014-11-29 00:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -544,7 +544,8 @@ msgstr ""
 msgid "The input string is not a valid Hex-String:"
 msgstr ""
 
-#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadSearchDialog.cpp:1015
+#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadFindInFilesDialog.cpp:843
+#: ../src/MadSearchDialog.cpp:1019
 #, c-format
 msgid "Found %d matched texts..."
 msgstr ""
@@ -1038,7 +1039,7 @@ msgid "Convert the selection to halfwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1515 ../src/MadEditFrame.cpp:2159
-#: ../src/MadEditFrame.cpp:4812 ../src/MadEditFrame.cpp:4816
+#: ../src/MadEditFrame.cpp:4814 ../src/MadEditFrame.cpp:4818
 msgid "To Halfwidth by Options..."
 msgstr ""
 
@@ -1055,7 +1056,7 @@ msgid "Convert the selection to fullwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1517 ../src/MadEditFrame.cpp:2161
-#: ../src/MadEditFrame.cpp:4866 ../src/MadEditFrame.cpp:4870
+#: ../src/MadEditFrame.cpp:4868 ../src/MadEditFrame.cpp:4872
 msgid "To Fullwidth by Options..."
 msgstr ""
 
@@ -2054,7 +2055,7 @@ msgstr ""
 msgid "Run Temporary Macro"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2527 ../src/MadEditFrame.cpp:5341
+#: ../src/MadEditFrame.cpp:2527 ../src/MadEditFrame.cpp:5351
 msgid "Find/Replace in Files Results"
 msgstr ""
 
@@ -2119,71 +2120,81 @@ msgstr ""
 msgid "Printing"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4808 ../src/MadEditFrame.cpp:4862
+#: ../src/MadEditFrame.cpp:4693
+msgid "Delimiters:"
+msgstr ""
+
+#: ../src/MadEditFrame.cpp:4693
+msgid "Revert Hex String"
+msgstr ""
+
+#: ../src/MadEditFrame.cpp:4810 ../src/MadEditFrame.cpp:4864
 msgid "ASCII characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4808 ../src/MadEditFrame.cpp:4862
+#: ../src/MadEditFrame.cpp:4810 ../src/MadEditFrame.cpp:4864
 msgid "Japanese characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4809 ../src/MadEditFrame.cpp:4863
+#: ../src/MadEditFrame.cpp:4811 ../src/MadEditFrame.cpp:4865
 msgid "Korean characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4809 ../src/MadEditFrame.cpp:4863
+#: ../src/MadEditFrame.cpp:4811 ../src/MadEditFrame.cpp:4865
 msgid "other characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4812 ../src/MadEditFrame.cpp:4816
-#: ../src/MadEditFrame.cpp:4866 ../src/MadEditFrame.cpp:4870
+#: ../src/MadEditFrame.cpp:4814 ../src/MadEditFrame.cpp:4818
+#: ../src/MadEditFrame.cpp:4868 ../src/MadEditFrame.cpp:4872
 msgid "Choose the characters you want to convert:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5112
+#: ../src/MadEditFrame.cpp:5114
 msgid "Search Results"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5413
-msgid "Line Number: (you can input HexNumber: 0xNNN)"
+#: ../src/MadEditFrame.cpp:5424
+#, c-format
+msgid "Line Number(1~%d): (you can input HexNumber(0x1~0x%X): 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5413
+#: ../src/MadEditFrame.cpp:5424
 msgid "Go To Line"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5452
-msgid "Position: (you can input HexNumber: 0xNNN)"
+#: ../src/MadEditFrame.cpp:5467
+#, c-format
+msgid "Position(0~%s): (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5452
+#: ../src/MadEditFrame.cpp:5467
 msgid "Go To Position"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6244 ../src/MadEditFrame.cpp:6353
+#: ../src/MadEditFrame.cpp:6260 ../src/MadEditFrame.cpp:6369
 msgid "Open Mad Macro File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6367
+#: ../src/MadEditFrame.cpp:6383
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6367
+#: ../src/MadEditFrame.cpp:6383
 msgid "Warning"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6422 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:6438 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6715
+#: ../src/MadEditFrame.cpp:6731
 msgid ""
 "Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
 "OpenOffice.org/contrib/dictionaries/"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6716
+#: ../src/MadEditFrame.cpp:6732
 msgid "Press OK to visit our HomePage."
 msgstr ""
 
@@ -2315,6 +2326,10 @@ msgstr ""
 #: ../src/MadFindInFilesDialog.cpp:738
 #, c-format
 msgid "Processing %d of %d files..."
+msgstr ""
+
+#: ../src/MadFindInFilesDialog.cpp:845 ../src/MadSearchDialog.cpp:1021
+msgid "Preparing Results"
 msgstr ""
 
 #: ../src/MadFindInFilesDialog.h:59
@@ -2454,7 +2469,7 @@ msgid "Passed the end of the file"
 msgstr ""
 
 #: ../src/MadSearchDialog.cpp:399 ../src/MadSearchDialog.cpp:522
-#: ../src/MadSearchDialog.cpp:944 ../src/MadSearchDialog.cpp:1034
+#: ../src/MadSearchDialog.cpp:944 ../src/MadSearchDialog.cpp:1050
 msgid "Cannot find the matched string"
 msgstr ""
 
@@ -2502,13 +2517,9 @@ msgstr ""
 msgid "Binary file matches"
 msgstr ""
 
-#: ../src/MadSearchDialog.cpp:949 ../src/MadSearchDialog.cpp:1039
+#: ../src/MadSearchDialog.cpp:949 ../src/MadSearchDialog.cpp:1055
 #, c-format
 msgid "%d results"
-msgstr ""
-
-#: ../src/MadSearchDialog.cpp:1017
-msgid "Preparing Results"
 msgstr ""
 
 #: ../src/MadSortDialog.cpp:67

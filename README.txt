@@ -82,8 +82,9 @@ Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
 2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for Asian lan)
 3. Change default size of MadMacro dialog to 640*480
-4. Improve usability of dialogs. Eg, hide modeless dialog before show another model/ess one
-5. Update Translation for wx3.0, MadPython
+4. Improve usability of dialogs. Eg, hide modaless dialog before show another model/ess one
+5. Improve usability of FindInFiles
+6. Update Translation for wx3.0, MadPython
 
 Mod v0.2.7
 Will move to wx3.0 since then

@@ -464,7 +464,7 @@ void MadEdit::CopyAsHexString(bool withSpace)
     PutTextToClipboard(ws);
 }
 
-void MadEdit::CopyRevertHex()
+void MadEdit::CopyRevertHex(wxString &delimiters)
 {
     if(!m_Selection) return;
 
@@ -473,8 +473,8 @@ void MadEdit::CopyRevertHex()
     GetSelText(strText);
     size_t strLen = strText.Length();
     if(strLen<2) return;
-    wxString strDelimiters = _T(" \t.,?!@#$%^&*()-=_+[]{}\\|;:\"'`<>/~");
-    wxStringTokenizer tkz(strText, strDelimiters);
+
+    wxStringTokenizer tkz(strText, delimiters);
     bool noToken = false;
     std::string locStr;
     if(tkz.HasMoreTokens())

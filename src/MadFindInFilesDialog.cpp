@@ -621,7 +621,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
     wxProgressDialog dialog(this->GetTitle(),
                             wxString::Format(fmtmsg1, 0),
                             max,    // range
-                            this,   // parent
+                            g_MainFrame,   // parent
                             wxPD_CAN_ABORT |
                             wxPD_AUTO_HIDE |
                             wxPD_APP_MODAL);
@@ -740,6 +740,9 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
         MadFileNameList::iterator fnit=g_FileNameList.begin();
         bool cont = true, hide_process = false;
         Show(false);
+
+        begpos.reserve(128*1024);
+        endpos.reserve(128*1024);
         for(size_t i = 0; i < totalfiles && cont; ++i)
         {
             MadEdit *madedit = NULL;
@@ -842,7 +845,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
                 wxProgressDialog tmpdialog(_("Preparing Results"),
                                             wxString::Format(msg, 0),
                                             ok,    // range
-                                            this,   // parent
+                                            g_ProgressDialog,   // parent
                                             wxPD_CAN_ABORT |
                                             wxPD_AUTO_HIDE |
                                             wxPD_APP_MODAL);

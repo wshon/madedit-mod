@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:14+0800\n"
-"PO-Revision-Date: 2014-11-28 00:29+0800\n"
+"POT-Creation-Date: 2014-11-29 00:13+0800\n"
+"PO-Revision-Date: 2014-11-29 00:18+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -548,7 +548,8 @@ msgstr "要重载这个文件吗？"
 msgid "The input string is not a valid Hex-String:"
 msgstr "这个不是正确的十六进制字符串："
 
-#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadSearchDialog.cpp:1015
+#: ../src/MadEdit/MadEditBasic.cpp:3411 ../src/MadFindInFilesDialog.cpp:843
+#: ../src/MadSearchDialog.cpp:1019
 #, c-format
 msgid "Found %d matched texts..."
 msgstr "找到 %d 个符合筛选条件的文本..."
@@ -1046,7 +1047,7 @@ msgid "Convert the selection to halfwidth"
 msgstr "将选取的文字转为半角字"
 
 #: ../src/MadEditFrame.cpp:1515 ../src/MadEditFrame.cpp:2159
-#: ../src/MadEditFrame.cpp:4812 ../src/MadEditFrame.cpp:4816
+#: ../src/MadEditFrame.cpp:4814 ../src/MadEditFrame.cpp:4818
 msgid "To Halfwidth by Options..."
 msgstr "转成半角字(使用选项)..."
 
@@ -1063,7 +1064,7 @@ msgid "Convert the selection to fullwidth"
 msgstr "将选取的文字转为全角字"
 
 #: ../src/MadEditFrame.cpp:1517 ../src/MadEditFrame.cpp:2161
-#: ../src/MadEditFrame.cpp:4866 ../src/MadEditFrame.cpp:4870
+#: ../src/MadEditFrame.cpp:4868 ../src/MadEditFrame.cpp:4872
 msgid "To Fullwidth by Options..."
 msgstr "转成全角字（使用选项）..."
 
@@ -2062,7 +2063,7 @@ msgstr "十六进制模式"
 msgid "Run Temporary Macro"
 msgstr "运行临时宏语句"
 
-#: ../src/MadEditFrame.cpp:2527 ../src/MadEditFrame.cpp:5341
+#: ../src/MadEditFrame.cpp:2527 ../src/MadEditFrame.cpp:5351
 msgid "Find/Replace in Files Results"
 msgstr "多文件查找/替换的结果"
 
@@ -2131,65 +2132,75 @@ msgstr ""
 msgid "Printing"
 msgstr "打印中"
 
-#: ../src/MadEditFrame.cpp:4808 ../src/MadEditFrame.cpp:4862
+#: ../src/MadEditFrame.cpp:4693
+msgid "Delimiters:"
+msgstr "分隔符："
+
+#: ../src/MadEditFrame.cpp:4693
+msgid "Revert Hex String"
+msgstr "还原十六进制字符串"
+
+#: ../src/MadEditFrame.cpp:4810 ../src/MadEditFrame.cpp:4864
 msgid "ASCII characters"
 msgstr "ASCII 字符"
 
-#: ../src/MadEditFrame.cpp:4808 ../src/MadEditFrame.cpp:4862
+#: ../src/MadEditFrame.cpp:4810 ../src/MadEditFrame.cpp:4864
 msgid "Japanese characters"
 msgstr "日文"
 
-#: ../src/MadEditFrame.cpp:4809 ../src/MadEditFrame.cpp:4863
+#: ../src/MadEditFrame.cpp:4811 ../src/MadEditFrame.cpp:4865
 msgid "Korean characters"
 msgstr "韩文"
 
-#: ../src/MadEditFrame.cpp:4809 ../src/MadEditFrame.cpp:4863
+#: ../src/MadEditFrame.cpp:4811 ../src/MadEditFrame.cpp:4865
 msgid "other characters"
 msgstr "其他文字"
 
-#: ../src/MadEditFrame.cpp:4812 ../src/MadEditFrame.cpp:4816
-#: ../src/MadEditFrame.cpp:4866 ../src/MadEditFrame.cpp:4870
+#: ../src/MadEditFrame.cpp:4814 ../src/MadEditFrame.cpp:4818
+#: ../src/MadEditFrame.cpp:4868 ../src/MadEditFrame.cpp:4872
 msgid "Choose the characters you want to convert:"
 msgstr "选择想转换的文字："
 
-#: ../src/MadEditFrame.cpp:5112
+#: ../src/MadEditFrame.cpp:5114
 msgid "Search Results"
 msgstr "查找结果"
 
-#: ../src/MadEditFrame.cpp:5413
-msgid "Line Number: (you can input HexNumber: 0xNNN)"
-msgstr "行数：（可以输入16进位数字: 0xNNN）"
+#: ../src/MadEditFrame.cpp:5424
+#, c-format
+msgid "Line Number(1~%d): (you can input HexNumber(0x1~0x%X): 0xNNN)"
+msgstr "行数（1~%d）：（可以输入16进位数字（0x1~0x%X）: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:5413
+#: ../src/MadEditFrame.cpp:5424
 msgid "Go To Line"
 msgstr "跳到此行"
 
-#: ../src/MadEditFrame.cpp:5452
-msgid "Position: (you can input HexNumber: 0xNNN)"
-msgstr "文件位置：（可以输入16进位数字: 0xNNN）"
+#: ../src/MadEditFrame.cpp:5467
+#, c-format
+msgid "Position(0~%s): (you can input HexNumber: 0xNNN)"
+msgstr "文件位置（0~%s）：（可以输入16进位数字: 0xNNN）"
 
-#: ../src/MadEditFrame.cpp:5452
+#: ../src/MadEditFrame.cpp:5467
 msgid "Go To Position"
 msgstr "跳到文件位置"
 
-#: ../src/MadEditFrame.cpp:6244 ../src/MadEditFrame.cpp:6353
+#: ../src/MadEditFrame.cpp:6260 ../src/MadEditFrame.cpp:6369
 msgid "Open Mad Macro File"
 msgstr "打开MadPython宏文件"
 
-#: ../src/MadEditFrame.cpp:6367
+#: ../src/MadEditFrame.cpp:6383
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr "要覆盖%s吗？"
 
-#: ../src/MadEditFrame.cpp:6367
+#: ../src/MadEditFrame.cpp:6383
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/MadEditFrame.cpp:6422 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:6438 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr "分配内存失败"
 
-#: ../src/MadEditFrame.cpp:6715
+#: ../src/MadEditFrame.cpp:6731
 msgid ""
 "Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
 "OpenOffice.org/contrib/dictionaries/"
@@ -2197,7 +2208,7 @@ msgstr ""
 "字典获取地址 http://archive.services.openoffice.org/pub/mirror/OpenOffice."
 "org/contrib/dictionaries/"
 
-#: ../src/MadEditFrame.cpp:6716
+#: ../src/MadEditFrame.cpp:6732
 msgid "Press OK to visit our HomePage."
 msgstr "按「确定」可以浏览我们的主页。"
 
@@ -2330,6 +2341,10 @@ msgstr "选择的目录不存在。"
 #, c-format
 msgid "Processing %d of %d files..."
 msgstr "第 %d 个文件处理中（共有 %d 个）... "
+
+#: ../src/MadFindInFilesDialog.cpp:845 ../src/MadSearchDialog.cpp:1021
+msgid "Preparing Results"
+msgstr "正在准备结果"
 
 #: ../src/MadFindInFilesDialog.h:59
 msgid "Find/Replace in Files"
@@ -2468,7 +2483,7 @@ msgid "Passed the end of the file"
 msgstr "已经过了文件末尾"
 
 #: ../src/MadSearchDialog.cpp:399 ../src/MadSearchDialog.cpp:522
-#: ../src/MadSearchDialog.cpp:944 ../src/MadSearchDialog.cpp:1034
+#: ../src/MadSearchDialog.cpp:944 ../src/MadSearchDialog.cpp:1050
 msgid "Cannot find the matched string"
 msgstr "找不到匹配的字符串"
 
@@ -2516,14 +2531,10 @@ msgstr "位置（%s）："
 msgid "Binary file matches"
 msgstr "二进制数据匹配（相同）"
 
-#: ../src/MadSearchDialog.cpp:949 ../src/MadSearchDialog.cpp:1039
+#: ../src/MadSearchDialog.cpp:949 ../src/MadSearchDialog.cpp:1055
 #, c-format
 msgid "%d results"
 msgstr "%d 个结果"
-
-#: ../src/MadSearchDialog.cpp:1017
-msgid "Preparing Results"
-msgstr "正在准备结果"
 
 #: ../src/MadSortDialog.cpp:67
 msgid "&Ascending"

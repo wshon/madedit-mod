@@ -1208,9 +1208,10 @@ namespace mad_python
             g_ActiveMadEdit->CopyAsHexString(withSpace);
         }
 
-        void CopyRevertHex()
+        void CopyRevertHex(const std::string &delimiters)
         {
-            g_ActiveMadEdit->CopyRevertHex();
+            wxString wxDelimiters(delimiters.c_str(), wxConvLocal);
+            g_ActiveMadEdit->CopyRevertHex(wxDelimiters);
         }
 
         mad_py::tuple WordCount(bool selection)

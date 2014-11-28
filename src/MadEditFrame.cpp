@@ -4689,8 +4689,15 @@ void MadEditFrame::OnEditCopyRevertHex(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit)
     {
-        g_ActiveMadEdit->CopyRevertHex();
-        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("CopyRevertHex()")));
+        static wxString strDelimiters = wxT(" .,?!@#\t$%^&*()-=_+[]{}\\|;:\"'`<>/~");
+        wxString str=wxGetTextFromUser(_("Delimiters:"), _("Revert Hex String"), strDelimiters);
+        if(!str.IsEmpty())
+        {
+            strDelimiters=str;
+        }
+        g_ActiveMadEdit->CopyRevertHex(str);
+        
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxString::Format(wxT("CopyRevertHex(%s)"), str.c_str())));
     }
 }
 

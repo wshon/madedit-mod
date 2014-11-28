@@ -923,7 +923,7 @@ void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &en
                 fmt = loc +linetext;
                 g_MainFrame->AddItemToFindInFilesResults(fmt, idx, filename, pid, begpos[idx], endpos[idx]);
                 ++ResultCount;
-                if(updater != NULL && (count >= 1000))
+                if(updater != NULL && (count >= 2000))
                 {
                     if(updater(idx, wxString::Format(status, idx, count), NULL)== false) break;
                 }
@@ -970,6 +970,8 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
     m_FindText->GetText(expr);
     if(expr.Len()>0)
     {
+        begpos.reserve(128*1024);
+        endpos.reserve(128*1024);
         m_RecentFindText->AddFileToHistory(expr);
         g_ActiveMadEdit->SetBookmarkInSearch(WxCheckBoxBookmarkLine->IsChecked());
 
