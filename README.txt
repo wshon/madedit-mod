@@ -84,7 +84,8 @@ Mod v0.2.8
 3. Change default size of MadMacro dialog to 640*480
 4. Improve usability of dialogs. Eg, hide modaless dialog before show another model/ess one
 5. Improve usability of FindInFiles
-6. Update Translation for wx3.0, MadPython
+6. Double click to select brace pairs if the caret is at the left/right brace
+Update Translation for wx3.0, MadPython
 
 Mod v0.2.7
 Will move to wx3.0 since then
