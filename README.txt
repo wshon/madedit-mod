@@ -80,12 +80,19 @@ ChangeLog:
 ----------
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
-2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for Asian lan)
+2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for
+   Asian languages. Eg, used to correct some corrupted text----lost one byte)
 3. Change default size of MadMacro dialog to 640*480
-4. Improve usability of dialogs. Eg, hide modaless dialog before show another model/ess one
+4. Improve usability of dialogs. Hide modaless dialog before show another modal/ess one
 5. Improve usability of FindInFiles
 6. Double click to select brace pairs if the caret is at the left/right brace
-Update Translation for wx3.0, MadPython
+7. Up/Down to the line above/under the select while text being selected
+8. Add shortcut for Join Lines(Ctrl-J)
+9. Add shortcut for Spell Check(Ctrl-K)
+10. Add shortcut for Show All Symbols(Ctrl-Alt-A)
+11. Move Macro menu group from Tools to top level
+12. Fix translation issue with wx3.0(Some text wx3.0 of was not translated, eg. print dialog) 
+13. Update Translation for wx3.0, MadPython
 
 Mod v0.2.7
 Will move to wx3.0 since then

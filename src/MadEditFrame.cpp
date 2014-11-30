@@ -226,8 +226,8 @@ wxMenu *g_Menu_Tools_BOM = NULL;
 wxMenu *g_Menu_Tools_NewLineChar = NULL;
 wxMenu *g_Menu_Tools_InsertNewLineChar = NULL;
 wxMenu *g_Menu_Tools_ConvertChineseChar = NULL;
-wxMenu *g_Menu_Tools_MadMacro = NULL;
-wxMenu *g_Menu_Tools_MadMacroScripts = NULL;
+wxMenu *g_Menu_MadMacro = NULL;
+wxMenu *g_Menu_MadMacro_Scripts = NULL;
 
 
 wxArrayString g_FontNames;
@@ -1467,7 +1467,7 @@ CommandData CommandTable[]=
 
     { 0,                1, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
     { 0,                1, menuDeleteEmptyLinesWithSpaces, wxT("menuDeleteEmptyLinesWithSpaces"), _("Delete Empty Lines With Spaces"),      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines with spaces")},
-    { 0,                1, menuJoinLines,                wxT("menuJoinLines"),                _("Join Lines"),                              wxT("Ctrl-Shift-J"), wxITEM_NORMAL,    -1,                0,                     _("Join selected lines into one")},
+    { 0,                1, menuJoinLines,                wxT("menuJoinLines"),                _("Join Lines"),                              wxT("Ctrl-J"), wxITEM_NORMAL,    -1,                0,                     _("Join selected lines into one")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecSelectAll,      1, menuSelectAll,                wxT("menuSelectAll"),                _("Select &All"),                             wxT("Ctrl-A"),       wxITEM_NORMAL,    -1,                0,                     _("Select all data")},
     { 0,                1, menuStartEndSelction,         wxT("menuStartEndSelction"),         _("Begin/End Select"),                        0,                   wxITEM_CHECK,     -1,                0,                     _("Select all data")},
@@ -1710,7 +1710,7 @@ CommandData CommandTable[]=
     { 0,              1, menuShowEndOfLine,     wxT("menuShowEndOfLine"),     _("Show End Of Line"),     wxT("Ctrl-Alt-L"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of EndOfLine")},
     { 0,              1, menuShowTabChar,       wxT("menuShowTabChar"),       _("Show Tab Char"),        wxT("Ctrl-Alt-T"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Tab char")},
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
-    { 0,              1, menuShowAllChars,       wxT("menuShowAllChar"),      _("Show All Chars"),       wxT(""),             wxITEM_CHECK,     showsymbol_xpm_idx, 0,                         _("Show the sign of all characters")},
+    { 0,              1, menuShowAllChars,       wxT("menuShowAllChar"),      _("Show All Chars"),       wxT("Ctrl-Alt-A"),   wxITEM_CHECK,     showsymbol_xpm_idx, 0,                         _("Show the sign of all characters")},
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
     { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT("Ctrl-K"),       wxITEM_CHECK,     spellchecker_xpm_idx,                 0,       _("Spell checker")},
@@ -1718,6 +1718,18 @@ CommandData CommandTable[]=
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
     { ecHexMode,      1, menuHexMode,           wxT("menuHexMode"),           _("&Hex Mode"),            wxT("Alt-3"),        wxITEM_CHECK,     hexmode_xpm_idx,    0,                         _("Change the editing mode to Hex-Mode")},
+
+    // Macro
+    { 0, 0, 0, 0, _("&Macro"), 0, wxITEM_NORMAL, 0, &g_Menu_MadMacro, 0},
+    { 0,               1, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    runscript_xpm_idx, 0,                 _("Run temporary macro")},
+    { 0,               1, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                     wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Load saved macro script")},
+    { 0,               1, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_NORMAL,    record_xpm_idx,  0,                   _("Start Recording")},
+    { 0,               1, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_NORMAL,    stop_xpm_idx,    0,                   _("Stop Recording")},
+    { 0,               1, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                   _("Playback")},
+    { 0,               1, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                   _("Save Currently Recorded Macro")},
+    { 0,               1, menuMadScriptList,      wxT("menuMadScriptList"),      _("Local Script List"),                             wxT(""),       wxITEM_NORMAL,    -1, &g_Menu_MadMacro_Scripts,    0},
+    { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               1, menuMacroDebugMode,     wxT("menuMacroDebugMode"),     _("Macro Debug Mode"),                              wxT(""),       wxITEM_CHECK,     -1,              0,                   _("Show Macro running output for debugging")},
 
     // Tools
     { 0, 0, 0, 0, _("&Tools"), 0, wxITEM_NORMAL, 0, &g_Menu_Tools, 0},
@@ -1727,16 +1739,6 @@ CommandData CommandTable[]=
     { 0,               1, menuFileAssociation,    wxT("menuFileAssociation"),    _("&File Type Associations..."),                    wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Change file type associations")},
 #endif
     { 0,               1, menuPurgeHistories,     wxT("menuPurgeHistories"),     _("&Purge Histories..."),                           wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Clearing out your history")},
-    { 0,               1, menuMadMacro,           wxT("menuMadMacro"),           _("&Macros"),                                       0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacro,           0},
-    { 0,               2, menuRunTempMacro,       wxT("menuRunTempMacro"),       _("Run TemporayMacro"),                             wxT(""),       wxITEM_NORMAL,    runscript_xpm_idx, 0,                 _("Run temporary macro")},
-    { 0,               2, menuRunMacroFile,       wxT("menuRunMacroFile"),       _("Load Saved MacroScript..."),                     wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Load saved macro script")},
-    { 0,               2, menuStartRecMacro,      wxT("menuStartRecMacro"),      _("Start Recording"),                               wxT(""),       wxITEM_NORMAL,    record_xpm_idx,  0,                   _("Start Recording")},
-    { 0,               2, menuStopRecMacro,       wxT("menuStopRecMacro"),       _("Stop Recording"),                                wxT(""),       wxITEM_NORMAL,    stop_xpm_idx,    0,                   _("Stop Recording")},
-    { 0,               2, menuPlayRecMacro,       wxT("menuPlayRecMacro"),       _("Playback"),                                      wxT(""),       wxITEM_NORMAL,    play_xpm_idx,    0,                   _("Playback")},
-    { 0,               2, menuSaveRecMacro,       wxT("menuSaveRecMacro"),       _("Save Currently Recorded Macro..."),              wxT(""),       wxITEM_NORMAL,    saverec_xpm_idx, 0,                   _("Save Currently Recorded Macro")},
-    { 0,               2, menuMadScriptList,      wxT("menuMadScriptList"),      _("Local Script List"),                             wxT(""),       wxITEM_NORMAL,    -1, &g_Menu_Tools_MadMacroScripts,    0},
-    { 0,               2, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               2, menuMacroDebugMode,     wxT("menuMacroDebugMode"),     _("Macro Debug Mode"),                              wxT(""),       wxITEM_CHECK,     -1,              0,                   _("Show Macro running output for debugging")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuByteOrderMark,      wxT("menuByteOrderMark"),      _("Has Unicode BOM (Byte-Order Mark)"),             0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_BOM,                0},
     { 0,               2, menuToggleBOM,          wxT("menuToggleBOM"),          _("Add/Remove BOM"),                                wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Add/Remove Unicode BOM")},
@@ -2195,11 +2197,11 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_View_LineSpacing = new wxMenu((long)0);
     g_Menu_View_TabColumn = new wxMenu((long)0);
     g_Menu_Tools_BOM = new wxMenu((long)0);
+    g_Menu_MadMacro = new wxMenu((long)0);
+    g_Menu_MadMacro_Scripts = new wxMenu((long)0);
     g_Menu_Tools_NewLineChar = new wxMenu((long)0);
     g_Menu_Tools_InsertNewLineChar = new wxMenu((long)0);
     g_Menu_Tools_ConvertChineseChar = new wxMenu((long)0);
-    g_Menu_Tools_MadMacro = new wxMenu((long)0);
-    g_Menu_Tools_MadMacroScripts = new wxMenu((long)0);
     g_Menu_View_Font0 = new wxMenu((long)0);
     g_Menu_View_Font1 = new wxMenu((long)0);
     g_Menu_View_Font2 = new wxMenu((long)0);
@@ -2339,9 +2341,9 @@ void MadEditFrame::CreateGUIControls(void)
                 }
 
                 if (hasHelp)
-                    g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName(), help);
+                    g_Menu_MadMacro_Scripts->Append(menuMadScrip1 + int(i), fn.GetName(), help);
                 else
-                    g_Menu_Tools_MadMacroScripts->Append(menuMadScrip1 + int(i), fn.GetName());
+                    g_Menu_MadMacro_Scripts->Append(menuMadScrip1 + int(i), fn.GetName());
                 ++i;
 
                 cont = dir.GetNext(&filename);
@@ -6425,7 +6427,7 @@ void MadEditFrame::OnToolsMadScriptList(wxCommandEvent& event)
     wxString filename = g_MadEditAppDir + wxT("scripts/");
 
     int menuId = event.GetId();
-    filename += g_Menu_Tools_MadMacroScripts->GetLabelText(menuId) + wxT(".mpy");
+    filename += g_Menu_MadMacro_Scripts->GetLabelText(menuId) + wxT(".mpy");
 
     wxTextFile scriptfile(filename);
     scriptfile.Open(wxConvFile);

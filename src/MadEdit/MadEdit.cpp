@@ -3960,16 +3960,16 @@ void MadEdit::SelectWordFromCaretPos(wxString *ws)
         }
 
         m_Selection=true;
-        if(m_MouseLeftDoubleClick)
+        if(m_MouseLeftDoubleClick && m_LeftBrace_rowid >= 0)
         {
             MadLineIterator lit;
             wxFileOffset pos1, pos2;
             GetLineByLine(lit, pos1, m_LeftBrace_rowid);
             GetLineByLine(lit, pos2, m_RightBrace_rowid);
-			pos1 += m_LeftBrace.LinePos;
+            pos1 += m_LeftBrace.LinePos;
             if(startpos == pos1)
             {
-				pos = pos2 + m_RightBrace.LinePos + m_RightBrace.Length/*for right brace*/;
+                pos = pos2 + m_RightBrace.LinePos + m_RightBrace.Length/*for right brace*/;
             }
             else
             {
@@ -7794,6 +7794,8 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                     break;
 
                 case ecUp:
+                    if(m_Selection)
+                        m_CaretPos = *m_SelectionBegin;
                 case ecSelUp:
                     if(m_CaretPos.rowid > 0)
                     {
@@ -7834,6 +7836,8 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                     break;
 
                 case ecDown:
+                    if(m_Selection)
+                        m_CaretPos = *m_SelectionEnd;
                 case ecSelDown:
                     if(m_CaretPos.rowid < int(m_Lines->m_RowCount - 1))   //to next line/row
                     {
