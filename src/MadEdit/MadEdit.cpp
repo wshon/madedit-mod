@@ -3967,15 +3967,18 @@ void MadEdit::SelectWordFromCaretPos(wxString *ws)
             GetLineByLine(lit, pos1, m_LeftBrace_rowid);
             GetLineByLine(lit, pos2, m_RightBrace_rowid);
             pos1 += m_LeftBrace.LinePos;
+            pos2 += m_RightBrace.LinePos;
             if(startpos == pos1)
             {
-                pos = pos2 + m_RightBrace.LinePos + m_RightBrace.Length/*for right brace*/;
+                pos = pos2+m_RightBrace.Length/*for right brace*/;
             }
             else
             {
-                pos2 += m_RightBrace.LinePos;
                 if(startpos == pos2)
+                {
                     startpos = pos1;
+                    pos = pos2+m_RightBrace.Length/*for right brace*/;
+                }
             }
         }
         m_SelectionPos1.pos = startpos;
