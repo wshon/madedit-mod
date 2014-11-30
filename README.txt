@@ -86,7 +86,7 @@ Mod v0.2.8
 4. Improve usability of dialogs. Hide modaless dialog before show another modal/ess one
 5. Improve usability of FindInFiles
 6. Double click to select brace pairs if the caret is at the left/right brace
-7. Up/Down to the line above/under the select while text being selected
+7. Up/Down to the line above/under the selection while text being selected
 8. Add shortcut for Join Lines(Ctrl-J)
 9. Add shortcut for Spell Check(Ctrl-K)
 10. Add shortcut for Show All Symbols(Ctrl-Alt-A)
