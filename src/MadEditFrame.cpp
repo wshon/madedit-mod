@@ -1465,9 +1465,9 @@ CommandData CommandTable[]=
 #endif
                                                                                                                                                                  wxITEM_NORMAL,    -1,                0,                     _("Delete the selected lines")},
 
-    { 0,                1, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
+    { 0,                1, menuDeleteEmptyLines,         wxT("menuDeleteEmptyLines"),         _("Delete Empty Lines"),                      wxT("Ctrl-Alt-L"),   wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines")},
     { 0,                1, menuDeleteEmptyLinesWithSpaces, wxT("menuDeleteEmptyLinesWithSpaces"), _("Delete Empty Lines With Spaces"),      wxT(""),             wxITEM_NORMAL,    -1,                0,                     _("Delete empty lines with spaces")},
-    { 0,                1, menuJoinLines,                wxT("menuJoinLines"),                _("Join Lines"),                              wxT("Ctrl-J"), wxITEM_NORMAL,    -1,                0,                     _("Join selected lines into one")},
+    { 0,                1, menuJoinLines,                wxT("menuJoinLines"),                _("Join Lines"),                              wxT("Ctrl-J"),       wxITEM_NORMAL,    -1,                0,                     _("Join selected lines into one")},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { ecSelectAll,      1, menuSelectAll,                wxT("menuSelectAll"),                _("Select &All"),                             wxT("Ctrl-A"),       wxITEM_NORMAL,    -1,                0,                     _("Select all data")},
     { 0,                1, menuStartEndSelction,         wxT("menuStartEndSelction"),         _("Begin/End Select"),                        0,                   wxITEM_CHECK,     -1,                0,                     _("Select all data")},
