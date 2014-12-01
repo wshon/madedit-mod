@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-30 23:18+0800\n"
-"PO-Revision-Date: 2014-11-30 23:33+0800\n"
+"POT-Creation-Date: 2014-12-01 08:21+0800\n"
+"PO-Revision-Date: 2014-12-01 08:26+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -2744,6 +2744,10 @@ msgstr "右边："
 msgid "Page Footer"
 msgstr "页脚"
 
+#: ../src/MadOptionsDialog.cpp:583
+msgid "Print Page Footer"
+msgstr "打印页脚"
+
 #: ../src/MadOptionsDialog.cpp:635
 msgid "Keys"
 msgstr "按键"
@@ -3217,9 +3221,6 @@ msgstr "错误"
 #, fuzzy
 #~ msgid "wxButtonCancel"
 #~ msgstr "WxButtonCancel"
-
-#~ msgid "Print Page Footer"
-#~ msgstr "印出页尾"
 
 #~ msgid "[%d/%m/%Y] 24/02/2007"
 #~ msgstr "[%d/%m/%Y] 24/02/2007"

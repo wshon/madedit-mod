@@ -580,7 +580,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticBoxSizer4 = new wxStaticBoxSizer(WxStaticBoxSizer4_StaticBoxObj, wxVERTICAL);
 	WxBoxSizer16->Add(WxStaticBoxSizer4, 1, wxEXPAND | wxALL, 4);
 
-	WxCheckBoxPrintPageFooter = new wxCheckBox(WxNoteBookPage3, ID_WXCHECKBOXPRINTPAGEFOOTER, wxT("Print Page Footer"), wxPoint(86, 16), wxSize(150, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPrintPageFooter"));
+	WxCheckBoxPrintPageFooter = new wxCheckBox(WxNoteBookPage3, ID_WXCHECKBOXPRINTPAGEFOOTER, _("Print Page Footer"), wxPoint(86, 16), wxSize(150, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPrintPageFooter"));
 	WxCheckBoxPrintPageFooter->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer4->Add(WxCheckBoxPrintPageFooter, 0, wxALIGN_LEFT | wxALL, 1);
     SET_CONTROLPARENT(WxCheckBoxPrintPageFooter);
