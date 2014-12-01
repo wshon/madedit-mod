@@ -441,7 +441,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer28 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer12->Add(WxBoxSizer28, 0, wxALIGN_LEFT | wxALL, 0);
 
-	WxCheckBoxMouseSelectToCopy = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMOUSESELECTTOCOPY, _("Auto copy the mouse-selected text to clipboard  ("), wxPoint(2, 2), wxSize(260, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMouseSelectToCopy"));
+	WxCheckBoxMouseSelectToCopy = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMOUSESELECTTOCOPY, _("Auto copy the mouse-selected text to clipboard when pressing Ctrl key"), wxPoint(2, 2), wxSize(260, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMouseSelectToCopy"));
 	WxCheckBoxMouseSelectToCopy->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer28->Add(WxCheckBoxMouseSelectToCopy, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxMouseSelectToCopy);
@@ -455,10 +455,6 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxRadioButtonDisable->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer28->Add(WxRadioButtonDisable, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxRadioButtonDisable);
-
-	WxStaticText17 = new wxStaticText(WxNoteBookPage2, ID_WXSTATICTEXT17, _("when pressing Ctrl key)"), wxPoint(414, 3), wxDefaultSize, 0, wxT("WxStaticText17"));
-	WxStaticText17->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer28->Add(WxStaticText17, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxCheckBoxMiddleMouseToPaste = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMIDDLEMOUSETOPASTE, _("Paste text from clipboard when pressing middle mouse button"), wxPoint(24, 98), wxSize(480, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMiddleMouseToPaste"));
 	WxCheckBoxMiddleMouseToPaste->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
@@ -909,7 +905,6 @@ void MadOptionsDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer28, WxCheckBoxMouseSelectToCopy, 25, 4);
     ResizeItem(WxBoxSizer28, WxRadioButtonEnable, 25, 4);
     ResizeItem(WxBoxSizer28, WxRadioButtonDisable, 25, 4);
-    ResizeItem(WxBoxSizer28, WxStaticText17, 2, 2);
     ResizeItem(WxBoxSizer12, WxCheckBoxMiddleMouseToPaste, 25, 4);
     ResizeItem(WxBoxSizer23, WxStaticTextDateTime, 2, 2);
     ResizeItem(WxBoxSizer23, WxCheckBoxDateTimeInEnglish, 25, 4);

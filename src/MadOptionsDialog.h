@@ -165,7 +165,6 @@ public:
 		wxBoxSizer *WxBoxSizer14;
 		wxPanel *WxNoteBookPage3;
 		wxCheckBox *WxCheckBoxMiddleMouseToPaste;
-		wxStaticText *WxStaticText17;
 		wxRadioButton *WxRadioButtonDisable;
 		wxRadioButton *WxRadioButtonEnable;
 		wxCheckBox *WxCheckBoxMouseSelectToCopy;
