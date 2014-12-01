@@ -5891,7 +5891,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         wxString oldpath=m_Config->GetPath();
         m_Config->SetPath(wxT("/MadEdit"));
 
-        bool rcm, isiot, ai, acp, msc, mscck, mmp;
+        bool rcm, isiot, ai, acp, msc, mscck, mmp, afcp;
         wxString mc, tc, ic;
 
         m_Config->Write(wxT("Language"), g_OptionsDialog->WxComboBoxLanguage->GetValue());
@@ -5953,6 +5953,9 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 
         mmp=g_OptionsDialog->WxCheckBoxMiddleMouseToPaste->GetValue();
         m_Config->Write(wxT("MiddleMouseToPaste"), mmp);
+
+        afcp=g_OptionsDialog->WxCheckBoxAutoFillColumnPaste->GetValue();
+        m_Config->Write(wxT("AutoFillColumnPaste"), afcp);
 
         extern bool g_DoNotSaveSettings;
         g_DoNotSaveSettings=g_OptionsDialog->WxCheckBoxDoNotSaveSettings->GetValue();
@@ -6016,7 +6019,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             SpellCheckerManager::Instance().SetDictionaryName(dictName);
         }
 
-		if (SpellCheckerManager::Instance().GetEnablePersonalDictionary()
+        if (SpellCheckerManager::Instance().GetEnablePersonalDictionary()
             != g_OptionsDialog->WxCheckBoxPersonalDict->GetValue())
         {
             SpellCheckerManager::Instance().SetEnablePersonalDictionary(g_OptionsDialog->WxCheckBoxPersonalDict->GetValue());
@@ -6037,6 +6040,8 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             madedit->SetMouseSelectToCopy(msc);
             madedit->SetMouseSelectToCopyWithCtrlKey(mscck);
             madedit->SetMiddleMouseToPaste(mmp);
+            madedit->SetAutoFillColumnPaste(afcp);
+
             long lo;
             if(mc.ToLong(&lo)) madedit->SetMaxColumns(lo);
             if(tc.ToLong(&lo)) madedit->SetTabColumns(lo);

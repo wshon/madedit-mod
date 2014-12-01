@@ -366,6 +366,7 @@ private:
     bool            m_MouseSelectToCopy;
     bool            m_MouseSelectToCopyWithCtrlKey; // enable or disable when pressing Ctrl key
     bool            m_MiddleMouseToPaste;
+    bool            m_AutoFillColumnPaste;
 
     wxBitmap        *m_HexDigitBitmap;
     wxDC            *m_HexDigitDC;    // temp dc, must set it on OnPaint()
@@ -761,7 +762,10 @@ public: // basic functions
 
     bool GetMiddleMouseToPaste() { return m_MiddleMouseToPaste; }
     void SetMiddleMouseToPaste(bool value) { m_MiddleMouseToPaste=value; }
-
+ 
+     bool GetAutoFillColumnPaste() { return m_AutoFillColumnPaste; }
+     void SetAutoFillColumnPaste(bool value) { m_AutoFillColumnPaste=value; }
+ 
     int GetMaxWordWrapWidth();
     int GetUCharWidth(ucs4_t uc);
     int GetHexUCharWidth(ucs4_t uc);

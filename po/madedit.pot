@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-01 08:21+0800\n"
+"POT-Creation-Date: 2014-12-02 00:17+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -487,7 +487,7 @@ msgstr ""
 msgid "Page %d"
 msgstr ""
 
-#: wxstd.po.cpp:120 ../src/MadOptionsDialog.cpp:859
+#: wxstd.po.cpp:120 ../src/MadOptionsDialog.cpp:864
 msgid "Options"
 msgstr ""
 
@@ -2171,30 +2171,30 @@ msgstr ""
 msgid "Go To Position"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6267 ../src/MadEditFrame.cpp:6376
+#: ../src/MadEditFrame.cpp:6272 ../src/MadEditFrame.cpp:6381
 msgid "Open Mad Macro File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6390
+#: ../src/MadEditFrame.cpp:6395
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6390
+#: ../src/MadEditFrame.cpp:6395
 msgid "Warning"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6445 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:6450 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6738
+#: ../src/MadEditFrame.cpp:6743
 msgid ""
 "Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
 "OpenOffice.org/contrib/dictionaries/"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6739
+#: ../src/MadEditFrame.cpp:6744
 msgid "Press OK to visit our HomePage."
 msgstr ""
 
@@ -2309,8 +2309,8 @@ msgstr ""
 msgid "Automatic Detection"
 msgstr ""
 
-#: ../src/MadFindInFilesDialog.cpp:477 ../src/MadOptionsDialog.cpp:1606
-#: ../src/MadOptionsDialog.cpp:1620
+#: ../src/MadFindInFilesDialog.cpp:477 ../src/MadOptionsDialog.cpp:1614
+#: ../src/MadOptionsDialog.cpp:1628
 msgid "Choose a directory"
 msgstr ""
 
@@ -2939,42 +2939,46 @@ msgstr ""
 msgid "[%t] &Time"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:870 ../src/MadOptionsDialog.cpp:1110
+#: ../src/MadOptionsDialog.cpp:859
+msgid "Auto fill in column paste"
+msgstr ""
+
+#: ../src/MadOptionsDialog.cpp:875 ../src/MadOptionsDialog.cpp:1115
 msgid "System Default"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:956
+#: ../src/MadOptionsDialog.cpp:961
 msgid ""
 "Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry "
 "from Windows Registry)"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:981
+#: ../src/MadOptionsDialog.cpp:986
 msgid "Commands"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:983
+#: ../src/MadOptionsDialog.cpp:988
 msgid "Menu"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:984
+#: ../src/MadOptionsDialog.cpp:989
 msgid "Editor"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1267
+#: ../src/MadOptionsDialog.cpp:1275
 #, c-format
 msgid "Invalid value of \"%s(%s)\""
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1363
+#: ../src/MadOptionsDialog.cpp:1371
 msgid "Cannot assign key to this item"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1460
+#: ../src/MadOptionsDialog.cpp:1468
 msgid "This key is not assigned"
 msgstr ""
 
-#: ../src/MadOptionsDialog.cpp:1484
+#: ../src/MadOptionsDialog.cpp:1492
 #, c-format
 msgid "This key is assigned to [%s]"
 msgstr ""

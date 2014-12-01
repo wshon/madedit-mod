@@ -78,6 +78,12 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.2.9
+1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the
+   lines in clipboard was less than the selected. Eg, you copied ONE line but you chosen 3 lines in column
+   mode and pasted, the line would be automatically duplicated 3 times if the function was enabled in Options)
+2. Update Simplified Chinese
+
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
 2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for

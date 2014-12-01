@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: MadEdit-Mod 0.2.8\n"
+"Project-Id-Version: MadEdit-Mod 0.2.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-01 08:21+0800\n"
-"PO-Revision-Date: 2014-12-01 09:43+0800\n"
+"POT-Creation-Date: 2014-12-02 00:17+0800\n"
+"PO-Revision-Date: 2014-12-02 00:18+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -488,7 +488,7 @@ msgstr "第 %d 页，共 %d 页"
 msgid "Page %d"
 msgstr "第 %d 页"
 
-#: wxstd.po.cpp:120 ../src/MadOptionsDialog.cpp:859
+#: wxstd.po.cpp:120 ../src/MadOptionsDialog.cpp:864
 msgid "Options"
 msgstr "选项"
 
@@ -2183,24 +2183,24 @@ msgstr "文件位置（0~%s）：（可以输入16进位数字: 0xNNN）"
 msgid "Go To Position"
 msgstr "跳到文件位置"
 
-#: ../src/MadEditFrame.cpp:6267 ../src/MadEditFrame.cpp:6376
+#: ../src/MadEditFrame.cpp:6272 ../src/MadEditFrame.cpp:6381
 msgid "Open Mad Macro File"
 msgstr "打开MadPython宏文件"
 
-#: ../src/MadEditFrame.cpp:6390
+#: ../src/MadEditFrame.cpp:6395
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr "要覆盖%s吗？"
 
-#: ../src/MadEditFrame.cpp:6390
+#: ../src/MadEditFrame.cpp:6395
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/MadEditFrame.cpp:6445 ../src/MadMacroDlg.cpp:91
+#: ../src/MadEditFrame.cpp:6450 ../src/MadMacroDlg.cpp:91
 msgid "Memory allocation failed"
 msgstr "分配内存失败"
 
-#: ../src/MadEditFrame.cpp:6738
+#: ../src/MadEditFrame.cpp:6743
 msgid ""
 "Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
 "OpenOffice.org/contrib/dictionaries/"
@@ -2208,7 +2208,7 @@ msgstr ""
 "字典获取地址 http://archive.services.openoffice.org/pub/mirror/OpenOffice."
 "org/contrib/dictionaries/"
 
-#: ../src/MadEditFrame.cpp:6739
+#: ../src/MadEditFrame.cpp:6744
 msgid "Press OK to visit our HomePage."
 msgstr "按「确定」可以浏览我们的主页。"
 
@@ -2323,8 +2323,8 @@ msgstr "多文件查找/替换"
 msgid "Automatic Detection"
 msgstr "自动检测"
 
-#: ../src/MadFindInFilesDialog.cpp:477 ../src/MadOptionsDialog.cpp:1606
-#: ../src/MadOptionsDialog.cpp:1620
+#: ../src/MadFindInFilesDialog.cpp:477 ../src/MadOptionsDialog.cpp:1614
+#: ../src/MadOptionsDialog.cpp:1628
 msgid "Choose a directory"
 msgstr "选择目录"
 
@@ -2955,43 +2955,47 @@ msgstr "[%d] 日期(&D)"
 msgid "[%t] &Time"
 msgstr "[%t] 时间(&T)"
 
-#: ../src/MadOptionsDialog.cpp:870 ../src/MadOptionsDialog.cpp:1110
+#: ../src/MadOptionsDialog.cpp:859
+msgid "Auto fill in column paste"
+msgstr "列模式拷贝时自动填充行"
+
+#: ../src/MadOptionsDialog.cpp:875 ../src/MadOptionsDialog.cpp:1115
 msgid "System Default"
 msgstr "系统预设"
 
-#: ../src/MadOptionsDialog.cpp:956
+#: ../src/MadOptionsDialog.cpp:961
 msgid ""
 "Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry "
 "from Windows Registry)"
 msgstr ""
 "将 MadEdit 加入到资源管理器的右键菜单中(取消选取会把写入注册表中的信息移除)"
 
-#: ../src/MadOptionsDialog.cpp:981
+#: ../src/MadOptionsDialog.cpp:986
 msgid "Commands"
 msgstr "命令"
 
-#: ../src/MadOptionsDialog.cpp:983
+#: ../src/MadOptionsDialog.cpp:988
 msgid "Menu"
 msgstr "菜单"
 
-#: ../src/MadOptionsDialog.cpp:984
+#: ../src/MadOptionsDialog.cpp:989
 msgid "Editor"
 msgstr "编辑器"
 
-#: ../src/MadOptionsDialog.cpp:1267
+#: ../src/MadOptionsDialog.cpp:1275
 #, c-format
 msgid "Invalid value of \"%s(%s)\""
 msgstr "\"%s（%s）\" 不是正确的值"
 
-#: ../src/MadOptionsDialog.cpp:1363
+#: ../src/MadOptionsDialog.cpp:1371
 msgid "Cannot assign key to this item"
 msgstr "无法指定按键到此项目"
 
-#: ../src/MadOptionsDialog.cpp:1460
+#: ../src/MadOptionsDialog.cpp:1468
 msgid "This key is not assigned"
 msgstr "这个按键尚未指定"
 
-#: ../src/MadOptionsDialog.cpp:1484
+#: ../src/MadOptionsDialog.cpp:1492
 #, c-format
 msgid "This key is assigned to [%s]"
 msgstr "这个按键已指定给 [%s]"

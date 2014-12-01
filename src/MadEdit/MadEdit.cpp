@@ -16,6 +16,7 @@
 #include <wx/gdicmn.h>
 #include <wx/image.h>
 #include <wx/dataobj.h>
+#include <wx/tokenzr.h>
 
 #ifdef __WXGTK__
 #   include "clipbrd_gtk.h"
@@ -916,6 +917,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Config->Read(wxT("MouseSelectToCopyWithCtrlKey"), &m_MouseSelectToCopyWithCtrlKey, true);
 #endif
     m_Config->Read(wxT("MiddleMouseToPaste"), &m_MiddleMouseToPaste, true);
+    m_Config->Read(wxT("AutoFillColumnPaste"), &m_AutoFillColumnPaste, false);
 
     m_HexTopRow = size_t(-1);
     m_HexRowCount = 0;
@@ -4318,6 +4320,57 @@ int MadEdit::GetColumnDataFromClipboard(vector <ucs4_t> *ucs)
 #endif
                 ucs->push_back(0x0A);
                 break;
+            }
+        }
+    }
+
+    if(m_AutoFillColumnPaste && m_Selection)
+    {
+        size_t rowcount = m_SelectionEnd->rowid - m_SelectionBegin->rowid + 1;
+        if(rowcount > linecount)
+        {
+            rowcount -= linecount;
+            linecount += rowcount;
+            unsigned i = 0; 
+            while(rowcount>0)
+            {
+                for(i = 0; i<ucs->size(); ++i)
+                {
+                    ucs4_t uch = ucs->at(i);
+                    if( uch == 0x0D || uch == 0x0A)
+                    {
+                        --rowcount;
+                        switch(m_InsertNewLineType)
+                        {
+                            case nltDOS:
+#ifdef __WXMSW__
+                            case nltDefault:
+#endif
+                                ucs->push_back(0x0D);
+                                ucs->push_back(0x0A);
+                                break;
+                
+                            case nltMAC:
+                                ucs->push_back(0x0D);
+                                break;
+                
+                            case nltUNIX:
+#ifndef __WXMSW__
+                            case nltDefault:
+#endif
+                                ucs->push_back(0x0A);
+                                break;
+                        }
+                        if(i < (ucs->size()-1))
+                        {
+                            if(uch == 0x0D && ucs->at(i+1) == 0x0A)
+                                ++i;
+                        }
+                    }
+                    else
+                        ucs->push_back(uch);
+                    if(rowcount==0)break;
+                }
             }
         }
     }

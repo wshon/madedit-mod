@@ -81,6 +81,7 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+		wxCheckBox *WxCheckBoxAutoFillColumnPaste;
 		wxStaticText *WxStaticText21;
 		wxButton *WxButtonBitmapDir;
 		wxTextCtrl *WxEditBitMapDir;
@@ -229,6 +230,7 @@ public:
 	enum {
 ////GUI Enum Control ID Start
 			ID_DUMMY_START = 1000,
+			ID_WXCHECKBOXAUTOFILLCOLUMN,
 			ID_MNU_MENUITEM1_1110,
 			ID_MNU___P__PATHNAME_1111,
 			ID_MNU_MENUITEM3_1112,

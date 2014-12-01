@@ -856,6 +856,11 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticBoxSizer5->Add(WxChoiceDictionary, 0, wxALIGN_LEFT | wxALL, 5);
     SET_CONTROLPARENT(WxChoiceDictionary);
 
+	WxCheckBoxAutoFillColumnPaste = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXAUTOFILLCOLUMN, _("Auto fill in column paste"), wxPoint(24, 122), wxSize(480, 20), 0, wxDefaultValidator, wxT("WxCheckBoxAutoFillColumnPaste"));
+	WxCheckBoxAutoFillColumnPaste->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer12->Add(WxCheckBoxAutoFillColumnPaste, 0, wxALIGN_LEFT | wxALL, 2);
+    SET_CONTROLPARENT(WxCheckBoxAutoFillColumnPaste);
+
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
 	
@@ -1162,6 +1167,9 @@ void MadOptionsDialog::LoadOptions(void)
 
     cfg->Read(wxT("MiddleMouseToPaste"), &bb);
     WxCheckBoxMiddleMouseToPaste->SetValue(bb);
+
+    cfg->Read(wxT("AutoFillColumnPaste"), &bb);
+    WxCheckBoxAutoFillColumnPaste->SetValue(bb);
 
     extern bool g_DoNotSaveSettings;
     WxCheckBoxDoNotSaveSettings->SetValue(g_DoNotSaveSettings);
