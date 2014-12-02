@@ -107,7 +107,7 @@ void MadSortDialog::CreateGUIControls(void)
     //restore wxFont
     #undef wxFont
 
-	size_t i;
+    size_t i;
     int strx=0, stry=0;
     wxString str=WxRadioBoxOrder->GetLabel();
     WxRadioBoxOrder->GetTextExtent(str, &strx, &stry);
@@ -126,6 +126,10 @@ void MadSortDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer1, WxCheckBoxRemoveDup, 25, 4);
 
     WxButtonSort->SetFocus();
+
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadSortDialog::MadSortDialogClose(wxCloseEvent& event)

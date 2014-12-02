@@ -116,7 +116,11 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	wxCheckBoxRecentSearchedExcludeFilters->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 	WxButtonOK->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
 	wxButtonCancel->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown));
-    WxButtonOK->SetDefault() ;
+	WxButtonOK->SetDefault();
+
+	wxSize dlgsize = GetSize();
+	SetMaxSize(dlgsize);
+	SetMinSize(dlgsize);
 }
 
 void MadPurgeHistoryDialog::OnClose(wxCloseEvent& /*event*/)

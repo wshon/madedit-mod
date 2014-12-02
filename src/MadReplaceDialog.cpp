@@ -254,6 +254,9 @@ void MadReplaceDialog::CreateGUIControls(void)
 
     SetDefaultItem(WxButtonReplace);
 
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadReplaceDialog::MadReplaceDialogClose(wxCloseEvent& event)

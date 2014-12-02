@@ -363,6 +363,9 @@ void MadFindInFilesDialog::CreateGUIControls(void)
     }
 
     WxButtonClose->SetFocus();
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadFindInFilesDialog::MadFindInFilesDialogClose(wxCloseEvent& event)

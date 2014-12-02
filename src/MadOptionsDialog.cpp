@@ -1039,6 +1039,10 @@ void MadOptionsDialog::CreateGUIControls(void)
     WxButtonCancel->SetId(wxID_CANCEL);
     SetDefaultItem(WxButtonOK);
     WxButtonOK->SetFocus();
+
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadOptionsDialog::MadOptionsDialogClose(wxCloseEvent& event)

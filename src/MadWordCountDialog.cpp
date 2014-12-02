@@ -195,6 +195,9 @@ void MadWordCountDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer1, WxStaticText6, 2, 2);
 
     WxButton1->SetFocus();
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadWordCountDialog::MadWordCountDialogClose(wxCloseEvent& event)

@@ -426,6 +426,9 @@ void MadHighlightingDialog::CreateGUIControls(void)
     WxListCtrlFC->Show();
     WxListCtrlBC->Show();
     WxButtonClose->SetDefault();
+    wxSize dlgsize = GetSize();
+    SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 }
 
 void MadHighlightingDialog::MadHighlightingDialogClose(wxCloseEvent& event)

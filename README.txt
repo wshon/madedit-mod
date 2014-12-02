@@ -68,7 +68,7 @@ Syntax files, Locale files and Settings:
     2. $(MadEdit execution file directory)/MadEdit.cfg: Windows
   And FontWidth.dat will also be saved to the same path.
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
-  
+
   * Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try 'madedit %f*lineNum'
 
@@ -84,7 +84,9 @@ Mod v0.2.9
    mode and pasted, the line would be automatically duplicated 3 times if the function was enabled in Options)
 2. Improve the UI of SelectToCopy in Option dialog
 3. Fixed the issue of Mouse Select to Copy not working under wx 3.0
-4. Update Simplified Chinese
+4. Remove the Maximize from Option, FileAssociation, WordCount and Highlight dialogs
+5. Disable the resize function of all dialogs except MadMacro
+Update Simplified Chinese
 
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)

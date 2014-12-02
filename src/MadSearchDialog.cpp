@@ -286,6 +286,7 @@ void MadSearchDialog::CreateGUIControls(void)
 
     wxSize dlgsize = GetSize();
     SetMaxSize(dlgsize);
+    SetMinSize(dlgsize);
 
     SetDefaultItem(WxButtonFindNext);
 }
