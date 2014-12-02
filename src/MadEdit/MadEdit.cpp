@@ -35,7 +35,7 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
-#if wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9)
+#if wxMAJOR_VERSION < 3)
 #include <wx/gtk/win_gtk.h>
 #include <wx/gtk/dcmemory.h>
 #else
@@ -240,7 +240,7 @@ END_EVENT_TABLE()
 
 
 
-#if defined(__WXGTK20__) && (wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9))
+#if defined(__WXGTK20__) && (wxMAJOR_VERSION < 3)
 void GTK2_DrawText(wxMemoryDC *dc, MadEncoding *encoding, const int *widths,
               const wxString &text, wxCoord x, wxCoord y )
 {
@@ -1835,7 +1835,7 @@ void MadEdit::PaintText(wxDC *dc, int x, int y, const ucs4_t *text, const int *w
         ::ExtTextOut(hdc, nowleft, y, 0, NULL, m_WCWordBuffer+wcstart, len, m_WCWidthBuffer+wcstart);
     }
 
-#elif defined(__WXGTK20__) && (wxMAJOR_VERSION < 2 || (wxMAJOR_VERSION == 2 && wxMINOR_VERSION < 9))
+#elif defined(__WXGTK20__) && (wxMAJOR_VERSION < 3)
     if(!InPrinting())
     {
         const ucs4_t *pu=text;
@@ -9863,9 +9863,13 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
     {
         if((evt.ControlDown() && m_MouseSelectToCopyWithCtrlKey) || !m_MouseSelectToCopyWithCtrlKey)
         {
+#if ((wxMAJOR_VERSION < 3) || defined(__WXGTK__))
             wxTheClipboard->UsePrimarySelection(true);
+#endif
             CopyToClipboard();
+#if ((wxMAJOR_VERSION < 3) || defined(__WXGTK__))
             wxTheClipboard->UsePrimarySelection(false);
+#endif
         }
     }
 
@@ -10065,9 +10069,13 @@ void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 
     if(m_MiddleMouseToPaste)
     {
+#if ((wxMAJOR_VERSION < 3) || defined(__WXGTK__))
         wxTheClipboard->UsePrimarySelection(true);
+#endif
         PasteFromClipboard();
+#if ((wxMAJOR_VERSION < 3) || defined(__WXGTK__))
         wxTheClipboard->UsePrimarySelection(false);
+#endif
         evt.Skip();
     }
 }

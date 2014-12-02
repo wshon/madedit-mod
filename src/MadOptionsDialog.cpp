@@ -159,6 +159,7 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_LISTBOX(ID_WXLISTBOXKEYS,MadOptionsDialog::WxListBoxKeysSelected)
 	
 	EVT_TREE_SEL_CHANGED(ID_WXTREECTRL1,MadOptionsDialog::WxTreeCtrl1SelChanged)
+	EVT_CHECKBOX(ID_WXCHECKBOXMOUSESELECTTOCOPY,MadOptionsDialog::OnMouseAutoCopyClicked)
 	EVT_BUTTON(ID_WXBUTTONDATETIME,MadOptionsDialog::WxButtonDateTimeClick)
 END_EVENT_TABLE()
     ////Event Table End
@@ -441,25 +442,20 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer28 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer12->Add(WxBoxSizer28, 0, wxALIGN_LEFT | wxALL, 0);
 
-	WxCheckBoxMouseSelectToCopy = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMOUSESELECTTOCOPY, _("Auto copy the mouse-selected text to clipboard when pressing Ctrl key"), wxPoint(2, 2), wxSize(260, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMouseSelectToCopy"));
+	WxCheckBoxMouseSelectToCopy = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMOUSESELECTTOCOPY, _("Auto copy the mouse-selected text to clipboard"), wxPoint(2, 2), wxSize(260, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMouseSelectToCopy"));
 	WxCheckBoxMouseSelectToCopy->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer28->Add(WxCheckBoxMouseSelectToCopy, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxMouseSelectToCopy);
-
-	WxRadioButtonEnable = new wxRadioButton(WxNoteBookPage2, ID_WXRADIOBUTTONENABLE, _("Enable"), wxPoint(266, 2), wxSize(70, 20), 0, wxDefaultValidator, wxT("WxRadioButtonEnable"));
-	WxRadioButtonEnable->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer28->Add(WxRadioButtonEnable, 0, wxALIGN_LEFT | wxALL, 2);
-    SET_CONTROLPARENT(WxRadioButtonEnable);
-
-	WxRadioButtonDisable = new wxRadioButton(WxNoteBookPage2, ID_WXRADIOBUTTONDISABLE, _("Disable"), wxPoint(340, 2), wxSize(70, 20), 0, wxDefaultValidator, wxT("WxRadioButtonDisable"));
-	WxRadioButtonDisable->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer28->Add(WxRadioButtonDisable, 0, wxALIGN_LEFT | wxALL, 2);
-    SET_CONTROLPARENT(WxRadioButtonDisable);
 
 	WxCheckBoxMiddleMouseToPaste = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXMIDDLEMOUSETOPASTE, _("Paste text from clipboard when pressing middle mouse button"), wxPoint(24, 98), wxSize(480, 20), 0, wxDefaultValidator, wxT("WxCheckBoxMiddleMouseToPaste"));
 	WxCheckBoxMiddleMouseToPaste->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer12->Add(WxCheckBoxMiddleMouseToPaste, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxMiddleMouseToPaste);
+
+	WxCheckBoxAutoFillColumnPaste = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXAUTOFILLCOLUMN, _("Auto fill in column paste"), wxPoint(24, 122), wxSize(480, 20), 0, wxDefaultValidator, wxT("WxCheckBoxAutoFillColumnPaste"));
+	WxCheckBoxAutoFillColumnPaste->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer12->Add(WxCheckBoxAutoFillColumnPaste, 0, wxALIGN_LEFT | wxALL, 2);
+    SET_CONTROLPARENT(WxCheckBoxAutoFillColumnPaste);
 
 	WxNoteBookPage3 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint(4, 24), wxSize(673, 314));
 	WxNoteBookPage3->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
@@ -739,6 +735,13 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText18->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer5->Add(WxStaticText18, 0, wxALIGN_CENTER | wxALL, 5);
 
+	wxArrayString arrayStringFor_WxChoiceDictionary;
+	WxChoiceDictionary = new wxChoice(WxNoteBookPage5, ID_WXCHOICEDICTIONARY, wxPoint(74, 20), wxSize(320, 21), arrayStringFor_WxChoiceDictionary, 0, wxDefaultValidator, wxT(""));
+	WxChoiceDictionary->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxChoiceDictionary->SetSelection(-1);
+	WxStaticBoxSizer5->Add(WxChoiceDictionary, 0, wxALIGN_LEFT | wxALL, 5);
+    SET_CONTROLPARENT(WxChoiceDictionary);
+
 	wxStaticBox* WxStaticBoxSizer6_StaticBoxObj = new wxStaticBox(WxNoteBookPage5, wxID_ANY, _("Path Setting"));
 	WxStaticBoxSizer6 = new wxStaticBoxSizer(WxStaticBoxSizer6_StaticBoxObj, wxVERTICAL);
 	WxBoxSizer29->Add(WxStaticBoxSizer6, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5);
@@ -845,17 +848,10 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
 
-	wxArrayString arrayStringFor_WxChoiceDictionary;
-	WxChoiceDictionary = new wxChoice(WxNoteBookPage5, ID_WXCHOICEDICTIONARY, wxPoint(74, 20), wxSize(320, 21), arrayStringFor_WxChoiceDictionary, 0, wxDefaultValidator, wxT(""));
-	WxChoiceDictionary->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxChoiceDictionary->SetSelection(-1);
-	WxStaticBoxSizer5->Add(WxChoiceDictionary, 0, wxALIGN_LEFT | wxALL, 5);
-    SET_CONTROLPARENT(WxChoiceDictionary);
-
-	WxCheckBoxAutoFillColumnPaste = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXAUTOFILLCOLUMN, _("Auto fill in column paste"), wxPoint(24, 122), wxSize(480, 20), 0, wxDefaultValidator, wxT("WxCheckBoxAutoFillColumnPaste"));
-	WxCheckBoxAutoFillColumnPaste->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer12->Add(WxCheckBoxAutoFillColumnPaste, 0, wxALIGN_LEFT | wxALL, 2);
-    SET_CONTROLPARENT(WxCheckBoxAutoFillColumnPaste);
+	WxCheckBoxCtrlWithMouseToSelect = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXCTRLWITHMOUSE, _("when pressing Ctrl key"), wxPoint(252, 3), wxSize(136, 17), 0, wxDefaultValidator, wxT("WxCheckBoxCtrlWithMouseToSelect"));
+	WxCheckBoxCtrlWithMouseToSelect->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer28->Add(WxCheckBoxCtrlWithMouseToSelect, 0, wxALIGN_CENTER | wxALL, 2);
+	SET_CONTROLPARENT(WxCheckBoxCtrlWithMouseToSelect);
 
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
@@ -903,8 +899,7 @@ void MadOptionsDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer12, WxCheckBoxAutoIndent, 25, 4);
     ResizeItem(WxBoxSizer12, WxCheckBoxAutoCompletePair, 25, 4);
     ResizeItem(WxBoxSizer28, WxCheckBoxMouseSelectToCopy, 25, 4);
-    ResizeItem(WxBoxSizer28, WxRadioButtonEnable, 25, 4);
-    ResizeItem(WxBoxSizer28, WxRadioButtonDisable, 25, 4);
+    ResizeItem(WxBoxSizer28, WxCheckBoxCtrlWithMouseToSelect, 25, 4);
     ResizeItem(WxBoxSizer12, WxCheckBoxMiddleMouseToPaste, 25, 4);
     ResizeItem(WxBoxSizer23, WxStaticTextDateTime, 2, 2);
     ResizeItem(WxBoxSizer23, WxCheckBoxDateTimeInEnglish, 25, 4);
@@ -1156,9 +1151,9 @@ void MadOptionsDialog::LoadOptions(void)
     cfg->Read(wxT("MouseSelectToCopy"), &bb);
     WxCheckBoxMouseSelectToCopy->SetValue(bb);
 
+    WxCheckBoxCtrlWithMouseToSelect->Enable(bb);
     cfg->Read(wxT("MouseSelectToCopyWithCtrlKey"), &bb);
-    WxRadioButtonEnable->SetValue(bb);
-    WxRadioButtonDisable->SetValue(!bb);
+    WxCheckBoxCtrlWithMouseToSelect->SetValue(bb);
 
     cfg->Read(wxT("MiddleMouseToPaste"), &bb);
     WxCheckBoxMiddleMouseToPaste->SetValue(bb);
@@ -1669,3 +1664,9 @@ void MadOptionsDialog::OnSelectDictionary(wxCommandEvent& event)
         SpellCheckerManager::Instance().SetDictionaryName(dictName);
     }
 }
+
+void MadOptionsDialog::OnMouseAutoCopyClicked(wxCommandEvent& event)
+{
+    WxCheckBoxCtrlWithMouseToSelect->Enable(WxCheckBoxMouseSelectToCopy->GetValue());
+}
+
