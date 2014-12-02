@@ -86,8 +86,10 @@ Mod v0.2.9
 3. Remove the Maximize from Option, FileAssociation, WordCount and Highlight dialogs
 4. Improve the UI of dialogs by disabling the resize function of all dialogs except MadMacro
 5. Fixed the issue of Mouse Select to Copy not working under wx 3.0(would affect 0.2.7 and 0.2.8)
-6. Fixed the issue of column copy/paste introduced by wx 3.0(would affect 0.2.7 and 0.2.8)
-7. Update Simplified Chinese
+6. Fixed the issue of column copy/paste crash introduced by wx 3.0(would affect 0.2.7 and 0.2.8)
+7. Fix an issue of MadRecentList that would cause annoying error dialog of set working directory error
+   (would affect 0.2.7 and 0.2.8)
+8. Update Simplified Chinese
 
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
@@ -390,7 +392,7 @@ v0.2.9:
 3.added Japanese language. Thank Tilt for the translations.
 4.fixed a bug when converting between Tab and Space char in wordwrap mode.
 5.modified that the dialogs will stay on top of main window, not top of all windows.
-6.modified the action when associating file types.
+6.modified the action when associating file types
 7.some minor changes.
 
 v0.2.8:
