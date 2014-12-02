@@ -23,6 +23,11 @@
 #endif
 
 extern const ucs4_t HexHeader[];
+extern int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
 
 //==============================================================================
 
@@ -579,7 +584,7 @@ void MadEdit::HexModeToTextMode(MadEditMode mode)
             if(m_Lines->m_Size>=maxtextfilesize)
             {
                 wxString size=FormatThousands(wxLongLong(m_Lines->m_Size).ToString());
-                if(wxNO==wxMessageBox(wxString::Format(_("Do you want to continue?\nThe file size is %s bytes.\nIt may take long time and large memories to convert to Text/Column Mode."), size.c_str()), _("Hex Mode to Text/Column Mode"), wxYES_NO))
+                if(wxNO==MadMessageBox(wxString::Format(_("Do you want to continue?\nThe file size is %s bytes.\nIt may take long time and large memories to convert to Text/Column Mode."), size.c_str()), _("Hex Mode to Text/Column Mode"), wxYES_NO))
                 {
                     return;
                 }
@@ -2395,6 +2400,7 @@ bool MadEdit::SaveToFile(const wxString &filename)
     {
         wxMessageDialog dlg(this, wxString(_("Cannot save this file:")) +wxT("\n\n") + filename,
                             wxT("MadEdit"), wxOK|wxICON_ERROR );
+        dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
         dlg.ShowModal();
 
         return false;
@@ -2424,7 +2430,8 @@ int MadEdit::Save(bool ask, const wxString &title, bool saveas) // return YES, N
     {
         wxMessageDialog dlg(this, wxString(_("Do you want to save this file?")) +wxT("\n\n") + filename,
             wxT("MadEdit"), wxYES_NO|wxCANCEL|wxICON_QUESTION );
-
+        dlg.SetYesNoCancelLabels(wxMessageDialog::ButtonLabel(_("&Yes")),
+            wxMessageDialog::ButtonLabel(_("&No")), wxMessageDialog::ButtonLabel(_("&Cancel")));
         ret=dlg.ShowModal();
     }
 
@@ -2486,6 +2493,7 @@ bool MadEdit::Reload()
     if(m_Modified)
     {
         wxMessageDialog dlg(this, _("Do you want to discard changes?"), wxT("MadEdit"), wxYES_NO|wxICON_QUESTION );
+        dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
         if(dlg.ShowModal()!=wxID_YES)
         {
             return false;
@@ -2534,6 +2542,7 @@ bool MadEdit::ReloadByModificationTime()
         wxString(_("This file has been changed by another application."))+ wxT("\n")+
         wxString(_("Do you want to reload it?"))+ wxT("\n\n")+ m_Lines->m_Name,
         wxT("MadEdit"), wxYES_NO|wxICON_QUESTION );
+    dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
     if(dlg.ShowModal()!=wxID_YES)
     {
         return false;
@@ -2785,6 +2794,7 @@ bool MadEdit::StringToHex(wxString ws, vector<wxByte> &hex)
         {
             wxMessageDialog dlg(NULL, errmsg+wxT("\n\n")+ws,
                             wxT("MadEdit"), wxOK|wxICON_ERROR );
+            dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
             dlg.ShowModal();
             return false;
         }
@@ -2797,6 +2807,7 @@ bool MadEdit::StringToHex(wxString ws, vector<wxByte> &hex)
         {
             wxMessageDialog dlg(NULL, errmsg+wxT("\n\n")+ws,
                             wxT("MadEdit"), wxOK|wxICON_ERROR );
+            dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
             dlg.ShowModal();
             return false;
         }

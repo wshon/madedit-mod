@@ -34,6 +34,11 @@
 MadFindInFilesDialog *g_FindInFilesDialog=NULL;
 extern wxStatusBar *g_StatusBar;
 extern void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
+extern int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
 
 //----------------------------------------------------------------------------
 // MadFindInFilesDialog
@@ -646,7 +651,7 @@ void MadFindInFilesDialog::FindReplaceInFiles(bool bReplace)
         if(!wxDirExists(str))
         {
             dialog.Update(max);
-            wxMessageBox(_("The selected directory does not exist."), wxT("MadEdit"), wxOK|wxICON_ERROR);
+            MadMessageBox(_("The selected directory does not exist."), wxT("MadEdit"), wxOK|wxICON_ERROR);
             return;
         }
         m_RecentFindDir->AddFileToHistory(str);

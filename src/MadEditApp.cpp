@@ -21,6 +21,11 @@
 
 IMPLEMENT_APP(MadEditApp)
 
+extern int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -313,7 +318,7 @@ bool MadEditApp::OnInit()
             }
             else
             {
-                wxMessageBox(_("Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry."),
+                MadMessageBox(_("Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry."),
                     wxT("MadEdit"), wxICON_INFORMATION|wxOK);
             }
             g_DoNotSaveSettings = true;

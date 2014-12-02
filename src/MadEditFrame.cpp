@@ -241,7 +241,11 @@ int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 #endif
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
-
+int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
 inline void RecordAsMadMacro(MadEdit * edit, const wxString& script)
 {
     if((g_MainFrame != NULL) && (edit == g_ActiveMadEdit))
@@ -252,6 +256,55 @@ inline void RecordAsMadMacro(MadEdit * edit, const wxString& script)
                 (int)g_ActiveMadEdit->GetSelectionBeginPos(), (int)g_ActiveMadEdit->GetSelectionEndPos());
         }
     }
+}
+
+int MadMessageBox(const wxString& message, const wxString& caption, long style,
+                 wxWindow *parent, int WXUNUSED(x), int WXUNUSED(y) )
+{
+    // add the appropriate icon unless this was explicitly disabled by use of
+    // wxICON_NONE
+    if ( !(style & wxICON_NONE) && !(style & wxICON_MASK) )
+    {
+        style |= style & wxYES ? wxICON_QUESTION : wxICON_INFORMATION;
+    }
+
+    wxMessageDialog dialog(parent, message, caption, style);
+    if((style & (wxYES_NO|wxCANCEL)) == (wxYES_NO|wxCANCEL))
+    {
+        dialog.SetYesNoCancelLabels(wxMessageDialog::ButtonLabel(_("&Yes")),
+            wxMessageDialog::ButtonLabel(_("&No")), wxMessageDialog::ButtonLabel(_("&Cancel")));
+    }
+    else if((style & (wxYES_NO)) == (wxYES_NO))
+    {
+        dialog.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
+    }
+    else if((style & (wxOK|wxCANCEL)) == (wxOK|wxCANCEL))
+    {
+        dialog.SetOKCancelLabels(wxMessageDialog::ButtonLabel(_("&Ok")), wxMessageDialog::ButtonLabel(_("&Cancel")));
+    }
+    else if((style & wxOK) == wxOK)
+    {
+        dialog.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
+    }
+
+    int ans = dialog.ShowModal();
+    switch ( ans )
+    {
+        case wxID_OK:
+            return wxOK;
+        case wxID_YES:
+            return wxYES;
+        case wxID_NO:
+            return wxNO;
+        case wxID_CANCEL:
+            return wxCANCEL;
+        case wxID_HELP:
+            return wxHELP;
+    }
+
+    wxFAIL_MSG( wxT("unexpected return code from wxMessageDialog") );
+
+    return wxCANCEL;
 }
 
 #define BUF_LEN 512
@@ -4204,7 +4257,7 @@ void MadEditFrame::OnFilePrintPreview(wxCommandEvent& event)
     if (!preview->Ok())
     {
         delete preview;
-        wxMessageBox(_("There was a problem previewing.\nPerhaps your current printer is not set correctly?"), _("Previewing"), wxOK);
+        MadMessageBox(_("There was a problem previewing.\nPerhaps your current printer is not set correctly?"), _("Previewing"), wxOK);
     }
     else
     {
@@ -4233,7 +4286,7 @@ void PrintOut(wxWindow *parentWin)
     if (!printer.Print(parentWin, &printout, true /*prompt*/))
     {
         if (wxPrinter::GetLastError() == wxPRINTER_ERROR)
-            wxMessageBox(_("There was a problem printing.\nPerhaps your current printer is not set correctly?"), _("Printing"), wxOK);
+            MadMessageBox(_("There was a problem printing.\nPerhaps your current printer is not set correctly?"), _("Printing"), wxOK);
     }
     else
     {
@@ -6392,7 +6445,7 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
         wxTextFile scriptfile(filename);
         if(scriptfile.Exists())
         {
-            if(wxNO==wxMessageBox(wxString::Format(_("Do you want to overwrite %s"), filename.c_str()), _("Warning"), wxICON_WARNING|wxYES_NO))
+            if(wxNO==MadMessageBox(wxString::Format(_("Do you want to overwrite %s"), filename.c_str()), _("Warning"), wxICON_WARNING|wxYES_NO))
                 return;
             scriptfile.Open(wxConvFile);
         }
@@ -6447,7 +6500,7 @@ void MadEditFrame::OnToolsMadScriptList(wxCommandEvent& event)
             }
             catch(std::bad_alloc &)
             {
-                wxMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
+                MadMessageBox(_("Memory allocation failed"), wxT("Error"),  wxOK|wxICON_ERROR );
             }
         }
         if(g_EmbeddedPython)

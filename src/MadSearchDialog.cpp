@@ -20,6 +20,11 @@
 ////Header Include Start
 ////Header Include End
 
+extern int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
 
 #include "../images/down.xpm"
 
@@ -411,7 +416,7 @@ void MadSearchDialog::WxButtonFindNextClick(wxCommandEvent& event)
                 _("Do you want to find from begin of selection?"):
                 _("Do you want to find from begin of file?");
 
-            if(wxCANCEL == wxMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
+            if(wxCANCEL == MadMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
 #if (wxMAJOR_VERSION == 2 && wxMINOR_VERSION > 9)
                 |wxCANCEL_DEFAULT
 #endif
@@ -534,7 +539,7 @@ void MadSearchDialog::WxButtonFindPrevClick(wxCommandEvent& event)
                 _("Do you want to find from end of selection?"):
                 _("Do you want to find from end of file?");
 
-            if(wxCANCEL==wxMessageBox(msg, _("Find Previous"), wxOK|wxCANCEL|wxICON_QUESTION ))
+            if(wxCANCEL==MadMessageBox(msg, _("Find Previous"), wxOK|wxCANCEL|wxICON_QUESTION ))
             {
                 break;
             }
@@ -868,7 +873,7 @@ void MadSearchDialog::WxButtonCountClick(wxCommandEvent& event)
     {
         wxString msg;
         msg.Printf(_("'%s' was found %d times."), text.c_str(), count);
-        wxMessageBox(msg, wxT("MadEdit"), wxOK);
+        MadMessageBox(msg, wxT("MadEdit"), wxOK);
     }
 }
 

@@ -22,6 +22,12 @@
 MadReplaceDialog *g_ReplaceDialog=NULL;
 extern MadEdit *g_ActiveMadEdit;
 extern void RecordAsMadMacro(MadEdit *, const wxString&);
+extern int MadMessageBox(const wxString& message,
+                             const wxString& caption = wxMessageBoxCaptionStr,
+                             long style = wxOK | wxCENTRE,
+                             wxWindow *parent = NULL,
+                             int x = wxDefaultCoord, int y = wxDefaultCoord);
+
 //----------------------------------------------------------------------------
 // MadReplaceDialog
 //----------------------------------------------------------------------------
@@ -588,7 +594,7 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                     _("Do you want to find from begin of selection?"):
                     _("Do you want to find from begin of file?");
     
-                if(wxCANCEL == wxMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
+                if(wxCANCEL == MadMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
 #if (wxMAJOR_VERSION == 2 && wxMINOR_VERSION > 9)
                     |wxCANCEL_DEFAULT
 #endif
@@ -667,6 +673,7 @@ void MadReplaceDialog::WxButtonReplaceAllClick(wxCommandEvent& event)
                 msg=wxString::Format(_("%d string(s) were replaced."), count);
 
             wxMessageDialog dlg(this, msg, wxT("MadEdit"));
+            dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
             dlg.ShowModal();
         }
 

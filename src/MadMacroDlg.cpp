@@ -21,6 +21,11 @@ END_EVENT_TABLE()
     ////Event Table End
 
 ///////////////////////////////////////////////////////////////////////////
+    extern int MadMessageBox(const wxString& message,
+                                 const wxString& caption = wxMessageBoxCaptionStr,
+                                 long style = wxOK | wxCENTRE,
+                                 wxWindow *parent = NULL,
+                                 int x = wxDefaultCoord, int y = wxDefaultCoord);
 
 MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxDialog(parent, id, title, pos, size, style)
 {
@@ -88,7 +93,7 @@ void MadMacroDlg::OnRunClick( wxCommandEvent& event )
             }
             catch(std::bad_alloc &)
             {
-                wxMessageBox(_("Memory allocation failed"), _("Error"),  wxOK|wxICON_ERROR);
+                MadMessageBox(_("Memory allocation failed"), _("Error"),  wxOK|wxICON_ERROR);
                 g_EmbeddedPython = 0;
             }
         }
