@@ -135,9 +135,6 @@ void MadNumberDlg::CreateGUIControls()
 	Center();
 	
 	////GUI Items Creation End
-	wxSize dlgsize = GetSize();
-	SetMaxSize(dlgsize);
-	SetMinSize(dlgsize);
 }
 
 void MadNumberDlg::OnClose(wxCloseEvent& /*event*/)

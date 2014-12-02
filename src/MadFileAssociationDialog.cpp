@@ -446,9 +446,6 @@ void MadFileAssociationDialog::CreateGUIControls()
 
     SetDefaultItem(WxButtonCancel);
     WxButtonCancel->SetFocus();
-    wxSize dlgsize = GetSize();
-    SetMaxSize(dlgsize);
-    SetMinSize(dlgsize);
 }
 
 void MadFileAssociationDialog::OnClose(wxCloseEvent& /*event*/)

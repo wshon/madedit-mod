@@ -126,10 +126,6 @@ void MadSortDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer1, WxCheckBoxRemoveDup, 25, 4);
 
     WxButtonSort->SetFocus();
-
-    wxSize dlgsize = GetSize();
-    SetMaxSize(dlgsize);
-    SetMinSize(dlgsize);
 }
 
 void MadSortDialog::MadSortDialogClose(wxCloseEvent& event)
