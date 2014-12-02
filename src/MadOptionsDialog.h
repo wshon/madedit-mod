@@ -51,7 +51,7 @@ using std::list;
 
 ////Dialog Style Start
 #undef MadOptionsDialog_STYLE
-#define MadOptionsDialog_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxCLOSE_BOX
+#define MadOptionsDialog_STYLE wxCAPTION | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxCLOSE_BOX
 ////Dialog Style End
 
 
