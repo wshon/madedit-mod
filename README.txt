@@ -83,10 +83,11 @@ Mod v0.2.9
    lines in clipboard was less than the selected. Eg, you copied ONE line but you chosen 3 lines in column
    mode and pasted, the line would be automatically duplicated 3 times if the function was enabled in Options)
 2. Improve the UI of SelectToCopy in Option dialog
-3. Fixed the issue of Mouse Select to Copy not working under wx 3.0
-4. Remove the Maximize from Option, FileAssociation, WordCount and Highlight dialogs
-5. Disable the resize function of all dialogs except MadMacro
-Update Simplified Chinese
+3. Remove the Maximize from Option, FileAssociation, WordCount and Highlight dialogs
+4. Disable the resize function of all dialogs except MadMacro
+5. Fixed the issue of Mouse Select to Copy not working under wx 3.0(would affect 0.2.7 and 0.2.8)
+6. Fixed the issue of column copy/paste introduced by wx 3.0(would affect 0.2.7 and 0.2.8)
+7. Update Simplified Chinese
 
 Mod v0.2.8
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)

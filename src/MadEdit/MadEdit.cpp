@@ -155,7 +155,7 @@ public:
         char *buf=&data[0];
         *((int*)buf)=linecount;
         buf+=sizeof(int);
-        memcpy(buf, ws.c_str(), size-sizeof(int));
+        memcpy(buf, ws.wc_str(), size-sizeof(int));
 
         return true;
     }
@@ -4349,11 +4349,11 @@ int MadEdit::GetColumnDataFromClipboard(vector <ucs4_t> *ucs)
                                 ucs->push_back(0x0D);
                                 ucs->push_back(0x0A);
                                 break;
-                
+            
                             case nltMAC:
                                 ucs->push_back(0x0D);
                                 break;
-                
+            
                             case nltUNIX:
 #ifndef __WXMSW__
                             case nltDefault:
@@ -4374,7 +4374,6 @@ int MadEdit::GetColumnDataFromClipboard(vector <ucs4_t> *ucs)
             }
         }
     }
-
     return linecount;
 }
 
