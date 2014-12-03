@@ -78,6 +78,11 @@ Feature/issues to be released in next release:
 
 ChangeLog:
 ----------
+Mod v0.3.0
+1. Improve UI and all strings of message box/dialog can be translated since then
+2. Change application name to 'MadEdit-Mod'
+Update Simplified Chinese
+
 Mod v0.2.9
 1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the
    lines in clipboard was less than the selected. Eg, you copied ONE line but you chosen 3 lines in column

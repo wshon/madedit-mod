@@ -967,7 +967,7 @@ void OnEditStatusChanged(MadEdit *madedit)
         {
             if(filename.IsEmpty())
                 filename=title;
-            g_MainFrame->SetTitle(wxString(wxT("MadEdit - ["))+ filename +wxString(wxT("] ")));
+            g_MainFrame->SetTitle(wxString(wxT("MadEdit-Mod - ["))+ filename +wxString(wxT("] ")));
 
             wxString enc=madedit->GetEncodingName();
             if(madedit->HasBOM())
@@ -2897,7 +2897,7 @@ void MadEditFrame::OnNotebookPageChanged(wxAuiNotebookEvent& event)
         if(g_ActiveMadEdit->IsModified() && title[title.Len()-1]!=wxT('*'))
             title += wxT('*');
 
-        SetTitle(wxString(wxT("MadEdit - ["))+ title +wxString(wxT("] ")));
+        SetTitle(wxString(wxT("MadEdit-Mod - ["))+ title +wxString(wxT("] ")));
 
         OnEditSelectionChanged(g_ActiveMadEdit);
         OnEditStatusChanged(g_ActiveMadEdit);
@@ -2909,7 +2909,7 @@ void MadEditFrame::OnNotebookPageChanged(wxAuiNotebookEvent& event)
     }
     else
     {
-        SetTitle(wxString(wxT("MadEdit ")));
+        SetTitle(wxString(wxT("MadEdit-Mod ")));
     }
 }
 
@@ -2962,7 +2962,7 @@ void MadEditFrame::OnNotebookPageClosed(bool bZeroPage)
             if(g_ActiveMadEdit->IsModified() && title[title.Len()-1]!=wxT('*'))
                 title += wxT('*');
 
-            SetTitle(wxString(wxT("MadEdit - ["))+ title +wxString(wxT("] ")));
+            SetTitle(wxString(wxT("MadEdit-Mod - ["))+ title +wxString(wxT("] ")));
         }
         g_ActiveMadEdit->ReloadByModificationTime();
     }
@@ -3393,7 +3393,7 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     if(g_ActiveMadEdit->IsModified() && title[title.Len()-1]!=wxT('*'))
         title += wxT('*');
 
-    SetTitle(wxString(wxT("MadEdit - ["))+ title +wxString(wxT("] ")));
+    SetTitle(wxString(wxT("MadEdit-Mod - ["))+ title +wxString(wxT("] ")));
     if(linenum != -1)
         g_ActiveMadEdit->GoToLine(linenum);
 }
