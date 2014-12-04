@@ -72,7 +72,6 @@ Syntax files, Locale files and Settings:
   * Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try 'madedit %f*lineNum'
 
-
 Feature/issues to be released
 -----------------------------
 
@@ -83,7 +82,8 @@ Mod v0.3.0
 2. Change application name to 'MadEdit-Mod'
 3. Update cursor as None while being out of window(Drag and Drop)
 4. Add debug output for Visual Studio
-5. Fix issue that caret was still moving while being out of window(Drag and Drop)
+5. Fix issue that caret was still moving while being out of window(Drag and Drop)ath.
+  FontWidth.dat is Cache of Font-Width-Data, it can rchive.serv
 6. Fix issue that should not do DND when user dropped the selection at the end of selection
 Update Simplified Chinese
 
