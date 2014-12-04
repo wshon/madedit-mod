@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 00:13+0800\n"
+"POT-Creation-Date: 2014-12-04 14:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -516,8 +516,8 @@ msgstr ""
 msgid "Cannot save this file:"
 msgstr ""
 
-#: ../src/MadEdit/MadEditBasic.cpp:2403 ../src/MadEdit/MadEditBasic.cpp:2797
-#: ../src/MadEdit/MadEditBasic.cpp:2810 ../src/MadEdit/MadEditSearch.cpp:715
+#: ../src/MadEdit/MadEditBasic.cpp:2403 ../src/MadEdit/MadEditBasic.cpp:2798
+#: ../src/MadEdit/MadEditBasic.cpp:2811 ../src/MadEdit/MadEditSearch.cpp:715
 #: ../src/MadEdit/MadEditSearch.cpp:841 ../src/MadEdit/MadEditSearch.cpp:933
 #: ../src/MadEdit/MadEditSearch.cpp:984 ../src/MadEditFrame.cpp:283
 #: ../src/MadEditFrame.cpp:287
@@ -568,11 +568,11 @@ msgstr ""
 msgid "Do you want to reload it?"
 msgstr ""
 
-#: ../src/MadEdit/MadEditBasic.cpp:2787
+#: ../src/MadEdit/MadEditBasic.cpp:2788
 msgid "The input string is not a valid Hex-String:"
 msgstr ""
 
-#: ../src/MadEdit/MadEditBasic.cpp:3422 ../src/MadFindInFilesDialog.cpp:848
+#: ../src/MadEdit/MadEditBasic.cpp:3423 ../src/MadFindInFilesDialog.cpp:848
 #: ../src/MadSearchDialog.cpp:1023
 #, c-format
 msgid "Found %d matched texts..."
@@ -762,11 +762,11 @@ msgid "Close all files to the right"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1483
-msgid "Set/clear ReadOnly flag"
+msgid "Set/Clear ReadOnly Flag"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1483
-msgid "Set/clear ReadOnly flag of the file"
+msgid "Set/Clear ReadOnly flag of the file"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1485
