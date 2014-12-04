@@ -85,7 +85,7 @@ extern const ucs4_t HexHeader[78] =
     '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', '|', ':'
 };
 
-static wxCursor ArrowCursor, IBeamCursor, DragCopyCursor, DragMoveCursor, DragNoneCursor;
+static wxCursor ArrowCursor, IBeamCursor, DragCopyCursor, DragMoveCursor, DragNoneCursor, RightArrowCursor;
 //==================================================
 
 class MadDataObject : public wxDataObjectSimple
@@ -757,6 +757,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     {
         ArrowCursor = wxCursor(wxCURSOR_ARROW);
         IBeamCursor = wxCursor(wxCURSOR_IBEAM);
+        RightArrowCursor = wxCursor(wxCURSOR_RIGHT_ARROW);
         
         //DragCopyCursor = wxCursor(_T("dnd_copy"));
         //DragMoveCursor = wxCursor(_T("dnd_move"));
