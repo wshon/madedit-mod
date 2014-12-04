@@ -73,14 +73,18 @@ Syntax files, Locale files and Settings:
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try 'madedit %f*lineNum'
 
 
-Feature/issues to be released in next release:
-----------------------------------------------
+Feature/issues to be released
+-----------------------------
 
 ChangeLog:
 ----------
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then
 2. Change application name to 'MadEdit-Mod'
+3. Update cursor as None while being out of window(Drag and Drop)
+4. Add debug output for Visual Studio
+5. Fix issue that caret was still moving while being out of window(Drag and Drop)
+6. Fix issue that should not do DND when user dropped the selection at the end of selection
 Update Simplified Chinese
 
 Mod v0.2.9
@@ -118,7 +122,7 @@ Will move to wx3.0 since then
 2. Delete empty lines(with spaces) supported(More line functions?)
 3. Join selected lines(replace EOL with space)
 4. Fix a bug that would hang Option Dialog(wx3.0.2), MS Windows only
-5. Improve usability of Search/Replace/Search In Files
+5. Improve usability of Search/Replace/SeConfigPathreleasearch In Files
 6. Fix issue of SearchAll that would not should results if none found
 7. Fix issue of statusbar working under wx3.0
 8. Fix issue of check/uncheck FindHex of search

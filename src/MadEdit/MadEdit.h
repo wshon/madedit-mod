@@ -36,6 +36,20 @@ using std::shared_ptr;
 #include "MadUndo.h"
 #include "ucs4_t.h"
 
+#if defined(_DEBUG) && defined(__WXMSW__)
+#include <Windows.h>
+#include <iostream>
+#include <sstream>
+
+#define DBOUT( s )            \
+{                             \
+   std::wostringstream os_;    \
+   os_ << s;                   \
+   OutputDebugStringW( os_.str().c_str() );  \
+}
+#else
+#define DBOUT( s )
+#endif
 
 enum { ID_VSCROLLBAR=19876, ID_HSCROLLBAR };
 
@@ -356,7 +370,7 @@ private:
     bool            m_InsertMode;
     MadCaretType    m_CaretType;
 
-    bool            m_MouseLeftDown, m_MouseLeftDoubleClick;
+    bool            m_MouseLeftDown, m_MouseLeftDoubleClick, m_MouseInWindow;
     int             m_DoubleClickX, m_DoubleClickY;
     int             m_LeftClickX, m_LeftClickY;     // for singleline & setfocus
     bool            m_MouseAtHexTextArea;
