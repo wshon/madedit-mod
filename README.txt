@@ -121,7 +121,7 @@ Will move to wx3.0 since then
 2. Delete empty lines(with spaces) supported(More line functions?)
 3. Join selected lines(replace EOL with space)
 4. Fix a bug that would hang Option Dialog(wx3.0.2), MS Windows only
-5. Improve usability of Search/Replace/SeConfigPathreleasearch In Files
+5. Improve usability of Search/Replace/Search In Files
 6. Fix issue of SearchAll that would not should results if none found
 7. Fix issue of statusbar working under wx3.0
 8. Fix issue of check/uncheck FindHex of search
