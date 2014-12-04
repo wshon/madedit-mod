@@ -11,7 +11,8 @@ KeywordPrefix=
 SpecialWordPrefix=
 IndentChar=
 UnindentChar=
-BracePair=
+BracePair=( ) [ ] { }
+AutoCompletePair=<> () [] {} "" ''
 
 # System Predefined Color & Style
 TextColor=Black

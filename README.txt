@@ -82,8 +82,9 @@ Mod v0.3.0
 2. Change application name to 'MadEdit-Mod'
 3. Update cursor as None while being out of window(Drag and Drop)
 4. Add debug output for Visual Studio
-5. Fix issue that caret was still moving while being out of window(Drag and Drop)
-6. Fix issue that should not do DND when user dropped the selection at the end of selection
+5. Disable DND if caret is out of window(Drag and Drop)
+6. Fix issue that caret was still moving while being out of window(Drag and Drop)
+7. Fix issue that should not do DND when user dropped the selection at the end of selection
 Update Simplified Chinese
 
 Mod v0.2.9

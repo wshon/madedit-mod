@@ -9,7 +9,7 @@ KeywordPrefix=
 SpecialWordPrefix=
 IndentChar=
 UnindentChar=
-BracePair=<!-- --> < > ( ) [ ] { }
+BracePair=<!-- --> < /> < > ( ) [ ] { }
 AutoCompletePair=<> () [] {} "" ''
 
 # CustomRange=(rangeid) (begin string) (end string) (bgcolor) ...
@@ -74,3 +74,8 @@ Style=Bold
 InRange=1
 Keyword=CDATA ID IDREF IDREFS ENTITY ENTITIES NMTOKEN NMTOKENS
 
+[3.Spirent]
+Color=Black
+Style=Bold
+InRange=1
+Keyword=messageSet implements bitmap bitgroup bitvalue structure enumeration enumvalue property message returns parameters from to access
