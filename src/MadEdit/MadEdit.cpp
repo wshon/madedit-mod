@@ -9704,67 +9704,40 @@ void MadEdit::OnKeyUp(wxKeyEvent& evt)
 void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
-    
-    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
-        if(evt.m_x <= m_LineNumberAreaWidth)
+        if((evt.m_x <= m_LineNumberAreaWidth) && evt.m_controlDown)
         {
-            if(evt.m_controlDown && (m_EditMode != emHexMode))
-                SelectAll();
-            else
-            {
-                int row = evt.m_y / m_RowHeight;
-                if(m_EditMode != emHexMode)
-                {
-                    // update current caretpos
-                    row += m_TopRow;
+            SelectAll();
+        }
+        else
+        {
+            int row = evt.m_y / m_RowHeight;
+            // update current caretpos
+            row += m_TopRow;
 
-                    if(row >= int(m_Lines->m_RowCount))
-                        row = int(m_Lines->m_RowCount - 1);
+            if(row >= int(m_Lines->m_RowCount))
+                row = int(m_Lines->m_RowCount - 1);
 
-                    m_CaretPos.rowid = row;
-                    m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, row);
-                    m_CaretPos.subrowid = m_CaretPos.rowid - row;
+            m_CaretPos.rowid = row;
+            m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, row);
+            m_CaretPos.subrowid = m_CaretPos.rowid - row;
 
-                    MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
-                    std::advance(riter, m_CaretPos.subrowid);
+            MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+            std::advance(riter, m_CaretPos.subrowid);
 
-                    m_CaretPos.linepos = riter->m_Start;
-                    m_CaretPos.pos += m_CaretPos.linepos;
+            m_CaretPos.linepos = riter->m_Start;
+            m_CaretPos.pos += m_CaretPos.linepos;
 
-                    UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
-                        m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
+                m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
-                    m_LastCaretXPos = m_CaretPos.xpos;
-
-                }
-                else                    // HexMode
-                {
-                    int xpos = evt.m_x + m_DrawingXPos;
-                    const int divide = 58 * m_HexFontMaxDigitWidth + (m_HexFontMaxDigitWidth >> 1);
-
-                    if(xpos < divide)
-                    {
-                        m_CaretAtHexArea = true;
-                    }
-                    else
-                    {
-                        m_CaretAtHexArea = false;
-                        m_CaretAtHalfByte = false;
-                    }
-
-                    --row;
-                    row += m_TopRow;
-
-                    if(row >= m_TopRow + m_HexRowCount)
-                        row = m_TopRow + m_HexRowCount - 1;
-
-                    UpdateHexPosByXPos(row, xpos);
-
-                    m_RepaintAll = true;
-                }
+            m_LastCaretXPos = m_CaretPos.xpos;
+            
+            if(evt.m_x <= m_LineNumberAreaWidth)
                 SelectLineFromCaretPos();
-            }
+            else
+                SetBookmark();
         }
         //m_CaretPos.pos = m_SelectionEnd->pos;
         evt.Skip();
@@ -9948,15 +9921,18 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
         ReleaseMouse();
     }
 
-    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if(m_EditMode != emHexMode)
     {
-        if(m_DragDrop)
+        if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
         {
-            m_DragDrop = false;
-            m_DndData.Empty();
+            if(m_DragDrop)
+            {
+                m_DragDrop = false;
+                m_DndData.Empty();
+            }
+            evt.Skip();
+            return;
         }
-        evt.Skip();
-        return;
     }
 
     ProcessCommand(ecMouseNotify);
@@ -10000,7 +9976,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftDClick(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("DClick")));
-    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
         evt.Skip();
         return;
@@ -10176,7 +10152,7 @@ void MadEdit::OnMouseRightUp(wxMouseEvent &evt)
 
 void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 {
-    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
         evt.Skip();
         return;
