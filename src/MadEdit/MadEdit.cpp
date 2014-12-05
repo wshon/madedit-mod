@@ -2327,6 +2327,9 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                         dc->SetPen(*wxThePenList->FindOrCreatePen(nw_BgColor, 1, wxSOLID));
                         dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(nw_BgColor));
                         dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
+                    }
+                    if(*wxLIGHT_GREY != bgcolor)
+                    {
                         dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
                         dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
                         dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookMarkWidth+1, m_RowHeight);
@@ -2367,8 +2370,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 {
                     if(m_BookMarkWidth)
                     {
-                        // paint bg
-                        if(nw_BgColor != bgcolor)
+                        if(*wxLIGHT_GREY != bgcolor)
                         {
                             dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID ));
                             dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
