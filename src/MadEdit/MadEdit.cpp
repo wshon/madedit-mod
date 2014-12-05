@@ -959,7 +959,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Painted=false;
 
     m_LineNumberAreaWidth=GetLineNumberAreaWidth(0);
-    m_BookMarkWidth = m_TextFontMaxDigitWidth*2 + (m_TextFontMaxDigitWidth >> 2);
+    m_BookMarkWidth = m_RowHeight;
 
     m_LastPaintBitmap=-1;
 
@@ -2326,7 +2326,10 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                     {
                         dc->SetPen(*wxThePenList->FindOrCreatePen(nw_BgColor, 1, wxSOLID));
                         dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(nw_BgColor));
-                        dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth+m_BookMarkWidth+1, m_RowHeight);
+                        dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
+                        dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
+                        dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
+                        dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookMarkWidth+1, m_RowHeight);
                     }
 
                     // add: gogo, 27.09.2009
@@ -2367,8 +2370,8 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                         // paint bg
                         if(nw_BgColor != bgcolor)
                         {
-                            dc->SetPen(*wxThePenList->FindOrCreatePen(nw_BgColor, 1, wxSOLID ));
-                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(nw_BgColor));
+                            dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID ));
+                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
                             dc->DrawRectangle(l, row_top, m_BookMarkWidth+1, m_RowHeight);
                         }
 
@@ -3408,6 +3411,7 @@ void MadEdit::UpdateAppearance()
     if(m_EditMode!=emHexMode)
     {
         m_RowHeight=(m_LineSpacing*m_TextFontHeight) /100;
+        m_BookMarkWidth = m_RowHeight;
     }
     else
     {
