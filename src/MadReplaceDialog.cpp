@@ -173,7 +173,10 @@ void MadReplaceDialog::CreateGUIControls(void)
 
     m_FindText=new MadEdit(this, ID_MADEDIT1, wxPoint(0, 0), wxSize(400, bh));
     m_FindText->SetSingleLineMode(true);
-    m_FindText->SetEncoding(wxT("UTF-32LE"));
+    if(g_ActiveMadEdit)
+        m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    else
+        m_FindText->SetEncoding(wxT("UTF-32LE"));
     m_FindText->SetFixedWidthMode(false);
     m_FindText->SetRecordCaretMovements(false);
     m_FindText->SetInsertSpacesInsteadOfTab(false);
@@ -192,7 +195,11 @@ void MadReplaceDialog::CreateGUIControls(void)
 
     m_ReplaceText=new MadEdit(this, ID_MADEDIT2, wxPoint(0, 0), wxSize(400, bh));
     m_ReplaceText->SetSingleLineMode(true);
-    m_ReplaceText->SetEncoding(wxT("UTF-32LE"));
+    
+    if(g_ActiveMadEdit)
+        m_ReplaceText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    else
+        m_ReplaceText->SetEncoding(wxT("UTF-32LE"));
     m_ReplaceText->SetFixedWidthMode(false);
     m_ReplaceText->SetRecordCaretMovements(false);
     m_ReplaceText->SetInsertSpacesInsteadOfTab(false);

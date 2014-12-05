@@ -211,7 +211,11 @@ void MadSearchDialog::CreateGUIControls(void)
 
     m_FindText=new MadEdit(this, ID_MADEDIT, wxPoint(0, 0), wxSize(400, bh));
     m_FindText->SetSingleLineMode(true);
-    m_FindText->SetEncoding(wxT("UTF-32LE"));
+
+    if(g_ActiveMadEdit)
+        m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
+    else
+        m_FindText->SetEncoding(wxT("UTF-32LE"));
     m_FindText->SetFixedWidthMode(false);
     m_FindText->SetRecordCaretMovements(false);
     m_FindText->SetInsertSpacesInsteadOfTab(false);

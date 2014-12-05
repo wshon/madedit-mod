@@ -86,9 +86,10 @@ Mod v0.3.0
 6. Left click on line number area to select one line/all(with Control pressed)
 7. Add area for bookmark instead of overwriting line number
 8. Left click on bookmark area to toggle bookmark
-9. Fix issue that caret was still moving while being out of window(Drag and Drop)
-10. Fix issue that should not do DND when user dropped the selection at the end/begin of the selection
-11. Update Simplified Chinese
+9. Set Encoding of Search/Replace dialog the same as main edit
+10. Fix issue that caret was still moving while being out of window(Drag and Drop)
+11. Fix issue that should not do DND when user dropped the selection at the end/begin of the selection
+12. Update Simplified Chinese
 
 Mod v0.2.9
 1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the
