@@ -3411,7 +3411,8 @@ void MadEdit::UpdateAppearance()
     if(m_EditMode!=emHexMode)
     {
         m_RowHeight=(m_LineSpacing*m_TextFontHeight) /100;
-        m_BookMarkWidth = m_RowHeight;
+        if(!m_SingleLineMode)
+            m_BookMarkWidth = m_RowHeight;
     }
     else
     {
@@ -4354,7 +4355,7 @@ int MadEdit::GetColumnDataFromClipboard(vector <ucs4_t> *ucs)
 
     if(m_AutoFillColumnPaste && m_Selection)
     {
-        size_t rowcount = m_SelectionEnd->rowid - m_SelectionBegin->rowid + 1;
+        int rowcount = m_SelectionEnd->rowid - m_SelectionBegin->rowid + 1;
         if(rowcount > linecount)
         {
             rowcount -= linecount;
