@@ -84,6 +84,8 @@ Mod v0.3.0
 4. Add debug output for Visual Studio
 5. Disable DND if caret is out of window(Drag and Drop)
 6. Left click on line number area to select one line/all(with Control pressed)
+7. Add area for bookmark instead of overwriting line number
+8. Left click on bookmark area to toggle bookmark
 7. Fix issue that caret was still moving while being out of window(Drag and Drop)
 8. Fix issue that should not do DND when user dropped the selection at the end of selection
 Update Simplified Chinese
