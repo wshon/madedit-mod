@@ -90,7 +90,7 @@ Mod v0.3.0
 10. Fix issue that caret was still moving while being out of window(Drag and Drop)
 11. Fix issue that should not do DND when user dropped the selection at the end/begin of the selection
 12. Fix some wrong status of menus when there is no active edit
-13. Fix wrong title of FindAll in MadPython
+13. Fix wrong result title of FindAll in MadPython
 14. Update Simplified Chinese
 
 Mod v0.2.9
