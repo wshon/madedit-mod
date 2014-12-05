@@ -366,6 +366,7 @@ private:
 
     bool            m_DisplayLineNumber;
     bool            m_ShowEndOfLine, m_ShowSpaceChar, m_ShowTabChar, m_MarkActiveLine;
+    bool            m_DisplayBookMark;
     bool            m_MarkBracePair;
 
     bool            m_InsertMode;
@@ -732,7 +733,6 @@ public: // basic functions
     void SetWordWrapMode(MadWordWrapMode mode);
     MadWordWrapMode GetWordWrapMode() { return m_WordWrapMode; }
 
-    void SetDisplayLineNumber(bool value);
     void SetShowEndOfLine(bool value);
     void SetShowTabChar(bool value);
     void SetShowSpaceChar(bool value);
@@ -740,7 +740,19 @@ public: // basic functions
     void SetSpellCheck(bool value);
     void AddtoDictionary(wxString & misSpell);
 
+    void SetDisplayLineNumber(bool value);
     bool GetDisplayLineNumber() { return m_DisplayLineNumber; }
+    void SetDisplayBookMark(bool value)
+    {
+        if(value != m_DisplayBookMark)
+        {
+            m_DisplayBookMark = value;
+            if(m_DisplayBookMark) m_BookMarkWidth = m_RowHeight;
+            else m_BookMarkWidth = 0;
+        }
+    }
+    bool GetDisplayBookMark() {return m_DisplayBookMark; }
+
     bool GetShowEndOfLine() { return m_ShowEndOfLine; }
     bool GetShowTabChar() { return m_ShowTabChar; }
     bool GetShowSpaceChar() { return m_ShowSpaceChar; }

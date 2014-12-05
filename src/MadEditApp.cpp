@@ -381,7 +381,7 @@ bool MadEditApp::OnInit()
 #endif
     wxPoint pos=wxDefaultPosition;
     wxSize size(1024, 768);
-    for(int i=0; i<wxDisplay::GetCount(); ++i)
+    for(unsigned int i=0; i<wxDisplay::GetCount(); ++i)
     {
         wxDisplay dis(i);
         if(dis.IsPrimary())
