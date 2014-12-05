@@ -740,7 +740,7 @@ int MadEdit::ms_Count = 0;
 
 #include "../../images/dnd_copy.xpm"
 #include "../../images/dnd_move.xpm"
-#include "../../images/dnd_none.xpm"
+//#include "../../images/dnd_none.xpm"
 
 MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
     :MadEditSuperClass(parent,id,pos,size,style)//wxWANTS_CHARS|wxSIMPLE_BORDER)//|style|wxTAB_TRAVERSAL)
@@ -759,11 +759,10 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
         IBeamCursor = wxCursor(wxCURSOR_IBEAM);
         RightArrowCursor = wxCursor(wxCURSOR_RIGHT_ARROW);
         
-        //DragCopyCursor = wxCursor(_T("dnd_copy"));
-        //DragMoveCursor = wxCursor(_T("dnd_move"));
         DragCopyCursor = wxCursor(wxImage(dnd_copy_xpm));
         DragMoveCursor = wxCursor(wxImage(dnd_move_xpm));
-        DragNoneCursor = wxCursor(wxImage(dnd_none_xpm));
+        //DragNoneCursor = wxCursor(wxImage(dnd_none_xpm));
+        DragNoneCursor = wxCursor(wxCURSOR_NO_ENTRY);
     }
 
     m_VScrollBar->SetCursor(ArrowCursor);
@@ -9682,6 +9681,70 @@ void MadEdit::OnKeyUp(wxKeyEvent& evt)
 void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
+    
+    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    {
+        if(evt.m_controlDown && (m_EditMode != emHexMode))
+            SelectAll();
+        else
+        {
+            int row = evt.m_y / m_RowHeight;
+            if(m_EditMode != emHexMode)
+            {
+                // update current caretpos
+                row += m_TopRow;
+
+                if(row >= int(m_Lines->m_RowCount))
+                    row = int(m_Lines->m_RowCount - 1);
+
+                m_CaretPos.rowid = row;
+                m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, row);
+                m_CaretPos.subrowid = m_CaretPos.rowid - row;
+
+                MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+                std::advance(riter, m_CaretPos.subrowid);
+
+                m_CaretPos.linepos = riter->m_Start;
+                m_CaretPos.pos += m_CaretPos.linepos;
+
+                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_LeftMarginWidth,
+                    m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                m_LastCaretXPos = m_CaretPos.xpos;
+
+            }
+            else                    // HexMode
+            {
+                int xpos = evt.m_x + m_DrawingXPos;
+                const int divide = 58 * m_HexFontMaxDigitWidth + (m_HexFontMaxDigitWidth >> 1);
+
+                if(xpos < divide)
+                {
+                    m_CaretAtHexArea = true;
+                }
+                else
+                {
+                    m_CaretAtHexArea = false;
+                    m_CaretAtHalfByte = false;
+                }
+
+                --row;
+                row += m_TopRow;
+
+                if(row >= m_TopRow + m_HexRowCount)
+                    row = m_TopRow + m_HexRowCount - 1;
+
+                UpdateHexPosByXPos(row, xpos);
+
+                m_RepaintAll = true;
+            }
+            SelectLineFromCaretPos();
+        }
+        //m_CaretPos.pos = m_SelectionEnd->pos;
+        evt.Skip();
+        return;
+    }
+
     ProcessCommand(ecMouseNotify);
 
     if(m_SingleLineMode && evt.m_x==m_LeftClickX && evt.m_y==m_LeftClickY)
@@ -9729,7 +9792,6 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
                 //EndUpdateSelection(false);  // reset selection
             }
         }
-
 
         if(m_EditMode != emHexMode)
         {
@@ -9837,6 +9899,13 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LUp")));
+    
+    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    {
+        evt.Skip();
+        return;
+    }
+
     ProcessCommand(ecMouseNotify);
 
     if(m_MouseMotionTimer->IsRunning())
@@ -9881,7 +9950,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
     {
         if(m_MouseInWindow)
         {
-            if(m_CaretPos.pos > m_SelectionBegin->pos && m_CaretPos.pos <= m_SelectionEnd->pos)
+            if(m_CaretPos.pos >= m_SelectionBegin->pos && m_CaretPos.pos <= m_SelectionEnd->pos)
             {
                 EndUpdateSelection(false);  // reset selection
                 m_DndData.Empty();
@@ -9901,6 +9970,11 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftDClick(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("DClick")));
+    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    {
+        evt.Skip();
+        return;
+    }
     ProcessCommand(ecMouseNotify);
 
     wxFileOffset oldCaretPos=m_CaretPos.pos;
@@ -10066,12 +10140,18 @@ void MadEdit::OnMouseMotion(wxMouseEvent &evt)
 
 void MadEdit::OnMouseRightUp(wxMouseEvent &evt)
 {
+
     ProcessCommand(ecMouseNotify);
     DoMouseRightUp();
 }
 
 void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 {
+    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    {
+        evt.Skip();
+        return;
+    }
     ProcessCommand(ecMouseNotify);
 
     if(m_MiddleMouseToPaste)
@@ -10430,13 +10510,18 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
             else
             {
                 wxSetCursor(IBeamCursor);
-                SetCursor(IBeamCursor);
+                //SetCursor(IBeamCursor);
             }
         }
         else
         {
-            wxSetCursor(ArrowCursor);
-            SetCursor(ArrowCursor);
+            if(mouse_x >= 0 && mouse_x <= m_LineNumberAreaWidth)
+            {
+                wxSetCursor(RightArrowCursor);
+            }
+            else
+                wxSetCursor(ArrowCursor);
+            //SetCursor(ArrowCursor);
         }
     }
     else
@@ -10459,13 +10544,13 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
             else
             {
                 wxSetCursor(IBeamCursor);
-                SetCursor(IBeamCursor);
+                //SetCursor(IBeamCursor);
             }
         }
         else
         {
             wxSetCursor(ArrowCursor);
-            SetCursor(ArrowCursor);
+            //SetCursor(ArrowCursor);
         }
     }
 }
