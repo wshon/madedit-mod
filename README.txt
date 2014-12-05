@@ -80,11 +80,12 @@ ChangeLog:
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then
 2. Change application name to 'MadEdit-Mod'
-3. Update cursor as None while being out of window(Drag and Drop)
+3. Update cursor as NO_ENTRY sign while being out of window(Drag and Drop)
 4. Add debug output for Visual Studio
 5. Disable DND if caret is out of window(Drag and Drop)
-6. Fix issue that caret was still moving while being out of window(Drag and Drop)
-7. Fix issue that should not do DND when user dropped the selection at the end of selection
+6. Left click on line number area to select one line/all(with Control pressed)
+7. Fix issue that caret was still moving while being out of window(Drag and Drop)
+8. Fix issue that should not do DND when user dropped the selection at the end of selection
 Update Simplified Chinese
 
 Mod v0.2.9

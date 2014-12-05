@@ -9585,7 +9585,6 @@ void MadEdit::OnChar(wxKeyEvent& evt)
     }
 }
 
-
 void MadEdit::OnKeyDown(wxKeyEvent& evt)
 {
     //std::cout<<"edit Key down\n";
@@ -9603,7 +9602,7 @@ void MadEdit::OnKeyDown(wxKeyEvent& evt)
         }
         return;
     }
-    
+
     if(evt.ControlDown()) flags|=wxACCEL_CTRL;
     if(evt.AltDown())     flags|=wxACCEL_ALT;
     if(evt.ShiftDown())   flags|=wxACCEL_SHIFT;
@@ -9899,15 +9898,6 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LUp")));
-    
-    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
-    {
-        evt.Skip();
-        return;
-    }
-
-    ProcessCommand(ecMouseNotify);
-
     if(m_MouseMotionTimer->IsRunning())
     {
         m_MouseMotionTimer->Stop();
@@ -9930,6 +9920,19 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
         }
         ReleaseMouse();
     }
+
+    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    {
+        if(m_DragDrop)
+        {
+            m_DragDrop = false;
+            m_DndData.Empty();
+        }
+        evt.Skip();
+        return;
+    }
+
+    ProcessCommand(ecMouseNotify);
 
     if(m_MouseSelectToCopy)
     {
@@ -10140,7 +10143,6 @@ void MadEdit::OnMouseMotion(wxMouseEvent &evt)
 
 void MadEdit::OnMouseRightUp(wxMouseEvent &evt)
 {
-
     ProcessCommand(ecMouseNotify);
     DoMouseRightUp();
 }
