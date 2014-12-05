@@ -3592,6 +3592,7 @@ void MadEdit::BeginPrint(const wxRect &printRect)
         m_PrintHexEdit->m_Syntax->BeginPrint(false);
 
         m_PrintHexEdit->m_LineNumberAreaWidth = 0;
+        m_PrintHexEdit->m_BookMarkWidth = 0;
         m_PrintHexEdit->m_LeftMarginWidth = 0;
         m_PrintHexEdit->m_RightMarginWidth = 0;
 

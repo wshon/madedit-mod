@@ -348,6 +348,7 @@ private:
     int             m_LineNumberAreaWidth;
     int             m_LeftMarginWidth;
     int             m_RightMarginWidth;
+    int             m_BookMarkWidth;
 
     // for OnSize()
     int             m_MaxWidth, m_MaxHeight;

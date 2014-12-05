@@ -962,7 +962,10 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Painted=false;
 
     m_LineNumberAreaWidth=GetLineNumberAreaWidth(0);
-
+    if(!m_SingleLineMode)
+        m_BookMarkWidth = m_TextFontMaxDigitWidth + (m_TextFontMaxDigitWidth >> 2);
+    else
+        m_BookMarkWidth = 0;
     m_LastPaintBitmap=-1;
 
     m_UseDefaultSyntax=false;
@@ -1960,7 +1963,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
         }
     }
 
-    const int minleft = rect.GetLeft() + m_LineNumberAreaWidth;
+    const int minleft = rect.GetLeft() + m_LineNumberAreaWidth + m_BookMarkWidth;
     const int maxright = rect.GetRight();
 
     const int ncount = m_LineNumberAreaWidth / m_TextFontMaxDigitWidth;
@@ -2325,21 +2328,25 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 {
                     dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID));
                     dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
-                    dc->DrawRectangle(rect.GetLeft(), row_top, m_LineNumberAreaWidth+1, m_RowHeight);
+                    dc->DrawRectangle(rect.GetLeft(), row_top, m_LineNumberAreaWidth, m_RowHeight);
+                    dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID ));
+                    dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
+                    dc->DrawRectangle(rect.GetLeft()+m_LineNumberAreaWidth, row_top, m_BookMarkWidth+1, m_RowHeight);
+                }
+
+                int l=rect.GetLeft();
+                
+                // add: gogo, 27.09.2009
+                if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
+                {
+                    dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)) );
+                    dc->DrawCircle( l + m_LineNumberAreaWidth + m_BookMarkWidth/2, row_top + m_RowHeight/2,
+                                    m_RowHeight < 16 ? m_RowHeight/2 : 8 );
                 }
 
                 if(displaylinenumber)
                 {
-                    int l=rect.GetLeft();
-
-                    // add: gogo, 27.09.2009
-                    if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
-                    {
-                        dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)) );
-                        dc->DrawCircle( l + m_LineNumberAreaWidth/2, row_top + m_RowHeight/2,
-                                        m_RowHeight < 16 ? m_RowHeight/2 : 8 );
-                    }
-                    else //----------
+                    //else //----------
                     {
                         wxString s(wxT('%'));
                         s += wxString::Format(wxT("%d"), ncount);
@@ -3472,7 +3479,7 @@ void MadEdit::UpdateScrollBarPos()
         {
             m_MaxColumnRowWidth -= GetUCharWidth(0x20);
 
-            int w = m_ClientWidth - (m_LineNumberAreaWidth+m_LeftMarginWidth+m_RightMarginWidth);
+            int w = m_ClientWidth - (m_LineNumberAreaWidth+m_BookMarkWidth+m_LeftMarginWidth+m_RightMarginWidth);
             if(m_MaxColumnRowWidth < w)
             {
                 m_MaxColumnRowWidth = w;
@@ -9681,63 +9688,66 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
     
-    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
-        if(evt.m_controlDown && (m_EditMode != emHexMode))
-            SelectAll();
-        else
+        if(evt.m_x <= m_LineNumberAreaWidth)
         {
-            int row = evt.m_y / m_RowHeight;
-            if(m_EditMode != emHexMode)
+            if(evt.m_controlDown && (m_EditMode != emHexMode))
+                SelectAll();
+            else
             {
-                // update current caretpos
-                row += m_TopRow;
-
-                if(row >= int(m_Lines->m_RowCount))
-                    row = int(m_Lines->m_RowCount - 1);
-
-                m_CaretPos.rowid = row;
-                m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, row);
-                m_CaretPos.subrowid = m_CaretPos.rowid - row;
-
-                MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
-                std::advance(riter, m_CaretPos.subrowid);
-
-                m_CaretPos.linepos = riter->m_Start;
-                m_CaretPos.pos += m_CaretPos.linepos;
-
-                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_LeftMarginWidth,
-                    m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
-
-                m_LastCaretXPos = m_CaretPos.xpos;
-
-            }
-            else                    // HexMode
-            {
-                int xpos = evt.m_x + m_DrawingXPos;
-                const int divide = 58 * m_HexFontMaxDigitWidth + (m_HexFontMaxDigitWidth >> 1);
-
-                if(xpos < divide)
+                int row = evt.m_y / m_RowHeight;
+                if(m_EditMode != emHexMode)
                 {
-                    m_CaretAtHexArea = true;
+                    // update current caretpos
+                    row += m_TopRow;
+
+                    if(row >= int(m_Lines->m_RowCount))
+                        row = int(m_Lines->m_RowCount - 1);
+
+                    m_CaretPos.rowid = row;
+                    m_CaretPos.lineid = GetLineByRow(m_CaretPos.iter, m_CaretPos.pos, row);
+                    m_CaretPos.subrowid = m_CaretPos.rowid - row;
+
+                    MadRowIndexIterator riter = m_CaretPos.iter->m_RowIndices.begin();
+                    std::advance(riter, m_CaretPos.subrowid);
+
+                    m_CaretPos.linepos = riter->m_Start;
+                    m_CaretPos.pos += m_CaretPos.linepos;
+
+                    UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
+                        m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
+
+                    m_LastCaretXPos = m_CaretPos.xpos;
+
                 }
-                else
+                else                    // HexMode
                 {
-                    m_CaretAtHexArea = false;
-                    m_CaretAtHalfByte = false;
+                    int xpos = evt.m_x + m_DrawingXPos;
+                    const int divide = 58 * m_HexFontMaxDigitWidth + (m_HexFontMaxDigitWidth >> 1);
+
+                    if(xpos < divide)
+                    {
+                        m_CaretAtHexArea = true;
+                    }
+                    else
+                    {
+                        m_CaretAtHexArea = false;
+                        m_CaretAtHalfByte = false;
+                    }
+
+                    --row;
+                    row += m_TopRow;
+
+                    if(row >= m_TopRow + m_HexRowCount)
+                        row = m_TopRow + m_HexRowCount - 1;
+
+                    UpdateHexPosByXPos(row, xpos);
+
+                    m_RepaintAll = true;
                 }
-
-                --row;
-                row += m_TopRow;
-
-                if(row >= m_TopRow + m_HexRowCount)
-                    row = m_TopRow + m_HexRowCount - 1;
-
-                UpdateHexPosByXPos(row, xpos);
-
-                m_RepaintAll = true;
+                SelectLineFromCaretPos();
             }
-            SelectLineFromCaretPos();
         }
         //m_CaretPos.pos = m_SelectionEnd->pos;
         evt.Skip();
@@ -9810,7 +9820,7 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
             m_CaretPos.linepos = riter->m_Start;
             m_CaretPos.pos += m_CaretPos.linepos;
 
-            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_LeftMarginWidth,
+            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
                 m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
             m_LastCaretXPos = m_CaretPos.xpos;
@@ -9921,7 +9931,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
         ReleaseMouse();
     }
 
-    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
         if(m_DragDrop)
         {
@@ -9973,7 +9983,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftDClick(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("DClick")));
-    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
         evt.Skip();
         return;
@@ -10072,7 +10082,7 @@ void MadEdit::OnMouseMotion(wxMouseEvent &evt)
                 m_CaretPos.linepos = riter->m_Start;
                 m_CaretPos.pos += m_CaretPos.linepos;
 
-                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_LeftMarginWidth,
+                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
                     m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
                 m_LastCaretXPos = m_CaretPos.xpos;
@@ -10149,7 +10159,7 @@ void MadEdit::OnMouseRightUp(wxMouseEvent &evt)
 
 void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 {
-    if (evt.m_x>=0 && evt.m_x <= m_LineNumberAreaWidth)
+    if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
     {
         evt.Skip();
         return;
@@ -10494,7 +10504,7 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
 {
     if(m_EditMode != emHexMode)
     {
-        if(mouse_x > m_LineNumberAreaWidth && mouse_x <= m_ClientWidth && mouse_y<=m_ClientHeight)
+        if(mouse_x > (m_LineNumberAreaWidth+m_BookMarkWidth) && mouse_x <= m_ClientWidth && mouse_y<=m_ClientHeight)
         {
             if(m_DragDrop)
             {
@@ -10517,7 +10527,7 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
         }
         else
         {
-            if(mouse_x >= 0 && mouse_x <= m_LineNumberAreaWidth)
+            if(mouse_x >= 0 && mouse_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
             {
                 wxSetCursor(RightArrowCursor);
             }
@@ -10698,19 +10708,19 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
 
             if(m_MarkBracePair)
             {
-                const int minleft = m_LineNumberAreaWidth;
+                const int minleft = m_LineNumberAreaWidth+m_BookMarkWidth;
                 const int maxright = m_ClientWidth;
 
                 int h=m_TextFontHeight>=4? 4: m_TextFontHeight;
                 int w=m_LeftBrace.Width;
-                int x=m_LeftBrace.XPos + m_LineNumberAreaWidth + m_LeftMarginWidth - m_DrawingXPos;
+                int x=m_LeftBrace.XPos + m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth - m_DrawingXPos;
 
                 if(m_LeftBrace_rowid>=m_TopRow && m_LeftBrace_rowid<=lastrow &&
                     x < maxright && x+w > minleft)
                 {
                     int y = (int)(m_LeftBrace_rowid - m_TopRow) * (SpacingHeight + m_TextFontHeight) + (SpacingHeight >> 1) + m_TextFontHeight-h;
 
-                    int dw=m_LineNumberAreaWidth+1 - x;
+                    int dw=m_LineNumberAreaWidth + m_BookMarkWidth + 1 - x;
                     if(dw>0)
                     {
                         w -= dw;
@@ -10735,14 +10745,14 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
                 }
 
                 w=m_RightBrace.Width;
-                x=m_RightBrace.XPos + m_LineNumberAreaWidth + m_LeftMarginWidth - m_DrawingXPos;
+                x=m_RightBrace.XPos + m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth - m_DrawingXPos;
 
                 if(m_RightBrace_rowid>=m_TopRow && m_RightBrace_rowid<=lastrow &&
                     x < maxright && x+w > minleft)
                 {
                     int y = (int)(m_RightBrace_rowid - m_TopRow) * (SpacingHeight + m_TextFontHeight) + (SpacingHeight >> 1) + m_TextFontHeight-h;
 
-                    int dw=m_LineNumberAreaWidth+1 - x;
+                    int dw=m_LineNumberAreaWidth+m_BookMarkWidth+1 - x;
                     if(dw>0)
                     {
                         w -= dw;
@@ -10767,10 +10777,10 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
             if(m_MarkActiveLine && m_CaretPos.rowid >= m_TopRow
                 && m_CaretPos.rowid < m_TopRow + m_VisibleRowCount)
             {
-                int x = m_LineNumberAreaWidth + m_LeftMarginWidth - 1 - m_DrawingXPos;
-                if(x <= m_LineNumberAreaWidth)
+                int x = m_LineNumberAreaWidth+m_BookMarkWidth + m_LeftMarginWidth - 1 - m_DrawingXPos;
+                if(x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
                 {
-                    if((x = m_LineNumberAreaWidth) != 0)
+                    if((x = (m_LineNumberAreaWidth+m_BookMarkWidth)) != 0)
                     {
                         ++x;
                     }
@@ -11152,7 +11162,7 @@ void MadEdit::AppearCaret(bool middle)
         }
         else
         {
-            int right = m_LineNumberAreaWidth + m_LeftMarginWidth + m_CaretPos.xpos -
+            int right = m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth + m_CaretPos.xpos -
                         m_DrawingXPos + m_TextFontMaxDigitWidth+2;
             int x = right - m_ClientWidth;
             if(x > 0)
@@ -11248,11 +11258,11 @@ void MadEdit::DisplayCaret(bool moveonly)
     wxCaret *caret=GetCaret();
     if(m_EditMode!=emHexMode)
     {
-        const int xpos=m_LineNumberAreaWidth + m_LeftMarginWidth + m_CaretPos.xpos - m_DrawingXPos;
+        const int xpos=m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth + m_CaretPos.xpos - m_DrawingXPos;
         const int ypos=(int)(m_CaretPos.rowid - m_TopRow) * m_RowHeight + ((m_RowHeight - m_TextFontHeight) >> 1);
 
         if(m_CaretPos.xpos + m_LeftMarginWidth > m_DrawingXPos &&
-            xpos>=m_LineNumberAreaWidth && xpos<m_ClientWidth && ypos>=0 && ypos<m_ClientHeight)
+            xpos>=(m_LineNumberAreaWidth + m_BookMarkWidth) && xpos<m_ClientWidth && ypos>=0 && ypos<m_ClientHeight)
         {
             caret->Move(xpos, ypos);
 #ifdef __WXGTK__
@@ -11334,8 +11344,8 @@ int MadEdit::GetLineNumberAreaWidth(int number)
 {
     if(m_DisplayLineNumber)
     {
-        int n = 2;
-        while(number >= 100)
+        int n = 4;
+        while(number >= 10000)
         {
             number /= 10;
             ++n;
