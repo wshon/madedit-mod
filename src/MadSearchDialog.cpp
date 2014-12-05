@@ -1037,6 +1037,9 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
 
             if(!WxCheckBoxBookmarkOnly->IsChecked())
             {
+                static wxString text(_("Search Results"));
+                int pid = g_MainFrame->m_InfoNotebook->GetPageIndex(g_MainFrame->m_FindInFilesResults);
+                g_MainFrame->m_InfoNotebook->SetPageText(pid, text);
                 DisplayFindAllResult(begpos, endpos, madedit, true, &OnSearchProgressUpdate);
             }
 
@@ -1047,6 +1050,9 @@ void MadSearchDialog::WxButtonFindAllClick(wxCommandEvent& event)
         {
             if(!WxCheckBoxBookmarkOnly->IsChecked())
             {
+                static wxString text(_("Search Results"));
+                int pid = g_MainFrame->m_InfoNotebook->GetPageIndex(g_MainFrame->m_FindInFilesResults);
+                g_MainFrame->m_InfoNotebook->SetPageText(pid, text);
                 DisplayFindAllResult(begpos, endpos, madedit, true);
             }
         }

@@ -1194,6 +1194,9 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSortAscendingCase, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortDescendingCase, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
 	EVT_UPDATE_UI(menuSortByOptions, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
+	EVT_UPDATE_UI(menuSortOptions, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
+	EVT_UPDATE_UI(menuSort, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
+	EVT_UPDATE_UI(menuAdvanced, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuCopyAsHexString, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
 	EVT_UPDATE_UI(menuCopyAsHexStringWithSpace, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
 	EVT_UPDATE_UI(menuCopyRevertHex, MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString)
@@ -1219,11 +1222,12 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuJoinLines, MadEditFrame::OnUpdateUI_Menu_JoinLines)
 	EVT_UPDATE_UI(menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers)
 	EVT_UPDATE_UI(menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuBookmarkCut, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuBookmarkDel, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuBookmarkDelUnmarked, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuBookmarkReplace, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuBookmark, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkCut, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkDel, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkDelUnmarked, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuBookmarkReplace, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
 	// search
 	EVT_UPDATE_UI(menuFind, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
 	EVT_UPDATE_UI(menuFindNext, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
@@ -1234,9 +1238,9 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuLeftBrace, MadEditFrame::OnUpdateUI_MenuSearchGoToBrace)
 	EVT_UPDATE_UI(menuRightBrace, MadEditFrame::OnUpdateUI_MenuSearchGoToBrace)
 	EVT_UPDATE_UI(menuToggleBookmark, MadEditFrame::OnUpdateUI_Menu_CheckTextFile)
-	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
-	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark)
+	EVT_UPDATE_UI(menuGotoNextBookmark, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuGotoPreviousBookmark, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
+	EVT_UPDATE_UI(menuClearAllBookmarks, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark)
 	// view
 	EVT_UPDATE_UI(menuEncoding, MadEditFrame::OnUpdateUI_MenuViewEncoding)
 	EVT_UPDATE_UI(menuSyntax, MadEditFrame::OnUpdateUI_MenuViewSyntax)
@@ -1275,6 +1279,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuMadScriptList, MadEditFrame::OnUpdateUI_MadScriptList)
 	EVT_UPDATE_UI(menuMacroDebugMode, MadEditFrame::OnUpdateUI_MenuToolsMacroDebugMode)
 	EVT_UPDATE_UI(menuInsertNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsInsertNewLineChar)
+	EVT_UPDATE_UI(menuNewLineChar, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToDOS, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToMAC, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
 	EVT_UPDATE_UI(menuConvertToUNIX, MadEditFrame::OnUpdateUI_MenuToolsConvertNL)
@@ -2579,7 +2584,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_FindInFilesResults->AddRoot(wxT("Root"));
     m_FindInFilesResults->Connect(wxEVT_LEFT_DCLICK, wxMouseEventHandler(MadEditFrame::OnFindInFilesResultsDClick));
 
-    m_InfoNotebook->AddPage(m_FindInFilesResults, _("Find/Replace in Files Results"));
+    m_InfoNotebook->AddPage(m_FindInFilesResults, _("Search Results"));
     m_InfoNotebook->Connect(wxEVT_SIZE, wxSizeEventHandler(MadEditFrame::OnInfoNotebookSize));
 
     // wxAUI
@@ -3552,7 +3557,7 @@ void MadEditFrame::OnUpdateUI_MenuEditStartEndSelction(wxUpdateUIEvent& event)
 
 // add: gogo, 21.09.2009
 //----------
-void MadEditFrame::OnUpdateUI_MenuSearchCheckBookmark(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuEditCheckBookmark(wxUpdateUIEvent& event)
 {
     event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode()!=emHexMode && g_ActiveMadEdit->HasBookMark() );
 }
@@ -5170,10 +5175,6 @@ void MadEditFrame::OnSearchFind(wxCommandEvent& event)
     {
         g_FindInFilesDialog->Show(false);
     }
-
-    static wxString text(_("Search Results"));
-    int pid = m_InfoNotebook->GetPageIndex(m_FindInFilesResults);
-    m_InfoNotebook->SetPageText(pid, text);
 
     g_SearchDialog->m_FindText->SetEncoding(g_ActiveMadEdit->GetEncodingName());
 

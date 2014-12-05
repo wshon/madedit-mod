@@ -120,7 +120,7 @@ public:
 
     // add: gogo, 21.09.2009
     void OnUpdateUI_MenuEditToggleBookmark(wxUpdateUIEvent& event);
-    void OnUpdateUI_MenuSearchCheckBookmark(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuEditCheckBookmark(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);

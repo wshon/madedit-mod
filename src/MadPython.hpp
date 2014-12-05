@@ -1015,6 +1015,9 @@ namespace mad_python
 
             if(ok>=0 && showresults)
             {
+                static wxString text(_("Search Results"));
+                int pid = g_MainFrame->m_InfoNotebook->GetPageIndex(g_MainFrame->m_FindInFilesResults);
+                g_MainFrame->m_InfoNotebook->SetPageText(pid, text);
                 DisplayFindAllResult(begpos, endpos, madedit);
             }
             
@@ -1035,6 +1038,9 @@ namespace mad_python
 
             if(ok>=0 && showresults)
             {
+                static wxString text(_("Search Results"));
+                int pid = g_MainFrame->m_InfoNotebook->GetPageIndex(g_MainFrame->m_FindInFilesResults);
+                g_MainFrame->m_InfoNotebook->SetPageText(pid, text);
                 DisplayFindAllResult(begpos, endpos, madedit);
             }
 
