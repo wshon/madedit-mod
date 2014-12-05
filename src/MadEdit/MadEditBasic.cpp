@@ -830,6 +830,7 @@ void MadEdit::SetSingleLineMode(bool mode)
 
             m_VScrollBar->Show(false);
             m_HScrollBar->Show(false);
+            m_BookMarkWidth = 0;
         }
 
         m_SingleLineMode = mode;
