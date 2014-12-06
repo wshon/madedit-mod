@@ -533,10 +533,6 @@ namespace mad_python
             return (int)g_ActiveMadEdit->GetWordWrapMode();
         }
 
-        void SetDisplayLineNumber(bool value)
-        {
-            g_ActiveMadEdit->SetDisplayLineNumber(value);
-        }
         void SetShowEndOfLine(bool value)
         {
             g_ActiveMadEdit->SetShowEndOfLine(value);
@@ -553,10 +549,21 @@ namespace mad_python
         {
             g_ActiveMadEdit->SetMarkActiveLine(value);
         }
-
+        void SetDisplayLineNumber(bool value)
+        {
+            g_ActiveMadEdit->SetDisplayLineNumber(value);
+        }
         bool GetDisplayLineNumber()
         {
             return g_ActiveMadEdit->GetDisplayLineNumber();
+        }
+        void SetDisplayBookmark(bool value)
+        {
+            g_ActiveMadEdit->SetDisplayBookmark(value);
+        }
+        bool GetDisplayBookmark()
+        {
+            return g_ActiveMadEdit->GetDisplayBookmark();
         }
         bool GetShowEndOfLine()
         {

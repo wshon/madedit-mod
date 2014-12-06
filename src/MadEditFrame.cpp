@@ -1254,6 +1254,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuWrapByWindow, MadEditFrame::OnUpdateUI_MenuViewWrapByWindow)
 	EVT_UPDATE_UI(menuWrapByColumn, MadEditFrame::OnUpdateUI_MenuViewWrapByColumn)
 	EVT_UPDATE_UI(menuDisplayLineNumber, MadEditFrame::OnUpdateUI_MenuViewDisplayLineNumber)
+	EVT_UPDATE_UI(menuDisplayBookmark, MadEditFrame::OnUpdateUI_MenuViewDisplayBookmark)
 	EVT_UPDATE_UI(menuShowEndOfLine, MadEditFrame::OnUpdateUI_MenuViewShowEndOfLine)
 	EVT_UPDATE_UI(menuShowTabChar, MadEditFrame::OnUpdateUI_MenuViewShowTabChar)
 	EVT_UPDATE_UI(menuShowSpaceChar, MadEditFrame::OnUpdateUI_MenuViewShowSpaceChar)
@@ -1395,6 +1396,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuWrapByWindow, MadEditFrame::OnViewWrapByWindow)
 	EVT_MENU(menuWrapByColumn, MadEditFrame::OnViewWrapByColumn)
 	EVT_MENU(menuDisplayLineNumber, MadEditFrame::OnViewDisplayLineNumber)
+	EVT_MENU(menuDisplayBookmark, MadEditFrame::OnViewDisplayBookmark)
 	EVT_MENU(menuShowEndOfLine, MadEditFrame::OnViewShowEndOfLine)
 	EVT_MENU(menuShowTabChar, MadEditFrame::OnViewShowTabChar)
 	EVT_MENU(menuShowSpaceChar, MadEditFrame::OnViewShowSpaceChar)
@@ -1621,12 +1623,12 @@ CommandData CommandTable[]=
     { 0,            1, menuSyntax,            wxT("menuSyntax"),            _("Syntax Type: "),        0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Syntax,       0},
     { 0,            1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { 0,            1, menuFontName,          wxT("menuFontName"),          _("Font Name: "),          0,                   wxITEM_NORMAL,    fontname_xpm_idx,   &g_Menu_View_FontName,     0},
-    { 0,            2, menuFont0,             wxT("menuFont0"),             _("[@]"),                  0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font0,        0},
-    { 0,            2, menuFont1,             wxT("menuFont1"),             _("[ABCDE]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font1,        0},
-    { 0,            2, menuFont2,             wxT("menuFont2"),             _("[FGHIJ]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font2,        0},
-    { 0,            2, menuFont3,             wxT("menuFont3"),             _("[KLMNO]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font3,        0},
-    { 0,            2, menuFont4,             wxT("menuFont4"),             _("[PQRST]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font4,        0},
-    { 0,            2, menuFont5,             wxT("menuFont5"),             _("[UVWXYZ]"),             0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font5,        0},
+    { 0,            2, menuFont0,             wxT("menuFont0"),             wxT("[@]"),                  0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font0,        0},
+    { 0,            2, menuFont1,             wxT("menuFont1"),             wxT("[ABCDE]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font1,        0},
+    { 0,            2, menuFont2,             wxT("menuFont2"),             wxT("[FGHIJ]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font2,        0},
+    { 0,            2, menuFont3,             wxT("menuFont3"),             wxT("[KLMNO]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font3,        0},
+    { 0,            2, menuFont4,             wxT("menuFont4"),             wxT("[PQRST]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font4,        0},
+    { 0,            2, menuFont5,             wxT("menuFont5"),             wxT("[UVWXYZ]"),             0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font5,        0},
     { 0,            2, menuFont6,             wxT("menuFont6"),             _("[other]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font6,        0},
 
     { 0,            1, menuFontSize,          wxT("menuFontSize"),          _("Font Size: "),          0,                   wxITEM_NORMAL,    fontsize_xpm_idx,   &g_Menu_View_FontSize,     0},
@@ -1765,6 +1767,7 @@ CommandData CommandTable[]=
     { ecWrapByColumn, 1, menuWrapByColumn,      wxT("menuWrapByColumn"),      _("Wrap By Column"),       wxT("Ctrl-E"),       wxITEM_CHECK,     wrapbycol_xpm_idx,  0,                         _("Wrap the lines by the specified Max Columns")},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { 0,              1, menuDisplayLineNumber, wxT("menuDisplayLineNumber"), _("&Display Line Number"), wxT("Ctrl-Alt-D"),   wxITEM_CHECK,     -1,                 0,                         _("Display the Line Numbers")},
+    { 0,              1, menuDisplayBookmark,   wxT("menuDisplayBookmark"),   _("Display &Bookmark"),    wxT("Ctrl-Alt-B"),   wxITEM_CHECK,     -1,                 0,                         _("Display the Bookmark sign")},
     { 0,              1, menuShowEndOfLine,     wxT("menuShowEndOfLine"),     _("Show End Of Line"),     wxT("Ctrl-Alt-L"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of EndOfLine")},
     { 0,              1, menuShowTabChar,       wxT("menuShowTabChar"),       _("Show Tab Char"),        wxT("Ctrl-Alt-T"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Tab char")},
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
@@ -1835,7 +1838,7 @@ CommandData CommandTable[]=
 
     // Help
     { 0, 0, 0, 0, _("&Help"), 0, wxITEM_NORMAL, 0, &g_Menu_Help, 0},
-    { 0, 1, menuAbout, wxT("menuAbout"), _("&About MadEdit..."), wxT(""),       wxITEM_NORMAL, Mad_16x15_xpm_idx, 0, wxT("")},
+    { 0, 1, menuAbout, wxT("menuAbout"), _("&About MadEdit-Mod..."), wxT(""),       wxITEM_NORMAL, Mad_16x15_xpm_idx, 0, wxT("")},
     // end menu
 
     // begin editor
@@ -1931,6 +1934,7 @@ void LoadDefaultSettings(wxConfigBase *m_Config)
 
     m_Config->Read(wxT("PrintSyntax"), &tempbool, false);
     m_Config->Read(wxT("PrintLineNumber"), &tempbool, true);
+    m_Config->Read(wxT("PrintBookmark"), &tempbool, false);
     m_Config->Read(wxT("PrintEndOfLine"), &tempbool, false);
     m_Config->Read(wxT("PrintTabChar"), &tempbool, false);
     m_Config->Read(wxT("PrintSpaceChar"), &tempbool, false);
@@ -3723,11 +3727,15 @@ void MadEditFrame::OnUpdateUI_MenuViewWrapByColumn(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetWordWrapMode()==wwmWrapByColumn);
 }
-
 void MadEditFrame::OnUpdateUI_MenuViewDisplayLineNumber(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetDisplayLineNumber());
+}
+void MadEditFrame::OnUpdateUI_MenuViewDisplayBookmark(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL);
+    event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetDisplayBookmark());
 }
 void MadEditFrame::OnUpdateUI_MenuViewShowEndOfLine(wxUpdateUIEvent& event)
 {
@@ -5775,6 +5783,19 @@ void MadEditFrame::OnViewDisplayLineNumber(wxCommandEvent& event)
     else
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayLineNumber(False)")));
 }
+
+void MadEditFrame::OnViewDisplayBookmark(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+
+    g_ActiveMadEdit->SetDisplayBookmark(event.IsChecked());
+    
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayBookmark(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayBookmark(False)")));
+}
+
 void MadEditFrame::OnViewShowEndOfLine(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
@@ -6026,6 +6047,9 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 
         bb=g_OptionsDialog->WxCheckBoxPrintLineNumber->GetValue();
         m_Config->Write(wxT("PrintLineNumber"), bb);
+
+        bb=g_OptionsDialog->WxCheckBoxPrintBookmark->GetValue();
+        m_Config->Write(wxT("PrintBookmark"), bb);
 
         bb=g_OptionsDialog->WxCheckBoxPrintEndOfLine->GetValue();
         m_Config->Write(wxT("PrintEndOfLine"), bb);

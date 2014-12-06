@@ -882,6 +882,7 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Config->Read(wxT("AutoIndent"), &m_AutoIndent, true);
 
     m_Config->Read(wxT("DisplayLineNumber"),   &m_DisplayLineNumber, true);
+    m_Config->Read(wxT("DisplayBookmark"),   &m_DisplayBookmark, true);
     m_Config->Read(wxT("ShowEndOfLine"),   &m_ShowEndOfLine,   true);
     m_Config->Read(wxT("ShowSpaceChar"),   &m_ShowSpaceChar,   true);
     m_Config->Read(wxT("ShowTabChar"),     &m_ShowTabChar,     true);
@@ -959,8 +960,8 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_Painted=false;
 
     m_LineNumberAreaWidth=GetLineNumberAreaWidth(0);
-    m_DisplayBookMark = true;
-    m_BookMarkWidth = m_RowHeight;
+    if(m_DisplayBookmark)
+        m_BookmarkWidth = m_RowHeight;
 
     m_LastPaintBitmap=-1;
 
@@ -1959,7 +1960,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
         }
     }
 
-    const int minleft = rect.GetLeft() + m_LineNumberAreaWidth + m_BookMarkWidth;
+    const int minleft = rect.GetLeft() + m_LineNumberAreaWidth + m_BookmarkWidth;
     const int maxright = rect.GetRight();
 
     const int ncount = m_LineNumberAreaWidth / m_TextFontMaxDigitWidth;
@@ -2317,9 +2318,14 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
             if(!m_SingleLineMode)
             {
                 int l=rect.GetLeft();
-                wxColor nw_BgColor;
+                wxColor nw_BgColor, bm_BgColor = *wxLIGHT_GREY;
                 m_Syntax->SetAttributes(aeLineNumber);
                 nw_BgColor = m_Syntax->nw_BgColor;
+                if(m_DisplayBookmark && bm_BgColor == bgcolor && nw_BgColor != bgcolor)
+                {
+                    bm_BgColor = nw_BgColor;
+                    nw_BgColor = bgcolor;
+                }
                 if(m_DisplayLineNumber)
                 {
                     // paint bg
@@ -2329,20 +2335,20 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                         dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(nw_BgColor));
                         dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
                     }
-                    if(m_DisplayBookMark)
+                    if(m_DisplayBookmark)
                     {
-                        if(*wxLIGHT_GREY != bgcolor)
+						if (bm_BgColor != bgcolor)
                         {
-                            dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
-                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
-                            dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookMarkWidth+1, m_RowHeight);
+							dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
+							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
+                            dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookmarkWidth+1, m_RowHeight);
                         }
 
                         // add: gogo, 27.09.2009
                         if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
                         {
                             dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)));
-                            dc->DrawCircle( l + m_LineNumberAreaWidth + m_BookMarkWidth/2, row_top + m_RowHeight/2,
+                            dc->DrawCircle( l + m_LineNumberAreaWidth + m_BookmarkWidth/2, row_top + m_RowHeight/2,
                                             m_RowHeight < 16 ? m_RowHeight/2 : 8 );
                         }
                     }
@@ -2371,20 +2377,20 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 }
                 else
                 {
-                    if(m_DisplayBookMark)
+                    if(m_DisplayBookmark)
                     {
-                        if(*wxLIGHT_GREY != bgcolor)
+						if (bm_BgColor != bgcolor)
                         {
-                            dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID ));
-                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(*wxLIGHT_GREY));
-                            dc->DrawRectangle(l, row_top, m_BookMarkWidth+1, m_RowHeight);
+							dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
+							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
+                            dc->DrawRectangle(l, row_top, m_BookmarkWidth+1, m_RowHeight);
                         }
 
                         // add: gogo, 27.09.2009
                         if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
                         {
                             dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)));
-                            dc->DrawCircle( l + m_BookMarkWidth/2, row_top + m_RowHeight/2,
+                            dc->DrawCircle( l + m_BookmarkWidth/2, row_top + m_RowHeight/2,
                                             m_RowHeight < 16 ? m_RowHeight/2 : 8 );
                         }
                     }
@@ -3416,8 +3422,8 @@ void MadEdit::UpdateAppearance()
     if(m_EditMode!=emHexMode)
     {
         m_RowHeight=(m_LineSpacing*m_TextFontHeight) /100;
-        if(m_DisplayBookMark)
-            m_BookMarkWidth = m_RowHeight;
+        if(m_DisplayBookmark)
+            m_BookmarkWidth = m_RowHeight;
     }
     else
     {
@@ -3503,7 +3509,7 @@ void MadEdit::UpdateScrollBarPos()
         {
             m_MaxColumnRowWidth -= GetUCharWidth(0x20);
 
-            int w = m_ClientWidth - (m_LineNumberAreaWidth+m_BookMarkWidth+m_LeftMarginWidth+m_RightMarginWidth);
+            int w = m_ClientWidth - (m_LineNumberAreaWidth+m_BookmarkWidth+m_LeftMarginWidth+m_RightMarginWidth);
             if(m_MaxColumnRowWidth < w)
             {
                 m_MaxColumnRowWidth = w;
@@ -9711,7 +9717,7 @@ void MadEdit::OnKeyUp(wxKeyEvent& evt)
 void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
-    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
     {
         if((evt.m_x <= m_LineNumberAreaWidth) && evt.m_controlDown)
         {
@@ -9736,7 +9742,7 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
             m_CaretPos.linepos = riter->m_Start;
             m_CaretPos.pos += m_CaretPos.linepos;
 
-            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
+            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookmarkWidth - m_LeftMarginWidth,
                 m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
             m_LastCaretXPos = m_CaretPos.xpos;
@@ -9817,7 +9823,7 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
             m_CaretPos.linepos = riter->m_Start;
             m_CaretPos.pos += m_CaretPos.linepos;
 
-            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
+            UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookmarkWidth - m_LeftMarginWidth,
                 m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
             m_LastCaretXPos = m_CaretPos.xpos;
@@ -9930,7 +9936,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 
     if(m_EditMode != emHexMode)
     {
-        if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+        if (evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
         {
             if(m_DragDrop)
             {
@@ -9983,7 +9989,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftDClick(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("DClick")));
-    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
     {
         evt.Skip();
         return;
@@ -10082,7 +10088,7 @@ void MadEdit::OnMouseMotion(wxMouseEvent &evt)
                 m_CaretPos.linepos = riter->m_Start;
                 m_CaretPos.pos += m_CaretPos.linepos;
 
-                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookMarkWidth - m_LeftMarginWidth,
+                UpdateCaretByXPos(evt.m_x + m_DrawingXPos - m_LineNumberAreaWidth - m_BookmarkWidth - m_LeftMarginWidth,
                     m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos);
 
                 m_LastCaretXPos = m_CaretPos.xpos;
@@ -10159,7 +10165,7 @@ void MadEdit::OnMouseRightUp(wxMouseEvent &evt)
 
 void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 {
-    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+    if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
     {
         evt.Skip();
         return;
@@ -10504,7 +10510,7 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
 {
     if(m_EditMode != emHexMode)
     {
-        if(mouse_x > (m_LineNumberAreaWidth+m_BookMarkWidth) && mouse_x <= m_ClientWidth && mouse_y<=m_ClientHeight)
+        if(mouse_x > (m_LineNumberAreaWidth+m_BookmarkWidth) && mouse_x <= m_ClientWidth && mouse_y<=m_ClientHeight)
         {
             if(m_DragDrop)
             {
@@ -10527,7 +10533,7 @@ void MadEdit::UpdateCursor(int mouse_x, int mouse_y)
         }
         else
         {
-            if(mouse_x >= 0 && mouse_x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+            if(mouse_x >= 0 && mouse_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
             {
                 wxSetCursor(RightArrowCursor);
             }
@@ -10708,19 +10714,19 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
 
             if(m_MarkBracePair)
             {
-                const int minleft = m_LineNumberAreaWidth+m_BookMarkWidth;
+                const int minleft = m_LineNumberAreaWidth+m_BookmarkWidth;
                 const int maxright = m_ClientWidth;
 
                 int h=m_TextFontHeight>=4? 4: m_TextFontHeight;
                 int w=m_LeftBrace.Width;
-                int x=m_LeftBrace.XPos + m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth - m_DrawingXPos;
+                int x=m_LeftBrace.XPos + m_LineNumberAreaWidth + m_BookmarkWidth + m_LeftMarginWidth - m_DrawingXPos;
 
                 if(m_LeftBrace_rowid>=m_TopRow && m_LeftBrace_rowid<=lastrow &&
                     x < maxright && x+w > minleft)
                 {
                     int y = (int)(m_LeftBrace_rowid - m_TopRow) * (SpacingHeight + m_TextFontHeight) + (SpacingHeight >> 1) + m_TextFontHeight-h;
 
-                    int dw=m_LineNumberAreaWidth + m_BookMarkWidth + 1 - x;
+                    int dw=m_LineNumberAreaWidth + m_BookmarkWidth + 1 - x;
                     if(dw>0)
                     {
                         w -= dw;
@@ -10745,14 +10751,14 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
                 }
 
                 w=m_RightBrace.Width;
-                x=m_RightBrace.XPos + m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth - m_DrawingXPos;
+                x=m_RightBrace.XPos + m_LineNumberAreaWidth + m_BookmarkWidth + m_LeftMarginWidth - m_DrawingXPos;
 
                 if(m_RightBrace_rowid>=m_TopRow && m_RightBrace_rowid<=lastrow &&
                     x < maxright && x+w > minleft)
                 {
                     int y = (int)(m_RightBrace_rowid - m_TopRow) * (SpacingHeight + m_TextFontHeight) + (SpacingHeight >> 1) + m_TextFontHeight-h;
 
-                    int dw=m_LineNumberAreaWidth+m_BookMarkWidth+1 - x;
+                    int dw=m_LineNumberAreaWidth+m_BookmarkWidth+1 - x;
                     if(dw>0)
                     {
                         w -= dw;
@@ -10777,10 +10783,10 @@ void MadEdit::OnPaint(wxPaintEvent &evt)
             if(m_MarkActiveLine && m_CaretPos.rowid >= m_TopRow
                 && m_CaretPos.rowid < m_TopRow + m_VisibleRowCount)
             {
-                int x = m_LineNumberAreaWidth+m_BookMarkWidth + m_LeftMarginWidth - 1 - m_DrawingXPos;
-                if(x <= (m_LineNumberAreaWidth+m_BookMarkWidth))
+                int x = m_LineNumberAreaWidth+m_BookmarkWidth + m_LeftMarginWidth - 1 - m_DrawingXPos;
+                if(x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
                 {
-                    if((x = (m_LineNumberAreaWidth+m_BookMarkWidth)) != 0)
+                    if((x = (m_LineNumberAreaWidth+m_BookmarkWidth)) != 0)
                     {
                         ++x;
                     }
@@ -11162,7 +11168,7 @@ void MadEdit::AppearCaret(bool middle)
         }
         else
         {
-            int right = m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth + m_CaretPos.xpos -
+            int right = m_LineNumberAreaWidth + m_BookmarkWidth + m_LeftMarginWidth + m_CaretPos.xpos -
                         m_DrawingXPos + m_TextFontMaxDigitWidth+2;
             int x = right - m_ClientWidth;
             if(x > 0)
@@ -11258,11 +11264,11 @@ void MadEdit::DisplayCaret(bool moveonly)
     wxCaret *caret=GetCaret();
     if(m_EditMode!=emHexMode)
     {
-        const int xpos=m_LineNumberAreaWidth + m_BookMarkWidth + m_LeftMarginWidth + m_CaretPos.xpos - m_DrawingXPos;
+        const int xpos=m_LineNumberAreaWidth + m_BookmarkWidth + m_LeftMarginWidth + m_CaretPos.xpos - m_DrawingXPos;
         const int ypos=(int)(m_CaretPos.rowid - m_TopRow) * m_RowHeight + ((m_RowHeight - m_TextFontHeight) >> 1);
 
         if(m_CaretPos.xpos + m_LeftMarginWidth > m_DrawingXPos &&
-            xpos>=(m_LineNumberAreaWidth + m_BookMarkWidth) && xpos<m_ClientWidth && ypos>=0 && ypos<m_ClientHeight)
+            xpos>=(m_LineNumberAreaWidth + m_BookmarkWidth) && xpos<m_ClientWidth && ypos>=0 && ypos<m_ClientHeight)
         {
             caret->Move(xpos, ypos);
 #ifdef __WXGTK__

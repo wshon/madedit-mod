@@ -348,7 +348,7 @@ private:
     int             m_LineNumberAreaWidth;
     int             m_LeftMarginWidth;
     int             m_RightMarginWidth;
-    int             m_BookMarkWidth;
+    int             m_BookmarkWidth;
 
     // for OnSize()
     int             m_MaxWidth, m_MaxHeight;
@@ -366,7 +366,7 @@ private:
 
     bool            m_DisplayLineNumber;
     bool            m_ShowEndOfLine, m_ShowSpaceChar, m_ShowTabChar, m_MarkActiveLine;
-    bool            m_DisplayBookMark;
+    bool            m_DisplayBookmark;
     bool            m_MarkBracePair;
 
     bool            m_InsertMode;
@@ -742,16 +742,8 @@ public: // basic functions
 
     void SetDisplayLineNumber(bool value);
     bool GetDisplayLineNumber() { return m_DisplayLineNumber; }
-    void SetDisplayBookMark(bool value)
-    {
-        if(value != m_DisplayBookMark)
-        {
-            m_DisplayBookMark = value;
-            if(m_DisplayBookMark) m_BookMarkWidth = m_RowHeight;
-            else m_BookMarkWidth = 0;
-        }
-    }
-    bool GetDisplayBookMark() {return m_DisplayBookMark; }
+    void SetDisplayBookmark(bool value);
+    bool GetDisplayBookmark() {return m_DisplayBookmark; }
 
     bool GetShowEndOfLine() { return m_ShowEndOfLine; }
     bool GetShowTabChar() { return m_ShowTabChar; }
@@ -1064,9 +1056,11 @@ private: // Printing functions
     MadWordWrapMode m_old_WordWrapMode;
     bool            m_old_Selection;
     bool            m_old_DisplayLineNumber;
+    bool            m_old_DisplayBookmark;
     bool            m_old_ShowEndOfLine, m_old_ShowSpaceChar, m_old_ShowTabChar;
     int             m_old_LeftMarginWidth;
     int             m_old_DrawingXPos;
+    int             m_old_BookmarkWidth;
 
     wxRect m_PrintRect;
     int m_PrintPageCount;
