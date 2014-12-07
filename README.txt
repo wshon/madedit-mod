@@ -78,6 +78,9 @@ Feature/issues to be released
 ChangeLog:
 ----------
 Mod v0.3.0
+1. Use wxAuiToolBar 
+
+Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then
 2. Change application name string to 'MadEdit-Mod'
 3. Update cursor as NO_ENTRY sign while being out of window(Drag and Drop)
