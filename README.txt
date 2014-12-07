@@ -87,16 +87,17 @@ Mod v0.3.0
 7. Add area for bookmark instead of overwriting line number
 8. Left click on bookmark area to toggle bookmark
 9. Display/hide bookmark area
-10. Use color defined in syntax file for bookmark
-11. Add a line to separate line number/bookmark area to the actual content
-12. Add a line to as a sign of the 80th column like PSPad
-13. Set Encoding of Search/Replace dialog the same as main edit
-14. Fix the issue that caret was still moving while being out of window(Drag and Drop)
-15. Fix the issue that should not do DND when user dropped the selection at the end/begin of the selection
-16. Fix some wrong status of menus when there is no active edit
-17. Fix wrong result title of FindAll in MadPython
-18. Fix the issue that FindReplaceInFiles would reset the Enable Replace while activating again 
-19. Update Simplified Chinese
+10. Add config item in print options for printing bookmark
+11. Use color defined in syntax file for bookmark
+12. Add a line to separate line number/bookmark area to the actual content
+13. Add a line to as a sign of the 80th column like PSPad
+14. Set Encoding of Search/Replace dialog the same as main edit
+15. Fix the issue that caret was still moving while being out of window(Drag and Drop)
+16. Fix the issue that should not do DND when user dropped the selection at the end/begin of the selection
+17. Fix some wrong status of menus when there is no active edit
+18. Fix wrong result title of FindAll in MadPython
+19. Fix the issue that FindReplaceInFiles would reset the Enable Replace while activating again 
+20. Update Simplified Chinese
 
 Mod v0.2.9
 1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the

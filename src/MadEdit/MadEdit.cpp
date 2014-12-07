@@ -2444,7 +2444,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
             {
                 dc->SetPen(*wxThePenList->FindOrCreatePen(wxColour(128, 128, 128), 1, wxSOLID));
             }
-            x1 += width+m_LeftMarginWidth;
+            x1 += width + m_LeftMarginWidth - m_DrawingXPos;
             dc->DrawLine(x1, y, x1, y+(totalrow*m_RowHeight));
         }
     
