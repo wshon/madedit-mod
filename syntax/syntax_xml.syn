@@ -9,7 +9,7 @@ KeywordPrefix=
 SpecialWordPrefix=
 IndentChar=
 UnindentChar=
-BracePair=<!-- --> < /> < > ( ) [ ] { }
+BracePair=<!-- --> < > ( ) [ ] { }
 AutoCompletePair=<> () [] {} "" ''
 
 # CustomRange=(rangeid) (begin string) (end string) (bgcolor) ...
@@ -60,7 +60,7 @@ LineNumberBgColor=A0A0A0
 LineNumberStyle=
 
 ActiveLineColor=Fuchsia
-BookmarkColor=C0FFFF
+BookmarkColor=0000FF
 
 [1.Declearation]
 Color=Black

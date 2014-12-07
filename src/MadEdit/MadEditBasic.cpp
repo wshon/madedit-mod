@@ -3769,13 +3769,13 @@ bool MadEdit::PrintPage(wxDC *dc, int pageNum)
         }
         PaintTextLines(dc, m_PrintRect, toprow, rowcount, *wxWHITE);
 
-        if((m_DisplayLineNumber || m_DisplayBookmark)&& !m_PrintSyntax)
+        /*if((m_DisplayLineNumber || m_DisplayBookmark)&& !m_PrintSyntax)
         {
             // draw a line between LineNumberArea and Text
             dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxSOLID));
-            int x1=m_PrintRect.x+m_LineNumberAreaWidth+m_BookmarkWidth;
+            int x1=m_PrintRect.x+m_LineNumberAreaWidth+m_BookmarkWidth+1;
             dc->DrawLine(x1, m_PrintRect.y, x1, m_PrintRect.y+(rowcount*m_RowHeight));
-        }
+        }*/
     }
     else //HexPrinting()
     {

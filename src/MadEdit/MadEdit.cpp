@@ -1927,6 +1927,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
     int subrowid = toprow;
     wxFileOffset notused;
     int lineid = GetLineByRow(lineiter, notused, subrowid) + 1;
+    int totalrow = rowcount;
     subrowid=toprow-subrowid;
 
     bool displaylinenumber = true; // check first row for displayning line-number or not
@@ -2318,37 +2319,33 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
             if(!m_SingleLineMode)
             {
                 int l=rect.GetLeft();
-                wxColor nw_BgColor, bm_BgColor = *wxLIGHT_GREY;
+                //static wxColor bm_BgColor = *wxLIGHT_GREY;
                 m_Syntax->SetAttributes(aeLineNumber);
-                nw_BgColor = m_Syntax->nw_BgColor;
-                if(m_DisplayBookmark && bm_BgColor == bgcolor && nw_BgColor != bgcolor)
-                {
-                    bm_BgColor = nw_BgColor;
-                    nw_BgColor = bgcolor;
-                }
                 if(m_DisplayLineNumber)
                 {
                     // paint bg
-                    if(nw_BgColor != bgcolor)
+                    if(m_Syntax->nw_BgColor != bgcolor)
                     {
-                        dc->SetPen(*wxThePenList->FindOrCreatePen(nw_BgColor, 1, wxSOLID));
-                        dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(nw_BgColor));
+                        dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID));
+                        dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
                         dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
                     }
                     if(m_DisplayBookmark)
                     {
-						if (bm_BgColor != bgcolor)
+						/*if (bm_BgColor != bgcolor)
                         {
 							dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
 							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
                             dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookmarkWidth+1, m_RowHeight);
-                        }
+                        }*/
 
                         // add: gogo, 27.09.2009
                         if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
                         {
-                            dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)));
-                            dc->DrawCircle( l + m_LineNumberAreaWidth + m_BookmarkWidth/2, row_top + m_RowHeight/2,
+                            dc->SetPen(*wxThePenList->FindOrCreatePen(bgcolor, 1, wxSOLID));
+							m_Syntax->SetAttributes(aeBookmark);
+							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(/*wxColour(0,0,192)*/m_Syntax->nw_Color));
+							dc->DrawCircle(l + m_LineNumberAreaWidth + m_BookmarkWidth / 2, row_top + m_RowHeight / 2,
                                             m_RowHeight < 16 ? m_RowHeight/2 : 8 );
                         }
                     }
@@ -2379,17 +2376,19 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 {
                     if(m_DisplayBookmark)
                     {
-						if (bm_BgColor != bgcolor)
+						/*if (bm_BgColor != bgcolor)
                         {
 							dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
 							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
                             dc->DrawRectangle(l, row_top, m_BookmarkWidth+1, m_RowHeight);
-                        }
+                        }*/
 
                         // add: gogo, 27.09.2009
                         if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
                         {
-                            dc->SetBrush( *wxTheBrushList->FindOrCreateBrush(wxColour(0,0,192)));
+							dc->SetPen(*wxThePenList->FindOrCreatePen(bgcolor, 1, wxSOLID));
+							m_Syntax->SetAttributes(aeBookmark);
+							dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(/*wxColour(0,0,192)*/m_Syntax->nw_Color));
                             dc->DrawCircle( l + m_BookmarkWidth/2, row_top + m_RowHeight/2,
                                             m_RowHeight < 16 ? m_RowHeight/2 : 8 );
                         }
@@ -2417,6 +2416,36 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
         displaylinenumber = true;
 
         ++lineid;
+    }
+
+    if(!m_SingleLineMode)
+    {
+        int x1=rect.GetLeft()+1, y = rect.GetTop();
+        if(m_DisplayLineNumber || m_DisplayBookmark)
+        {
+            dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxSOLID));
+            // draw a line between LineNumberArea and Text
+            if(m_DisplayLineNumber)
+                x1 += m_LineNumberAreaWidth;
+            if(m_DisplayBookmark)
+                x1 += m_BookmarkWidth;
+            dc->DrawLine(x1, y, x1, y+(totalrow*m_RowHeight));
+        }
+        if(!InPrinting())
+        {
+            int width = 80 * GetUCharWidth(0x20);
+            if(*wxLIGHT_GREY!= bgcolor)
+            {
+    		    dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
+            }
+            else
+            {
+				dc->SetPen(*wxThePenList->FindOrCreatePen(wxColour(128, 128, 128), 1, wxSOLID));
+            }
+            x1 += width+m_LeftMarginWidth;
+            dc->DrawLine(x1, y, x1, y+(totalrow*m_RowHeight));
+        }
+    
     }
 }
 

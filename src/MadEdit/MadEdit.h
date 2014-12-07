@@ -627,7 +627,7 @@ public:
 
     void StopRepaint()
     {
-        m_Printing=true;
+        m_Printing=-1;
         m_LastPaintBitmap=-1;
     }
 
