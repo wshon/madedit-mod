@@ -3571,7 +3571,7 @@ void MadEdit::BeginPrint(const wxRect &printRect)
         m_Config->SetPath(oldpath);
 
         m_Syntax->BeginPrint(m_PrintSyntax);
-        if(!m_DisplayLineNumber) m_LeftMarginWidth=0;
+        if(!m_DisplayLineNumber&&!m_DisplayBookmark) m_LeftMarginWidth=0;
 
         ReformatAll();
 
@@ -3769,11 +3769,11 @@ bool MadEdit::PrintPage(wxDC *dc, int pageNum)
         }
         PaintTextLines(dc, m_PrintRect, toprow, rowcount, *wxWHITE);
 
-        if(m_DisplayLineNumber && !m_PrintSyntax)
+        if((m_DisplayLineNumber || m_DisplayBookmark)&& !m_PrintSyntax)
         {
             // draw a line between LineNumberArea and Text
             dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxSOLID));
-            int x1=m_PrintRect.x+m_LineNumberAreaWidth;
+            int x1=m_PrintRect.x+m_LineNumberAreaWidth+m_BookmarkWidth;
             dc->DrawLine(x1, m_PrintRect.y, x1, m_PrintRect.y+(rowcount*m_RowHeight));
         }
     }
