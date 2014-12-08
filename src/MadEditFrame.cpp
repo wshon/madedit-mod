@@ -2041,7 +2041,6 @@ void MadEditFrame::CreateGUIControls(void)
     ////GUI Items Creation End
 #endif
 
-
     WxStatusBar1 = new wxStatusBar(this, ID_WXSTATUSBAR1);
     g_StatusBar = WxStatusBar1;
 
@@ -2110,7 +2109,6 @@ void MadEditFrame::CreateGUIControls(void)
         }
         MadEdit::ms_KeyBindings.Add(StringToShortCut(str), ecToggleWindow, true);
     }
-
 
     //m_ImageList
     m_ImageList=new wxImageList(16,15);
@@ -2521,8 +2519,6 @@ void MadEditFrame::CreateGUIControls(void)
     }
     */
 
-
-    //WxToolBar1
     //WxToolBar1->AddSeparator();
 	WxToolBar1->AddTool(menuNew, _T("New"), m_ImageList->GetBitmap(new_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("New File"), _("Create New File"), NULL);
 	WxToolBar1->AddTool(menuOpen, _T("Open"), m_ImageList->GetBitmap(fileopen_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Open File"), _(""), NULL);
