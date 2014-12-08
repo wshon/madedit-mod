@@ -70,7 +70,7 @@ public:
   //after the block.
   ////GUI Control Declaration Start
 		wxMenuBar *WxMenuBar1;
-		wxToolBar *WxToolBar1;
+		wxAuiToolBar *WxToolBar1;
 		wxStatusBar *WxStatusBar1;
   ////GUI Control Declaration End
 public:

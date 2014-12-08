@@ -2053,7 +2053,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxStatusBar1->SetFont(*pf);
 #endif
 
-    WxToolBar1 = new wxToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29), wxTB_DEFAULT_STYLE);
+    WxToolBar1 = new wxAuiToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE);
 
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
@@ -2064,7 +2064,7 @@ void MadEditFrame::CreateGUIControls(void)
     this->SetMenuBar(WxMenuBar1);
 
     WxToolBar1->Realize();
-    this->SetToolBar(WxToolBar1);
+    //this->SetToolBar(WxToolBar1);
     this->SetStatusBar(WxStatusBar1);
     this->SetTitle(wxT("MadEdit "));
 
@@ -2524,57 +2524,60 @@ void MadEditFrame::CreateGUIControls(void)
 
     //WxToolBar1
     //WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuNew,  _T("New"), m_ImageList->GetBitmap(new_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("New File") );
-    WxToolBar1->AddTool(menuOpen, _T("Open"), m_ImageList->GetBitmap(fileopen_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Open File") );
-    WxToolBar1->AddTool(menuSave, _T("Save"), m_ImageList->GetBitmap(filesave_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save File") );
-    WxToolBar1->AddTool(menuSaveAll, _T("SaveAll"), m_ImageList->GetBitmap(saveall_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save All Files") );
-    WxToolBar1->AddTool(menuClose, _T("Close"), m_ImageList->GetBitmap(fileclose_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Close File") );
-    WxToolBar1->AddTool(menuCloseAll, _T("CloseAll"), m_ImageList->GetBitmap(closeall_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Close All Files") );
+	WxToolBar1->AddTool(menuNew, _T("New"), m_ImageList->GetBitmap(new_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("New File"), _("Create New File"), NULL);
+	WxToolBar1->AddTool(menuOpen, _T("Open"), m_ImageList->GetBitmap(fileopen_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Open File"), _(""), NULL);
+	WxToolBar1->AddTool(menuSave, _T("Save"), m_ImageList->GetBitmap(filesave_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save File"), _(""), NULL);
+	WxToolBar1->AddTool(menuSaveAll, _T("SaveAll"), m_ImageList->GetBitmap(saveall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save All Files"), _(""), NULL);
+	WxToolBar1->AddTool(menuClose, _T("Close"), m_ImageList->GetBitmap(fileclose_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close File"), _(""), NULL);
+	WxToolBar1->AddTool(menuCloseAll, _T("CloseAll"), m_ImageList->GetBitmap(closeall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close All Files"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuUndo, _T("Undo"), m_ImageList->GetBitmap(undo_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Undo") );
-    WxToolBar1->AddTool(menuRedo, _T("Redo"), m_ImageList->GetBitmap(redo_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Redo") );
+	WxToolBar1->AddTool(menuUndo, _T("Undo"), m_ImageList->GetBitmap(undo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Undo"), _(""), NULL);
+	WxToolBar1->AddTool(menuRedo, _T("Redo"), m_ImageList->GetBitmap(redo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Redo"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuCut, _T("Cut"), m_ImageList->GetBitmap(cut_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Cut") );
-    WxToolBar1->AddTool(menuCopy, _T("Copy"), m_ImageList->GetBitmap(copy_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Copy") );
-    WxToolBar1->AddTool(menuPaste, _T("Paste"), m_ImageList->GetBitmap(paste_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Paste") );
+	WxToolBar1->AddTool(menuCut, _T("Cut"), m_ImageList->GetBitmap(cut_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Cut"), _(""), NULL);
+	WxToolBar1->AddTool(menuCopy, _T("Copy"), m_ImageList->GetBitmap(copy_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Copy"), _(""), NULL);
+	WxToolBar1->AddTool(menuPaste, _T("Paste"), m_ImageList->GetBitmap(paste_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Paste"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuIncreaseIndent, _T("IncIndent"), m_ImageList->GetBitmap(indent_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Increase Indent") );
-    WxToolBar1->AddTool(menuDecreaseIndent, _T("DecIndent"), m_ImageList->GetBitmap(unindent_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Decrease Indent") );
+	WxToolBar1->AddTool(menuIncreaseIndent, _T("IncIndent"), m_ImageList->GetBitmap(indent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Increase Indent"), _(""), NULL);
+	WxToolBar1->AddTool(menuDecreaseIndent, _T("DecIndent"), m_ImageList->GetBitmap(unindent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Decrease Indent"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuComment, _T("Comment"), m_ImageList->GetBitmap(comment_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Comment") );
-    WxToolBar1->AddTool(menuUncomment, _T("Uncomment"), m_ImageList->GetBitmap(uncomment_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Uncomment") );
+	WxToolBar1->AddTool(menuComment, _T("Comment"), m_ImageList->GetBitmap(comment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Comment"), _(""), NULL);
+	WxToolBar1->AddTool(menuUncomment, _T("Uncomment"), m_ImageList->GetBitmap(uncomment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Uncomment"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuToggleBookmark,  _T("ToggleBookmark"),  m_ImageList->GetBitmap(bookmark_toggle_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark ") );
-    WxToolBar1->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark") );
-    WxToolBar1->AddTool(menuGotoPreviousBookmark,  _T("GotoPreviousBookmark"),  m_ImageList->GetBitmap(bookmark_prev_xpm_idx),wxNullBitmap, wxITEM_NORMAL,  _("Go To Previous Bookmark") );
-    WxToolBar1->AddTool(menuClearAllBookmarks,  _T("ClearAllBookmarks"),  m_ImageList->GetBitmap(bookmark_clear_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks") );
+	WxToolBar1->AddTool(menuToggleBookmark, _T("ToggleBookmark"), m_ImageList->GetBitmap(bookmark_toggle_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark "), _(""), NULL);
+	WxToolBar1->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark"), _(""), NULL);
+	WxToolBar1->AddTool(menuGotoPreviousBookmark, _T("GotoPreviousBookmark"), m_ImageList->GetBitmap(bookmark_prev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Previous Bookmark"), _(""), NULL);
+	WxToolBar1->AddTool(menuClearAllBookmarks, _T("ClearAllBookmarks"), m_ImageList->GetBitmap(bookmark_clear_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find") );
-    WxToolBar1->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find Next") );
-    WxToolBar1->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Find Previous") );
-    WxToolBar1->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Replace") );
+	WxToolBar1->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find"), _(""), NULL);
+	WxToolBar1->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _(""), NULL);
+	WxToolBar1->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _(""), NULL);
+	WxToolBar1->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("No Line Wrap") );
-    WxToolBar1->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window") );
-    WxToolBar1->AddTool(menuWrapByColumn, _T("WrapByColumn"), m_ImageList->GetBitmap(wrapbycol_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Max Columns") );
-    WxToolBar1->AddTool(menuShowAllChars,  _T("ShowAllChars"),  m_ImageList->GetBitmap(showsymbol_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Show All Characters") );
+	WxToolBar1->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _(""), NULL);
+	WxToolBar1->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window"), _(""), NULL);
+	WxToolBar1->AddTool(menuWrapByColumn, _T("WrapByColumn"), m_ImageList->GetBitmap(wrapbycol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Max Columns"), _(""), NULL);
+	WxToolBar1->AddTool(menuShowAllChars, _T("ShowAllChars"), m_ImageList->GetBitmap(showsymbol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Show All Characters"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuTextMode, _T("TextMode"), m_ImageList->GetBitmap(textmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Text Mode") );
-    WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Column Mode") );
-    WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Hex Mode") );
+	WxToolBar1->AddTool(menuTextMode, _T("TextMode"), m_ImageList->GetBitmap(textmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Text Mode"), _(""), NULL);
+	WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Column Mode"), _(""), NULL);
+	WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Hex Mode"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuRunTempMacro,  _T("RunTempMacro"),  m_ImageList->GetBitmap(runscript_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Run Temporary Macro") );
-    WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Start Recording") );
-    WxToolBar1->AddTool(menuStopRecMacro,  _T("StopRecMacro"),  m_ImageList->GetBitmap(stop_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Stop Recording") );
-    WxToolBar1->AddTool(menuPlayRecMacro,  _T("PlayRecMacro"),  m_ImageList->GetBitmap(play_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Playback") );
-    WxToolBar1->AddTool(menuSaveRecMacro,  _T("SaveRecMacro"),  m_ImageList->GetBitmap(saverec_xpm_idx),wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro") );
+	WxToolBar1->AddTool(menuRunTempMacro, _T("RunTempMacro"), m_ImageList->GetBitmap(runscript_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Run Temporary Macro"), _(""), NULL);
+	WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Start Recording"), _(""), NULL);
+	WxToolBar1->AddTool(menuStopRecMacro, _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Stop Recording"), _(""), NULL);
+	WxToolBar1->AddTool(menuPlayRecMacro, _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Playback"), _(""), NULL);
+	WxToolBar1->AddTool(menuSaveRecMacro, _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro"), _(""), NULL);
     WxToolBar1->AddSeparator();
-    WxToolBar1->AddTool(menuSpellChecker,  _T("SpellChecker"),  m_ImageList->GetBitmap(spellchecker_xpm_idx),wxNullBitmap, wxITEM_CHECK, _("Spell Checker") );
+	WxToolBar1->AddTool(menuSpellChecker, _T("SpellChecker"), m_ImageList->GetBitmap(spellchecker_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Spell Checker"), _(""), NULL);
     WxToolBar1->Realize();
 
     //WxToolBar1->EnableTool(wxID_NEW, false);
     //WxToolBar1->ToggleTool(wxID_NEW, true);
-
+	// add the toolbars to the manager
+	m_AuiManager.AddPane(WxToolBar1, wxAuiPaneInfo().
+		Name(wxT("WxToolBar1")).Caption(wxT("Big Toolbar")).
+		ToolbarPane().Top());
 
     // information window
     int infoW = 300, infoH = 130;
