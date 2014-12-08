@@ -2014,6 +2014,13 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
 MadEditFrame::~MadEditFrame()
 {}
 
+// not all ports have support for EVT_CONTEXT_MENU yet, don't define
+// USE_CONTEXT_MENU for those which don't
+#if defined(__WXMOTIF__) || defined(__WXPM__) || defined(__WXX11__)
+    #define USE_CONTEXT_MENU 0
+#else
+    #define USE_CONTEXT_MENU 1
+#endif
 
 void MadEditFrame::CreateGUIControls(void)
 {
@@ -2033,7 +2040,7 @@ void MadEditFrame::CreateGUIControls(void)
 	SetStatusBar(WxStatusBar1);
 	WxToolBar1->Realize();
 	SetToolBar(WxToolBar1);
-	SetTitle(wxT("MadEdit"));
+	SetTitle(wxT("MadEdit-Mod"));
 	SetIcon(wxNullIcon);
 	SetSize(8,8,400,404);
 	Center();
@@ -2053,6 +2060,7 @@ void MadEditFrame::CreateGUIControls(void)
 #endif
 
     WxToolBar1 = new wxAuiToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar1->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
 
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
@@ -2061,11 +2069,14 @@ void MadEditFrame::CreateGUIControls(void)
 
     WxMenuBar1 = new wxMenuBar();
     this->SetMenuBar(WxMenuBar1);
+#if USE_CONTEXT_MENU
+    Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(MadEditFrame::OnContextMenu)); 
+#endif    
 
     WxToolBar1->Realize();
     //this->SetToolBar(WxToolBar1);
     this->SetStatusBar(WxStatusBar1);
-    this->SetTitle(wxT("MadEdit "));
+    this->SetTitle(wxT("MadEdit-Mod "));
 
 #if !defined(__WXMSW__) //&& !defined(__WXPM__)
     SetIcon(wxIcon(Mad2_xpm));
@@ -6936,6 +6947,35 @@ void MadEditFrame::PurgeRecentEncodings()
         m_RecentEncodings->RemoveFileFromHistory((size_t)i);
 }
 
+void MadEditFrame::OnRightClickToolBar(wxMouseEvent& event)
+{
+    //MadMessageBox(_("OnRightClickToolBar!"), wxT("MadEdit-Mod"), wxICON_WARNING|wxOK);
+    wxPoint pos(event.m_x, event.m_y);
+    wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, WxToolBar1->GetId(), pos);
+    OnContextMenu(ctEvt);
+}
+
+void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
+{
+#if wxUSE_MENUS
+    static wxMenu menu((long)0);
+    static bool needInit = true;
+    if(needInit)
+    {
+        menu.Append(menuCopyCurResult, _("&Copy Selected"));
+        menu.Append(menuCopyAllResults, _("Copy &All"));
+        menu.Append(menuResetCurResult, _("&Reset Results"));
+        //menu.Append(TreeTest_Highlight, wxT("&Highlight item
+        needInit = false;
+    }
+    //menu.Append(TreeTest_Dump, wxT("&Dump"));
+
+    //PopupMenu(&menu, pt);
+#endif // wxUSE_MENUS
+    MadMessageBox(_("OnContextMenu!"), wxT("MadEdit-Mod"), wxICON_WARNING|wxOK);
+}
+
+
 #if USE_GENERIC_TREECTRL
 BEGIN_EVENT_TABLE(MadTreeCtrl, wxGenericTreeCtrl)
 #else
@@ -6957,27 +6997,32 @@ MadTreeCtrl::MadTreeCtrl(wxWindow *parent, const wxWindowID id,
 void MadTreeCtrl::OnItemMenu(wxTreeEvent& event)
 {
     wxTreeItemId itemId = event.GetItem();
-    wxCHECK_RET( itemId.IsOk(), wxT("should have a valid item") );
+    wxCHECK_RET( itemId.IsOk(), _("Invalid item") );
 
     //MyTreeItemData *item = (MyTreeItemData *)GetItemData(itemId);
     wxPoint clientpt = event.GetPoint();
-    wxPoint screenpt = ClientToScreen(clientpt);
+    //wxPoint screenpt = ClientToScreen(clientpt);
 
     //wxLogMessage(wxT("OnItemMenu for item \"%s\" at screen coords (%i, %i)"),
     //             item->GetDesc(), screenpt.x, screenpt.y);
 
     ShowMenu(itemId, clientpt);
-    event.Skip();
+    //event.Skip();
 }
 
 void MadTreeCtrl::ShowMenu(wxTreeItemId id, const wxPoint& pt)
 {
 #if wxUSE_MENUS
-    wxMenu menu((long)0);
-    menu.Append(menuCopyCurResult, wxT("&Copy Selected"));
-    menu.Append(menuCopyAllResults, wxT("Copy &All"));
-    menu.Append(menuResetCurResult, wxT("&Reset Results"));
-    //menu.Append(TreeTest_Highlight, wxT("&Highlight item"));
+    static wxMenu menu((long)0);
+    static bool needInit = true;
+    if(needInit)
+    {
+        menu.Append(menuCopyCurResult, _("&Copy Selected"));
+        menu.Append(menuCopyAllResults, _("Copy &All"));
+        menu.Append(menuResetCurResult, _("&Reset Results"));
+        //menu.Append(TreeTest_Highlight, wxT("&Highlight item
+        needInit = false;
+    }
     //menu.Append(TreeTest_Dump, wxT("&Dump"));
 
     PopupMenu(&menu, pt);

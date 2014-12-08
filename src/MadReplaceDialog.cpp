@@ -679,7 +679,7 @@ void MadReplaceDialog::WxButtonReplaceAllClick(wxCommandEvent& event)
             else
                 msg=wxString::Format(_("%d string(s) were replaced."), count);
 
-            wxMessageDialog dlg(this, msg, wxT("MadEdit"));
+            wxMessageDialog dlg(this, msg, wxT("MadEdit-Mod"));
             dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
             dlg.ShowModal();
         }

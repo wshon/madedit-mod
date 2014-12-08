@@ -877,7 +877,7 @@ void MadSearchDialog::WxButtonCountClick(wxCommandEvent& event)
     {
         wxString msg;
         msg.Printf(_("'%s' was found %d times."), text.c_str(), count);
-        MadMessageBox(msg, wxT("MadEdit"), wxOK);
+        MadMessageBox(msg, wxT("MadEdit-Mod"), wxOK);
     }
 }
 

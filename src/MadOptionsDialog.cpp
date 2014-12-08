@@ -1505,7 +1505,7 @@ void MadOptionsDialog::WxButtonAddKeyClick(wxCommandEvent& event)
         {
             /*
             wxMessageDialog dlg(this, key +wxT(": ") +WxEditKeyHint->GetValue() +wxT("\n\n") + wxString(_("Do you want to reassign this key?")),
-                wxT("MadEdit"), wxYES_NO|wxICON_QUESTION );
+                wxT("MadEdit-Mod"), wxYES_NO|wxICON_QUESTION );
             if(dlg.ShowModal()!=wxID_YES)
             {
                 return;

@@ -319,7 +319,7 @@ bool MadEditApp::OnInit()
             else
             {
                 MadMessageBox(_("Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry."),
-                    wxT("MadEdit"), wxICON_INFORMATION|wxOK);
+                    wxT("MadEdit-Mod"), wxICON_INFORMATION|wxOK);
             }
             g_DoNotSaveSettings = true;
             DeleteConfig();
@@ -370,7 +370,7 @@ bool MadEditApp::OnInit()
 #   endif
 
 #endif
-    g_Locale.AddCatalog(wxT("madedit"));
+    g_Locale.AddCatalog(wxT("MadEdit-Mod"));
 
     // set colors
     SetHtmlColors();

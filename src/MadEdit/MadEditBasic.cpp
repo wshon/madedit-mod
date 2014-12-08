@@ -2420,7 +2420,7 @@ bool MadEdit::SaveToFile(const wxString &filename)
     if(m_Lines->SaveToFile(filename, tempdir)==false)
     {
         wxMessageDialog dlg(this, wxString(_("Cannot save this file:")) +wxT("\n\n") + filename,
-                            wxT("MadEdit"), wxOK|wxICON_ERROR );
+                            wxT("MadEdit-Mod"), wxOK|wxICON_ERROR );
         dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
         dlg.ShowModal();
 
@@ -2450,7 +2450,7 @@ int MadEdit::Save(bool ask, const wxString &title, bool saveas) // return YES, N
     if(m_Modified && ask) //ask the user to save this file
     {
         wxMessageDialog dlg(this, wxString(_("Do you want to save this file?")) +wxT("\n\n") + filename,
-            wxT("MadEdit"), wxYES_NO|wxCANCEL|wxICON_QUESTION );
+            wxT("MadEdit-Mod"), wxYES_NO|wxCANCEL|wxICON_QUESTION );
         dlg.SetYesNoCancelLabels(wxMessageDialog::ButtonLabel(_("&Yes")),
             wxMessageDialog::ButtonLabel(_("&No")), wxMessageDialog::ButtonLabel(_("&Cancel")));
         ret=dlg.ShowModal();
@@ -2513,7 +2513,7 @@ bool MadEdit::Reload()
 
     if(m_Modified)
     {
-        wxMessageDialog dlg(this, _("Do you want to discard changes?"), wxT("MadEdit"), wxYES_NO|wxICON_QUESTION );
+        wxMessageDialog dlg(this, _("Do you want to discard changes?"), wxT("MadEdit-Mod"), wxYES_NO|wxICON_QUESTION );
         dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
         if(dlg.ShowModal()!=wxID_YES)
         {
@@ -2562,7 +2562,7 @@ bool MadEdit::ReloadByModificationTime()
     wxMessageDialog dlg(this,
         wxString(_("This file has been changed by another application."))+ wxT("\n")+
         wxString(_("Do you want to reload it?"))+ wxT("\n\n")+ m_Lines->m_Name,
-        wxT("MadEdit"), wxYES_NO|wxICON_QUESTION );
+        wxT("MadEdit-Mod"), wxYES_NO|wxICON_QUESTION );
     dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
     wxMouseCaptureLostEvent mevt(GetId());
     mevt.SetEventObject(this);
@@ -2815,7 +2815,7 @@ bool MadEdit::StringToHex(wxString ws, vector<wxByte> &hex)
         if(len<2)
         {
             wxMessageDialog dlg(NULL, errmsg+wxT("\n\n")+ws,
-                            wxT("MadEdit"), wxOK|wxICON_ERROR );
+                            wxT("MadEdit-Mod"), wxOK|wxICON_ERROR );
             dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
             dlg.ShowModal();
             return false;
@@ -2828,7 +2828,7 @@ bool MadEdit::StringToHex(wxString ws, vector<wxByte> &hex)
         if(b0<0 || b1<0)
         {
             wxMessageDialog dlg(NULL, errmsg+wxT("\n\n")+ws,
-                            wxT("MadEdit"), wxOK|wxICON_ERROR );
+                            wxT("MadEdit-Mod"), wxOK|wxICON_ERROR );
             dlg.SetOKLabel(wxMessageDialog::ButtonLabel(_("&Ok")));
             dlg.ShowModal();
             return false;

@@ -71,6 +71,12 @@ public:
   ////GUI Control Declaration Start
 		wxMenuBar *WxMenuBar1;
 		wxAuiToolBar *WxToolBar1;
+		wxAuiToolBar *WxToolBar2;
+		wxAuiToolBar *WxToolBar3;
+		wxAuiToolBar *WxToolBar4;
+		wxAuiToolBar *WxToolBar5;
+		wxAuiToolBar *WxToolBar6;
+		wxAuiToolBar *WxToolBar7;
 		wxStatusBar *WxStatusBar1;
   ////GUI Control Declaration End
 public:
@@ -342,6 +348,8 @@ public:
     void OnCopyCurrResult(wxCommandEvent& event);
     void OnCopyAllResults(wxCommandEvent& event);
     void OnResetCurrResult(wxCommandEvent& event);
+    void OnRightClickToolBar(wxMouseEvent& event);
+    void OnContextMenu(wxContextMenuEvent& event);
 private:
     bool m_PageClosing; // prevent from reentry of CloseFile(), OnNotebookPageClosing()
 public:
@@ -564,6 +572,7 @@ enum { // menu id
     menuWrapByColumn,
     menuDisplayLineNumber,
     menuDisplayBookmark,
+    menuDisplay80ColHint,
     menuShowEndOfLine,
     menuShowTabChar,
     menuShowSpaceChar,
@@ -580,6 +589,10 @@ enum { // menu id
     menuSpellRemoveFromDict,
     menuSpellOption1,
     menuSpellOption99 = menuSpellOption1 + 98,
+    // ToolBar
+    menuToolBar,
+    menuToolBar1,
+    menuToolBar99 = menuToolBar1 + 98,
 
     // tools
     menuOptions,
