@@ -360,7 +360,7 @@ public:
     void OnCopyCurrResult(wxCommandEvent& event);
     void OnCopyAllResults(wxCommandEvent& event);
     void OnResetCurrResult(wxCommandEvent& event);
-    void OnRightClickToolBar(wxMouseEvent& event);
+    void OnRightClickToolBar(wxAuiToolBarEvent& event);
     void OnContextMenu(wxContextMenuEvent& event);
 private:
     bool m_PageClosing; // prevent from reentry of CloseFile(), OnNotebookPageClosing()
