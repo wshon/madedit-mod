@@ -2435,7 +2435,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 
     if(!m_SingleLineMode)
     {
-        int x1=rect.GetLeft()+1, y = rect.GetTop();
+        int x1=rect.GetLeft(), y = rect.GetTop();
         if(m_DisplayLineNumber || m_DisplayBookmark)
         {
             dc->SetPen(*wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxSOLID));

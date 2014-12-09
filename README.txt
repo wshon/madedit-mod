@@ -23,28 +23,33 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is recommended, and apply patches)
+      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is
+         recommended, and apply patches)
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
    b. Visual C++ 7.1 (VS.Net 2003) or higher:
       Required Libraries to compile:
       1. wxWidgets-2.6.1 or higher with Unicode enabled
-      2. Boost-1.33.0 or higher(Source code is enough for MadEdit, build Boost-Python)
+      2. Boost-1.33.0 or higher(Source code is enough for MadEdit, build
+         Boost-Python)
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
 
-P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the CVS HEAD,
-      or you must get 'xpressive.zip' at:
+P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the
+      CVS HEAD, or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing
-P.S.: wxAUIBook patch for wxWidgets 2.8.x http://trac.wxwidgets.org/attachment/ticket/10848/
-P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your own build of
-      wxWidgets
+P.S.: wxAUIBook patch for wxWidgets 2.8.x
+      http://trac.wxwidgets.org/attachment/ticket/10848/
+P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your
+      own build of wxWidgets
 P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error
 
-P.S.: madedit.pot has been uploaded to the top directory. Any translation for MadEdit-Mod is welcome.
-P.S.: Please open a ticket for bug of MadEdit-Mod at http://sourceforge.net/projects/madedit-mod/
+P.S.: madedit.pot has been uploaded to the top directory. Any translation for
+      MadEdit-Mod is welcome.
+P.S.: Please open a ticket for bug of MadEdit-Mod at 
+      http://sourceforge.net/projects/madedit-mod/
 
 
 Syntax files, Locale files and Settings:
@@ -70,15 +75,23 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
   * Download dictionary at http://archive.services.openoffice.org/pub/mirror/OpenOffice.org/contrib/dictionaries/
-  * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try 'madedit %f*lineNum'
+  * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try
+    'madedit %f*lineNum'
 
 Feature/issues to be released
 -----------------------------
 
 ChangeLog:
 ----------
-Mod v0.3.0
-1. Use wxAuiToolBar 
+Mod v0.3.1
+Note: Not backward compatible with wxWidgets 2.8.x because of wxAuiToolBar
+1. Use wxAuiToolBar as ToolBar, group tools into Standard, Editor, Search/Replace,
+   Text view and Macro
+2. Context menu for Main Frame/Tool bars(Show/Hide one or all tool bars)
+3. Save/Load customized tool bars
+4. Toggle-able sign of the 80th column
+5. Improve UI and performance
+6. Change language tag from "MadEdit" to "MadEdit-Mod"
 
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then
