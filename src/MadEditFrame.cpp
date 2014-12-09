@@ -7181,7 +7181,7 @@ void MadEditFrame::PurgeRecentEncodings()
 void MadEditFrame::OnRightClickToolBar(wxAuiToolBarEvent& event)
 {
     //MadMessageBox(_("OnRightClickToolBar!"), wxT("MadEdit-Mod"), wxICON_WARNING|wxOK);
-    wxPoint pos(event.m_x, event.m_y);
+    //wxPoint pos(event.m_x, event.m_y);
     wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, event.GetId(), event.GetClickPoint());
     OnContextMenu(ctEvt);
 }
