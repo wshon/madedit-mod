@@ -6037,10 +6037,16 @@ void MadEditFrame::OnViewToolbars(wxCommandEvent& event)
     {
         if(m_AuiManager.GetPane(WxToolBar[toolbarId]).IsShown())
         {
-            wxAuiPaneInfo &pinfo=m_AuiManager.GetPane(WxToolBar[toolbarId]);
-            pinfo.Top().Row(1).Position(toolbarId).Hide();
+            m_AuiManager.GetPane(WxToolBar[toolbarId]).Hide();
             //m_AuiManager.GetPane(WxToolBar[toolbarId]).Show(false);
             g_Menu_Toolbars->Check(menuId, false);
+            for(int i = tbSTANDARD; i < tbMAX; ++i)
+            {
+                if(i > toolbarId)
+                {
+                    m_AuiManager.GetPane(WxToolBar[i]).Position(i-1);
+                }
+            }
             m_AuiManager.Update();
         }
         else
