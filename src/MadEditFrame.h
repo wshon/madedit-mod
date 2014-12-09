@@ -59,9 +59,9 @@ enum MadToolBarType
     tbSTANDARD = 0,
     tbEDITOR,
     tbSEARCHREPLACE,
-    tbMACRO,
     tbTEXTVIEW,
     tbEDITMODE,
+    tbMACRO,
     tbMAX,
 };
 
