@@ -881,8 +881,9 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
 
     m_Config->Read(wxT("AutoIndent"), &m_AutoIndent, true);
 
-    m_Config->Read(wxT("DisplayLineNumber"),   &m_DisplayLineNumber, true);
-    m_Config->Read(wxT("DisplayBookmark"),   &m_DisplayBookmark, true);
+    m_Config->Read(wxT("DisplayLineNumber"),  &m_DisplayLineNumber, true);
+    m_Config->Read(wxT("DisplayBookmark"),    &m_DisplayBookmark, true);
+    m_Config->Read(wxT("Display80ColHint"),   &m_Display80ColHint, true);
     m_Config->Read(wxT("ShowEndOfLine"),   &m_ShowEndOfLine,   true);
     m_Config->Read(wxT("ShowSpaceChar"),   &m_ShowSpaceChar,   true);
     m_Config->Read(wxT("ShowTabChar"),     &m_ShowTabChar,     true);
@@ -2433,7 +2434,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 x1 += m_BookmarkWidth;
             dc->DrawLine(x1, y, x1, y+rect.GetHeight());
         }
-        if(!InPrinting())
+        if(!InPrinting() && m_Display80ColHint)
         {
             int width = 80 * GetUCharWidth(0x20);
             if(*wxLIGHT_GREY!= bgcolor)

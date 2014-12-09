@@ -228,7 +228,7 @@ wxMenu *g_Menu_Tools_InsertNewLineChar = NULL;
 wxMenu *g_Menu_Tools_ConvertChineseChar = NULL;
 wxMenu *g_Menu_MadMacro = NULL;
 wxMenu *g_Menu_MadMacro_Scripts = NULL;
-
+wxMenu *g_Menu_Toolbars = NULL;
 
 wxArrayString g_FontNames;
 
@@ -239,6 +239,8 @@ int g_StatusWidths[7]={ 0, 215, 215, 135, 121, 60, (40 + 18)};
 int g_StatusWidth_1_6=    (220+ 235+ 135+ 155+ 65+ (40 + 0));
 int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 #endif
+
+std::map<int, wxString>g_ToolbarNames;
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 int MadMessageBox(const wxString& message,
@@ -1255,6 +1257,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuWrapByColumn, MadEditFrame::OnUpdateUI_MenuViewWrapByColumn)
 	EVT_UPDATE_UI(menuDisplayLineNumber, MadEditFrame::OnUpdateUI_MenuViewDisplayLineNumber)
 	EVT_UPDATE_UI(menuDisplayBookmark, MadEditFrame::OnUpdateUI_MenuViewDisplayBookmark)
+	EVT_UPDATE_UI(menuDisplay80ColHint, MadEditFrame::OnUpdateUI_MenuViewDisplay80ColHint)
 	EVT_UPDATE_UI(menuShowEndOfLine, MadEditFrame::OnUpdateUI_MenuViewShowEndOfLine)
 	EVT_UPDATE_UI(menuShowTabChar, MadEditFrame::OnUpdateUI_MenuViewShowTabChar)
 	EVT_UPDATE_UI(menuShowSpaceChar, MadEditFrame::OnUpdateUI_MenuViewShowSpaceChar)
@@ -1268,6 +1271,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_UPDATE_UI(menuSpellIgnore, MadEditFrame::OnUpdateUI_MenuSpellIgnore)
 	EVT_UPDATE_UI(menuSpellAdd2Dict, MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict)
 	EVT_UPDATE_UI(menuSpellRemoveFromDict, MadEditFrame::OnUpdateUI_MenuSpellRemoveFromDict)
+	EVT_UPDATE_UI(menuToolBars, MadEditFrame::OnUpdateUI_MenuViewToolbars)
+	EVT_UPDATE_UI_RANGE(menuToolBar1, menuToolBar99, MadEditFrame::OnUpdateUI_MenuViewToolbarList)
 	// tools
 	EVT_UPDATE_UI(menuByteOrderMark, MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark)
 	EVT_UPDATE_UI(menuMadMacro, MadEditFrame::OnUpdateUI_MenuToolsMadMacro)
@@ -1397,6 +1402,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuWrapByColumn, MadEditFrame::OnViewWrapByColumn)
 	EVT_MENU(menuDisplayLineNumber, MadEditFrame::OnViewDisplayLineNumber)
 	EVT_MENU(menuDisplayBookmark, MadEditFrame::OnViewDisplayBookmark)
+	EVT_MENU(menuDisplay80ColHint, MadEditFrame::OnViewDisplay80ColHint)
 	EVT_MENU(menuShowEndOfLine, MadEditFrame::OnViewShowEndOfLine)
 	EVT_MENU(menuShowTabChar, MadEditFrame::OnViewShowTabChar)
 	EVT_MENU(menuShowSpaceChar, MadEditFrame::OnViewShowSpaceChar)
@@ -1425,6 +1431,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuSaveRecMacro, MadEditFrame::OnToolsSaveRecMacro)
 	EVT_MENU(menuMacroDebugMode, MadEditFrame::OnToolsMacroDebugMode)
 	EVT_MENU_RANGE(menuMadScrip1, menuMadScrip1000, MadEditFrame::OnToolsMadScriptList)
+	EVT_MENU_RANGE(menuToolBar1, menuToolBar99, MadEditFrame::OnViewToolbars)
 	EVT_MENU(menuToggleBOM, MadEditFrame::OnToolsToggleBOM)
 	EVT_MENU(menuConvertToDOS, MadEditFrame::OnToolsConvertToDOS)
 	EVT_MENU(menuConvertToMAC, MadEditFrame::OnToolsConvertToMAC)
@@ -1768,6 +1775,7 @@ CommandData CommandTable[]=
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { 0,              1, menuDisplayLineNumber, wxT("menuDisplayLineNumber"), _("&Display Line Number"), wxT("Ctrl-Alt-D"),   wxITEM_CHECK,     -1,                 0,                         _("Display the Line Numbers")},
     { 0,              1, menuDisplayBookmark,   wxT("menuDisplayBookmark"),   _("Display &Bookmark"),    wxT("Ctrl-Alt-B"),   wxITEM_CHECK,     -1,                 0,                         _("Display the Bookmark sign")},
+    { 0,              1, menuDisplay80ColHint,  wxT("menuDisplay80ColHint"),  _("Display 80th Cols &Hint"), wxT(""),          wxITEM_CHECK,     -1,                 0,                         _("Display the 80th columns hint")},
     { 0,              1, menuShowEndOfLine,     wxT("menuShowEndOfLine"),     _("Show End Of Line"),     wxT("Ctrl-Alt-L"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of EndOfLine")},
     { 0,              1, menuShowTabChar,       wxT("menuShowTabChar"),       _("Show Tab Char"),        wxT("Ctrl-Alt-T"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Tab char")},
     { 0,              1, menuShowSpaceChar,     wxT("menuShowSpaceChar"),     _("Show Space Char"),      wxT("Ctrl-Alt-S"),   wxITEM_CHECK,     -1,                 0,                         _("Show the sign of Space char")},
@@ -1775,6 +1783,8 @@ CommandData CommandTable[]=
     { 0,              1, menuMarkActiveLine,    wxT("menuMarkActiveLine"),    _("Mark Active Line"),     wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the current line")},
     { 0,              1, menuMarkBracePair,     wxT("menuMarkBracePair"),     _("Mark Brace Pair"),      wxT(""),             wxITEM_CHECK,     -1,                 0,                         _("Mark the BracePair under the caret")},
     { 0,              1, menuSpellChecker,      wxT("menuSpellChecker"),      _("Spell Checker"),        wxT("Ctrl-K"),       wxITEM_CHECK,     spellchecker_xpm_idx,                 0,       _("Spell checker")},
+    { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
+    { 0,              1, menuToolBars,           wxT("menuToolBar"),           _("Toolbars"),             0,                   wxITEM_NORMAL,    -1,                 &g_Menu_Toolbars,          0},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
@@ -2032,14 +2042,14 @@ void MadEditFrame::CreateGUIControls(void)
 
 	WxStatusBar1 = new wxStatusBar(this, ID_WXSTATUSBAR1);
 
-	WxToolBar1 = new wxToolBar(this, ID_WXTOOLBAR1, wxPoint(0, 0), wxSize(482, 29));
-	WxToolBar1->SetFont(wxFont(12, wxSWISS, wxNORMAL, wxNORMAL, false));
+	WxToolBar[tbSTANDARD] = new wxToolBar(this, ID_WXTOOLBAR1[tbSTANDARD], wxPoint(0, 0), wxSize(482, 29));
+	WxToolBar[tbSTANDARD]->SetFont(wxFont(12, wxSWISS, wxNORMAL, wxNORMAL, false));
 
 	WxMenuBar1 = new wxMenuBar();
 
 	SetStatusBar(WxStatusBar1);
-	WxToolBar1->Realize();
-	SetToolBar(WxToolBar1);
+	WxToolBar[tbSTANDARD]->Realize();
+	SetToolBar(WxToolBar[tbSTANDARD]);
 	SetTitle(wxT("MadEdit-Mod"));
 	SetIcon(wxNullIcon);
 	SetSize(8,8,400,404);
@@ -2059,8 +2069,24 @@ void MadEditFrame::CreateGUIControls(void)
     WxStatusBar1->SetFont(*pf);
 #endif
 
-    WxToolBar1 = new wxAuiToolBar(this, ID_WXTOOLBAR1, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
-    WxToolBar1->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    WxToolBar[tbSTANDARD] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSTANDARD, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbSTANDARD]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbSTANDARD] = _("Standard");
+    WxToolBar[tbEDITOR] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITOR, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbEDITOR]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbEDITOR] = _("Editor");
+    WxToolBar[tbSEARCHREPLACE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSEARCHREPLACE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbSEARCHREPLACE]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbSEARCHREPLACE] = _("Search/Replace");
+    WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbMACRO]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbMACRO] = _("Macro");
+    WxToolBar[tbTEXTVIEW] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbTEXTVIEW, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbTEXTVIEW]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbTEXTVIEW] = _("Text View");
+    WxToolBar[tbEDITMODE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITMODE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbEDITMODE]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbEDITMODE] = _("Edit Mode");
 
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
@@ -2073,8 +2099,7 @@ void MadEditFrame::CreateGUIControls(void)
     Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(MadEditFrame::OnContextMenu)); 
 #endif    
 
-    WxToolBar1->Realize();
-    //this->SetToolBar(WxToolBar1);
+    //this->SetToolBar(WxToolBar[tbSTANDARD]);
     this->SetStatusBar(WxStatusBar1);
     this->SetTitle(wxT("MadEdit-Mod "));
 
@@ -2269,6 +2294,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_View_TabColumn = new wxMenu((long)0);
     g_Menu_Tools_BOM = new wxMenu((long)0);
     g_Menu_MadMacro = new wxMenu((long)0);
+    g_Menu_Toolbars = new wxMenu((long)0);
     g_Menu_MadMacro_Scripts = new wxMenu((long)0);
     g_Menu_Tools_NewLineChar = new wxMenu((long)0);
     g_Menu_Tools_InsertNewLineChar = new wxMenu((long)0);
@@ -2452,6 +2478,15 @@ void MadEditFrame::CreateGUIControls(void)
             menu->Append(menuFontName1 + int(i), name);
         }
     }
+    {
+        for(int i=0; i<tbMAX; ++i)
+        {
+            // Fix me:ReadConfig
+            bool value = true;
+            g_Menu_Toolbars->Append(menuToolBar1 + i, g_ToolbarNames[i], wxEmptyString, wxITEM_CHECK);
+            g_Menu_Toolbars->Check(menuToolBar1 + i, value);
+        }
+    }
 
     if(!m_Config->Exists(wxT("/KeyBindings")))
     {
@@ -2530,59 +2565,68 @@ void MadEditFrame::CreateGUIControls(void)
     }
     */
 
-    //WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuNew, _T("New"), m_ImageList->GetBitmap(new_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("New File"), _("Create new file"), NULL);
-	WxToolBar1->AddTool(menuOpen, _T("Open"), m_ImageList->GetBitmap(fileopen_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Open File"), _("Open an existing file"), NULL);
-	WxToolBar1->AddTool(menuSave, _T("Save"), m_ImageList->GetBitmap(filesave_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save File"), _("Save the modified file(s)"), NULL);
-	WxToolBar1->AddTool(menuSaveAll, _T("SaveAll"), m_ImageList->GetBitmap(saveall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save All Files"), _("Save all modified files"), NULL);
-	WxToolBar1->AddTool(menuClose, _T("Close"), m_ImageList->GetBitmap(fileclose_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close File"), _("Close this file"), NULL);
-	WxToolBar1->AddTool(menuCloseAll, _T("CloseAll"), m_ImageList->GetBitmap(closeall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close All Files"), _("Close all opened files"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuUndo, _T("Undo"), m_ImageList->GetBitmap(undo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Undo"), _("Undo last operation"), NULL);
-	WxToolBar1->AddTool(menuRedo, _T("Redo"), m_ImageList->GetBitmap(redo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Redo"), _("Redo last undone operation"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuCut, _T("Cut"), m_ImageList->GetBitmap(cut_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Cut"), _("Cut selection"), NULL);
-	WxToolBar1->AddTool(menuCopy, _T("Copy"), m_ImageList->GetBitmap(copy_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Copy"), _("Copy selection"), NULL);
-	WxToolBar1->AddTool(menuPaste, _T("Paste"), m_ImageList->GetBitmap(paste_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Paste"), _("Paste selection"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuIncreaseIndent, _T("IncIndent"), m_ImageList->GetBitmap(indent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Increase Indent"), _("Increase indent for selection"), NULL);
-	WxToolBar1->AddTool(menuDecreaseIndent, _T("DecIndent"), m_ImageList->GetBitmap(unindent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Decrease Indent"), _("Decrease indent for selection"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuComment, _T("Comment"), m_ImageList->GetBitmap(comment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Comment"), _("Comment selection"), NULL);
-	WxToolBar1->AddTool(menuUncomment, _T("Uncomment"), m_ImageList->GetBitmap(uncomment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Uncomment"), _("Uncomment selection"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuToggleBookmark, _T("ToggleBookmark"), m_ImageList->GetBitmap(bookmark_toggle_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark"), _("Toggle or remove bookmark"), NULL);
-	WxToolBar1->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark"), _("Go to next bookmark"), NULL);
-	WxToolBar1->AddTool(menuGotoPreviousBookmark, _T("GotoPreviousBookmark"), m_ImageList->GetBitmap(bookmark_prev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Previous Bookmark"), _("Go to previous bookmark"), NULL);
-	WxToolBar1->AddTool(menuClearAllBookmarks, _T("ClearAllBookmarks"), m_ImageList->GetBitmap(bookmark_clear_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks"), _("Clear all bookmarks"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find"), _("Find text from caret"), NULL);
-	WxToolBar1->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
-	WxToolBar1->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
-	WxToolBar1->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _("Don't wrap line "), NULL);
-	WxToolBar1->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window"), _("Wrap lines by window width"), NULL);
-	WxToolBar1->AddTool(menuWrapByColumn, _T("WrapByColumn"), m_ImageList->GetBitmap(wrapbycol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Max Columns"), _("Wrap lines by max columns set in Opions"), NULL);
-	WxToolBar1->AddTool(menuShowAllChars, _T("ShowAllChars"), m_ImageList->GetBitmap(showsymbol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Show All Characters"), _("Show all characters including TAB, Space and EOL"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuTextMode, _T("TextMode"), m_ImageList->GetBitmap(textmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Text Mode"), _("Normal text edit mode"), NULL);
-	WxToolBar1->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Column Mode"), _("Column edit mode"), NULL);
-	WxToolBar1->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Hex Mode"), _("Hex edit mode"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuRunTempMacro, _T("RunTempMacro"), m_ImageList->GetBitmap(runscript_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Run Temporary Macro"), _("Temporarily edit and run a macro"), NULL);
-	WxToolBar1->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Start Recording"), _("Start recording user operation with Mad-Python"), NULL);
-	WxToolBar1->AddTool(menuStopRecMacro, _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Stop Recording"), _("Stop recording user operation with Mad-Python"), NULL);
-	WxToolBar1->AddTool(menuPlayRecMacro, _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Playback"), _("Playback recorded Mad-Python"), NULL);
-	WxToolBar1->AddTool(menuSaveRecMacro, _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro"), _("Save recorded macro to Mad-Python file"), NULL);
-	WxToolBar1->AddSeparator();
-	WxToolBar1->AddTool(menuSpellChecker, _T("SpellChecker"), m_ImageList->GetBitmap(spellchecker_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Spell Checker"), _("Spell checker according to dictionary selected"), NULL);
-	WxToolBar1->Realize();
+    //WxToolBar[tbSTANDARD]->AddSeparator();
+	WxToolBar[tbSTANDARD]->AddTool(menuNew, _T("New"), m_ImageList->GetBitmap(new_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("New File"), _("Create new file"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuOpen, _T("Open"), m_ImageList->GetBitmap(fileopen_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Open File"), _("Open an existing file"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuSave, _T("Save"), m_ImageList->GetBitmap(filesave_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save File"), _("Save the modified file(s)"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuSaveAll, _T("SaveAll"), m_ImageList->GetBitmap(saveall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save All Files"), _("Save all modified files"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuClose, _T("Close"), m_ImageList->GetBitmap(fileclose_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close File"), _("Close this file"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuCloseAll, _T("CloseAll"), m_ImageList->GetBitmap(closeall_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Close All Files"), _("Close all opened files"), NULL);
+	WxToolBar[tbSTANDARD]->AddSeparator();
+	WxToolBar[tbSTANDARD]->AddTool(menuUndo, _T("Undo"), m_ImageList->GetBitmap(undo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Undo"), _("Undo last operation"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuRedo, _T("Redo"), m_ImageList->GetBitmap(redo_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Redo"), _("Redo last undone operation"), NULL);
+	WxToolBar[tbSTANDARD]->AddSeparator();
+	WxToolBar[tbSTANDARD]->AddTool(menuCut, _T("Cut"), m_ImageList->GetBitmap(cut_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Cut"), _("Cut selection"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuCopy, _T("Copy"), m_ImageList->GetBitmap(copy_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Copy"), _("Copy selection"), NULL);
+	WxToolBar[tbSTANDARD]->AddTool(menuPaste, _T("Paste"), m_ImageList->GetBitmap(paste_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Paste"), _("Paste selection"), NULL);
+	WxToolBar[tbSTANDARD]->Realize();
 
-    //WxToolBar1->EnableTool(wxID_NEW, false);
-    //WxToolBar1->ToggleTool(wxID_NEW, true);
+	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFind, _T("Find"), m_ImageList->GetBitmap(find_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find"), _("Find text from caret"), NULL);
+	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
+	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
+	WxToolBar[tbSEARCHREPLACE]->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
+	WxToolBar[tbSEARCHREPLACE]->Realize();
+
+	WxToolBar[tbTEXTVIEW]->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _("Don't wrap line "), NULL);
+	WxToolBar[tbTEXTVIEW]->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window"), _("Wrap lines by window width"), NULL);
+	WxToolBar[tbTEXTVIEW]->AddTool(menuWrapByColumn, _T("WrapByColumn"), m_ImageList->GetBitmap(wrapbycol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Max Columns"), _("Wrap lines by max columns set in Opions"), NULL);
+	WxToolBar[tbTEXTVIEW]->AddTool(menuShowAllChars, _T("ShowAllChars"), m_ImageList->GetBitmap(showsymbol_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Show All Characters"), _("Show all characters including TAB, Space and EOL"), NULL);
+	WxToolBar[tbTEXTVIEW]->AddTool(menuSpellChecker, _T("SpellChecker"), m_ImageList->GetBitmap(spellchecker_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Spell Checker"), _("Spell checker according to dictionary selected"), NULL);
+	WxToolBar[tbTEXTVIEW]->Realize();
+    
+	WxToolBar[tbEDITMODE]->AddTool(menuTextMode, _T("TextMode"), m_ImageList->GetBitmap(textmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Text Mode"), _("Normal text edit mode"), NULL);
+	WxToolBar[tbEDITMODE]->AddTool(menuColumnMode, _T("ColumnMode"), m_ImageList->GetBitmap(columnmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Column Mode"), _("Column edit mode"), NULL);
+	WxToolBar[tbEDITMODE]->AddTool(menuHexMode, _T("HexMode"), m_ImageList->GetBitmap(hexmode_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Hex Mode"), _("Hex edit mode"), NULL);
+	WxToolBar[tbEDITMODE]->Realize();
+
+	WxToolBar[tbMACRO]->AddTool(menuRunTempMacro, _T("RunTempMacro"), m_ImageList->GetBitmap(runscript_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Run Temporary Macro"), _("Temporarily edit and run a macro"), NULL);
+	WxToolBar[tbMACRO]->AddTool(menuStartRecMacro, _T("StartRecMacro"), m_ImageList->GetBitmap(record_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Start Recording"), _("Start recording user operation with Mad-Python"), NULL);
+	WxToolBar[tbMACRO]->AddTool(menuStopRecMacro, _T("StopRecMacro"), m_ImageList->GetBitmap(stop_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Stop Recording"), _("Stop recording user operation with Mad-Python"), NULL);
+	WxToolBar[tbMACRO]->AddTool(menuPlayRecMacro, _T("PlayRecMacro"), m_ImageList->GetBitmap(play_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Playback"), _("Playback recorded Mad-Python"), NULL);
+	WxToolBar[tbMACRO]->AddTool(menuSaveRecMacro, _T("SaveRecMacro"), m_ImageList->GetBitmap(saverec_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Save Currently Recorded Macro"), _("Save recorded macro to Mad-Python file"), NULL);
+	WxToolBar[tbMACRO]->Realize();
+
+	WxToolBar[tbEDITOR]->AddTool(menuIncreaseIndent, _T("IncIndent"), m_ImageList->GetBitmap(indent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Increase Indent"), _("Increase indent for selection"), NULL);
+	WxToolBar[tbEDITOR]->AddTool(menuDecreaseIndent, _T("DecIndent"), m_ImageList->GetBitmap(unindent_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Decrease Indent"), _("Decrease indent for selection"), NULL);
+	WxToolBar[tbEDITOR]->AddSeparator();
+	WxToolBar[tbEDITOR]->AddTool(menuComment, _T("Comment"), m_ImageList->GetBitmap(comment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Comment"), _("Comment selection"), NULL);
+	WxToolBar[tbEDITOR]->AddTool(menuUncomment, _T("Uncomment"), m_ImageList->GetBitmap(uncomment_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Uncomment"), _("Uncomment selection"), NULL);
+	WxToolBar[tbEDITOR]->AddSeparator();
+	WxToolBar[tbEDITOR]->AddTool(menuToggleBookmark, _T("ToggleBookmark"), m_ImageList->GetBitmap(bookmark_toggle_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Toggle/Remove Bookmark"), _("Toggle or remove bookmark"), NULL);
+	WxToolBar[tbEDITOR]->AddTool(menuGotoNextBookmark, _T("GotoNextBookmark"), m_ImageList->GetBitmap(bookmark_next_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Next Bookmark"), _("Go to next bookmark"), NULL);
+	WxToolBar[tbEDITOR]->AddTool(menuGotoPreviousBookmark, _T("GotoPreviousBookmark"), m_ImageList->GetBitmap(bookmark_prev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Go To Previous Bookmark"), _("Go to previous bookmark"), NULL);
+	WxToolBar[tbEDITOR]->AddTool(menuClearAllBookmarks, _T("ClearAllBookmarks"), m_ImageList->GetBitmap(bookmark_clear_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Clear All Bookmarks"), _("Clear all bookmarks"), NULL);
+	WxToolBar[tbEDITOR]->Realize();
+
+    //WxToolBar[tbSTANDARD]->EnableTool(wxID_NEW, false);
+    //WxToolBar[tbSTANDARD]->ToggleTool(wxID_NEW, true);
 	// add the toolbars to the manager
-	m_AuiManager.AddPane(WxToolBar1, wxAuiPaneInfo().Name(wxT("WxToolBar1")).Caption(wxT("MadEdit-Mod Toolbar")).ToolbarPane().Top());
+	m_AuiManager.AddPane(WxToolBar[tbSTANDARD],      wxAuiPaneInfo().Name(wxT("WxToolBar1")).Caption(wxT("Starndard")).ToolbarPane().Top().Row(1));
+	m_AuiManager.AddPane(WxToolBar[tbEDITOR],        wxAuiPaneInfo().Name(wxT("WxToolBar2")).Caption(wxT("Editor")).ToolbarPane().Top().Row(1).Position(1));
+	m_AuiManager.AddPane(WxToolBar[tbSEARCHREPLACE], wxAuiPaneInfo().Name(wxT("WxToolBar3")).Caption(wxT("Search/Replace")).ToolbarPane().Top().Row(1).Position(2));
+	m_AuiManager.AddPane(WxToolBar[tbMACRO],         wxAuiPaneInfo().Name(wxT("WxToolBar4")).Caption(wxT("Macro")).ToolbarPane().Top().Row(1).Position(3));
+	m_AuiManager.AddPane(WxToolBar[tbTEXTVIEW],      wxAuiPaneInfo().Name(wxT("WxToolBar5")).Caption(wxT("Text View")).ToolbarPane().Top().Row(1).Position(4));
+	m_AuiManager.AddPane(WxToolBar[tbEDITMODE],      wxAuiPaneInfo().Name(wxT("WxToolBar6")).Caption(wxT("Edit Mode")).ToolbarPane().Top().Row(1).Position(5));
 
     // information window
     int infoW = 300, infoH = 130;
@@ -2879,7 +2923,7 @@ WXLRESULT MadEditFrame::MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM 
 
 void MadEditFrame::OnNotebookPageChanging(wxAuiNotebookEvent& event)
 {
-	g_PrevPageID = event.GetOldSelection();
+    g_PrevPageID = event.GetOldSelection();
 }
 
 void MadEditFrame::OnNotebookPageChanged(wxAuiNotebookEvent& event)
@@ -3745,6 +3789,11 @@ void MadEditFrame::OnUpdateUI_MenuViewDisplayBookmark(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetDisplayBookmark());
 }
+void MadEditFrame::OnUpdateUI_MenuViewDisplay80ColHint(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL);
+    event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetDisplay80ColHint());
+}
 void MadEditFrame::OnUpdateUI_MenuViewShowEndOfLine(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL);
@@ -3814,7 +3863,26 @@ void MadEditFrame::OnUpdateUI_MenuViewHexMode(wxUpdateUIEvent& event)
     event.Enable(g_ActiveMadEdit!=NULL);
     event.Check(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()==emHexMode);
 }
-
+void MadEditFrame::OnUpdateUI_MenuViewToolbars(wxUpdateUIEvent& event)
+{
+    event.Enable(tbMAX != 0);
+}
+void MadEditFrame::OnUpdateUI_MenuViewToolbarList(wxUpdateUIEvent& event)
+{
+    int menuItemId = event.GetId();
+    int toolbarId = menuItemId - menuToolBar1;
+    if(toolbarId < tbMAX)
+    {
+        if(m_AuiManager.GetPane(WxToolBar[toolbarId]).IsShown())
+        {
+            g_Menu_Toolbars->Check(menuItemId, true);
+        }
+        else
+        {
+            g_Menu_Toolbars->Check(menuItemId, false);
+        }
+    }
+}
 void MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event)
 {
     MadEncodingType type;
@@ -5804,6 +5872,18 @@ void MadEditFrame::OnViewDisplayBookmark(wxCommandEvent& event)
         RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplayBookmark(False)")));
 }
 
+void MadEditFrame::OnViewDisplay80ColHint(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+
+    g_ActiveMadEdit->SetDisplay80ColHint(event.IsChecked());
+    
+    if(event.IsChecked())
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplay80ColHint(True)")));
+    else
+        RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetDisplay80ColHint(False)")));
+}
+
 void MadEditFrame::OnViewShowEndOfLine(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
@@ -5947,6 +6027,29 @@ void MadEditFrame::OnViewHexMode(wxCommandEvent& event)
 
     g_ActiveMadEdit->SetEditMode(emHexMode);
     RecordAsMadMacro(g_ActiveMadEdit, wxString(wxT("SetEditMode(MadEditMode.HexMode)")));
+}
+void MadEditFrame::OnViewToolbars(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+    int menuId = event.GetId();
+    int toolbarId = menuId - menuToolBar1;
+    if(toolbarId < tbMAX)
+    {
+        if(m_AuiManager.GetPane(WxToolBar[toolbarId]).IsShown())
+        {
+            wxAuiPaneInfo &pinfo=m_AuiManager.GetPane(WxToolBar[toolbarId]);
+            pinfo.Top().Row(1).Position(toolbarId).Hide();
+            //m_AuiManager.GetPane(WxToolBar[toolbarId]).Show(false);
+            g_Menu_Toolbars->Check(menuId, false);
+            m_AuiManager.Update();
+        }
+        else
+        {
+            m_AuiManager.GetPane(WxToolBar[toolbarId]).Show(true);
+            g_Menu_Toolbars->Check(menuId, true);
+            m_AuiManager.Update();
+        }
+    }
 }
 
 void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
@@ -6951,7 +7054,7 @@ void MadEditFrame::OnRightClickToolBar(wxMouseEvent& event)
 {
     //MadMessageBox(_("OnRightClickToolBar!"), wxT("MadEdit-Mod"), wxICON_WARNING|wxOK);
     wxPoint pos(event.m_x, event.m_y);
-    wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, WxToolBar1->GetId(), pos);
+    wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, WxToolBar[tbSTANDARD]->GetId(), pos);
     OnContextMenu(ctEvt);
 }
 

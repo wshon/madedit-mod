@@ -54,6 +54,17 @@ class MadTreeCtrl;
 class MadRecentList;
 class wxSpellCheckEngineInterface;
 
+enum MadToolBarType
+{
+    tbSTANDARD = 0,
+    tbEDITOR,
+    tbSEARCHREPLACE,
+    tbMACRO,
+    tbTEXTVIEW,
+    tbEDITMODE,
+    tbMAX,
+};
+
 class MadEditFrame : public wxFrame
 {
 private:
@@ -70,13 +81,7 @@ public:
   //after the block.
   ////GUI Control Declaration Start
 		wxMenuBar *WxMenuBar1;
-		wxAuiToolBar *WxToolBar1;
-		wxAuiToolBar *WxToolBar2;
-		wxAuiToolBar *WxToolBar3;
-		wxAuiToolBar *WxToolBar4;
-		wxAuiToolBar *WxToolBar5;
-		wxAuiToolBar *WxToolBar6;
-		wxAuiToolBar *WxToolBar7;
+		wxAuiToolBar *WxToolBar[tbMAX];
 		wxStatusBar *WxStatusBar1;
   ////GUI Control Declaration End
 public:
@@ -85,11 +90,11 @@ public:
 	//It may replace a numeric value in the enums names.
 	enum {
 ////GUI Enum Control ID Start
-			ID_WXTOOLBAR1 = 1005,
 			ID_WXSTATUSBAR1 = 1003,
+			ID_WXTOOLBAR1 = 1005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
 ////GUI Enum Control ID End
 
-    ID_NOTEBOOK, // for wxAuiNotebook m_Notebook
+    ID_NOTEBOOK = (ID_WXTOOLBAR1+tbMAX), // for wxAuiNotebook m_Notebook
     ID_OUTPUTNOTEBOOK,
     ID_FINDINFILESRESULTS,
 
@@ -152,6 +157,7 @@ public:
     void OnUpdateUI_MenuViewWrapByColumn(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewDisplayLineNumber(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewDisplayBookmark(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewDisplay80ColHint(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewShowEndOfLine(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewShowTabChar(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewShowSpaceChar(wxUpdateUIEvent& event);
@@ -165,6 +171,8 @@ public:
     void OnUpdateUI_MenuSpellIgnore(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuSpellRemoveFromDict(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewToolbars(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewToolbarList(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuToolsNewLineChar(wxUpdateUIEvent& event);
@@ -290,6 +298,7 @@ public:
     void OnViewWrapByColumn(wxCommandEvent& event);
     void OnViewDisplayLineNumber(wxCommandEvent& event);
     void OnViewDisplayBookmark(wxCommandEvent& event);
+    void OnViewDisplay80ColHint(wxCommandEvent& event);
     void OnViewShowEndOfLine(wxCommandEvent& event);
     void OnViewShowTabChar(wxCommandEvent& event);
     void OnViewShowSpaceChar(wxCommandEvent& event);
@@ -303,6 +312,7 @@ public:
     void OnSpellCheckIgnore(wxCommandEvent& event);
     void OnSpellAdd2Dict(wxCommandEvent& event);
     void OnSpellCheckRemoveFromDict(wxCommandEvent& event);
+    void OnViewToolbars(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
     void OnToolsHighlighting(wxCommandEvent& event);
@@ -590,7 +600,7 @@ enum { // menu id
     menuSpellOption1,
     menuSpellOption99 = menuSpellOption1 + 98,
     // ToolBar
-    menuToolBar,
+    menuToolBars,
     menuToolBar1,
     menuToolBar99 = menuToolBar1 + 98,
 
