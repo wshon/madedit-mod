@@ -7181,7 +7181,7 @@ void MadEditFrame::PurgeRecentEncodings()
 void MadEditFrame::OnRightClickToolBar(wxAuiToolBarEvent& event)
 {
     wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, event.GetId(), event.GetClickPoint());
-    OnContextMenu(ctEvt);
+    g_MainFrame->OnContextMenu(ctEvt);
 }
 
 void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
@@ -7201,7 +7201,7 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
 
     for(int i=tbSTANDARD; i<tbMAX; ++i)
     {
-        if(g_MainFrame->m_AuiManager.GetPane(WxToolBar[i]).IsShown())
+        if(m_AuiManager.GetPane(WxToolBar[i]).IsShown())
             g_Menu_FrameContext->Check(menuToolBar1 + i, true);
     }
     

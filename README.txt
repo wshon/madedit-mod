@@ -92,6 +92,7 @@ Note: Not backward compatible with wxWidgets 2.8.x because of wxAuiToolBar
 4. Toggle-able sign of the 80th column
 5. Improve UI and performance
 6. Change language tag from "MadEdit" to "MadEdit-Mod"
+7. Fix bug of initialized bookmark width
 
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then

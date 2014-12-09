@@ -963,6 +963,8 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     m_LineNumberAreaWidth=GetLineNumberAreaWidth(0);
     if(m_DisplayBookmark)
         m_BookmarkWidth = m_RowHeight;
+    else
+        m_BookmarkWidth = 0;
 
     m_LastPaintBitmap=-1;
 
