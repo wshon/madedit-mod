@@ -7206,23 +7206,6 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
     }
     
     PopupMenu(g_Menu_FrameContext);
-#if 0
-    static wxMenu menu((long)0);
-    static bool needInit = true;
-    if(needInit)
-    {
-        menu.Append(menuToolBarsToggleAll, _("Toggle Main Toolbar"), wxEmptyString, wxITEM_CHECK);
-        menu.AppendSeparator();
-        for(int i=tbSTANDARD; i<tbMAX; ++i)
-        {
-            menu.Append(menuToolBar1 + i, g_ToolbarNames[i], wxEmptyString, wxITEM_CHECK);
-            if(m_AuiManager.GetPane(WxToolBar[i]).IsShown())
-                menu.Check(menuToolBar1 + i, true);
-        }
-        needInit = false;
-    }
-    PopupMenu(&menu, event.GetPosition());
-#endif    
 #endif // wxUSE_MENUS
 }
 
@@ -7249,15 +7232,9 @@ void MadTreeCtrl::OnItemMenu(wxTreeEvent& event)
     wxTreeItemId itemId = event.GetItem();
     wxCHECK_RET( itemId.IsOk(), _("Invalid item") );
 
-    //MyTreeItemData *item = (MyTreeItemData *)GetItemData(itemId);
     wxPoint clientpt = event.GetPoint();
-    //wxPoint screenpt = ClientToScreen(clientpt);
-
-    //wxLogMessage(wxT("OnItemMenu for item \"%s\" at screen coords (%i, %i)"),
-    //             item->GetDesc(), screenpt.x, screenpt.y);
 
     ShowMenu(itemId, clientpt);
-    //event.Skip();
 }
 
 void MadTreeCtrl::ShowMenu(wxTreeItemId id, const wxPoint& pt)
@@ -7270,10 +7247,8 @@ void MadTreeCtrl::ShowMenu(wxTreeItemId id, const wxPoint& pt)
         menu.Append(menuCopyCurResult, _("&Copy Selected"));
         menu.Append(menuCopyAllResults, _("Copy &All"));
         menu.Append(menuResetCurResult, _("&Reset Results"));
-        //menu.Append(TreeTest_Highlight, wxT("&Highlight item
         needInit = false;
     }
-    //menu.Append(TreeTest_Dump, wxT("&Dump"));
 
     PopupMenu(&menu, pt);
 #endif // wxUSE_MENUS
