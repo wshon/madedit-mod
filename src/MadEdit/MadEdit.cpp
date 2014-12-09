@@ -2002,6 +2002,18 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
     int xpos1=0, xpos2=0;
 
     // Begin Paint Lines
+    
+    if(m_DisplayLineNumber)
+    {
+        // paint bg
+        m_Syntax->SetAttributes(aeLineNumber);
+        if(m_Syntax->nw_BgColor != bgcolor)
+        {
+            dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID));
+            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
+            dc->DrawRectangle(rect.GetLeft(), rect.GetTop(), m_LineNumberAreaWidth, rect.GetHeight());
+        }
+    }
     for(;;)                         // every line
     {
         do                          // every row of line
@@ -2325,12 +2337,12 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                 {
                     // paint bg
                     m_Syntax->SetAttributes(aeLineNumber);
-                    if(m_Syntax->nw_BgColor != bgcolor)
-                    {
-                        dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID));
-                        dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
-                        dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
-                    }
+                    //if(m_Syntax->nw_BgColor != bgcolor)
+                    //{
+                    //    dc->SetPen(*wxThePenList->FindOrCreatePen(m_Syntax->nw_BgColor, 1, wxSOLID));
+                    //    dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
+                    //    dc->DrawRectangle(l, row_top, m_LineNumberAreaWidth, m_RowHeight);
+                    //}
                     if(displaylinenumber)
                     {
                         //else //----------
