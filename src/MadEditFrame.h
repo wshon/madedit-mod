@@ -172,6 +172,7 @@ public:
     void OnUpdateUI_MenuSpellAdd2Dict(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuSpellRemoveFromDict(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewToolbars(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewToolbarsToggleAll(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewToolbarList(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event);
@@ -312,6 +313,7 @@ public:
     void OnSpellCheckIgnore(wxCommandEvent& event);
     void OnSpellAdd2Dict(wxCommandEvent& event);
     void OnSpellCheckRemoveFromDict(wxCommandEvent& event);
+    void OnViewToolBarsToggleAll(wxCommandEvent& event);
     void OnViewToolbars(wxCommandEvent& event);
 
     void OnToolsOptions(wxCommandEvent& event);
@@ -394,6 +396,9 @@ protected:
 
     void OnInfoNotebookSize(wxSizeEvent &evt);
     void OnFindInFilesResultsDClick(wxMouseEvent& event);
+    void AttachAuiToolbars();
+    
+    void DetachAuiToolbars();
 
 #ifdef __WXMSW__
     WXLRESULT MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam);
@@ -601,6 +606,7 @@ enum { // menu id
     menuSpellOption99 = menuSpellOption1 + 98,
     // ToolBar
     menuToolBars,
+    menuToolBarsToggleAll,
     menuToolBar1,
     menuToolBar99 = menuToolBar1 + 98,
 
