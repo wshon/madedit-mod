@@ -2831,7 +2831,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_Config->Write(wxT("/MadEdit/SearchFrom"), wxEmptyString);
     m_Config->Write(wxT("/MadEdit/SearchTo"), wxEmptyString);
 
-	wxAuiPaneInfo &pinfo = m_AuiManager.GetPane(WxToolBar[tbSTANDARD]);
+    wxAuiPaneInfo &pinfo = m_AuiManager.GetPane(WxToolBar[tbSTANDARD]);
     if(!pinfo.IsOk())
     {
         wxCommandEvent event;
@@ -7180,8 +7180,6 @@ void MadEditFrame::PurgeRecentEncodings()
 
 void MadEditFrame::OnRightClickToolBar(wxAuiToolBarEvent& event)
 {
-    //MadMessageBox(_("OnRightClickToolBar!"), wxT("MadEdit-Mod"), wxICON_WARNING|wxOK);
-    //wxPoint pos(event.m_x, event.m_y);
     wxContextMenuEvent ctEvt(wxEVT_AUITOOLBAR_RIGHT_CLICK, event.GetId(), event.GetClickPoint());
     OnContextMenu(ctEvt);
 }
@@ -7192,24 +7190,29 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
     if(g_Menu_FrameContext == NULL)
     {
         g_Menu_FrameContext = new wxMenu((long)0);
-        
-        g_Menu_FrameContext->Append(menuToolBarsToggleAll, _("Toggle Main Toolbar"), wxEmptyString, wxITEM_CHECK);
-		g_Menu_FrameContext->AppendSeparator();
+
+        g_Menu_FrameContext->AppendCheckItem(menuToolBarsToggleAll, _("Toggle Main Toolbar"));
+        g_Menu_FrameContext->AppendSeparator();
         for(int i=tbSTANDARD; i<tbMAX; ++i)
         {
-			g_Menu_FrameContext->Append(menuToolBar1 + i, g_ToolbarNames[i], wxEmptyString, wxITEM_CHECK);
-            if(m_AuiManager.GetPane(WxToolBar[i]).IsShown())
-				g_Menu_FrameContext->Check(menuToolBar1 + i, true);
+            g_Menu_FrameContext->AppendCheckItem(menuToolBar1 + i, g_ToolbarNames[i]);
         }
     }
-    PopupMenu(g_Menu_FrameContext, event.GetPosition());
+
+    for(int i=tbSTANDARD; i<tbMAX; ++i)
+    {
+        if(g_MainFrame->m_AuiManager.GetPane(WxToolBar[i]).IsShown())
+            g_Menu_FrameContext->Check(menuToolBar1 + i, true);
+    }
+    
+    PopupMenu(g_Menu_FrameContext);
 #if 0
     static wxMenu menu((long)0);
     static bool needInit = true;
     if(needInit)
     {
         menu.Append(menuToolBarsToggleAll, _("Toggle Main Toolbar"), wxEmptyString, wxITEM_CHECK);
-		menu.AppendSeparator();
+        menu.AppendSeparator();
         for(int i=tbSTANDARD; i<tbMAX; ++i)
         {
             menu.Append(menuToolBar1 + i, g_ToolbarNames[i], wxEmptyString, wxITEM_CHECK);
