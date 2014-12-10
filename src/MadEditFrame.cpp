@@ -2611,8 +2611,7 @@ void MadEditFrame::CreateGUIControls(void)
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
 	m_QuickSearch = new wxComboBox(WxToolBar[tbSEARCHREPLACE], ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
-    m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
-    //m_QuickSearch->Connect(wxEVT_COMBOBOX_CLOSEUP, );
+	m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
 	WxToolBar[tbSEARCHREPLACE]->AddControl(m_QuickSearch);
 	WxToolBar[tbSEARCHREPLACE]->Realize();
 
