@@ -3972,14 +3972,18 @@ void MadEditFrame::OnUpdateUI_MenuViewToolbarList(wxUpdateUIEvent& event)
     int toolbarId = menuItemId - menuToolBar1;
     if(toolbarId < tbMAX)
     {
-        if(m_AuiManager.GetPane(WxToolBar[toolbarId]).IsShown())
+        wxAuiPaneInfo &pinfo = m_AuiManager.GetPane(WxToolBar[toolbarId]);
+        if(pinfo.IsOk())
         {
-            g_Menu_Toolbars->Check(menuItemId, true);
+            if(!g_Menu_Toolbars->IsEnabled(menuItemId))
+                g_Menu_Toolbars->Enable(menuItemId, true);
+            if(pinfo.IsShown())
+                g_Menu_Toolbars->Check(menuItemId, true);
+            else
+                g_Menu_Toolbars->Check(menuItemId, false);
         }
         else
-        {
-            g_Menu_Toolbars->Check(menuItemId, false);
-        }
+            g_Menu_Toolbars->Enable(menuItemId, false);
     }
 }
 void MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event)
@@ -6164,6 +6168,8 @@ void MadEditFrame::OnViewToolBarsToggleAll(wxCommandEvent& event)
         {
             if(status[toolbarId] == false)
                 m_AuiManager.GetPane(WxToolBar[toolbarId]).Hide();
+            else
+                m_AuiManager.GetPane(WxToolBar[toolbarId]).Show();
         }
     }
     else
@@ -6174,6 +6180,7 @@ void MadEditFrame::OnViewToolBarsToggleAll(wxCommandEvent& event)
                 status[toolbarId] = true;
             else
                 status[toolbarId] = false;
+            m_AuiManager.GetPane(WxToolBar[toolbarId]).Hide();
         }
         DetachAuiToolbars();
     }
@@ -7201,8 +7208,21 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
 
     for(int i=tbSTANDARD; i<tbMAX; ++i)
     {
-        if(m_AuiManager.GetPane(WxToolBar[i]).IsShown())
-            g_Menu_FrameContext->Check(menuToolBar1 + i, true);
+        int menuId = menuToolBar1 + i;
+        wxAuiPaneInfo &pinfo = m_AuiManager.GetPane(WxToolBar[i]);
+        if(pinfo.IsOk())
+        {
+            if(!g_Menu_FrameContext->IsEnabled(menuId))
+                g_Menu_FrameContext->Enable(menuId, true);
+            if(pinfo.IsShown())
+                g_Menu_FrameContext->Check(menuId, true);
+            else
+                g_Menu_FrameContext->Check(menuId, false);
+        }
+        else
+        {
+            g_Menu_FrameContext->Enable(menuId, false);
+        }
     }
     
     PopupMenu(g_Menu_FrameContext);
