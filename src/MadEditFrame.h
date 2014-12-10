@@ -97,6 +97,7 @@ public:
     ID_NOTEBOOK = (ID_WXTOOLBAR1+tbMAX), // for wxAuiNotebook m_Notebook
     ID_OUTPUTNOTEBOOK,
     ID_FINDINFILESRESULTS,
+    ID_QUICKSEARCH,
 
     ID_DUMMY_VALUE_ //Dont Delete this DummyValue
    }; //End of Enum
@@ -114,6 +115,7 @@ public:
     wxAuiNotebook *m_InfoNotebook; //
     //wxTreeCtrl *m_FindInFilesResults;
     MadTreeCtrl *m_FindInFilesResults;
+    wxComboBox *m_QuickSearch;
 
     void OnUpdateUI_MenuFile_CheckCount(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileReload(wxUpdateUIEvent& event);
@@ -283,6 +285,7 @@ public:
     void OnSearchGoToPosition(wxCommandEvent& event);
     void OnSearchGoToLeftBrace(wxCommandEvent& event);
     void OnSearchGoToRightBrace(wxCommandEvent& event);
+    void OnSearchQuickFind(wxCommandEvent& event);
 
     void OnViewEncoding(wxCommandEvent& event);
     void OnViewRecentEncoding(wxCommandEvent& event);

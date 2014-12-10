@@ -2101,7 +2101,7 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar[tbEDITOR]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbEDITOR] = _("Editor");
     WxToolBar[tbSEARCHREPLACE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSEARCHREPLACE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
-    WxToolBar[tbSEARCHREPLACE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    WxToolBar[tbSEARCHREPLACE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar));
     g_ToolbarNames[tbSEARCHREPLACE] = _("Search/Replace");
     WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
     WxToolBar[tbMACRO]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
@@ -2610,6 +2610,10 @@ void MadEditFrame::CreateGUIControls(void)
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
+	m_QuickSearch = new wxComboBox(WxToolBar[tbSEARCHREPLACE], ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
+    m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
+    //m_QuickSearch->Connect(wxEVT_COMBOBOX_CLOSEUP, );
+	WxToolBar[tbSEARCHREPLACE]->AddControl(m_QuickSearch);
 	WxToolBar[tbSEARCHREPLACE]->Realize();
 
 	WxToolBar[tbTEXTVIEW]->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _("Don't wrap line "), NULL);
@@ -7227,6 +7231,36 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
     
     PopupMenu(g_Menu_FrameContext);
 #endif // wxUSE_MENUS
+}
+
+void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
+{
+    wxComboBox *combo = g_MainFrame->m_QuickSearch;
+    if(combo)
+    {
+        if(wxNOT_FOUND == combo->FindString(combo->GetValue(), true))
+        {
+            combo->Append( combo->GetValue() );
+        }
+        
+        MadSearchResult sr;
+        static bool reset_caretpos = false;
+        wxFileOffset rangeFrom = g_ActiveMadEdit->GetCaretPosition(), rangeTo = -1;
+        if(reset_caretpos)
+        {
+            rangeFrom = 0;
+            g_StatusBar->SetStatusText( _(""), 0 );
+            reset_caretpos = false;
+        }
+
+        sr=g_ActiveMadEdit->FindTextNext(combo->GetValue(), false, false, false, rangeFrom, rangeTo);
+        
+        if(sr == SR_NO)
+        {
+            reset_caretpos = true;
+            g_StatusBar->SetStatusText( _("Passed the end of the file"), 0 );
+        }
+    }
 }
 
 #if USE_GENERIC_TREECTRL
