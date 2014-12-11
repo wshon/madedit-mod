@@ -7244,8 +7244,9 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
         
         MadSearchResult sr;
         static bool reset_caretpos = false;
+        static wxFileOffset lastCaret = 0;
         wxFileOffset rangeFrom = g_ActiveMadEdit->GetCaretPosition(), rangeTo = -1;
-        if(reset_caretpos)
+        if((reset_caretpos && rangeFrom >= lastCaret) && !g_ActiveMadEdit->IsModified())
         {
             rangeFrom = 0;
             g_StatusBar->SetStatusText( _(""), 0 );
@@ -7253,7 +7254,7 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
         }
 
         sr=g_ActiveMadEdit->FindTextNext(combo->GetValue(), false, false, false, rangeFrom, rangeTo);
-        
+        lastCaret = rangeFrom;
         if(sr == SR_NO)
         {
             reset_caretpos = true;
