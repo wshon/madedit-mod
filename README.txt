@@ -85,6 +85,7 @@ ChangeLog:
 ----------
 Mod v0.3.1
 Note: Not backward compatible with wxWidgets 2.8.x because of wxAuiToolBar
+Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 1. Use wxAuiToolBar as ToolBar, group tools into Standard, Editor, Search/Replace,
    Text view and Macro
 2. Context menu for Main Frame/Tool bars(Show/Hide one or all tool bars)
@@ -92,7 +93,9 @@ Note: Not backward compatible with wxWidgets 2.8.x because of wxAuiToolBar
 4. Toggle-able sign of the 80th column
 5. Improve UI and performance
 6. Change language tag from "MadEdit" to "MadEdit-Mod"
-7. Fix bug of initialized bookmark width
+7. Quick search in ToolBar
+8. Fix bug of initialized bookmark width
+Update Simplified Chinese
 
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then

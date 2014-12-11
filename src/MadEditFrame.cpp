@@ -7254,15 +7254,16 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
         }
 
         sr=g_ActiveMadEdit->FindTextNext(combo->GetValue(), false, false, false, rangeFrom, rangeTo);
-        lastCaret = rangeFrom;
         if(sr == SR_NO)
         {
             reset_caretpos = true;
             g_StatusBar->SetStatusText( _("Passed the end of the file"), 0 );
+            lastCaret = rangeFrom;
         }
         else
         {
-            ;//g_ActiveMadEdit->HighlightWords();
+            lastCaret = g_ActiveMadEdit->GetFileSize();
+            //g_ActiveMadEdit->HighlightWords();
         }
     }
 }
