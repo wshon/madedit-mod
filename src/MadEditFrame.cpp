@@ -7262,7 +7262,7 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
         }
         else
         {
-            g_ActiveMadEdit->HighlightWords();
+            ;//g_ActiveMadEdit->HighlightWords();
         }
     }
 }
