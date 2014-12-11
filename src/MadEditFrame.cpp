@@ -169,6 +169,11 @@
 #include "../images/showsymbol.xpm"
 #define showsymbol_xpm_idx (spellchecker_xpm_idx+1)
 
+#include "../images/down.xpm"
+#define down_xpm_idx (showsymbol_xpm_idx+1)
+#include "../images/up.xpm"
+#define up_xpm_idx (down_xpm_idx+1)
+
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
 #else
@@ -1377,6 +1382,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuFind, MadEditFrame::OnSearchFind)
 	EVT_MENU(menuFindNext, MadEditFrame::OnSearchFindNext)
 	EVT_MENU(menuFindPrevious, MadEditFrame::OnSearchFindPrevious)
+	EVT_MENU(menuQuickFindNext, MadEditFrame::OnSearchQuickFindNext)
+	EVT_MENU(menuQuickFindPrevious, MadEditFrame::OnSearchQuickFindPrevious)
 	EVT_MENU(menuReplace, MadEditFrame::OnSearchReplace)
 	EVT_MENU(menuFindInFiles, MadEditFrame::OnSearchFindInFiles)
 	EVT_MENU(menuShowFindInFilesResults, MadEditFrame::OnSearchShowFindInFilesResults)
@@ -2113,6 +2120,8 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar[tbEDITMODE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbEDITMODE] = _("Edit Mode");
 
+    m_QuickSeachBar = new wxAuiToolBar(this, ID_WXTOOLBARQUICKSEARCH, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL | wxAUI_TB_PLAIN_BACKGROUND);
+    
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
     m_Notebook->SetDropTarget(new DnDFile());
@@ -2217,6 +2226,8 @@ void MadEditFrame::CreateGUIControls(void)
     m_ImageList->Add(wxBitmap(bookmark_clear_xpm));
     m_ImageList->Add(wxBitmap(spellchecker_xpm));
     m_ImageList->Add(wxBitmap(showsymbol_xpm));
+    m_ImageList->Add(wxBitmap(down_xpm));
+    m_ImageList->Add(wxBitmap(up_xpm));
 
     // add menuitems
     g_Menu_File = new wxMenu((long)0);
@@ -2610,10 +2621,10 @@ void MadEditFrame::CreateGUIControls(void)
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
-	m_QuickSearch = new wxComboBox(WxToolBar[tbSEARCHREPLACE], ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
-	m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
-	WxToolBar[tbSEARCHREPLACE]->AddControl(m_QuickSearch);
-	WxToolBar[tbSEARCHREPLACE]->Realize();
+	//m_QuickSearch = new wxComboBox(WxToolBar[tbSEARCHREPLACE], ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
+	//m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
+	//WxToolBar[tbSEARCHREPLACE]->AddControl(m_QuickSearch);
+	//WxToolBar[tbSEARCHREPLACE]->Realize();
 
 	WxToolBar[tbTEXTVIEW]->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _("Don't wrap line "), NULL);
 	WxToolBar[tbTEXTVIEW]->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window"), _("Wrap lines by window width"), NULL);
@@ -2669,6 +2680,25 @@ void MadEditFrame::CreateGUIControls(void)
     m_Config->Read(wxT("/MadEdit/ShowToolbarMacro"), &bb, true);
     if(!bb)
         m_AuiManager.GetPane(WxToolBar[tbMACRO]).Hide();
+
+    m_QuickSearch = new wxComboBox(m_QuickSeachBar, ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
+    m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFindNext));
+    m_QuickSeachBar->AddControl(m_QuickSearch);
+    m_QuickSeachBar->AddTool(menuQuickFindNext, _T("QuickFindNext"), m_ImageList->GetBitmap(down_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
+    m_QuickSeachBar->AddTool(menuQuickFindPrevious, _T("QuickFindPrevious"), m_ImageList->GetBitmap(up_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
+    
+    m_CheckboxWholeWord = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHWHOLEWORD, wxT("&Whole Word"));
+    m_CheckboxWholeWord->SetValue(false);
+    m_QuickSeachBar->AddControl(m_CheckboxWholeWord);
+    m_CheckboxCaseSensitive = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHCASESENSITIVE, wxT("&Case Sensitive"));
+    m_CheckboxCaseSensitive->SetValue(false);
+    m_QuickSeachBar->AddControl(m_CheckboxCaseSensitive);
+    m_CheckboxRegEx = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHREGEX, wxT("&Regular Expression"));
+    m_CheckboxRegEx->SetValue(false);
+    m_QuickSeachBar->AddControl(m_CheckboxRegEx);
+    m_QuickSeachBar->Realize();
+
+    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(wxT("QuickSeach")).Floatable(true).ToolbarPane().Top().Row(2));
 
     // information window
     int infoW = 300, infoH = 130;
@@ -7232,11 +7262,56 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
 #endif // wxUSE_MENUS
 }
 
-void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
+void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
 {
     wxComboBox *combo = g_MainFrame->m_QuickSearch;
     if(combo)
     {
+        if(combo->GetValue().IsEmpty())
+        {
+            return;
+        }
+        if(wxNOT_FOUND == combo->FindString(combo->GetValue(), true))
+        {
+            combo->Append( combo->GetValue() );
+        }
+        
+        MadSearchResult sr;
+        static bool reset_caretpos = false;
+        static wxFileOffset lastCaret = 0;
+        wxFileOffset rangeFrom = g_ActiveMadEdit->GetCaretPosition(), rangeTo = -1;
+        if((reset_caretpos && rangeFrom <= lastCaret) && !g_ActiveMadEdit->IsModified())
+        {
+            rangeFrom = 0;
+            g_StatusBar->SetStatusText( _(""), 0 );
+            reset_caretpos = false;
+        }
+
+        sr=g_ActiveMadEdit->FindTextPrevious(combo->GetValue(), g_MainFrame->m_CheckboxRegEx->GetValue(),
+            g_MainFrame->m_CheckboxCaseSensitive->GetValue(), g_MainFrame->m_CheckboxWholeWord->GetValue(), rangeFrom, rangeTo);
+        if(sr == SR_NO)
+        {
+            reset_caretpos = true;
+            g_StatusBar->SetStatusText( _("Passed the end of the file"), 0 );
+            lastCaret = rangeFrom;
+        }
+        else
+        {
+            lastCaret = 0;
+            //g_ActiveMadEdit->HighlightWords();
+        }
+    }
+}
+
+void MadEditFrame::OnSearchQuickFindNext(wxCommandEvent& event)
+{
+    wxComboBox *combo = g_MainFrame->m_QuickSearch;
+    if(combo)
+    {
+        if(combo->GetValue().IsEmpty())
+        {
+            return;
+        }
         if(wxNOT_FOUND == combo->FindString(combo->GetValue(), true))
         {
             combo->Append( combo->GetValue() );
@@ -7253,7 +7328,8 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
             reset_caretpos = false;
         }
 
-        sr=g_ActiveMadEdit->FindTextNext(combo->GetValue(), false, false, false, rangeFrom, rangeTo);
+        sr=g_ActiveMadEdit->FindTextNext(combo->GetValue(), g_MainFrame->m_CheckboxRegEx->GetValue(),
+            g_MainFrame->m_CheckboxCaseSensitive->GetValue(), g_MainFrame->m_CheckboxWholeWord->GetValue(), rangeFrom, rangeTo);
         if(sr == SR_NO)
         {
             reset_caretpos = true;

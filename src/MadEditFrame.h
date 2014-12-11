@@ -82,8 +82,12 @@ public:
   ////GUI Control Declaration Start
 		wxMenuBar *WxMenuBar1;
 		wxAuiToolBar *WxToolBar[tbMAX];
+		wxAuiToolBar *m_QuickSeachBar;
 		wxStatusBar *WxStatusBar1;
   ////GUI Control Declaration End
+        wxCheckBox   *m_CheckboxWholeWord;
+        wxCheckBox   *m_CheckboxRegEx;
+        wxCheckBox   *m_CheckboxCaseSensitive;
 public:
 	//Note: if you receive any error with these enums, then you need to
     //change your old form code that are based on the #define control ids.
@@ -98,7 +102,11 @@ public:
     ID_OUTPUTNOTEBOOK,
     ID_FINDINFILESRESULTS,
     ID_QUICKSEARCH,
-
+    ID_WXTOOLBARQUICKSEARCH,
+    ID_QUICKSEARCHWHOLEWORD,
+    ID_QUICKSEARCHREGEX,
+    ID_QUICKSEARCHCASESENSITIVE,
+    
     ID_DUMMY_VALUE_ //Dont Delete this DummyValue
    }; //End of Enum
 
@@ -285,7 +293,8 @@ public:
     void OnSearchGoToPosition(wxCommandEvent& event);
     void OnSearchGoToLeftBrace(wxCommandEvent& event);
     void OnSearchGoToRightBrace(wxCommandEvent& event);
-    void OnSearchQuickFind(wxCommandEvent& event);
+    void OnSearchQuickFindNext(wxCommandEvent& event);
+    void OnSearchQuickFindPrevious(wxCommandEvent& event);
 
     void OnViewEncoding(wxCommandEvent& event);
     void OnViewRecentEncoding(wxCommandEvent& event);
@@ -528,6 +537,8 @@ enum { // menu id
     menuFindNext,
     menuFindPrevious,
     menuFindInFiles,
+    menuQuickFindNext,
+    menuQuickFindPrevious,
     menuShowFindInFilesResults,
     menuGoToLine,
     menuGoToPosition,
