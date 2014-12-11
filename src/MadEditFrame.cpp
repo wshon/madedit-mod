@@ -7260,6 +7260,10 @@ void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
             reset_caretpos = true;
             g_StatusBar->SetStatusText( _("Passed the end of the file"), 0 );
         }
+        else
+        {
+            g_ActiveMadEdit->HighlightWords();
+        }
     }
 }
 
