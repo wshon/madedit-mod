@@ -46,7 +46,6 @@ using std::shared_ptr;
 #define MadEditFrame_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
 
-
 class wxMadAuiNotebook;
 class wxAuiNotebookEvent;
 class MadEdit;
@@ -85,24 +84,21 @@ public:
 		wxAuiToolBar *m_QuickSeachBar;
 		wxStatusBar *WxStatusBar1;
   ////GUI Control Declaration End
-        wxCheckBox   *m_CheckboxWholeWord;
-        wxCheckBox   *m_CheckboxRegEx;
-        wxCheckBox   *m_CheckboxCaseSensitive;
 public:
 	//Note: if you receive any error with these enums, then you need to
     //change your old form code that are based on the #define control ids.
 	//It may replace a numeric value in the enums names.
 	enum {
 ////GUI Enum Control ID Start
-			ID_WXSTATUSBAR1 = 1003,
-			ID_WXTOOLBAR1 = 1005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
+			ID_WXSTATUSBAR1 = 2003,
+			ID_WXTOOLBAR1 = 2005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
 ////GUI Enum Control ID End
 
     ID_NOTEBOOK = (ID_WXTOOLBAR1+tbMAX), // for wxAuiNotebook m_Notebook
     ID_OUTPUTNOTEBOOK,
     ID_FINDINFILESRESULTS,
-    ID_QUICKSEARCH,
     ID_WXTOOLBARQUICKSEARCH,
+    ID_QUICKSEARCH,
     ID_QUICKSEARCHWHOLEWORD,
     ID_QUICKSEARCHREGEX,
     ID_QUICKSEARCHCASESENSITIVE,
@@ -124,6 +120,10 @@ public:
     //wxTreeCtrl *m_FindInFilesResults;
     MadTreeCtrl *m_FindInFilesResults;
     wxComboBox *m_QuickSearch;
+    wxCheckBox     *m_CheckboxWholeWord;
+    wxCheckBox     *m_CheckboxRegEx;
+    wxCheckBox     *m_CheckboxCaseSensitive;
+    bool            m_SearchDirectionNext;
 
     void OnUpdateUI_MenuFile_CheckCount(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileReload(wxUpdateUIEvent& event);
@@ -293,6 +293,7 @@ public:
     void OnSearchGoToPosition(wxCommandEvent& event);
     void OnSearchGoToLeftBrace(wxCommandEvent& event);
     void OnSearchGoToRightBrace(wxCommandEvent& event);
+    void OnSearchQuickFind(wxCommandEvent& event);
     void OnSearchQuickFindNext(wxCommandEvent& event);
     void OnSearchQuickFindPrevious(wxCommandEvent& event);
 
