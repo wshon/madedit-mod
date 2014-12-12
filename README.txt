@@ -14,7 +14,7 @@ Supported Platforms:
 A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
    a. GNU C++ 3.x/4.x:
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode and IPC enabled
+      1. wxWidgets-2.8.x or higher with Unicode and IPC enabled
       2. Boost-1.33.0 or higher(build Boost-Python)
       3. Boost.Xpressive latest version
       4. Python 2.7 or higher
@@ -23,7 +23,7 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled(wxWidgets-2.8.12 is
+      1. wxWidgets-2.8.x or higher with Unicode enabled(wxWidgets-2.8.12 is
          recommended, and apply patches)
       2. Boost-1.33.0 or higher
       3. Boost.Xpressive latest version
@@ -93,7 +93,8 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 4. Toggle-able sign of the 80th column
 5. Improve UI and performance
 6. Change language tag from "MadEdit" to "MadEdit-Mod"
-7. Quick search in ToolBar
+7. Quick search in ToolBar, toggle show/hide with F8, follow your search direction
+   if you hit Enter after inputing some text
 8. Fix bug of initialized bookmark width
 Update Simplified Chinese
 

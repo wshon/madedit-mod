@@ -90,8 +90,8 @@ public:
 	//It may replace a numeric value in the enums names.
 	enum {
 ////GUI Enum Control ID Start
-			ID_WXSTATUSBAR1 = 2003,
-			ID_WXTOOLBAR1 = 2005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
+			ID_WXSTATUSBAR1 = 3003,
+			ID_WXTOOLBAR1 = 3005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
 ////GUI Enum Control ID End
 
     ID_NOTEBOOK = (ID_WXTOOLBAR1+tbMAX), // for wxAuiNotebook m_Notebook

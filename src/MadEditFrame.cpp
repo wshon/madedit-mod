@@ -2086,26 +2086,26 @@ void MadEditFrame::CreateGUIControls(void)
     WxStatusBar1->SetFont(*pf);
 #endif
 
-    WxToolBar[tbSTANDARD] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSTANDARD, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*/*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbSTANDARD] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSTANDARD, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbSTANDARD]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbSTANDARD] = _("Standard");
-    WxToolBar[tbEDITOR] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITOR, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbEDITOR] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITOR, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbEDITOR]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbEDITOR] = _("Editor");
-    WxToolBar[tbSEARCHREPLACE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSEARCHREPLACE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbSEARCHREPLACE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSEARCHREPLACE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbSEARCHREPLACE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar));
     g_ToolbarNames[tbSEARCHREPLACE] = _("Search/Replace");
-    WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbMACRO]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbMACRO] = _("Macro");
-    WxToolBar[tbTEXTVIEW] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbTEXTVIEW, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbTEXTVIEW] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbTEXTVIEW, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbTEXTVIEW]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbTEXTVIEW] = _("Text View");
-    WxToolBar[tbEDITMODE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITMODE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbEDITMODE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITMODE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbEDITMODE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbEDITMODE] = _("Edit Mode");
 
-    m_QuickSeachBar = new wxAuiToolBar(this, ID_WXTOOLBARQUICKSEARCH, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | /*wxAUI_TB_OVERFLOW | */wxAUI_TB_HORIZONTAL);
+    m_QuickSeachBar = new wxAuiToolBar(this, ID_WXTOOLBARQUICKSEARCH, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
