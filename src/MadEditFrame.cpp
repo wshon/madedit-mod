@@ -63,7 +63,6 @@
 ////Header Include Start
 ////Header Include End
 
-
 #ifdef _DEBUG
 #include <crtdbg.h>
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
@@ -186,7 +185,7 @@ extern wxString g_MadEditMod_URL;
 extern wxString MadEncodingGrpName[];
 
 EmbeddedPython *g_EmbeddedPython = 0;
-
+MadRecentList  *g_RecentFindText = NULL;
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
 
 MadEditFrame *g_MainFrame=NULL;
@@ -2681,6 +2680,20 @@ void MadEditFrame::CreateGUIControls(void)
         m_AuiManager.GetPane(WxToolBar[tbMACRO]).Hide();
 
     m_QuickSearch = new wxComboBox(m_QuickSeachBar, ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
+    g_RecentFindText=new MadRecentList(20, ID_RECENTFINDTEXT1, true); //Should be freed in SearchDialog 
+    wxString oldpath=m_Config->GetPath();
+    m_Config->SetPath(wxT("/RecentFindText"));
+    g_RecentFindText->Load(*m_Config);
+    m_Config->SetPath(oldpath);
+
+    int count = g_RecentFindText->GetCount();
+    if(count>0)
+    {
+        wxString text=g_RecentFindText->GetHistoryFile(0);
+        m_QuickSearch->SetValue(text);
+        m_QuickSearch->Append(text);
+        for(size_t i=1; i<count; ++i) m_QuickSearch->Append(g_RecentFindText->GetHistoryFile(i));
+    }
     //m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
     m_QuickSeachBar->AddControl(m_QuickSearch);
     m_QuickSeachBar->AddTool(menuQuickFindNext, _T("QuickFindNext"), m_ImageList->GetBitmap(down_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
@@ -7255,7 +7268,8 @@ void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
         }
         if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
         {
-            m_QuickSearch->Append( m_QuickSearch->GetValue() );
+            m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
+            g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
         }
         
         MadSearchResult sr;
@@ -7296,7 +7310,8 @@ void MadEditFrame::OnSearchQuickFindNext(wxCommandEvent& event)
         }
         if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
         {
-            m_QuickSearch->Append( m_QuickSearch->GetValue() );
+            m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
+            g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
         }
         
         MadSearchResult sr;

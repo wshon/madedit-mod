@@ -29,7 +29,7 @@ extern int MadMessageBox(const wxString& message,
 #include "../images/down.xpm"
 
 extern wxStatusBar *g_StatusBar;   // add: gogo, 19.09.2009
-
+extern MadRecentList * g_RecentFindText;
 MadSearchDialog *g_SearchDialog=NULL;
 extern void RecordAsMadMacro(MadEdit *, const wxString&);
 extern MadEdit *g_ActiveMadEdit;
@@ -262,8 +262,9 @@ void MadSearchDialog::CreateGUIControls(void)
     WxButtonClose->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadSearchDialog::MadSearchDialogKeyDown));
 
 
-    m_RecentFindText=new MadRecentList(20, ID_RECENTFINDTEXT1, true);
+    m_RecentFindText=g_RecentFindText;//new MadRecentList(20, ID_RECENTFINDTEXT1, true);
     m_RecentFindText->UseMenu(WxPopupMenuRecentFindText);
+    m_RecentFindText->AddFilesToMenu();
 
     wxConfigBase *m_Config=wxConfigBase::Get(false);
     wxString oldpath=m_Config->GetPath();
@@ -280,9 +281,9 @@ void MadSearchDialog::CreateGUIControls(void)
     WxCheckBoxSearchThrEndOfFile->SetValue( bb );
     //--------
 
-    m_Config->SetPath(wxT("/RecentFindText"));
-    m_RecentFindText->Load(*m_Config);
-    m_Config->SetPath(oldpath);
+    //m_Config->SetPath(wxT("/RecentFindText"));
+    //m_RecentFindText->Load(*m_Config);
+    //m_Config->SetPath(oldpath);
 
     if(m_RecentFindText->GetCount()>0)
     {
