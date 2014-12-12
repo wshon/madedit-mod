@@ -41,10 +41,10 @@ using boost::shared_ptr;
 using std::shared_ptr;
 #endif
 
-////Dialog Style Start
+////Frame Style Start
 #undef MadEditFrame_STYLE
 #define MadEditFrame_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxCLOSE_BOX
-////Dialog Style End
+////Frame Style End
 
 class wxMadAuiNotebook;
 class wxAuiNotebookEvent;
@@ -124,6 +124,7 @@ public:
     wxCheckBox     *m_CheckboxRegEx;
     wxCheckBox     *m_CheckboxCaseSensitive;
     bool            m_SearchDirectionNext;
+    bool            m_ToolbarStatus[tbMAX+1];
 
     void OnUpdateUI_MenuFile_CheckCount(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileReload(wxUpdateUIEvent& event);
@@ -296,6 +297,7 @@ public:
     void OnSearchQuickFind(wxCommandEvent& event);
     void OnSearchQuickFindNext(wxCommandEvent& event);
     void OnSearchQuickFindPrevious(wxCommandEvent& event);
+    void OnShowSearchQuickFindBar(wxCommandEvent& event);
 
     void OnViewEncoding(wxCommandEvent& event);
     void OnViewRecentEncoding(wxCommandEvent& event);
@@ -409,9 +411,6 @@ protected:
 
     void OnInfoNotebookSize(wxSizeEvent &evt);
     void OnFindInFilesResultsDClick(wxMouseEvent& event);
-    void AttachAuiToolbars();
-    
-    void DetachAuiToolbars();
 
 #ifdef __WXMSW__
     WXLRESULT MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam);
@@ -538,6 +537,7 @@ enum { // menu id
     menuFindNext,
     menuFindPrevious,
     menuFindInFiles,
+    menuShowQuickFindBar,
     menuQuickFindNext,
     menuQuickFindPrevious,
     menuShowFindInFilesResults,
