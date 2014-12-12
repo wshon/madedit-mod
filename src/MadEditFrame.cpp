@@ -2606,10 +2606,6 @@ void MadEditFrame::CreateGUIControls(void)
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindNext, _T("FindNext"), m_ImageList->GetBitmap(findnext_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuFindPrevious, _T("FindPrev"), m_ImageList->GetBitmap(findprev_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
 	WxToolBar[tbSEARCHREPLACE]->AddTool(menuReplace, _T("Replace"), m_ImageList->GetBitmap(replace_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Replace"), _("Replace matched text with new one from caret"), NULL);
-	//m_QuickSearch = new wxComboBox(WxToolBar[tbSEARCHREPLACE], ID_QUICKSEARCH, wxEmptyString, wxDefaultPosition, wxSize(200, 21));
-	//m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
-	//WxToolBar[tbSEARCHREPLACE]->AddControl(m_QuickSearch);
-	//WxToolBar[tbSEARCHREPLACE]->Realize();
 
 	WxToolBar[tbTEXTVIEW]->AddTool(menuNoWrap, _T("NoWrap"), m_ImageList->GetBitmap(nowrap_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("No Line Wrap"), _("Don't wrap line "), NULL);
 	WxToolBar[tbTEXTVIEW]->AddTool(menuWrapByWindow, _T("WrapByWindow"), m_ImageList->GetBitmap(wrapbywin_xpm_idx), wxNullBitmap, wxITEM_CHECK, _("Wrap Lines by Window"), _("Wrap lines by window width"), NULL);
@@ -2690,18 +2686,18 @@ void MadEditFrame::CreateGUIControls(void)
     m_QuickSeachBar->AddTool(menuQuickFindNext, _T("QuickFindNext"), m_ImageList->GetBitmap(down_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
     m_QuickSeachBar->AddTool(menuQuickFindPrevious, _T("QuickFindPrevious"), m_ImageList->GetBitmap(up_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
     
-    m_CheckboxWholeWord = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHWHOLEWORD, wxT("&Whole Word"));
+    m_CheckboxWholeWord = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHWHOLEWORD, _("&Whole Word"));
     m_CheckboxWholeWord->SetValue(false);
     m_QuickSeachBar->AddControl(m_CheckboxWholeWord);
-    m_CheckboxCaseSensitive = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHCASESENSITIVE, wxT("&Case Sensitive"));
+    m_CheckboxCaseSensitive = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHCASESENSITIVE, _("&Case Sensitive"));
     m_CheckboxCaseSensitive->SetValue(false);
     m_QuickSeachBar->AddControl(m_CheckboxCaseSensitive);
-    m_CheckboxRegEx = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHREGEX, wxT("&Regular Expression"));
+    m_CheckboxRegEx = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHREGEX, _("&Regular Expression"));
     m_CheckboxRegEx->SetValue(false);
     m_QuickSeachBar->AddControl(m_CheckboxRegEx);
     m_QuickSeachBar->Realize();
 
-    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(wxT("Quick Seach")).Floatable(true).ToolbarPane().Top().Row(2));
+    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(_("Quick Seach")).Floatable(true).ToolbarPane().Top().Row(2));
     //m_AuiManager.AddPane(m_QuickSeachBar, wxRIGHT|wxTOP, wxT("Quick Seach"));
     m_AuiManager.GetPane(m_QuickSeachBar).Hide();
 
