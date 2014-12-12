@@ -2698,7 +2698,7 @@ void MadEditFrame::CreateGUIControls(void)
     m_QuickSeachBar->AddControl(m_CheckboxRegEx);
     m_QuickSeachBar->Realize();
 
-    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(wxT("QuickSeach")).Floatable(true).ToolbarPane().Top().Row(2));
+    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(wxT("Quick Search")).Floatable(true).ToolbarPane().Top().Row(2));
 
     // information window
     int infoW = 300, infoH = 130;
