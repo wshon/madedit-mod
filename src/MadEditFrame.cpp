@@ -7269,7 +7269,7 @@ void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
         if((reset_caretpos && rangeFrom <= lastCaret) && !g_ActiveMadEdit->IsModified())
         {
             rangeFrom = g_ActiveMadEdit->GetFileSize();
-            g_StatusBar->SetStatusText( _(""), 0 );
+            g_StatusBar->SetStatusText( wxT(""), 0 );
             reset_caretpos = false;
         }
 
@@ -7310,7 +7310,7 @@ void MadEditFrame::OnSearchQuickFindNext(wxCommandEvent& event)
         if((reset_caretpos && rangeFrom >= lastCaret) && !g_ActiveMadEdit->IsModified())
         {
             rangeFrom = 0;
-            g_StatusBar->SetStatusText( _(""), 0 );
+            g_StatusBar->SetStatusText( wxT(""), 0 );
             reset_caretpos = false;
         }
 

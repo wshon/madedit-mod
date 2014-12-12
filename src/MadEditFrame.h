@@ -108,23 +108,23 @@ public:
 
 public:
     wxMadAuiNotebook *m_Notebook;
-    int           m_NewFileCount;
+    int            m_NewFileCount;
     wxConfigBase  *m_Config;
     wxImageList   *m_ImageList;
     MadRecentList *m_RecentFiles;
     MadRecentList *m_RecentEncodings;
     MadRecentList *m_RecentFonts;
 
-    wxAuiManager m_AuiManager; // wxAUI
+    wxAuiManager   m_AuiManager; // wxAUI
     wxAuiNotebook *m_InfoNotebook; //
     //wxTreeCtrl *m_FindInFilesResults;
-    MadTreeCtrl *m_FindInFilesResults;
-    wxComboBox *m_QuickSearch;
-    wxCheckBox     *m_CheckboxWholeWord;
-    wxCheckBox     *m_CheckboxRegEx;
-    wxCheckBox     *m_CheckboxCaseSensitive;
-    bool            m_SearchDirectionNext;
-    bool            m_ToolbarStatus[tbMAX+1];
+    MadTreeCtrl   *m_FindInFilesResults;
+    wxComboBox    *m_QuickSearch;
+    wxCheckBox    *m_CheckboxWholeWord;
+    wxCheckBox    *m_CheckboxRegEx;
+    wxCheckBox    *m_CheckboxCaseSensitive;
+    bool           m_SearchDirectionNext;
+    bool           m_ToolbarStatus[tbMAX+1];
 
     void OnUpdateUI_MenuFile_CheckCount(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileReload(wxUpdateUIEvent& event);
