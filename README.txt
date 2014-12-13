@@ -94,7 +94,7 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 5. Improve UI and performance
 6. Change language tag from "MadEdit" to "MadEdit-Mod"
 7. Quick search in ToolBar, toggle show/hide with F8, follow your search direction
-   if you hit Enter after inputing some text
+   if you hit Enter after inputing some text. Searching during inputing
 8. Fix bug of initialized bookmark width
 Update Simplified Chinese
 

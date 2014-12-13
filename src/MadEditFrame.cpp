@@ -1476,6 +1476,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
 	EVT_MENU(menuCopyCurResult, MadEditFrame::OnCopyCurrResult)
 	EVT_MENU(menuCopyAllResults, MadEditFrame::OnCopyAllResults)
 	EVT_MENU(menuResetCurResult, MadEditFrame::OnResetCurrResult)
+	EVT_TEXT(ID_QUICKSEARCH, MadEditFrame::OnSearchQuickFind)
 	EVT_TEXT_ENTER(ID_QUICKSEARCH, MadEditFrame::OnSearchQuickFind)
 END_EVENT_TABLE()
   ////Event Table End
@@ -2094,18 +2095,21 @@ void MadEditFrame::CreateGUIControls(void)
     WxToolBar[tbSEARCHREPLACE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbSEARCHREPLACE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbSEARCHREPLACE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar));
     g_ToolbarNames[tbSEARCHREPLACE] = _("Search/Replace");
-    WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
-    WxToolBar[tbMACRO]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
-    g_ToolbarNames[tbMACRO] = _("Macro");
     WxToolBar[tbTEXTVIEW] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbTEXTVIEW, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbTEXTVIEW]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbTEXTVIEW] = _("Text View");
     WxToolBar[tbEDITMODE] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbEDITMODE, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
     WxToolBar[tbEDITMODE]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
     g_ToolbarNames[tbEDITMODE] = _("Edit Mode");
-
-    m_QuickSeachBar = new wxAuiToolBar(this, ID_WXTOOLBARQUICKSEARCH, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbMACRO] = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbMACRO, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    WxToolBar[tbMACRO]->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbMACRO] = _("Macro");
     
+    m_QuickSeachBar = new wxAuiToolBar(this, ID_WXTOOLBAR1+tbQSEARCH, wxPoint(0,0), wxSize(392,29), wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxAUI_TB_HORIZONTAL);
+    m_QuickSeachBar->Connect(wxEVT_AUITOOLBAR_RIGHT_CLICK, wxAuiToolBarEventHandler(MadEditFrame::OnRightClickToolBar)); 
+    g_ToolbarNames[tbQSEARCH] = _("Quick Search");
+    WxToolBar[tbQSEARCH] = m_QuickSeachBar;
+
     m_Notebook = new wxMadAuiNotebook(this, ID_NOTEBOOK, wxPoint(0,29),wxSize(392,320), wxWANTS_CHARS |wxAUI_NB_TOP|wxAUI_NB_TAB_SPLIT|wxAUI_NB_TAB_MOVE|wxAUI_NB_SCROLL_BUTTONS|wxAUI_NB_WINDOWLIST_BUTTON|wxAUI_NB_CLOSE_ON_ACTIVE_TAB);
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
     m_Notebook->SetDropTarget(new DnDFile());
@@ -2521,8 +2525,6 @@ void MadEditFrame::CreateGUIControls(void)
     }
     ResetAcceleratorTable();
 
-    MadKeyBindings::AddMenuTextCommand(menuShowQuickFindBar, wxString(wxT("menuShowQuickFindBar")), 0);
-
     /***/
     m_RecentFiles=new MadRecentList();
     m_RecentFiles->UseMenu(g_Menu_File_RecentFiles);
@@ -2686,7 +2688,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_RecentFindText->Load(*m_Config);
     m_Config->SetPath(oldpath);
 
-    int count = g_RecentFindText->GetCount();
+    size_t count = g_RecentFindText->GetCount();
     if(count>0)
     {
         wxString text=g_RecentFindText->GetHistoryFile(0);
@@ -2710,9 +2712,10 @@ void MadEditFrame::CreateGUIControls(void)
     m_QuickSeachBar->AddControl(m_CheckboxRegEx);
     m_QuickSeachBar->Realize();
 
-    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(_("Quick Seach")).Floatable(true).ToolbarPane().Top().Row(2));
+    m_AuiManager.AddPane(m_QuickSeachBar, wxAuiPaneInfo().Name(wxT("QuickSeachBar")).Caption(_("Quick Search")).Floatable(true).ToolbarPane().Top().Row(2));
     //m_AuiManager.AddPane(m_QuickSeachBar, wxRIGHT|wxTOP, wxT("Quick Seach"));
     m_AuiManager.GetPane(m_QuickSeachBar).Hide();
+    m_ToolbarStatus[tbQSEARCH] = false;
 
     // information window
     int infoW = 300, infoH = 130;
@@ -7240,36 +7243,56 @@ void MadEditFrame::OnShowSearchQuickFindBar(wxCommandEvent& event)
     if(m_AuiManager.GetPane(m_QuickSeachBar).IsShown())
     {
         m_AuiManager.GetPane(m_QuickSeachBar).Hide();
+        m_ToolbarStatus[tbQSEARCH] = false;
+        int i = tbSTANDARD;
+        for(; i<tbMAX; ++i)
+        {
+            if(m_ToolbarStatus[i])
+            {
+                m_ToolbarStatus[tbMAX] = true;
+                break;
+            }
+        }
+        if(i == tbMAX)
+            m_ToolbarStatus[tbMAX] = false;
     }
     else
     {
         m_AuiManager.GetPane(m_QuickSeachBar).Show();
         m_QuickSearch->SetFocus();
+        m_ToolbarStatus[tbQSEARCH] = true;
+        m_ToolbarStatus[tbMAX] = true;
     }
     m_AuiManager.Update();
 }
 
 void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
 {
-    if(m_SearchDirectionNext)
-        OnSearchQuickFindNext(event);
-    else
-        OnSearchQuickFindPrevious(event);
+    if(g_ActiveMadEdit)
+    {
+        if(m_SearchDirectionNext)
+            OnSearchQuickFindNext(event);
+        else
+            OnSearchQuickFindPrevious(event);
+    }
 }
 
 void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
 {
     m_SearchDirectionNext = false;
-    if(m_QuickSearch)
+    if(m_QuickSearch && g_ActiveMadEdit)
     {
         if(m_QuickSearch->GetValue().IsEmpty())
         {
             return;
         }
-        if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
+        if(event.GetEventType() == wxEVT_TEXT_ENTER)
         {
-            m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
-            g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
+            if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
+            {
+                m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
+                g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
+            }
         }
         
         MadSearchResult sr;
@@ -7302,16 +7325,19 @@ void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
 void MadEditFrame::OnSearchQuickFindNext(wxCommandEvent& event)
 {
     m_SearchDirectionNext = true;
-    if(m_QuickSearch)
+    if(m_QuickSearch && g_ActiveMadEdit)
     {
         if(m_QuickSearch->GetValue().IsEmpty())
         {
             return;
         }
-        if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
+        if(event.GetEventType() == wxEVT_TEXT_ENTER)
         {
-            m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
-            g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
+            if(wxNOT_FOUND == m_QuickSearch->FindString(m_QuickSearch->GetValue(), true))
+            {
+                m_QuickSearch->Insert( m_QuickSearch->GetValue(), 0 );
+                g_RecentFindText->AddFileToHistory(m_QuickSearch->GetValue());
+            }
         }
         
         MadSearchResult sr;
