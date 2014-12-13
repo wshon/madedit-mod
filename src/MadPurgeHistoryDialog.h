@@ -47,12 +47,14 @@ class MadPurgeHistoryDialog : public wxDialog
 		void WxButtonOKClick(wxCommandEvent& event);
 		void wxButtonCancelClick(wxCommandEvent& event);
 		void MadPurgeHistoryDialogKeyDown(wxKeyEvent& event);
+        void OnAllAboveClick(wxCommandEvent& event);
 
 	private:
 		//Do not add custom control declarations between 
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxCheckBox *WxCheckBoxAllAbove;
 		wxButton *wxButtonCancel;
 		wxButton *WxButtonOK;
 		wxBoxSizer *WxBoxSizer2;
@@ -77,6 +79,7 @@ class MadPurgeHistoryDialog : public wxDialog
 		{
 			////GUI Enum Control ID Start
 			ID_DUMMY_START = 1000,
+			ID_WXCHECKBOXALLABOVE,
 			ID_WXCHECKBOXRECENTSEARCHEDEXCLUDEFILTERS,
 			ID_WXRECENTSEARCHEDFILEFILTERS,
 			ID_WXCHECKBOXRECENTSEARCHEDDIRECTORIES,

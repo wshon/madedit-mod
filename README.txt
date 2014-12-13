@@ -84,19 +84,21 @@ Feature/issues to be released
 ChangeLog:
 ----------
 Mod v0.3.1
-Note: Not backward compatible with wxWidgets 2.8.x because of wxAuiToolBar
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 1. Use wxAuiToolBar as ToolBar, group tools into Standard, Editor, Search/Replace,
-   Text view and Macro
+   Text view, and Macro
 2. Context menu for Main Frame/Tool bars(Show/Hide one or all tool bars)
 3. Save/Load customized tool bars
-4. Toggle-able sign of the 80th column
-5. Improve UI and performance
-6. Change language tag from "MadEdit" to "MadEdit-Mod"
-7. Quick search in ToolBar, toggle show/hide with F8, follow your search direction
-   if you hit Enter after inputing some text. Searching during inputing
+4. Add Quick search ToolBar, toggle show/hide with F8, drag to float one and dock
+   anywhere.follow your search direction if you hit Enter after inputing some
+   text. Searching during inputing. 
+5. Toggle-able sign of the 80th column
+6. Improve UI and performance, improve usability of Purge History dialog
+7. Change language tag from "MadEdit" to "MadEdit-Mod"
 8. Fix bug of initialized bookmark width
-Update Simplified Chinese
+9. Fix crash if you purged history right after MadEdit started and select any of
+   the history related to search
+10. Update Simplified Chinese
 
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then

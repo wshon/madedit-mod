@@ -2784,6 +2784,18 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         PurgeRecentFiles();
         PurgeRecentFonts();
         PurgeRecentEncodings();
+        if(g_SearchDialog==NULL)
+        {
+            g_SearchDialog=new MadSearchDialog(this, -1);
+        }
+        if(g_ReplaceDialog==NULL)
+        {
+            g_ReplaceDialog=new MadReplaceDialog(this, -1);
+        }
+        if(g_FindInFilesDialog==NULL)
+        {
+            g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+        }
         if (g_SearchDialog != NULL)
         {
             if(g_SearchDialog->IsShown())
@@ -6554,6 +6566,19 @@ void MadEditFrame::OnToolsFileAssociation(wxCommandEvent& event)
 void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
 {
     MadPurgeHistoryDialog dlg(this);
+    if(g_SearchDialog==NULL)
+    {
+        g_SearchDialog=new MadSearchDialog(this, -1);
+    }
+    if(g_ReplaceDialog==NULL)
+    {
+        g_ReplaceDialog=new MadReplaceDialog(this, -1);
+    }
+    if(g_FindInFilesDialog==NULL)
+    {
+        g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+    }
+
     dlg.ShowModal();
 }
 
