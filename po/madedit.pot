@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-13 23:47+0800\n"
+"POT-Creation-Date: 2014-12-14 01:04+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -508,7 +508,7 @@ msgid "Hex Mode to Text/Column Mode"
 msgstr ""
 
 #: ../src/MadEdit/MadEditBasic.cpp:2351 ../src/MadEdit/MadEditBasic.cpp:2420
-#: ../src/MadEditFrame.cpp:3458
+#: ../src/MadEditFrame.cpp:3470
 msgid "The Parent Directory of this file does not exist:"
 msgstr ""
 
@@ -542,7 +542,7 @@ msgstr ""
 
 #: ../src/MadEdit/MadEditBasic.cpp:2473 ../src/MadEditFrame.cpp:282
 #: ../src/MadEditFrame.cpp:290 ../src/MadFileAssociationDialog.cpp:401
-#: ../src/MadHighlightingDialog.cpp:343 ../src/MadPurgeHistoryDialog.cpp:95
+#: ../src/MadHighlightingDialog.cpp:343 ../src/MadPurgeHistoryDialog.cpp:96
 #: ../src/MadOptionsDialog.cpp:798 ../src/MadConvEncDialog.cpp:103
 #: ../src/MadAboutDialog.cpp:88
 msgid "&Cancel"
@@ -793,7 +793,7 @@ msgstr ""
 msgid "Print the file"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1516 ../src/MadPurgeHistoryDialog.cpp:65
+#: ../src/MadEditFrame.cpp:1516 ../src/MadPurgeHistoryDialog.cpp:66
 msgid "Recent Files"
 msgstr ""
 
@@ -1067,7 +1067,7 @@ msgid "Convert the selection to halfwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1595 ../src/MadEditFrame.cpp:2281
-#: ../src/MadEditFrame.cpp:5070 ../src/MadEditFrame.cpp:5074
+#: ../src/MadEditFrame.cpp:5082 ../src/MadEditFrame.cpp:5086
 msgid "To Halfwidth by Options..."
 msgstr ""
 
@@ -1084,7 +1084,7 @@ msgid "Convert the selection to fullwidth"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1597 ../src/MadEditFrame.cpp:2283
-#: ../src/MadEditFrame.cpp:5124 ../src/MadEditFrame.cpp:5128
+#: ../src/MadEditFrame.cpp:5136 ../src/MadEditFrame.cpp:5140
 msgid "To Fullwidth by Options..."
 msgstr ""
 
@@ -1302,8 +1302,8 @@ msgstr ""
 msgid "&View"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1641 ../src/MadEditFrame.cpp:3766
-#: ../src/MadEditFrame.cpp:3773
+#: ../src/MadEditFrame.cpp:1641 ../src/MadEditFrame.cpp:3778
+#: ../src/MadEditFrame.cpp:3785
 msgid "Encoding: "
 msgstr ""
 
@@ -1311,13 +1311,13 @@ msgstr ""
 msgid "All Encodings"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1644 ../src/MadEditFrame.cpp:3782
-#: ../src/MadEditFrame.cpp:3787
+#: ../src/MadEditFrame.cpp:1644 ../src/MadEditFrame.cpp:3794
+#: ../src/MadEditFrame.cpp:3799
 msgid "Syntax Type: "
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1646 ../src/MadEditFrame.cpp:3799
-#: ../src/MadEditFrame.cpp:3804
+#: ../src/MadEditFrame.cpp:1646 ../src/MadEditFrame.cpp:3811
+#: ../src/MadEditFrame.cpp:3816
 msgid "Font Name: "
 msgstr ""
 
@@ -1325,8 +1325,8 @@ msgstr ""
 msgid "[other]"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1655 ../src/MadEditFrame.cpp:3815
-#: ../src/MadEditFrame.cpp:3820
+#: ../src/MadEditFrame.cpp:1655 ../src/MadEditFrame.cpp:3827
+#: ../src/MadEditFrame.cpp:3832
 msgid "Font Size: "
 msgstr ""
 
@@ -1350,8 +1350,8 @@ msgstr ""
 msgid "Set/Unset the font with Fixed Width"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1733 ../src/MadEditFrame.cpp:3839
-#: ../src/MadEditFrame.cpp:3844
+#: ../src/MadEditFrame.cpp:1733 ../src/MadEditFrame.cpp:3851
+#: ../src/MadEditFrame.cpp:3856
 msgid "Tab Column: "
 msgstr ""
 
@@ -1359,8 +1359,8 @@ msgstr ""
 msgid "Set column of Tab char"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1752 ../src/MadEditFrame.cpp:3853
-#: ../src/MadEditFrame.cpp:3858
+#: ../src/MadEditFrame.cpp:1752 ../src/MadEditFrame.cpp:3865
+#: ../src/MadEditFrame.cpp:3870
 msgid "Line Spacing: "
 msgstr ""
 
@@ -1476,7 +1476,7 @@ msgstr ""
 msgid "Toolbars"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1802 ../src/MadEditFrame.cpp:7211
+#: ../src/MadEditFrame.cpp:1802 ../src/MadEditFrame.cpp:7236
 msgid "Toggle Main Toolbar"
 msgstr ""
 
@@ -1596,7 +1596,7 @@ msgstr ""
 msgid "Clearing out your history"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1830 ../src/MadEditFrame.cpp:4003
+#: ../src/MadEditFrame.cpp:1830 ../src/MadEditFrame.cpp:4015
 msgid "Has Unicode BOM (Byte-Order Mark)"
 msgstr ""
 
@@ -1608,7 +1608,7 @@ msgstr ""
 msgid "Add/Remove Unicode BOM"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1833 ../src/MadEditFrame.cpp:4018
+#: ../src/MadEditFrame.cpp:1833 ../src/MadEditFrame.cpp:4030
 msgid "NewLine Char (File Format): "
 msgstr ""
 
@@ -1636,7 +1636,7 @@ msgstr ""
 msgid "Convert the file format to UNIX format"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:1837 ../src/MadEditFrame.cpp:4040
+#: ../src/MadEditFrame.cpp:1837 ../src/MadEditFrame.cpp:4052
 msgid "Press Enter to Insert NewLine Char: "
 msgstr ""
 
@@ -2022,7 +2022,7 @@ msgstr ""
 msgid "Create new file"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:2592 ../src/MadEditFrame.cpp:4165
+#: ../src/MadEditFrame.cpp:2592 ../src/MadEditFrame.cpp:4177
 msgid "Open File"
 msgstr ""
 
@@ -2288,163 +2288,163 @@ msgstr ""
 msgid "Information Window"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3386
+#: ../src/MadEditFrame.cpp:3398
 #, c-format
 msgid "NoName%d"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3439
+#: ../src/MadEditFrame.cpp:3451
 msgid "This is a Directory:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3448
+#: ../src/MadEditFrame.cpp:3460
 msgid "This file does not exist:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3466
+#: ../src/MadEditFrame.cpp:3478
 msgid "Cannot access this file:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3511
+#: ../src/MadEditFrame.cpp:3523
 msgid "Cannot load this file:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:3773 ../src/MadEditFrame.cpp:3787
-#: ../src/MadEditFrame.cpp:3804 ../src/MadEditFrame.cpp:3820
-#: ../src/MadEditFrame.cpp:3844 ../src/MadEditFrame.cpp:3858
-#: ../src/MadEditFrame.cpp:4035 ../src/MadEditFrame.cpp:4057
+#: ../src/MadEditFrame.cpp:3785 ../src/MadEditFrame.cpp:3799
+#: ../src/MadEditFrame.cpp:3816 ../src/MadEditFrame.cpp:3832
+#: ../src/MadEditFrame.cpp:3856 ../src/MadEditFrame.cpp:3870
+#: ../src/MadEditFrame.cpp:4047 ../src/MadEditFrame.cpp:4069
 #: ../src/MadOptionsDialog.cpp:495 ../src/MadConvEncDialog.cpp:85
 msgid "None"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4007 ../src/MadEditFrame.cpp:4013
+#: ../src/MadEditFrame.cpp:4019 ../src/MadEditFrame.cpp:4025
 msgid "Has No Unicode BOM (Byte-Order Mark)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4456
+#: ../src/MadEditFrame.cpp:4468
 msgid ""
 "There was a problem previewing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4456
+#: ../src/MadEditFrame.cpp:4468
 msgid "Previewing"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4460
+#: ../src/MadEditFrame.cpp:4472
 msgid "MadEdit Print Preview"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4485
+#: ../src/MadEditFrame.cpp:4497
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4485
+#: ../src/MadEditFrame.cpp:4497
 msgid "Printing"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4944
+#: ../src/MadEditFrame.cpp:4956
 msgid "Delimiters:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:4944
+#: ../src/MadEditFrame.cpp:4956
 msgid "Revert Hex String"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5066 ../src/MadEditFrame.cpp:5120
+#: ../src/MadEditFrame.cpp:5078 ../src/MadEditFrame.cpp:5132
 msgid "ASCII characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5066 ../src/MadEditFrame.cpp:5120
+#: ../src/MadEditFrame.cpp:5078 ../src/MadEditFrame.cpp:5132
 msgid "Japanese characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5067 ../src/MadEditFrame.cpp:5121
+#: ../src/MadEditFrame.cpp:5079 ../src/MadEditFrame.cpp:5133
 msgid "Korean characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5067 ../src/MadEditFrame.cpp:5121
+#: ../src/MadEditFrame.cpp:5079 ../src/MadEditFrame.cpp:5133
 msgid "other characters"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5070 ../src/MadEditFrame.cpp:5074
-#: ../src/MadEditFrame.cpp:5124 ../src/MadEditFrame.cpp:5128
+#: ../src/MadEditFrame.cpp:5082 ../src/MadEditFrame.cpp:5086
+#: ../src/MadEditFrame.cpp:5136 ../src/MadEditFrame.cpp:5140
 msgid "Choose the characters you want to convert:"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5603
+#: ../src/MadEditFrame.cpp:5615
 msgid "Find/Replace in Files Results"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5676
+#: ../src/MadEditFrame.cpp:5688
 #, c-format
 msgid "Line Number(1~%d): (you can input HexNumber(0x1~0x%X): 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5676
+#: ../src/MadEditFrame.cpp:5688
 msgid "Go To Line"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5719
+#: ../src/MadEditFrame.cpp:5731
 #, c-format
 msgid "Position(0~%s): (you can input HexNumber: 0xNNN)"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:5719
+#: ../src/MadEditFrame.cpp:5731
 msgid "Go To Position"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6606 ../src/MadEditFrame.cpp:6715
+#: ../src/MadEditFrame.cpp:6631 ../src/MadEditFrame.cpp:6740
 msgid "Open Mad Macro File"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6729
+#: ../src/MadEditFrame.cpp:6754
 #, c-format
 msgid "Do you want to overwrite %s"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6729
+#: ../src/MadEditFrame.cpp:6754
 msgid "Warning"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:6784 ../src/MadMacroDlg.cpp:97
+#: ../src/MadEditFrame.cpp:6809 ../src/MadMacroDlg.cpp:97
 msgid "Memory allocation failed"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7077
+#: ../src/MadEditFrame.cpp:7102
 msgid ""
 "Download dictionary at http://archive.services.openoffice.org/pub/mirror/"
 "OpenOffice.org/contrib/dictionaries/"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7078
+#: ../src/MadEditFrame.cpp:7103
 msgid "Press OK to visit our HomePage."
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7314
+#: ../src/MadEditFrame.cpp:7339
 msgid "Passed the begin of the file"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7359 ../src/MadSearchDialog.cpp:398
+#: ../src/MadEditFrame.cpp:7384 ../src/MadSearchDialog.cpp:398
 #: ../src/MadSearchDialog.cpp:521
 msgid "Passed the end of the file"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7391
+#: ../src/MadEditFrame.cpp:7416
 msgid "Invalid item"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7405
+#: ../src/MadEditFrame.cpp:7430
 msgid "&Copy Selected"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7406
+#: ../src/MadEditFrame.cpp:7431
 msgid "Copy &All"
 msgstr ""
 
-#: ../src/MadEditFrame.cpp:7407
+#: ../src/MadEditFrame.cpp:7432
 msgid "&Reset Results"
 msgstr ""
 
@@ -2469,7 +2469,7 @@ msgid "<- Add Custom File Type"
 msgstr ""
 
 #: ../src/MadFileAssociationDialog.cpp:397
-#: ../src/MadHighlightingDialog.cpp:339 ../src/MadPurgeHistoryDialog.cpp:92
+#: ../src/MadHighlightingDialog.cpp:339 ../src/MadPurgeHistoryDialog.cpp:93
 #: ../src/MadOptionsDialog.cpp:793 ../src/MadConvEncDialog.cpp:99
 #: ../src/MadAboutDialog.cpp:84
 msgid "&OK"
@@ -2630,35 +2630,39 @@ msgstr ""
 msgid "Cannot delete this scheme."
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:68
+#: ../src/MadPurgeHistoryDialog.cpp:69
 msgid "Recent Fonts"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:71
+#: ../src/MadPurgeHistoryDialog.cpp:72
 msgid "Recent Encodings"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:74
+#: ../src/MadPurgeHistoryDialog.cpp:75
 msgid "Recent Searched Texts"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:77
+#: ../src/MadPurgeHistoryDialog.cpp:78
 msgid "Recent Replaced Texts"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:80
+#: ../src/MadPurgeHistoryDialog.cpp:81
 msgid "Recent Searched Directories"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:83
+#: ../src/MadPurgeHistoryDialog.cpp:84
 msgid "Recent Searched File Filters"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:86
+#: ../src/MadPurgeHistoryDialog.cpp:87
 msgid "Recent Searched Exclude Filters"
 msgstr ""
 
-#: ../src/MadPurgeHistoryDialog.cpp:98
+#: ../src/MadPurgeHistoryDialog.cpp:99
+msgid "All Above"
+msgstr ""
+
+#: ../src/MadPurgeHistoryDialog.cpp:102
 msgid "Purge Histories"
 msgstr ""
 
