@@ -83,6 +83,10 @@ Feature/issues to be released
 
 ChangeLog:
 ----------
+Mod v0.3.2
+1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
+2. Fix caret display issue after hiding Quick Search bar
+
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 1. Use wxAuiToolBar as ToolBar, group tools into Standard, Editor, Search/Replace,

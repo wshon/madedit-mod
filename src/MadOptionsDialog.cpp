@@ -1112,7 +1112,7 @@ void MadOptionsDialog::LoadOptions(void)
     WxComboBoxEncoding->SetValue(ss);
 
 #ifdef __WXMSW__
-    wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit\\command"));
+    wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit-Mod\\command"));
     if(pRegKey->Exists())
     {
         wxString str;

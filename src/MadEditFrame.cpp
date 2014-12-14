@@ -2962,10 +2962,15 @@ void MadEditFrame::MadEditFrameKeyDown(wxKeyEvent& event)
         {
             g_FindInFilesDialog->Show(false);
         }
-		if(g_MainFrame->m_ToolbarStatus[tbQSEARCH])
-		{
+        if(g_MainFrame->m_ToolbarStatus[tbQSEARCH])
+        {
             g_MainFrame->HideQuickFindBar();
-		}
+            if(g_ActiveMadEdit)
+            {
+                g_ActiveMadEdit->SetFocus();
+                g_ActiveMadEdit->Refresh(false);
+            }
+        }
         break;
     }
 
@@ -6265,15 +6270,19 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 #ifdef __WXMSW__
         if(g_OptionsDialog->WxCheckBoxRightClickMenu->GetValue())
         {
-            wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit\\command"));
+            wxRegKey *pRegKeyMad = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit-Mod"));
+            pRegKeyMad->Create();
+            pRegKeyMad->SetValue(wxEmptyString, wxT("Edit with MadEdit-Mod"));
+            wxRegKey *pRegKey = new wxRegKey(*pRegKeyMad, wxT("\\command"));
             pRegKey->Create();
             wxString exepath=GetExecutablePath();
             pRegKey->SetValue(wxEmptyString, wxString(wxT('"'))+exepath+wxString(wxT("\" \"%1\"")));
             delete pRegKey;
+            delete pRegKeyMad;
         }
         else
         {
-            wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit"));
+            wxRegKey *pRegKey = new wxRegKey(g_MadEditRegkeyPath + wxT("*\\shell\\MadEdit-Mod"));
             pRegKey->DeleteSelf();
             delete pRegKey;
         }
