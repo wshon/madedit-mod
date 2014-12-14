@@ -2789,7 +2789,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         PurgeRecentFiles();
         PurgeRecentFonts();
         PurgeRecentEncodings();
-		extern bool g_ForcePurgeThisTime;
+        extern bool g_ForcePurgeThisTime;
         if(g_ForcePurgeThisTime)
         {
             if(g_SearchDialog==NULL)
