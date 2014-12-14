@@ -2366,32 +2366,31 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                                 }
                             }
                         }
-                    }
-                    
-                    if(m_DisplayBookmark)
-                    {
-                        /*if (bm_BgColor != bgcolor)
+                        if(m_DisplayBookmark)
                         {
-                            dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
-                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
-                            dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookmarkWidth+1, m_RowHeight);
-                        }*/
-
-                        // add: gogo, 27.09.2009
-                        if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
-                        {
-                            l=rect.GetLeft();
-                            dc->SetPen(*wxThePenList->FindOrCreatePen(bgcolor, 1, wxSOLID));
-                            m_Syntax->SetAttributes(aeBookmark);
-                            dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(/*wxColour(0,0,192)*/m_Syntax->nw_Color));
-                            dc->DrawCircle(l + m_LineNumberAreaWidth + m_BookmarkWidth / 2, row_top + m_RowHeight / 2,
-                                            m_RowHeight < 16 ? m_RowHeight/2 : 8 );
+                            /*if (bm_BgColor != bgcolor)
+                            {
+                                dc->SetPen(*wxThePenList->FindOrCreatePen(bm_BgColor, 1, wxSOLID));
+                                dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(bm_BgColor));
+                                dc->DrawRectangle(l+m_LineNumberAreaWidth, row_top, m_BookmarkWidth+1, m_RowHeight);
+                            }*/
+                            // add: gogo, 27.09.2009
+                            if ( m_Lines->m_LineList.IsBookmarked(lineiter) )
+                            {
+                                l=rect.GetLeft();
+                                dc->SetPen(*wxThePenList->FindOrCreatePen(bgcolor, 1, wxSOLID));
+                                m_Syntax->SetAttributes(aeBookmark);
+                                dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(/*wxColour(0,0,192)*/m_Syntax->nw_Color));
+                                dc->DrawCircle(l + m_LineNumberAreaWidth + m_BookmarkWidth / 2, row_top + m_RowHeight / 2,
+                                                m_RowHeight < 16 ? m_RowHeight/2 : 8 );
+                            }
                         }
                     }
+                    
                 }
                 else
                 {
-                    if(m_DisplayBookmark)
+                    if(displaylinenumber && m_DisplayBookmark)
                     {
                         /*if (bm_BgColor != bgcolor)
                         {
