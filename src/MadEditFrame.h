@@ -391,6 +391,7 @@ public:
     void SetPageFocus(int pageId);
     MadEdit *GetEditByFileName(const wxString &filename, int &id);
     void ResetAcceleratorTable();
+    void HideQuickFindBar();
 
 protected:
     void MadEditFrameClose(wxCloseEvent& event);

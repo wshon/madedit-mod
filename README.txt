@@ -89,9 +89,9 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
    Text view, and Macro
 2. Context menu for Main Frame/Tool bars(Show/Hide one or all tool bars)
 3. Save/Load customized tool bars
-4. Add Quick search ToolBar, toggle show/hide with F8, drag to float one and dock
-   anywhere.follow your search direction if you hit Enter after inputing some
-   text. Searching during inputing. 
+4. Add Quick search ToolBar, toggle show/hide with F8(Escape to hide it), drag
+   to float one and dock anywhere.follow your search direction if you hit Enter
+   after inputing some text. Searching during inputing.
 5. Toggle-able sign of the 80th column
 6. Improve UI and performance, improve usability of Purge History dialog
 7. Improve performance of Purge History

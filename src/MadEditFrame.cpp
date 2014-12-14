@@ -2964,8 +2964,7 @@ void MadEditFrame::MadEditFrameKeyDown(wxKeyEvent& event)
         }
 		if(g_MainFrame->m_ToolbarStatus[tbQSEARCH])
 		{
-			wxCommandEvent event;
-			g_MainFrame->OnShowSearchQuickFindBar(event);
+            g_MainFrame->HideQuickFindBar();
 		}
         break;
     }
@@ -7327,32 +7326,34 @@ void MadEditFrame::OnContextMenu(wxContextMenuEvent& event)
 #endif // wxUSE_MENUS
 }
 
+void MadEditFrame::HideQuickFindBar()
+{
+    m_AuiManager.GetPane(m_QuickSeachBar).Hide();
+    m_AuiManager.Update();
+    m_ToolbarStatus[tbQSEARCH] = false;
+    int i = tbSTANDARD;
+    for(; i<tbMAX; ++i)
+    {
+        if(m_ToolbarStatus[i])
+        {
+            m_ToolbarStatus[tbMAX] = true;
+            break;
+        }
+    }
+    if(i == tbMAX)
+        m_ToolbarStatus[tbMAX] = false;
+}
+
 void MadEditFrame::OnShowSearchQuickFindBar(wxCommandEvent& event)
 {
-    if(m_AuiManager.GetPane(m_QuickSeachBar).IsShown())
-    {
-        m_AuiManager.GetPane(m_QuickSeachBar).Hide();
-        m_ToolbarStatus[tbQSEARCH] = false;
-        int i = tbSTANDARD;
-        for(; i<tbMAX; ++i)
-        {
-            if(m_ToolbarStatus[i])
-            {
-                m_ToolbarStatus[tbMAX] = true;
-                break;
-            }
-        }
-        if(i == tbMAX)
-            m_ToolbarStatus[tbMAX] = false;
-    }
-    else
+    if(!m_AuiManager.GetPane(m_QuickSeachBar).IsShown())
     {
         m_AuiManager.GetPane(m_QuickSeachBar).Show();
-        m_QuickSearch->SetFocus();
         m_ToolbarStatus[tbQSEARCH] = true;
         m_ToolbarStatus[tbMAX] = true;
+        m_AuiManager.Update();
     }
-    m_AuiManager.Update();
+    m_QuickSearch->SetFocus();
 }
 
 void MadEditFrame::OnSearchQuickFind(wxCommandEvent& event)
@@ -7388,6 +7389,11 @@ void MadEditFrame::OnSearchQuickFindPrevious(wxCommandEvent& event)
         static bool reset_caretpos = false;
         static wxFileOffset lastCaret = 0;
         wxFileOffset rangeFrom = g_ActiveMadEdit->GetCaretPosition(), rangeTo = -1;
+        
+        if(event.GetEventType() == wxEVT_TEXT && g_ActiveMadEdit->IsSelected())
+        {
+			rangeFrom = g_ActiveMadEdit->GetSelectionEndPos()+1;
+        }
         if((reset_caretpos && rangeFrom <= lastCaret) && !g_ActiveMadEdit->IsModified())
         {
             rangeFrom = g_ActiveMadEdit->GetFileSize();
@@ -7433,6 +7439,10 @@ void MadEditFrame::OnSearchQuickFindNext(wxCommandEvent& event)
         static bool reset_caretpos = false;
         static wxFileOffset lastCaret = 0;
         wxFileOffset rangeFrom = g_ActiveMadEdit->GetCaretPosition(), rangeTo = -1;
+        if(event.GetEventType() == wxEVT_TEXT && g_ActiveMadEdit->IsSelected())
+        {
+			rangeFrom = g_ActiveMadEdit->GetSelectionBeginPos();
+        }
         if((reset_caretpos && rangeFrom >= lastCaret) && !g_ActiveMadEdit->IsModified())
         {
             rangeFrom = 0;
