@@ -25,7 +25,7 @@ B. MS Windows (__WXMSW__):
       Required Libraries to compile:
       1. wxWidgets-2.8.x or higher with Unicode enabled(wxWidgets-2.8.12 is
          recommended, and apply patches)
-      2. Boost-1.33.0 or higher
+      2. Boost-1.33.0 or higher(build Boost-Python)
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
    b. Visual C++ 7.1 (VS.Net 2003) or higher:
@@ -94,11 +94,12 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
    text. Searching during inputing. 
 5. Toggle-able sign of the 80th column
 6. Improve UI and performance, improve usability of Purge History dialog
-7. Change language tag from "MadEdit" to "MadEdit-Mod"
-8. Fix bug of initialized bookmark width
-9. Fix crash if you purged history right after MadEdit started and select any of
-   the history related to search
-10. Update Simplified Chinese
+7. Improve performance of Purge History
+8. Change language tag from "MadEdit" to "MadEdit-Mod"
+9. Fix bug of initialized bookmark width
+10. Fix crash if you purged history right after MadEdit started and select  to purge
+   any related to search/replace
+11. Update Simplified Chinese
 
 Mod v0.3.0
 1. Improve UI and all strings of message box/dialog can be translated since then

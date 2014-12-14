@@ -133,32 +133,7 @@ void MadPurgeHistoryDialog::OnClose(wxCloseEvent& /*event*/)
  */
 void MadPurgeHistoryDialog::WxButtonOKClick(wxCommandEvent& event)
 {
-    // insert your code here
-    if (wxCheckBoxRecentFiles->IsChecked())
-        g_MainFrame->PurgeRecentFiles();
-
-    if (wxCheckBoxRecentFonts->IsChecked())
-        g_MainFrame->PurgeRecentFonts();
-
-    if (wxCheckBoxRecentEncodings->IsChecked())
-        g_MainFrame->PurgeRecentEncodings();
-
-    if (wxCheckBoxRecentSearchedTexts->IsChecked())
-        g_SearchDialog->PurgeRecentFindTexts();
-
-    if (wxCheckBoxRecentReplacedTexts->IsChecked())
-        g_ReplaceDialog->PurgeRecentReplaceTexts();
-
-    if (wxCheckBoxRecentSearchedDirectories->IsChecked())
-        g_FindInFilesDialog->PurgeRecentFindDirs();
-
-    if (wxRecentSearchedFileFilters->IsChecked())
-        g_FindInFilesDialog->PurgeRecentFindFilters();
-
-    if (wxCheckBoxRecentSearchedExcludeFilters->IsChecked())
-        g_FindInFilesDialog->PurgeRecentFindExcludes();
-
-    Close();
+    EndModal(wxID_OK);
 }
 
 /*
@@ -167,7 +142,7 @@ void MadPurgeHistoryDialog::WxButtonOKClick(wxCommandEvent& event)
 void MadPurgeHistoryDialog::wxButtonCancelClick(wxCommandEvent& event)
 {
     // insert your code here
-    Destroy();
+    EndModal(wxID_CANCEL);
 }
 
 /*

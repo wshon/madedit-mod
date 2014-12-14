@@ -1854,7 +1854,7 @@ CommandData CommandTable[]=
     { 0,               2, menuKanji2SimpClipboard,    wxT("menuKanji2SimpClipboard"),    _("Clipboard: Japanese Kanji to Sim&plified Chinese"),      0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to simplified Chinese chars in the clipboard")},
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuWordCount,          wxT("menuWordCount"),          _("&Word Count"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
+    { 0,               1, menuWordCount,          wxT("menuWordCount"),          _("&Word Count..."),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
     { 0, 0, 0, 0, _("&Window"), 0, wxITEM_NORMAL, 0, &g_Menu_Window, 0},
@@ -2697,18 +2697,21 @@ void MadEditFrame::CreateGUIControls(void)
         for(size_t i=1; i<count; ++i) m_QuickSearch->Append(g_RecentFindText->GetHistoryFile(i));
     }
     //m_QuickSearch->Connect(wxEVT_TEXT_ENTER, wxCommandEventHandler(MadEditFrame::OnSearchQuickFind));
+    m_QuickSearch->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadEditFrame::MadEditFrameKeyDown));
     m_QuickSeachBar->AddControl(m_QuickSearch);
     m_QuickSeachBar->AddTool(menuQuickFindNext, _T("QuickFindNext"), m_ImageList->GetBitmap(down_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Next"), _("Find matched text next to caret"), NULL);
     m_QuickSeachBar->AddTool(menuQuickFindPrevious, _T("QuickFindPrevious"), m_ImageList->GetBitmap(up_xpm_idx), wxNullBitmap, wxITEM_NORMAL, _("Find Previous"), _("Find matched text previous from caret"), NULL);
     
     m_CheckboxWholeWord = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHWHOLEWORD, _("&Whole Word"));
     m_CheckboxWholeWord->SetValue(false);
+    m_CheckboxWholeWord->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadEditFrame::MadEditFrameKeyDown));
     m_QuickSeachBar->AddControl(m_CheckboxWholeWord);
     m_CheckboxCaseSensitive = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHCASESENSITIVE, _("&Case Sensitive"));
     m_CheckboxCaseSensitive->SetValue(false);
     m_QuickSeachBar->AddControl(m_CheckboxCaseSensitive);
     m_CheckboxRegEx = new wxCheckBox( m_QuickSeachBar, ID_QUICKSEARCHREGEX, _("&Regular Expression"));
     m_CheckboxRegEx->SetValue(false);
+    m_CheckboxCaseSensitive->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadEditFrame::MadEditFrameKeyDown));
     m_QuickSeachBar->AddControl(m_CheckboxRegEx);
     m_QuickSeachBar->Realize();
 
@@ -2784,17 +2787,21 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         PurgeRecentFiles();
         PurgeRecentFonts();
         PurgeRecentEncodings();
-        if(g_SearchDialog==NULL)
+		extern bool g_ForcePurgeThisTime;
+        if(g_ForcePurgeThisTime)
         {
-            g_SearchDialog=new MadSearchDialog(this, -1);
-        }
-        if(g_ReplaceDialog==NULL)
-        {
-            g_ReplaceDialog=new MadReplaceDialog(this, -1);
-        }
-        if(g_FindInFilesDialog==NULL)
-        {
-            g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+            if(g_SearchDialog==NULL)
+            {
+                g_SearchDialog=new MadSearchDialog(this, -1);
+            }
+            if(g_ReplaceDialog==NULL)
+            {
+                g_ReplaceDialog=new MadReplaceDialog(this, -1);
+            }
+            if(g_FindInFilesDialog==NULL)
+            {
+                g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+            }
         }
         if (g_SearchDialog != NULL)
         {
@@ -2816,6 +2823,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
             g_FindInFilesDialog->PurgeRecentFindFilters();
             g_FindInFilesDialog->PurgeRecentFindExcludes();
         }
+        m_QuickSearch->Clear();
     }
 
     m_Config->SetPath(wxT("/FileCaretPos"));
@@ -2952,6 +2960,11 @@ void MadEditFrame::MadEditFrameKeyDown(wxKeyEvent& event)
         {
             g_FindInFilesDialog->Show(false);
         }
+		if(g_MainFrame->m_ToolbarStatus[tbQSEARCH])
+		{
+			wxCommandEvent event;
+			g_MainFrame->OnShowSearchQuickFindBar(event);
+		}
         break;
     }
 
@@ -6305,7 +6318,11 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
 
         m_Config->Write(wxT("ReloadFiles"), g_OptionsDialog->WxCheckBoxReloadFiles->GetValue());
         m_Config->Write(wxT("RestoreCaretPos"), g_OptionsDialog->WxCheckBoxRestoreCaretPos->GetValue());
+        extern bool g_ForcePurgeThisTime;
+        m_Config->Read(wxT("PurgeHistory"), g_ForcePurgeThisTime);
         m_Config->Write(wxT("PurgeHistory"), g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue());
+        if(!g_ForcePurgeThisTime) g_ForcePurgeThisTime = g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue();
+        else g_ForcePurgeThisTime = false;
 
         bool bb;
         long ll;
@@ -6566,20 +6583,65 @@ void MadEditFrame::OnToolsFileAssociation(wxCommandEvent& event)
 void MadEditFrame::OnToolsPurgeHistories(wxCommandEvent& event)
 {
     MadPurgeHistoryDialog dlg(this);
-    if(g_SearchDialog==NULL)
-    {
-        g_SearchDialog=new MadSearchDialog(this, -1);
-    }
-    if(g_ReplaceDialog==NULL)
-    {
-        g_ReplaceDialog=new MadReplaceDialog(this, -1);
-    }
-    if(g_FindInFilesDialog==NULL)
-    {
-        g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
-    }
 
-    dlg.ShowModal();
+    if(dlg.ShowModal()==wxID_OK)
+    {
+        // insert your code here
+        if (dlg.wxCheckBoxRecentFiles->IsChecked())
+            PurgeRecentFiles();
+        
+        if (dlg.wxCheckBoxRecentFonts->IsChecked())
+            PurgeRecentFonts();
+        
+        if (dlg.wxCheckBoxRecentEncodings->IsChecked())
+            PurgeRecentEncodings();
+        
+        if (dlg.wxCheckBoxRecentSearchedTexts->IsChecked())
+        {
+            if(g_SearchDialog==NULL)
+            {
+                g_SearchDialog=new MadSearchDialog(this, -1);
+            }
+            g_SearchDialog->PurgeRecentFindTexts();
+        }
+
+        if (dlg.wxCheckBoxRecentReplacedTexts->IsChecked())
+        {
+            if(g_ReplaceDialog==NULL)
+            {
+                g_ReplaceDialog=new MadReplaceDialog(this, -1);
+            }
+            g_ReplaceDialog->PurgeRecentReplaceTexts();
+        }
+        
+        if (dlg.wxCheckBoxRecentSearchedDirectories->IsChecked())
+        {
+            if(g_FindInFilesDialog==NULL)
+            {
+                g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+            }
+            g_FindInFilesDialog->PurgeRecentFindDirs();
+        }
+        
+        if (dlg.wxRecentSearchedFileFilters->IsChecked())
+        {
+            if(g_FindInFilesDialog==NULL)
+            {
+                g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+            }
+            g_FindInFilesDialog->PurgeRecentFindFilters();
+        }
+        
+        if (dlg.wxCheckBoxRecentSearchedExcludeFilters->IsChecked())
+        {
+            if(g_FindInFilesDialog==NULL)
+            {
+                g_FindInFilesDialog=new MadFindInFilesDialog(this, -1);
+            }
+            g_FindInFilesDialog->PurgeRecentFindExcludes();
+        }
+        m_QuickSearch->Clear();
+    }
 }
 
 void MadEditFrame::OnToolsRunTempMacro(wxCommandEvent& event)

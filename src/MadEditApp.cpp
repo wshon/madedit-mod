@@ -42,6 +42,8 @@ wxString g_MadEditRegkeyPath = wxT("HKEY_CURRENT_USER\\Software\\Classes\\");
 #endif
 bool g_DoNotSaveSettings=false;
 bool g_ResetAllKeys=false;
+bool g_ForcePurgeThisTime = false;
+
 
 wxChar *g_LanguageString[]=
 {

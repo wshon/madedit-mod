@@ -42,6 +42,14 @@ class MadPurgeHistoryDialog : public wxDialog
 		DECLARE_EVENT_TABLE();
 		
 	public:
+		wxCheckBox *wxCheckBoxRecentSearchedExcludeFilters;
+		wxCheckBox *wxRecentSearchedFileFilters;
+		wxCheckBox *wxCheckBoxRecentSearchedDirectories;
+		wxCheckBox *wxCheckBoxRecentReplacedTexts;
+		wxCheckBox *wxCheckBoxRecentSearchedTexts;
+		wxCheckBox *wxCheckBoxRecentEncodings;
+		wxCheckBox *wxCheckBoxRecentFonts;
+		wxCheckBox *wxCheckBoxRecentFiles;
 		MadPurgeHistoryDialog(wxWindow *parent, wxWindowID id = 1, const wxString &title = wxT("Purge History"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = MadPurgeHistoryDialog_STYLE);
 		virtual ~MadPurgeHistoryDialog();
 		void WxButtonOKClick(wxCommandEvent& event);
@@ -58,14 +66,6 @@ class MadPurgeHistoryDialog : public wxDialog
 		wxButton *wxButtonCancel;
 		wxButton *WxButtonOK;
 		wxBoxSizer *WxBoxSizer2;
-		wxCheckBox *wxCheckBoxRecentSearchedExcludeFilters;
-		wxCheckBox *wxRecentSearchedFileFilters;
-		wxCheckBox *wxCheckBoxRecentSearchedDirectories;
-		wxCheckBox *wxCheckBoxRecentReplacedTexts;
-		wxCheckBox *wxCheckBoxRecentSearchedTexts;
-		wxCheckBox *wxCheckBoxRecentEncodings;
-		wxCheckBox *wxCheckBoxRecentFonts;
-		wxCheckBox *wxCheckBoxRecentFiles;
 		wxBoxSizer *WxBoxSizer1;
 		wxStaticBoxSizer *WxStaticBoxSizer1;
 		////GUI Control Declaration End
