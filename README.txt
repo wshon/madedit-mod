@@ -102,7 +102,7 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 8. Change language tag from "MadEdit" to "MadEdit-Mod"
 9. Add "Print" in ToolBar
 9. Fix bug of initialized bookmark width
-10. Fix crash if you purged history right after MadEdit started and select  to purge
+10. Fix crash if you purged history right after MadEdit started and select to purge
     any related to search/replace
 11. Fix issue of not purging history till you search/replace after you check the
     item in global option
