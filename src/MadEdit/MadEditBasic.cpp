@@ -2582,15 +2582,22 @@ bool MadEdit::ReloadByModificationTime()
         wxString(_("Do you want to reload it?"))+ wxT("\n\n")+ m_Lines->m_Name,
         wxT("MadEdit-Mod"), wxYES_NO|wxICON_QUESTION );
     dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
-    wxMouseCaptureLostEvent mevt(GetId());
-    mevt.SetEventObject(this);
+    //wxMouseCaptureLostEvent mevt(GetId());
+    //mevt.SetEventObject(this);
+    
+    m_MouseLeftDoubleClick=false;
+    m_MouseLeftDown=false;
+    m_DragDrop = false;
+    m_MouseAtHexTextArea=false;
+    m_DragCopyFlag = false;//default move
+
     if(dlg.ShowModal()!=wxID_YES)
     {
-        AddPendingEvent( mevt ); 
+        //AddPendingEvent( mevt ); 
         return false;
     }
 
-    AddPendingEvent( mevt ); 
+    //AddPendingEvent( mevt ); 
 
     // YES, reload it.
     return Reload();
