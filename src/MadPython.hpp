@@ -1075,7 +1075,7 @@ namespace mad_python
         // if the file is modified by another app, reload it.
         bool ReloadByModificationTime()
         {
-            return g_ActiveMadEdit->ReloadByModificationTime();
+            return g_ActiveMadEdit->ReloadByModificationTime(false);
         }
         // restore pos in Reload(), ConvertEncoding()
         void RestorePosition(int pos, int toprow)

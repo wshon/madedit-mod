@@ -86,6 +86,8 @@ ChangeLog:
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
 2. Fix caret display issue after hiding Quick Search bar
+3. Fix hang issue that in the patch for the https://github.com/hltj/wxMEdit/issues/63.
+   Restructured using custom event.
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then

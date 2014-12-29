@@ -2549,10 +2549,17 @@ bool MadEdit::Reload()
     return true;
 }
 
-bool MadEdit::ReloadByModificationTime()
+bool MadEdit::ReloadByModificationTime(bool LostCapture/* = false*/)
 {
     if(m_Lines->m_Name.IsEmpty()) return false;
 
+    if(LostCapture)
+    {
+        wxCommandEvent event(CHECK_MODIFICATION_TIME);
+        event.SetEventObject(this);
+        AddPendingEvent( event );
+        return false;
+    }
     wxLogNull nolog;
     time_t modtime=wxFileModificationTime(m_Lines->m_Name);
 
@@ -2583,21 +2590,19 @@ bool MadEdit::ReloadByModificationTime()
         wxT("MadEdit-Mod"), wxYES_NO|wxICON_QUESTION );
     dlg.SetYesNoLabels(wxMessageDialog::ButtonLabel(_("&Yes")), wxMessageDialog::ButtonLabel(_("&No")));
     //wxMouseCaptureLostEvent mevt(GetId());
-    //mevt.SetEventObject(this);
-    
-    m_MouseLeftDoubleClick=false;
-    m_MouseLeftDown=false;
-    m_DragDrop = false;
-    m_MouseAtHexTextArea=false;
-    m_DragCopyFlag = false;//default move
-
+    //DBOUT( "Reload\n" );
+    //DBOUT((m_MouseLeftDown?"LDown:TRUE\n":"LDown:FALSE\n"));
+    //if(LostCapture)
+    //    mevt.SetEventObject(this);    
     if(dlg.ShowModal()!=wxID_YES)
     {
-        //AddPendingEvent( mevt ); 
+        //if(LostCapture)
+            //AddPendingEvent( mevt ); 
         return false;
     }
 
-    //AddPendingEvent( mevt ); 
+    //if(LostCapture)
+        //AddPendingEvent( mevt ); 
 
     // YES, reload it.
     return Reload();

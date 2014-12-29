@@ -3187,10 +3187,11 @@ void MadEditFrame::OnSize(wxSizeEvent &evt)
 
 void MadEditFrame::OnActivate(wxActivateEvent &evt)
 {
+    DBOUT( "MadEditFrame::OnActivate\n" );
     if(evt.GetActive() && g_ActiveMadEdit)
     {
         g_ActiveMadEdit->SetFocus();
-        g_ActiveMadEdit->ReloadByModificationTime();
+        g_ActiveMadEdit->ReloadByModificationTime(true);
     }
     evt.Skip();
 }

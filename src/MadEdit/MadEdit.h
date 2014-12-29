@@ -63,6 +63,8 @@ class MadSearchDialog;
 class MadReplaceDialog;
 class wxSpellCheckEngineInterface;
 
+wxDECLARE_EVENT(CHECK_MODIFICATION_TIME, wxCommandEvent);
+
 typedef void (*OnSelectionChangedPtr)(MadEdit *madedit);
 typedef void (*OnStatusChangedPtr)(MadEdit *madedit);
 typedef void (*OnToggleWindowPtr)(MadEdit *madedit);
@@ -598,7 +600,8 @@ protected:
     void OnMouseWheel(wxMouseEvent &evt);
     void OnMouseEnterWindow(wxMouseEvent &evt);
     void OnMouseLeaveWindow(wxMouseEvent &evt);
-	void OnMouseCaptureLost(wxMouseCaptureLostEvent &evt);
+    void OnMouseCaptureLost(wxMouseCaptureLostEvent &evt);
+    void OnCheckModificationTime(wxCommandEvent& evt);
 
     void OnEraseBackground(wxEraseEvent &evt);
     void OnPaint(wxPaintEvent &evt);
@@ -957,7 +960,7 @@ public: // basic functions
     bool SaveToFile(const wxString &filename);
     bool Reload();
     // if the file is modified by another app, reload it.
-    bool ReloadByModificationTime();
+    bool ReloadByModificationTime(bool LostCapture = false);
     // restore pos in Reload(), ConvertEncoding()
     void RestorePosition(wxFileOffset pos, int toprow);
 

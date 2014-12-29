@@ -208,8 +208,11 @@ public:
 };
 
 //==================================================
+wxDEFINE_EVENT(CHECK_MODIFICATION_TIME, wxCommandEvent);
 
 BEGIN_EVENT_TABLE(MadEdit, MadEditSuperClass)
+
+    EVT_COMMAND(wxID_ANY, CHECK_MODIFICATION_TIME, MadEdit::OnCheckModificationTime)
 
     EVT_CHAR(MadEdit::OnChar)
     EVT_KEY_DOWN(MadEdit::OnKeyDown)
@@ -9762,6 +9765,7 @@ void MadEdit::OnKeyUp(wxKeyEvent& evt)
 void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LDown")));
+    DBOUT("LDown\n");
     if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
     {
         if((evt.m_x <= m_LineNumberAreaWidth) && evt.m_controlDown)
@@ -9956,6 +9960,7 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("LUp")));
+    DBOUT("LUp\n");
     if(m_MouseMotionTimer->IsRunning())
     {
         m_MouseMotionTimer->Stop();
@@ -10034,6 +10039,7 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 void MadEdit::OnMouseLeftDClick(wxMouseEvent &evt)
 {
     //wxTheApp->GetTopWindow()->SetTitle(wxString::Format(wxT("DClick")));
+    DBOUT("DClick\n");
     if ((m_EditMode != emHexMode) && evt.m_x>=0 && evt.m_x <= (m_LineNumberAreaWidth+m_BookmarkWidth))
     {
         evt.Skip();
@@ -10233,6 +10239,7 @@ void MadEdit::OnMouseMiddleUp(wxMouseEvent &evt)
 void MadEdit::OnSetFocus(wxFocusEvent &evt)
 {
     //force updating font widths
+    DBOUT( "OnSetFocus\n" );
     memset(m_TextFontWidths, 0, sizeof(m_TextFontWidths));
     memset(m_HexFontWidths, 0, sizeof(m_HexFontWidths));
 
@@ -10249,12 +10256,14 @@ void MadEdit::OnSetFocus(wxFocusEvent &evt)
 void MadEdit::OnKillFocus(wxFocusEvent &evt)
 {
     wxWindow *win=FindFocus();
+    DBOUT("KillFocus\n");
     if(win==m_VScrollBar || win==m_HScrollBar)
     {
         this->SetFocus();
     }
     else
     {
+        DBOUT("KillFocus1\n");
         if(!m_Selection && m_MouseLeftDown)
         {
             EndUpdateSelection(true);
@@ -10528,6 +10537,8 @@ void MadEdit::OnMouseLeaveWindow(wxMouseEvent &evt)
 
 void MadEdit::OnMouseCaptureLost(wxMouseCaptureLostEvent &evt)
 {
+    DBOUT("CaptureLost\n");
+
     if(m_MouseLeftDown)
     {
         if(!m_DragDrop)
@@ -11581,3 +11592,9 @@ void MadEdit::ClearAllBookmarks()
 }
 
 //----------
+void MadEdit::OnCheckModificationTime(wxCommandEvent& evt)
+{
+    DBOUT( "OnCheckModificationTime\n" );
+    ReloadByModificationTime();
+}
+
