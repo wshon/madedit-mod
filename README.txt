@@ -88,6 +88,7 @@ Mod v0.3.2
 2. Fix caret display issue after hiding Quick Search bar
 3. Fix hang issue that in the patch for the https://github.com/hltj/wxMEdit/issues/63.
    Restructured using custom event.
+4. Fix duplicate Macro recorded, such as cut, cutline, deleteline, etc
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then

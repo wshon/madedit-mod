@@ -465,13 +465,16 @@ bool MadEditApp::OnInit()
 
 int MadEditApp::OnExit()
 {
+    wxLogMessage( "MadEditApp::OnExit" );
+    wxLog::FlushActive();
+
     // save settings in FrameClose();
     if(m_SigleAppChecker)
         delete m_SigleAppChecker;
     if(m_AppServer)
         delete m_AppServer;
 
-#ifdef __WXMSW__
+#if 0 //def __WXMSW__
     // it will crash randomly while shutdown MS Windows.
     // Try close frame again if not
     if(g_MainFrame)

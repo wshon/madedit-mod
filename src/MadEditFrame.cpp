@@ -57,6 +57,10 @@
 #else
 #include <sys/stat.h>
 #endif
+#define MAD_ERRTRACE
+#ifdef MAD_ERRTRACE
+#include <wx/ffile.h>
+#endif
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -183,6 +187,12 @@ extern wxString g_MadEdit_Version;
 extern wxString g_MadEdit_URL;
 extern wxString g_MadEditMod_URL;
 extern wxString MadEncodingGrpName[];
+
+#ifdef MAD_ERRTRACE
+wxFFile stderr_;
+wxLogStderr *log_stderr_ = NULL;
+wxLog *log_save_ = NULL;
+#endif
 
 EmbeddedPython *g_EmbeddedPython = 0;
 MadRecentList  *g_RecentFindText = NULL;
@@ -1988,7 +1998,6 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
 #ifndef __WXMSW__
     wxConvFileName=&MadConvFileNameObj;
 #endif
-
     this->SetWindowStyleFlag(this->GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
 
     /*
@@ -2752,11 +2761,31 @@ void MadEditFrame::CreateGUIControls(void)
 
 void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 {
+#ifdef MAD_ERRTRACE
+    wxString logname = g_MadEditAppDir + wxT("log.txt");
+    stderr_.Open(logname, wxT("w+"));
+    if( stderr_.IsOpened() )
+    {
+        log_stderr_ = new wxLogStderr( stderr_.fp() );
+        if( log_stderr_ != NULL )
+        {
+            log_save_ = wxLog::SetActiveTarget( log_stderr_ );
+        }
+        
+        wxLogMessage( "MadEditFrame::MadEditFrameClose" );
+        wxLog::FlushActive();
+    }
+#endif
     // --> Don't use Close with a Frame,
     // use Destroy instead.
 
     if(event.CanVeto())
     {
+    
+#ifdef MAD_ERRTRACE
+        wxLogMessage( "%d: QueryCloseAllFiles", __LINE__ );
+        wxLog::FlushActive();
+#endif
         if(QueryCloseAllFiles()==false)
         {
             event.Veto(true);
@@ -2765,6 +2794,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     }
 
     // save ReloadFilesList
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: save ReloadFilesList", __LINE__ );
+    wxLog::FlushActive();
+#endif
     wxString files;
     int count=int(m_Notebook->GetPageCount());
     bool bb=true;
@@ -2772,7 +2805,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     if(bb && count>0)
     {
         count = m_Notebook->GetFilesList(files);
-
+#ifdef MAD_ERRTRACE
+		wxLogMessage("%d: GetFilesList[%d][%x][%s]", __LINE__, count, (int)g_ActiveMadEdit, (const char*)files.mb_str());
+        wxLog::FlushActive();
+#endif
         wxString selname = g_ActiveMadEdit->GetFileName();
         if(count!=1 && !selname.IsEmpty())
         {
@@ -2781,6 +2817,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         }
     }
     m_Config->Write(wxT("/MadEdit/ReloadFilesList"), files );
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: ReloadFiles[%d]", __LINE__, count );
+    wxLog::FlushActive();
+#endif
 
     bb=false;
     m_Config->Read(wxT("/MadEdit/PurgeHistory"), &bb);
@@ -2827,6 +2867,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         }
         m_QuickSearch->Clear();
     }
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: PurgeFiles[%s]", __LINE__, (bb?"TRUE":"FALSE") );
+    wxLog::FlushActive();
+#endif
 
     m_Config->SetPath(wxT("/FileCaretPos"));
     g_FileCaretPosManager.Save(m_Config);
@@ -2834,6 +2878,11 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 // changed: gogo, 30.08.2009 ---
     int x, y;
 #ifdef __WXMSW__
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: WindowsPos beg", __LINE__);
+    wxLog::FlushActive();
+#endif
+
     //int style=::GetWindowLong((HWND)GetHWND(), GWL_STYLE);
     //m_Config->Write(wxT("/MadEdit/WindowMaximize"), (style&WS_MAXIMIZE)!=0 );
 
@@ -2856,6 +2905,11 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_Config->Write(wxT("/MadEdit/WindowWidth"), x );
     m_Config->Write(wxT("/MadEdit/WindowHeight"), y );
 #endif
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: WindowsPos end", __LINE__);
+    wxLog::FlushActive();
+#endif
+
 //------------------
     m_Config->SetPath(wxT("/RecentFiles"));
     m_RecentFiles->Save(*m_Config);
@@ -2865,6 +2919,14 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     m_Config->SetPath(wxT("/RecentFonts"));
     m_RecentFonts->Save(*m_Config);
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: RecentXXX done", __LINE__);
+    wxLog::FlushActive();
+#endif
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: g_SearchDialog", __LINE__);
+    wxLog::FlushActive();
+#endif
 
     if(g_SearchDialog!=NULL)
     {
@@ -2879,6 +2941,11 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         m_Config->Write(wxT("/MadEdit/SearchThrEndOfFile"), g_SearchDialog->WxCheckBoxSearchThrEndOfFile->GetValue());
         //----------
     }
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: g_ReplaceDialog", __LINE__);
+    wxLog::FlushActive();
+#endif
+
     if(g_ReplaceDialog!=NULL)
     {
         if(g_ReplaceDialog->IsShown())
@@ -2886,6 +2953,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         m_Config->SetPath(wxT("/RecentReplaceText"));
         g_ReplaceDialog->m_RecentReplaceText->Save(*m_Config);
     }
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: g_FindInFilesDialog", __LINE__);
+    wxLog::FlushActive();
+#endif
     if(g_FindInFilesDialog!=NULL)
     {
         if(g_FindInFilesDialog->IsShown())
@@ -2897,6 +2968,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
         m_Config->SetPath(wxT("/RecentFindExcludeFilter"));
         g_FindInFilesDialog->m_RecentFindExclude->Save(*m_Config);
     }
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: reset SearchInSelection", __LINE__);
+    wxLog::FlushActive();
+#endif
 
     // reset SearchInSelection
     m_Config->Write(wxT("/MadEdit/SearchInSelection"), false);
@@ -2909,6 +2984,11 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_Config->Write(wxT("/MadEdit/ShowToolbarTextview"), m_ToolbarStatus[tbTEXTVIEW]);
     m_Config->Write(wxT("/MadEdit/ShowToolbarEditMode"), m_ToolbarStatus[tbEDITMODE]);
     m_Config->Write(wxT("/MadEdit/ShowToolbarMacro"), m_ToolbarStatus[tbMACRO]);
+    
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: Delete RecentFiles, RecentEncodings and RecentFonts", __LINE__);
+    wxLog::FlushActive();
+#endif
     delete m_RecentFiles;
     m_RecentFiles=NULL;
     delete m_RecentEncodings;
@@ -2917,6 +2997,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     m_RecentFonts=NULL;
 
     delete m_ImageList;
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: FreeEncodings", __LINE__);
+    wxLog::FlushActive();
+#endif
 
     MadEncoding::FreeEncodings();
 
@@ -2929,6 +3013,10 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     DeleteConfig();
 
     m_AuiManager.UnInit();
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: Reset g_MainFrame", __LINE__);
+    wxLog::FlushActive();
+#endif
 
     g_MainFrame = 0;
 #ifndef __WXMSW__
@@ -2937,6 +3025,15 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     exit(0);
 #else
     Destroy(); // quit app normally.
+#endif
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: Destroy MainFrame", __LINE__);
+    wxLog::FlushActive();
+
+    //wxLog::SetActiveTarget(NULL);
+
+    if(log_save_)
+        delete log_save_;
 #endif
 }
 
@@ -3619,6 +3716,11 @@ bool MadEditFrame::QueryCloseFile(int idx)
 
 bool MadEditFrame::QueryCloseAllFiles()
 {
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: QueryCloseAllFiles", __LINE__ );
+    wxLog::FlushActive();
+#endif
+
     if(m_Notebook->GetPageCount()==0) return true;
 
     int selid=m_Notebook->GetSelection();
@@ -3628,6 +3730,10 @@ bool MadEditFrame::QueryCloseAllFiles()
     wxString name;
     if(madedit->IsModified())
     {
+#ifdef MAD_ERRTRACE
+        wxLogMessage( "%d: QueryCloseAllFiles", __LINE__ );
+        wxLog::FlushActive();
+#endif
         name=m_Notebook->GetPageText(selid);
         if(name[name.Len()-1]==wxT('*'))
             name.Truncate(name.Len()-1);
@@ -3636,11 +3742,19 @@ bool MadEditFrame::QueryCloseAllFiles()
             return false;
     }
     g_FileCaretPosManager.Add(madedit);
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: QueryCloseAllFiles", __LINE__ );
+    wxLog::FlushActive();
+#endif
 
     int count=int(m_Notebook->GetPageCount());
     int id=0, sid=selid;
     do
     {
+#ifdef MAD_ERRTRACE
+        wxLogMessage( "%d: QueryCloseAllFiles[%d]", __LINE__, id );
+        wxLog::FlushActive();
+#endif
         if(id!=selid)
         {
             madedit=(MadEdit*)m_Notebook->GetPage(id);
@@ -3671,6 +3785,10 @@ bool MadEditFrame::QueryCloseAllFiles()
         }
     }
     while(++id<count);
+#ifdef MAD_ERRTRACE
+    wxLogMessage( "%d: QueryCloseAllFiles", __LINE__ );
+    wxLog::FlushActive();
+#endif
 
     return true;
 }
