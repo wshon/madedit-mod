@@ -1933,16 +1933,16 @@ CommandData CommandTable[]=
 #define _(s)    wxGetTranslation(_T(s))
 //==========================================================
 
-void LoadDefaultSettings(wxConfigBase *m_Config)
+void LoadDefaultSettings(wxConfigBase *madConfig)
 {
-    m_Config->SetPath(wxT("/MadEdit"));
+    madConfig->SetPath(wxT("/MadEdit"));
 
     long templong, x,y;
     bool tempbool;
     wxString tempstr;
 
     long orien;
-    m_Config->Read(wxT("PageOrientation"), &orien, wxPORTRAIT);
+    madConfig->Read(wxT("PageOrientation"), &orien, wxPORTRAIT);
 #if (wxMAJOR_VERSION < 3)
     g_PageSetupData->GetPrintData().SetOrientation(orien);
 #else
@@ -1950,8 +1950,8 @@ void LoadDefaultSettings(wxConfigBase *m_Config)
 #endif
 
     wxSize psize=g_PageSetupData->GetPaperSize();
-    m_Config->Read(wxT("PagePaperSizeW"), &psize.x);
-    m_Config->Read(wxT("PagePaperSizeH"), &psize.y);
+    madConfig->Read(wxT("PagePaperSizeW"), &psize.x);
+    madConfig->Read(wxT("PagePaperSizeH"), &psize.y);
     if(orien!=wxPORTRAIT)
     {
         long tmp=psize.x;
@@ -1960,35 +1960,35 @@ void LoadDefaultSettings(wxConfigBase *m_Config)
     }
     g_PageSetupData->SetPaperSize(psize);
 
-    m_Config->Read(wxT("PageLeftMargin"), &x, 20);
-    m_Config->Read(wxT("PageTopMargin"), &y, 30);
+    madConfig->Read(wxT("PageLeftMargin"), &x, 20);
+    madConfig->Read(wxT("PageTopMargin"), &y, 30);
     g_PageSetupData->SetMarginTopLeft(wxPoint(x,y));
-    m_Config->Read(wxT("PageRightMargin"), &x, 20);
-    m_Config->Read(wxT("PageBottomMargin"), &y, 30);
+    madConfig->Read(wxT("PageRightMargin"), &x, 20);
+    madConfig->Read(wxT("PageBottomMargin"), &y, 30);
     g_PageSetupData->SetMarginBottomRight(wxPoint(x,y));
 
 
-    m_Config->Read(wxT("PrintSyntax"), &tempbool, false);
-    m_Config->Read(wxT("PrintLineNumber"), &tempbool, true);
-    m_Config->Read(wxT("PrintBookmark"), &tempbool, false);
-    m_Config->Read(wxT("PrintEndOfLine"), &tempbool, false);
-    m_Config->Read(wxT("PrintTabChar"), &tempbool, false);
-    m_Config->Read(wxT("PrintSpaceChar"), &tempbool, false);
+    madConfig->Read(wxT("PrintSyntax"), &tempbool, false);
+    madConfig->Read(wxT("PrintLineNumber"), &tempbool, true);
+    madConfig->Read(wxT("PrintBookmark"), &tempbool, false);
+    madConfig->Read(wxT("PrintEndOfLine"), &tempbool, false);
+    madConfig->Read(wxT("PrintTabChar"), &tempbool, false);
+    madConfig->Read(wxT("PrintSpaceChar"), &tempbool, false);
 
-    m_Config->Read(wxT("PrintOffsetHeader"), &templong, 2);
+    madConfig->Read(wxT("PrintOffsetHeader"), &templong, 2);
 
-    m_Config->Read(wxT("PrintPageHeader"), &tempbool, true);
-    m_Config->Read(wxT("PageHeaderLeft"), &tempstr, wxT("%f"));
-    m_Config->Read(wxT("PageHeaderCenter"), &tempstr, wxEmptyString);
-    m_Config->Read(wxT("PageHeaderRight"), &tempstr, wxT("%n/%s"));
+    madConfig->Read(wxT("PrintPageHeader"), &tempbool, true);
+    madConfig->Read(wxT("PageHeaderLeft"), &tempstr, wxT("%f"));
+    madConfig->Read(wxT("PageHeaderCenter"), &tempstr, wxEmptyString);
+    madConfig->Read(wxT("PageHeaderRight"), &tempstr, wxT("%n/%s"));
 
-    m_Config->Read(wxT("PrintPageFooter"), &tempbool, true);
-    m_Config->Read(wxT("PageFooterLeft"), &tempstr, wxEmptyString);
-    m_Config->Read(wxT("PageFooterCenter"), &tempstr, wxEmptyString);
-    m_Config->Read(wxT("PageFooterRight"), &tempstr, wxT("%d %t"));
+    madConfig->Read(wxT("PrintPageFooter"), &tempbool, true);
+    madConfig->Read(wxT("PageFooterLeft"), &tempstr, wxEmptyString);
+    madConfig->Read(wxT("PageFooterCenter"), &tempstr, wxEmptyString);
+    madConfig->Read(wxT("PageFooterRight"), &tempstr, wxT("%d %t"));
 
-    m_Config->SetPath(wxT("/FileCaretPos"));
-    g_FileCaretPosManager.Load(m_Config);
+    madConfig->SetPath(wxT("/FileCaretPos"));
+    g_FileCaretPosManager.Load(madConfig);
 }
 
 
@@ -2034,6 +2034,8 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     g_PageSetupData = new wxPageSetupDialogData;
 
     LoadDefaultSettings(m_Config);
+    m_ReloadFiles  = m_Config->ReadBool(wxT("/MadEdit/ReloadFiles"), true);;
+    m_PurgeHistory = m_Config->ReadBool(wxT("/MadEdit/PurgeHistory"), false);
 
     SetDropTarget(new DnDFile());
 
@@ -2800,8 +2802,8 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 #endif
     wxString files;
     int count=int(m_Notebook->GetPageCount());
-    bool bb=true;
-    m_Config->Read(wxT("ReloadFiles"), &bb);
+    bool bb=m_ReloadFiles;
+    //m_Config->Read(wxT("ReloadFiles"), &bb);
     if(bb && count>0)
     {
         count = m_Notebook->GetFilesList(files);
@@ -2822,8 +2824,8 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     wxLog::FlushActive();
 #endif
 
-    bb=false;
-    m_Config->Read(wxT("/MadEdit/PurgeHistory"), &bb);
+    bb=m_PurgeHistory;
+    //m_Config->Read(wxT("/MadEdit/PurgeHistory"), &bb);
     if(bb)
     {
         PurgeRecentFiles();
@@ -6446,9 +6448,11 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         g_DoNotSaveSettings=g_OptionsDialog->WxCheckBoxDoNotSaveSettings->GetValue();
 
         m_Config->Write(wxT("ReloadFiles"), g_OptionsDialog->WxCheckBoxReloadFiles->GetValue());
+        m_ReloadFiles  = g_OptionsDialog->WxCheckBoxReloadFiles->GetValue();
         m_Config->Write(wxT("RestoreCaretPos"), g_OptionsDialog->WxCheckBoxRestoreCaretPos->GetValue());
         extern bool g_ForcePurgeThisTime;
         m_Config->Read(wxT("PurgeHistory"), g_ForcePurgeThisTime);
+        m_PurgeHistory = g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue();
         m_Config->Write(wxT("PurgeHistory"), g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue());
         if(!g_ForcePurgeThisTime) g_ForcePurgeThisTime = g_OptionsDialog->WxCheckBoxPurgeHistory->GetValue();
         else g_ForcePurgeThisTime = false;

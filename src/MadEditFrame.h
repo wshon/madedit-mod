@@ -126,6 +126,8 @@ public:
     wxCheckBox    *m_CheckboxWholeWord;
     wxCheckBox    *m_CheckboxRegEx;
     wxCheckBox    *m_CheckboxCaseSensitive;
+    bool           m_ReloadFiles;
+    bool           m_PurgeHistory;
     bool           m_SearchDirectionNext;
     bool           m_ToolbarStatus[tbMAX+1];
 
