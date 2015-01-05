@@ -2797,7 +2797,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     // save ReloadFilesList
 #ifdef MAD_ERRTRACE
-    wxLogMessage( "%d: save ReloadFilesList", __LINE__ );
+    wxLogMessage( "%d: save ReloadFilesList[%x]", __LINE__, (int)m_Notebook );
     wxLog::FlushActive();
 #endif
     wxString files;
@@ -2806,9 +2806,13 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     //m_Config->Read(wxT("ReloadFiles"), &bb);
     if(bb && count>0)
     {
+#ifdef MAD_ERRTRACE
+        wxLogMessage( "%d: GetFilesList", __LINE__ );
+        wxLog::FlushActive();
+#endif
         count = m_Notebook->GetFilesList(files);
 #ifdef MAD_ERRTRACE
-		wxLogMessage("%d: GetFilesList[%d][%x][%s]", __LINE__, count, (int)g_ActiveMadEdit, (const char*)files.mb_str());
+        wxLogMessage("%d: GetFilesList[%d][%x][%s]", __LINE__, count, (int)g_ActiveMadEdit, (const char*)files.mb_str());
         wxLog::FlushActive();
 #endif
         wxString selname = g_ActiveMadEdit->GetFileName();
@@ -2891,7 +2895,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
     WINDOWPLACEMENT wp;
     wp.length = sizeof(WINDOWPLACEMENT);
     GetWindowPlacement( (HWND) GetHWND(), &wp );
-    m_Config->Write( wxT("/MadEdit/WindowMaximize"), wp.showCmd == SW_SHOWMAXIMIZED );
+    m_Config->Write(wxT("/MadEdit/WindowMaximize"), wp.showCmd == SW_SHOWMAXIMIZED );
 
     m_Config->Write(wxT("/MadEdit/WindowLeft"),  wp.rcNormalPosition.left );
     m_Config->Write(wxT("/MadEdit/WindowTop"),   wp.rcNormalPosition.top );
