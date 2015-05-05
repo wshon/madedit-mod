@@ -138,6 +138,7 @@
       <SubSystem>Console</SubSystem>
       <StackReserveSize>2000000</StackReserveSize>
       <BaseAddress>0x1d000000</BaseAddress>
+      <AdditionalDependencies>python27_d;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -172,6 +173,7 @@
     <ResourceCompile Include="..\python_exe.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Modules\main.c" />
     <ClCompile Include="..\..\Modules\python.c" />
   </ItemGroup>
   <ItemGroup>

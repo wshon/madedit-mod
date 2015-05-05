@@ -1937,7 +1937,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
     subrowid=toprow-subrowid;
 
     bool displaylinenumber = true; // check first row for displayning line-number or not
-    int wordwidth, wordlength;
+    int wordwidth = 0, wordlength = 0, lastwordwidth = -1;
 
     if(m_Syntax->m_CheckState)
     {
@@ -2067,6 +2067,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 
             do                        // every word of row
             {
+				lastwordwidth = wordlength;
                 wordlength = m_Syntax->NextWord(wordwidth);
                 if(wordlength)
                 {
@@ -2212,6 +2213,8 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                     }
                     /***/
                 }
+				if((lastwordwidth == wordlength) && (wordlength == 0)) 
+					break;
             }
             while(m_Syntax->nw_LineWidth != 0);
 
