@@ -2067,7 +2067,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 
             do                        // every word of row
             {
-				lastwordwidth = wordlength;
+                lastwordwidth = wordlength;
                 wordlength = m_Syntax->NextWord(wordwidth);
                 if(wordlength)
                 {
@@ -2213,8 +2213,11 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                     }
                     /***/
                 }
-				if((lastwordwidth == wordlength) && (wordlength == 0)) 
-					break;
+                if((lastwordwidth == wordlength) && (wordlength == 0))
+				{
+					m_Syntax->nw_EndOfLine = true;
+                    break;
+				}
             }
             while(m_Syntax->nw_LineWidth != 0);
 
