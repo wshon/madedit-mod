@@ -35,7 +35,7 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
-#if wxMAJOR_VERSION < 3)
+#if (wxMAJOR_VERSION < 3)
 #include <wx/gtk/win_gtk.h>
 #include <wx/gtk/dcmemory.h>
 #else
