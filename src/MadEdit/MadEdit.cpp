@@ -1953,7 +1953,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                     m_Syntax->NextWord(wordwidth);
                 }
                 while(m_Syntax->nw_LineWidth != 0);
-
             }
             while(--hiderows != 0);
         }
@@ -1997,8 +1996,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
         }
     }
 
-
-    int SpacingHeight = m_RowHeight - m_TextFontHeight;
+	int SpacingHeight = m_RowHeight - m_TextFontHeight;
     int left, text_top = rect.GetTop() + (SpacingHeight >> 1);
     int row_top = rect.GetTop();
     const int rectright=rect.x+rect.width;
@@ -2006,8 +2004,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
     int SelLeft, SelRight;
     int xpos1=0, xpos2=0;
 
-    // Begin Paint Lines
-    
     if(m_DisplayLineNumber)
     {
         // paint bg
@@ -2019,6 +2015,8 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
             dc->DrawRectangle(rect.GetLeft(), rect.GetTop(), m_LineNumberAreaWidth, rect.GetHeight());
         }
     }
+
+    // Begin Paint Lines
     for(;;)                         // every line
     {
         do                          // every row of line
@@ -2118,7 +2116,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                                             };
 
                                             dc->DrawLines(6, pts);
-
                                         }
                                     }
                                 }
@@ -2395,7 +2392,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                             }
                         }
                     }
-                    
                 }
                 else
                 {
@@ -2470,7 +2466,6 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
             x1 += width + m_LeftMarginWidth - m_DrawingXPos;
             dc->DrawLine(x1, y, x1, y+rect.GetHeight());
         }
-    
     }
 }
 

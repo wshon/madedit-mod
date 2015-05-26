@@ -89,6 +89,7 @@ Mod v0.3.2
 3. Fix hang issue that in the patch for the https://github.com/hltj/wxMEdit/issues/63.
    Re-implemented using custom event.
 4. Fix duplicate Macro recorded, such as cut, cutline, deleteline, etc
+5. Fix a random hang in Search/Replace (PaintTextLines), patch release
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
