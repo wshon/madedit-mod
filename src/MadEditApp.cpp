@@ -465,25 +465,11 @@ bool MadEditApp::OnInit()
 
 int MadEditApp::OnExit()
 {
-    wxLogMessage( "MadEditApp::OnExit" );
-    wxLog::FlushActive();
-
     // save settings in FrameClose();
     if(m_SigleAppChecker)
         delete m_SigleAppChecker;
     if(m_AppServer)
         delete m_AppServer;
 
-#if 0 //def __WXMSW__
-    // it will crash randomly while shutdown MS Windows.
-    // Try close frame again if not
-    if(g_MainFrame)
-    {
-        wxWindow * topWin = wxGetApp().GetTopWindow();
-        if(topWin != (wxWindow *)g_MainFrame)
-            topWin->Close();
-        g_MainFrame->Close(true);
-    }
-#endif
     return 0;
 }
