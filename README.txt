@@ -51,6 +51,7 @@ P.S.: madedit.pot has been uploaded to the top directory. Any translation for
 P.S.: Please open a ticket for bug of MadEdit-Mod at 
       http://sourceforge.net/projects/madedit-mod/
 
+MadEdit_Win2K is a build by VC++ 2005 express which was for Windows 2000
 
 Syntax files, Locale files and Settings:
 ---------------------------------------

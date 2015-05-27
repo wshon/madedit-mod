@@ -62,7 +62,7 @@ AC_ARG_WITH(boost,
     [  --with-boost=PATH       use additional Boost library path,
                           otherwise use system include path],
     [CXXFLAGS="$CXXFLAGS -I$withval"]
-    [LIBS="$LIBS -L$withval/stage/lib -lboost_python"])
+    [LIBS="$LIBS $withval/stage/lib/libboost_python.a"])
 
 
 # Checks for wxWidgets library
@@ -102,13 +102,13 @@ else
 fi
 
 # Make sure we have X11, and also have it added to LIBS
-AC_CHECK_LIB([X11], [XKeycodeToKeysym],[ac_X11="yes"],[ac_X11="no"])
-if test "x$ac_X11" = "xno"; then
-   AC_MSG_ERROR([Could not find XOpenDisplay in X11.])
-else
-   LIBS="$LIBS -lX11"
-fi
-#LIBS="$LIBS -lX11"
+#AC_CHECK_LIB([X11], [main],[ac_X11="yes"],[ac_X11="no"])
+#if test "x$ac_X11" = "xno"; then
+#   AC_MSG_ERROR([Could not find XOpenDisplay in X11.])
+#else
+#   LIBS="$LIBS -lX11"
+#fi
+LIBS="$LIBS -lX11"
 
 # Make sure we have hunspell, and also have it added to LIBS
 # Checks for header files.
