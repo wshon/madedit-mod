@@ -51,7 +51,10 @@ P.S.: madedit.pot has been uploaded to the top directory. Any translation for
 P.S.: Please open a ticket for bug of MadEdit-Mod at 
       http://sourceforge.net/projects/madedit-mod/
 
-MadEdit_Win2K is a build by VC++ 2005 express which was for Windows 2000
+MadEdit_Win2K is a build by VC++ 2005 express with Windows Platform SDK for Windows Server 2003 which was for Windows 2000
+
+Sample command
+./configure --with-boost=../boost_1_56_0 -with-wxdir=../wxWidgets-3.0.2
 
 Syntax files, Locale files and Settings:
 ---------------------------------------
