@@ -11188,15 +11188,15 @@ fi
     WX_VERSION=""
 
     min_wx_version=2.8.0
-    if test -z "" ; then
+    if test -z "--static" ; then
       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for wxWidgets version >= $min_wx_version" >&5
 $as_echo_n "checking for wxWidgets version >= $min_wx_version... " >&6; }
     else
-      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for wxWidgets version >= $min_wx_version ()" >&5
-$as_echo_n "checking for wxWidgets version >= $min_wx_version ()... " >&6; }
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking for wxWidgets version >= $min_wx_version (--static)" >&5
+$as_echo_n "checking for wxWidgets version >= $min_wx_version (--static)... " >&6; }
     fi
 
-            WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args "
+            WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args --static"
 
     WX_VERSION=`$WX_CONFIG_WITH_ARGS --version 2>/dev/null`
     wx_config_major_version=`echo $WX_VERSION | \
@@ -11237,11 +11237,11 @@ $as_echo_n "checking for wxWidgets version >= $min_wx_version ()... " >&6; }
     if test -n "$wx_ver_ok"; then
       { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes (version $WX_VERSION)" >&5
 $as_echo "yes (version $WX_VERSION)" >&6; }
-      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs std, net,aui`
+      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs std,net,aui`
 
                               { $as_echo "$as_me:${as_lineno-$LINENO}: checking for wxWidgets static library" >&5
 $as_echo_n "checking for wxWidgets static library... " >&6; }
-      WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs std, net,aui 2>/dev/null`
+      WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs std,net,aui 2>/dev/null`
       if test "x$WX_LIBS_STATIC" = "x"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
@@ -11284,16 +11284,16 @@ $as_echo "yes" >&6; }
       fi
 
       if test "x$wx_has_cppflags" = x ; then
-                  WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags std, net,aui`
+                  WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags std,net,aui`
          WX_CPPFLAGS=$WX_CFLAGS
          WX_CXXFLAGS=$WX_CFLAGS
 
          WX_CFLAGS_ONLY=$WX_CFLAGS
          WX_CXXFLAGS_ONLY=$WX_CFLAGS
       else
-                  WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags std, net,aui`
-         WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags std, net,aui`
-         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags std, net,aui`
+                  WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags std,net,aui`
+         WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags std,net,aui`
+         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags std,net,aui`
 
          WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
          WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
@@ -11318,12 +11318,12 @@ $as_echo "no (version $WX_VERSION is not new enough)" >&6; }
        WX_LIBS_STATIC=""
        WX_RESCOMP=""
 
-       if test ! -z ""; then
+       if test ! -z "--static"; then
 
           wx_error_message="
     The configuration you asked for $PACKAGE_NAME requires a wxWidgets
     build with the following settings:
-
+        --static
     but such build is not available.
 
     To see the wxWidgets builds available on this system, please use

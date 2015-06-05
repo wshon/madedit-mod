@@ -128,6 +128,7 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	spellchecker/SpellCheckerManager.cpp \
 	spellchecker/SpellCheckerManager.h
 
+dist_doc_DATA = gpl-3.0.txt README.txt
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = madedit.xpm
 
