@@ -8,6 +8,8 @@ madedit-mod (0.3.2-1) unstable; urgency=high
 5. Fix a random hang in Search/Replace (PaintTextLines), patch release
 6. RPM packaging supported(tested with Fedora 20/21)
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.3.1-1) unstable; urgency=high
 
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
@@ -30,6 +32,8 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
     item in global option
 12. Fix issue of extra bookmark sign if the line was wrapped
 13. Update Simplified Chinese
+
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.3.0-1) unstable; urgency=low
 
@@ -54,6 +58,8 @@ madedit-mod (0.3.0-1) unstable; urgency=low
 19. Fix the issue that FindReplaceInFiles would reset the Enable Replace while activating again 
 20. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.2.9-1) unstable; urgency=low
 
 1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the
@@ -67,6 +73,8 @@ madedit-mod (0.2.9-1) unstable; urgency=low
 7. Fix an issue of MadRecentList that would cause annoying error dialog of set working directory error
    (would affect 0.2.7 and 0.2.8)
 8. Update Simplified Chinese
+
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.8-1) unstable; urgency=low
 
@@ -85,6 +93,7 @@ madedit-mod (0.2.8-1) unstable; urgency=low
 12. Fix translation issue with wx3.0(Some text wx3.0 of was not translated, eg. print dialog) 
 13. Update Translation for wx3.0, MadPython
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.7-1) unstable; urgency=low
 
@@ -101,6 +110,7 @@ Will move to wx3.0 since then
 10. Rollback changes for INS and ReadOnly showing on statusbar, which is buggy
 11. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.6-2) unstable; urgency=low
 
@@ -130,6 +140,8 @@ Fix build issue with WX 3.0 under Fedora Core 17
 Add shortcut to Show/Hide All Chars(Space, Tab and EOL)
 Bug fixes
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 
 madedit-mod (0.2.5-6) unstable; urgency=low
 
@@ -138,6 +150,7 @@ madedit-mod (0.2.5-6) unstable; urgency=low
    on the edit area then click on menu or toolbar(It should be a bug of wxWidgets)
 3. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-5) unstable; urgency=low
 
@@ -154,6 +167,7 @@ madedit-mod (0.2.5-5) unstable; urgency=low
 1. Clear/Set ReadOnly flag of the file instead of change outside and close/open again
 2. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-4) unstable; urgency=low
 
@@ -162,6 +176,7 @@ madedit-mod (0.2.5-4) unstable; urgency=low
 3. Fix X11 detection issue of configure script
 4. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-3) unstable; urgency=low
 
@@ -173,6 +188,7 @@ madedit-mod (0.2.5-3) unstable; urgency=low
 5. Fix case sensitive issue of Personal dictionary
 6. Fix typo and translation issue
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-2) unstable; urgency=low
 
@@ -182,6 +198,7 @@ madedit-mod (0.2.5-2) unstable; urgency=low
 4. Detect possible dictionaries under some directories
 5. Fix typo in README.txt by using Spell Checker
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-1) unstable; urgency=low
 
@@ -194,6 +211,7 @@ madedit-mod (0.2.5-1) unstable; urgency=low
 7. Add ".hxx" as header file of C++
 8. Rollback a fix from wxMedit, which is buggy. https://github.com/hltj/wxMEdit/issues/63
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.4-1) unstable; urgency=low
 
@@ -208,6 +226,7 @@ madedit-mod (0.2.4-1) unstable; urgency=low
 9. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
 10. Fix issue introduced by FindAll that it would be found if the matched text was at the beginning
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.3-1) unstable; urgency=low
 
@@ -215,6 +234,7 @@ madedit-mod (0.2.3-1) unstable; urgency=low
 2. Fix issue of mixed tabs and spaces of Column Align and released
 3. Add ColumnAlign InsertIncrementalNumber to MadPython and update madpython syntax file
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.2-2) unstable; urgency=low
 
@@ -223,12 +243,12 @@ madedit-mod (0.2.2-2) unstable; urgency=low
     Select [Convert File Encoding...] in Tools menu, and press OK to close the dialog.
     Then switch to NoName1, and reopen the [Convert File Encoding...] dialog.
     After pressing OK the focus will jump to NoName2, cannot convert the encoding of NoName1.
-
 2. Fix wrong tap order of AUINoteBook http://trac.wxwidgets.org/attachment/ticket/10848/
 3. Fix bug in Mouse Select to clipboard
 4. Fix issue that Replace dialog never has chance to replace wrap around
 5. Update simplified Chinese translation
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.2-1) unstable; urgency=low
 
@@ -240,6 +260,8 @@ if it was deleted, changed attributes.
 5. Colorful ReadOnly and InsertMode indicator string
 6. Fixed issue that Double click would not jump to content line if the file was opened but deleted(FindAll)
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.2.1-1) unstable; urgency=low
 
 1. Support Insert in HexMode(Toggleable)
@@ -248,6 +270,7 @@ madedit-mod (0.2.1-1) unstable; urgency=low
 4. Fixed issue: Purge history while existing not working
 5. Fixed issue: Tab to indent while selecting more than 2 lines not working
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.0-6) unstable; urgency=low
 
@@ -260,6 +283,8 @@ New features from 0.1.x
 5. Close to right/left
 6. Fixed bugs found including hang issue caused by empty (), [] and {} in regluar expression
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.2.0-5) unstable; urgency=low
 
 New to beta 4
@@ -271,6 +296,7 @@ New to beta 4
 6. Update Simplified Chinese
 Waiting for bug report of MadPython and Incremental numbering:-P
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.0-4) unstable; urgency=low
 
@@ -281,6 +307,7 @@ New to beta 3
 4. Add some default button for several dialogs
 5. URL changed to sourceforge.org
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.0-3) unstable; urgency=low
 
@@ -292,6 +319,7 @@ This would be 0.2.0 if no critical issue found
 would be shown in right place if you iconize/restore the window
 5. Added MadPython syntax file and MadPython API added in the file
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.0-2) unstable; urgency=low
 
@@ -302,6 +330,7 @@ Known issue: MadPython not work well in column mode, eg. insert char in column m
 4. Fixed hang issue caused by empty (), [] and {} in regular expression
 5. More missed commands was recorded, eg, SetEditMode
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.0-1) unstable; urgency=low
 
@@ -316,6 +345,7 @@ New to 0.1.5 beta
 7. Fixed issue of loading script with Unicode characters, eg, Unicode in comments
 8. Update translation of Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.1.5-5) unstable; urgency=low
 
@@ -329,12 +359,15 @@ listed on the menu.
 status bar
 6. Remove and add new APIs in MadPython
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.1.5-4) unstable; urgency=low
 
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 3
 Fixed known issue: SetCaretPosition would get wrong selection beginning pos and duplicated SetCaretPosition
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.1.5-2) unstable; urgency=low
 
@@ -349,6 +382,8 @@ pos and duplicated SetCaretPosition). Not well tested.
 6. Updated translation for Simplified Chinese.
 7. SaveRecord Icon is to be updated.
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.1.5-1) unstable; urgency=low
 
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
@@ -360,6 +395,7 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 6. Save script/connected with shortcut(?)(Todo)
 7. Right click on file tab supported(Alpha 2)
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.1.4-1) unstable; urgency=low
 
@@ -368,9 +404,13 @@ madedit-mod (0.1.4-1) unstable; urgency=low
 3. Partially update/add translation of Italian/Japanese/Spanish/Russian? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
 4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.1.3-1) unstable; urgency=low
 
 Nothing changed. Rebuild with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
+
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.1.2-1) unstable; urgency=low
 
@@ -378,6 +418,8 @@ madedit-mod (0.1.2-1) unstable; urgency=low
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
 3. Add FreeBasic Syntax(wxMedit)
 4. Release 0.1.2
+
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.1.0-1) unstable; urgency=low
 
@@ -387,6 +429,8 @@ madedit-mod (0.1.0-1) unstable; urgency=low
 4. Change name to MadEdit-Mod, starting version 0.1.1
 5. Add FreeBasic Syntax
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
+
 madedit-mod (0.0.3-1) unstable; urgency=low
 
 1. Added support for open file and go to #line by command line arguments, use "FileName*linnum".
@@ -394,6 +438,7 @@ madedit-mod (0.0.3-1) unstable; urgency=low
    This feature can be used for multiple files open function in Madedit, eg.
    "FileName1*linnum1|FileName2*linnum2|FileName3*linnum3|..."
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.0.2-1) unstable; urgency=low
 
@@ -409,6 +454,8 @@ madedit-mod (0.0.1-1) unstable; urgency=low
     Highlight words(shift+F8)
     Triple click to select whole line
     Search all in current file
+
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2012 17:05:40 +0800
 
 madedit (0.2.9-1) unstable; urgency=low
 
