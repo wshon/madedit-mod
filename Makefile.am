@@ -143,15 +143,15 @@ noinst_HEADERS =	description-pak \
 	chmod_644_all_files.sh \
 	madedit.spec \
 	madedit-static.spec \
-	debian/changelog \
-	debian/control \
-	debian/copyright \
-	debian/menu \
-	debian/rules \
-	freebsd/pkg-comment \
-	freebsd/pkg-descr \
-	freebsd/pkg-plist \
-	freebsd/pkgcreate.txt \
+	packaging/debian/changelog \
+	packaging/debian/control \
+	packaging/debian/copyright \
+	packaging/debian/menu \
+	packaging/debian/rules \
+	packaging/freebsd/pkg-comment \
+	packaging/freebsd/pkg-descr \
+	packaging/freebsd/pkg-plist \
+	packaging/freebsd/pkgcreate.txt \
 	m4/gettext.m4 \
 	m4/iconv.m4 \
 	m4/lib-ld.m4 \
