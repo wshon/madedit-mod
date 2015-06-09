@@ -1,15 +1,16 @@
-Source: madedit
+Source: madedit-mod
 Section: editors
 Priority: optional
-Maintainer: Alston Chen <madedit@gmail.com>
+Maintainer: Minggang Li <liminggang@gmail.com>
 Build-Depends: debhelper (>= 4.0.0), libgtk2.0-dev, libwxgtk2.8-dev, libboost-dev
 Standards-Version: 3.6.2
 
-Package: madedit
+Package: madedit-mod
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+HomePage: http://sourceforge.net/projects/madedit-mod
 Description: GTK+2 based text/hex editor
- MadEdit is a cross-platform Text/Hex Editor written in C++ & wxWidgets.
- MadEdit supports many useful functions, e.g. SyntaxHighlightings, 
+ MadEdit-Mod is a cross-platform Text/Hex Editor written in C++ & wxWidgets.
+ MadEdit-Mod supports many useful functions, e.g. SyntaxHighlightings, 
  WordWrap, Encodings, Column/Hex Modes.
- HomePage: http://madedit.sourceforge.net
+
