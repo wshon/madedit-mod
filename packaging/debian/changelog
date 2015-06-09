@@ -117,6 +117,7 @@ madedit-mod (0.2.6-2) unstable; urgency=low
   1. Bookmark while searching(toggle bookmark/bookmark all/don't show results in results window)
   2. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.6-1) unstable; urgency=low
 
@@ -161,6 +162,7 @@ madedit-mod (0.2.5-5) unstable; urgency=low
   5. Add GNU ASM syntax file
   6. Update Simplified Chinese
 
+ -- Minggang Li <liminggang@gmail.com>  Tue, 6 June 2015 17:05:40 +0800
 
 madedit-mod (0.2.5-5) unstable; urgency=low
 
