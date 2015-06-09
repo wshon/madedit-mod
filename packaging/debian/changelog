@@ -1,4 +1,5 @@
-Mod v0.3.2
+madedit-mod (0.3.2-1) unstable; urgency=high
+
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
 2. Fix caret display issue after hiding Quick Search bar
 3. Fix hang issue that in the patch for the https://github.com/hltj/wxMEdit/issues/63.
@@ -7,7 +8,8 @@ Mod v0.3.2
 5. Fix a random hang in Search/Replace (PaintTextLines), patch release
 6. RPM packaging supported(tested with Fedora 20/21)
 
-Mod v0.3.1
+madedit-mod (0.3.1-1) unstable; urgency=high
+
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 1. Use wxAuiToolBar as ToolBar, group tools into Standard, Editor, Search/Replace,
    Text view, and Macro
@@ -29,7 +31,8 @@ Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
 12. Fix issue of extra bookmark sign if the line was wrapped
 13. Update Simplified Chinese
 
-Mod v0.3.0
+madedit-mod (0.3.0-1) unstable; urgency=low
+
 1. Improve UI and all strings of message box/dialog can be translated since then
 2. Change application name string to 'MadEdit-Mod'
 3. Update cursor as NO_ENTRY sign while being out of window(Drag and Drop)
@@ -51,7 +54,8 @@ Mod v0.3.0
 19. Fix the issue that FindReplaceInFiles would reset the Enable Replace while activating again 
 20. Update Simplified Chinese
 
-Mod v0.2.9
+madedit-mod (0.2.9-1) unstable; urgency=low
+
 1. Auto fill column data while pasting in column mode(the lines would be automatically duplicated if the
    lines in clipboard was less than the selected. Eg, you copied ONE line but you chosen 3 lines in column
    mode and pasted, the line would be automatically duplicated 3 times if the function was enabled in Options)
@@ -64,7 +68,8 @@ Mod v0.2.9
    (would affect 0.2.7 and 0.2.8)
 8. Update Simplified Chinese
 
-Mod v0.2.8
+madedit-mod (0.2.8-1) unstable; urgency=low
+
 1. Fix the issue that Toolbar was not flat under wx3.0(Now we have separator on Toolbar under Windows now)
 2. Revert Hex String to hex(Eg, from '4D6F64', '4D 6F 64', '%4D%6F%64', or '4D,6F,64' to 'Mod', mainly for
    Asian languages. Eg, used to correct some corrupted text----lost one byte)
@@ -80,7 +85,9 @@ Mod v0.2.8
 12. Fix translation issue with wx3.0(Some text wx3.0 of was not translated, eg. print dialog) 
 13. Update Translation for wx3.0, MadPython
 
-Mod v0.2.7
+
+madedit-mod (0.2.7-1) unstable; urgency=low
+
 Will move to wx3.0 since then
 1. Delete empty lines supported
 2. Delete empty lines(with spaces) supported(More line functions?)
@@ -94,18 +101,21 @@ Will move to wx3.0 since then
 10. Rollback changes for INS and ReadOnly showing on statusbar, which is buggy
 11. Update Simplified Chinese
 
-Mod v0.2.6.1
+
+madedit-mod (0.2.6-2) unstable; urgency=low
+
 1. Bookmark while searching(toggle bookmark/bookmark all/don't show results in results window)
 2. Update Simplified Chinese
 
-Mod v0.2.6
+
+madedit-mod (0.2.6-1) unstable; urgency=low
+
 1. Enhanced bookmark edit functions(copy/cut/delete/replace) under Edit menu
 2. Move Toggle/Goto/clear bookmarks to Search because they are not edit functions
 3. Start/End select to mark a start and end of selection by menu
 4. Capitalize words in selection
 5. Add Capitalize to MadPython
 6. Update Simplified Chinese
-
 What's new from v0.2.5
 Enhanced bookmark edit functions(copy/cut/delete/replace) under Edit menu
 Move Toggle/Goto/clear bookmarks to Search because they are not edit functions
@@ -120,13 +130,17 @@ Fix build issue with WX 3.0 under Fedora Core 17
 Add shortcut to Show/Hide All Chars(Space, Tab and EOL)
 Bug fixes
 
-Mod v0.2.5.5
+
+madedit-mod (0.2.5-6) unstable; urgency=low
+
 1. Add shortcut to Show All Chars(Space, Tab and EOL)
 2. Fixed the mouse issue http://sourceforge.net/p/madedit/bugs/10/, which might cause crash if you click
    on the edit area then click on menu or toolbar(It should be a bug of wxWidgets)
 3. Update Simplified Chinese
 
-Mod v0.2.5.4
+
+madedit-mod (0.2.5-5) unstable; urgency=low
+
 1. ColumnAlign to align the 'short line'(EOL is ahead of the caret position)
 2. Add URL of dictionary download in About Dialog
 3. Fix build issue with WX 3.0 under Fedora Core 17(Just follow the original way----to be investigated)
@@ -134,17 +148,23 @@ Mod v0.2.5.4
 5. Add GNU ASM syntax file
 6. Update Simplified Chinese
 
-Mod v0.2.5.3
+
+madedit-mod (0.2.5-5) unstable; urgency=low
+
 1. Clear/Set ReadOnly flag of the file instead of change outside and close/open again
 2. Update Simplified Chinese
 
-Mod v0.2.5.2
+
+madedit-mod (0.2.5-4) unstable; urgency=low
+
 1. Remove word from Personal dictionary
 2. Fix Linux build(for SpellChecker changes)
 3. Fix X11 detection issue of configure script
 4. Update Simplified Chinese
 
-Mod v0.2.5.1
+
+madedit-mod (0.2.5-3) unstable; urgency=low
+
 1. Fix bugs of Spell Checker config save/load
 2. Multiple dictionary supported(different files with different dictionaries at the same time)
 3. Personal dictionary(AddWord)/temporary ignore by right click(Enable it @Tools->Options->
@@ -153,14 +173,18 @@ Mod v0.2.5.1
 5. Fix case sensitive issue of Personal dictionary
 6. Fix typo and translation issue
 
-Mod v0.2.5
+
+madedit-mod (0.2.5-2) unstable; urgency=low
+
 1. Spell checker released
 2. Spell checker config(Dictionary path, switch Dictionary(Tools->Options))
 3. Different dictionary for different document(would not save in config)
 4. Detect possible dictionaries under some directories
 5. Fix typo in README.txt by using Spell Checker
 
-Mod v0.2.5 Alpha
+
+madedit-mod (0.2.5-1) unstable; urgency=low
+
 1. Add hunspell as spell checker(Hard code en_US as dictionary for preview, under Dictionaries/)
 2. Enable/Disable spell checker(View->Spell Checker)
 3. Encoding group/filter
@@ -170,7 +194,9 @@ Mod v0.2.5 Alpha
 7. Add ".hxx" as header file of C++
 8. Rollback a fix from wxMedit, which is buggy. https://github.com/hltj/wxMEdit/issues/63
 
-Mod v0.2.4
+
+madedit-mod (0.2.4-1) unstable; urgency=low
+
 1. Column Align released
 2. Change HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\\Software\\Classes\\ for Windows UAC
 3. Improve usability of FindAll
@@ -182,12 +208,16 @@ Mod v0.2.4
 9. Fix Upper/Lower issue of wxString under Windows(Chinese Ed)
 10. Fix issue introduced by FindAll that it would be found if the matched text was at the beginning
 
-Mod v0.2.3
+
+madedit-mod (0.2.3-1) unstable; urgency=low
+
 1. Change Info window label for Search or Search in Files
 2. Fix issue of mixed tabs and spaces of Column Align and released
 3. Add ColumnAlign InsertIncrementalNumber to MadPython and update madpython syntax file
 
-Mod v0.2.2.1
+
+madedit-mod (0.2.2-2) unstable; urgency=low
+
 1. Fix Modal dialog bug of wxWidgets 2.8.12(Patch from MadEdit 0.2.9.1) (Win32 only):
     Use MadEdit open two new files, NoName1 and NoName2, the focus is on NoName2 now.
     Select [Convert File Encoding...] in Tools menu, and press OK to close the dialog.
@@ -199,7 +229,9 @@ Mod v0.2.2.1
 4. Fix issue that Replace dialog never has chance to replace wrap around
 5. Update simplified Chinese translation
 
-Mod v0.2.2
+
+madedit-mod (0.2.2-1) unstable; urgency=low
+
 1. Add "Insert incremental numbers" to edit popup menu
 2. Column Align(Alpha, Known issue: crash with tab mixed with spaces.)
 3. Add attribute check in file change detect. The file would be marked as modified
@@ -208,14 +240,17 @@ if it was deleted, changed attributes.
 5. Colorful ReadOnly and InsertMode indicator string
 6. Fixed issue that Double click would not jump to content line if the file was opened but deleted(FindAll)
 
-Mod v0.2.1
+madedit-mod (0.2.1-1) unstable; urgency=low
+
 1. Support Insert in HexMode(Toggleable)
 2. Paste as insert or replace according to InsertMode
 3. Replace in all mode by paste
 4. Fixed issue: Purge history while existing not working
 5. Fixed issue: Tab to indent while selecting more than 2 lines not working
 
-Mod v0.2.0
+
+madedit-mod (0.2.0-6) unstable; urgency=low
+
 New features from 0.1.x
 1. Single Instance feature don't compatible with 0.1.x
 2. MadPython based on Python 2.7.8 as automation macro(Edit/Record/Run/Save/Load)
@@ -225,7 +260,8 @@ New features from 0.1.x
 5. Close to right/left
 6. Fixed bugs found including hang issue caused by empty (), [] and {} in regluar expression
 
-Mod v0.2.0 beta 5
+madedit-mod (0.2.0-5) unstable; urgency=low
+
 New to beta 4
 1. Changed error message of Options Dialog
 2. Add Incremental numbering feature in Edit->Advanced for column numbering at current caret pos
@@ -235,7 +271,9 @@ New to beta 4
 6. Update Simplified Chinese
 Waiting for bug report of MadPython and Incremental numbering:-P
 
-Mod v0.2.0 beta 4
+
+madedit-mod (0.2.0-4) unstable; urgency=low
+
 New to beta 3
 1. Replace wxRichTextCtrl with wxTextCtrl
 2. Add Macro debug mode, default off
@@ -243,7 +281,9 @@ New to beta 3
 4. Add some default button for several dialogs
 5. URL changed to sourceforge.org
 
-Mod v0.2.0 beta 3
+
+madedit-mod (0.2.0-3) unstable; urgency=low
+
 This would be 0.2.0 if no critical issue found
 1. Fixed Known issue(wxStyledTextCtrl bug in beta 2) by replacing wxStyledTextCtrl with MadEdit
 2. Fixed MadPython insert char issue in column mode
@@ -252,7 +292,9 @@ This would be 0.2.0 if no critical issue found
 would be shown in right place if you iconize/restore the window
 5. Added MadPython syntax file and MadPython API added in the file
 
-Mod v0.2.0 beta 2
+
+madedit-mod (0.2.0-2) unstable; urgency=low
+
 Known issue: MadPython not work well in column mode, eg. insert char in column mode
 1. Fixed wxAUIBook bug with patch(http://trac.wxwidgets.org/attachment/ticket/10848/)
 2. Add Close All To The Left/Right feature
@@ -260,7 +302,9 @@ Known issue: MadPython not work well in column mode, eg. insert char in column m
 4. Fixed hang issue caused by empty (), [] and {} in regular expression
 5. More missed commands was recorded, eg, SetEditMode
 
-Mod v0.2.0 beta 2014.9.12
+
+madedit-mod (0.2.0-1) unstable; urgency=low
+
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to 0.1.5 beta
 1. Replace the ugly code for single instance support with the IPC of wxWidgets
@@ -272,7 +316,9 @@ New to 0.1.5 beta
 7. Fixed issue of loading script with Unicode characters, eg, Unicode in comments
 8. Update translation of Simplified Chinese
 
-Mod v0.1.5 beta 2014.9.11
+
+madedit-mod (0.1.5-5) unstable; urgency=low
+
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 4
 1. Add new image for Run TempMacro
@@ -283,12 +329,15 @@ listed on the menu.
 status bar
 6. Remove and add new APIs in MadPython
 
-Mod v0.1.5 alpha 4 2014.9.10
+madedit-mod (0.1.5-4) unstable; urgency=low
+
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 3
 Fixed known issue: SetCaretPosition would get wrong selection beginning pos and duplicated SetCaretPosition
 
-Mod v0.1.5 alpha 3 2014.9.10
+
+madedit-mod (0.1.5-2) unstable; urgency=low
+
 Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 New to alpha 2
 1. Fixed Assertion on wxEVT_MOUSE_CAPTURE_LOST
@@ -300,9 +349,9 @@ pos and duplicated SetCaretPosition). Not well tested.
 6. Updated translation for Simplified Chinese.
 7. SaveRecord Icon is to be updated.
 
-Mod v0.1.5 alpha 2014.9.5
-Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
+madedit-mod (0.1.5-1) unstable; urgency=low
 
+Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your work before try MadPython
 1. Replace the ugly code with wxSingleInstanceChecker for singleton check(Todo)
 2. Embed minimized Python as Macro language(Only MS Windows supported currently)[Tools->Macros]
 3. Improve behavior of Search and SearchInFiles
@@ -311,45 +360,48 @@ Warning: This is a Preview for 0.1.5, MadPython was not fully tested. Save your 
 6. Save script/connected with shortcut(?)(Todo)
 7. Right click on file tab supported(Alpha 2)
 
-Mod v0.1.4 2014.6.29
+
+madedit-mod (0.1.4-1) unstable; urgency=low
+
 1. Add clear history function(search/replace history, recent file/font history) from WMedit
 2. Update Simplified/Traditional Chinese translation
 3. Partially update/add translation of Italian/Japanese/Spanish/Russian? based on WMedit(Anyone can help on this? contact minggang.li@gmail.com)
 4. Use wxWidgets 2.8.12 because 3.0.1 still has random hang issue
 
-Mod v0.1.3 2014.6.23
+madedit-mod (0.1.3-1) unstable; urgency=low
+
 Nothing changed. Rebuild with wxWidgets 3.0.1 which is a bug fix of 3.0. So far so good.
 
-Mod v0.1.2
+madedit-mod (0.1.2-1) unstable; urgency=low
+
 1. Adding extra checking code for UTF8(From CodeBlocks)
 2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
 3. Add FreeBasic Syntax(wxMedit)
+4. Release 0.1.2
 
+madedit-mod (0.1.0-1) unstable; urgency=low
 
-2014.02.13
-1. Adding extra checking code for UTF8(From CodeBlocks)
-2. New Encoding CP855(https://sourceforge.net/p/madedit/discussion/421172/thread/4e901148/)
-3. Release 0.1.2
-
-2014.02.05
 1. Using VS 2013 Express for compiling and fix some unsafe code.
 2. Update wxWidgets to 3.0
 3. Update boost to 1.55.0
 4. Change name to MadEdit-Mod, starting version 0.1.1
 5. Add FreeBasic Syntax
 
+madedit-mod (0.0.3-1) unstable; urgency=low
 
-2014.01.26
 1. Added support for open file and go to #line by command line arguments, use "FileName*linnum".
    '*' can not be used as filename in all OS for it's a wildcard char.
    This feature can be used for multiple files open function in Madedit, eg.
    "FileName1*linnum1|FileName2*linnum2|FileName3*linnum3|..."
 
-2012.07.05
+
+madedit-mod (0.0.2-1) unstable; urgency=low
+
 1.Fixed issues in Search/Replace in Selection
 2.Removed the confusing From/To on Search/Replace dialog
 
-v0.2.9 Mod
+madedit-mod (0.0.1-1) unstable; urgency=low
+
 1.Fixed several critical/crash bugs in Madedit 0.2.9.
 2.New features added.
     Drag&Drop Edit
