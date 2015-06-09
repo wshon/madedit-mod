@@ -51,10 +51,7 @@ P.S.: madedit.pot has been uploaded to the top directory. Any translation for
 P.S.: Please open a ticket for bug of MadEdit-Mod at 
       http://sourceforge.net/projects/madedit-mod/
 
-MadEdit_Win2K is a build by VC++ 2005 express with Windows Platform SDK for Windows Server 2003 which was for Windows 2000
-
-Sample command
-./configure --with-boost=../boost_1_56_0 -with-wxdir=../wxWidgets-3.0.2
+MadEdit_Win2K is a build by VC++ 2005 express which was for Windows 2000
 
 Syntax files, Locale files and Settings:
 ---------------------------------------
@@ -94,6 +91,7 @@ Mod v0.3.2
    Re-implemented using custom event.
 4. Fix duplicate Macro recorded, such as cut, cutline, deleteline, etc
 5. Fix a random hang in Search/Replace (PaintTextLines), patch release
+6. RPM packaging supported(tested with Fedora 20/21)
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
