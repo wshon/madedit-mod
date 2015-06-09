@@ -267,6 +267,10 @@ void MadEdit::SetTextFont(const wxString &name, int size, bool forceReset)
             MadEditSuperClass::SetFont(*m_TextFont);
             m_TextFontHeight=GetCharHeight();
 
+            //Patch for Fedora 20 VMWare
+            wxASSERT(m_TextFontHeight > 0);
+            if(m_TextFontHeight==0) m_TextFontHeight=19;
+
             bool ofwm=m_FixedWidthMode;
             m_FixedWidthMode=false; // avoid effecting on GetUCharWidth();
 

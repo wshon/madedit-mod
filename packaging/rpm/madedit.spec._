@@ -36,7 +36,7 @@ sed -i 's/^dist_doc_DATA/#dist_doc_DATA/' \
  $RPM_BUILD_DIR/%{name}-%{version}/Makefile.am
 
 %build
-./autogen.sh
+sh ./autogen.sh
 %configure --with-boost=${HOME}/boost_1_56_0 -with-wxdir=${HOME}/wxWidgets-3.0.2
 make
 strip -s ./madedit
