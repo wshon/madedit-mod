@@ -98,6 +98,8 @@ Mod v0.3.2
 4. Fix duplicate Macro recorded, such as cut, cutline, deleteline, etc
 5. Fix a random hang in Search/Replace (PaintTextLines), patch release
 6. RPM packaging supported(tested with Fedora 20/21)
+7. Debian packaging supported(tested with Ubuntu 15.04)
+8. FreeBSD packaging supported(tested with FreeBSD 10.01)
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then
