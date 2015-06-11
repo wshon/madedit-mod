@@ -19,7 +19,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_LANG(C++)
 
-#CXXFLAGS="-O2"
+CXXFLAGS="-O2 -Wno-write-strings -fno-strict-aliasing"
 
 # Checks for MacOS
 IS_MACOS=

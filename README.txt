@@ -57,6 +57,11 @@ P.S.: Please open a ticket for bug of MadEdit-Mod at
 MadEdit_Win2K is a build by VC++ 2005 express for Windows 2000.
 
 Example build under Linux
+Boost Python(1.56)
+./bjam --with-python include="${HOME}/madedit-mod/minipython/Include" python-debugging=off threading=multi variant=release link=static runtime-link=static stage
+wxWidgets(3.0.2)
+./configure --enable-unicode --disable-shared
+MadEdit-Mod
 ./configure --with-boost=${HOME}/boost_1_56_0 --with-wxdir=${HOME}/wxWidgets-3.0.2
 
 Syntax files, Locale files and Settings:

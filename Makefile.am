@@ -274,12 +274,15 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	minipython/Parser/tokenizer.h \
 	minipython/pyconfig.h \
 	minipython/Python/importdl.h \
-	minipython/Python/thread_nt.h \
+	minipython/Python/thread_pthread.h \
 	minipython/Modules/_codecsmodule.c \
 	minipython/Modules/_math.c \
 	minipython/Modules/errnomodule.c \
 	minipython/Modules/future_builtins.c \
 	minipython/Modules/gcmodule.c \
+	minipython/Modules/getbuildinfo.c \
+	minipython/Modules/getpath.c \
+	minipython/Modules/config.c \
 	minipython/Modules/mathmodule.c \
 	minipython/Modules/parsermodule.c \
 	minipython/Modules/stropmodule.c \
@@ -350,7 +353,6 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	minipython/Parser/parser.c \
 	minipython/Parser/parsetok.c \
 	minipython/Parser/tokenizer.c \
-	minipython/Modules/getbuildinfo.c \
 	minipython/Python/_warnings.c \
 	minipython/Python/asdl.c \
 	minipython/Python/ast.c \
@@ -444,6 +446,7 @@ noinst_HEADERS =	description-pak \
 	src/plugin_example/plugin.cpp \
 	src/plugin_example/vc_cl.bat \
 	src/plugin_example/wxwin16x16.xpm \
+	minipython/Python/thread_nt.h \
 	minipython/PC/config.c \
 	minipython/PC/dl_nt.c \
 	minipython/PC/getpathp.c \
