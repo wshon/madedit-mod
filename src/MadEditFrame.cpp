@@ -6143,7 +6143,6 @@ void MadEditFrame::OnSpellAdd2Dict(wxCommandEvent& event)
     if(g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode()!=emHexMode)
     {
         wxString str;
-        shared_ptr<wxSpellCheckEngineInterface> & spellChecker = g_ActiveMadEdit->GetSpellChecker();
         if(g_ActiveMadEdit->IsSelected() && g_ActiveMadEdit->GetEditMode()!=emColumnMode)
             g_ActiveMadEdit->GetSelText(str);
         else

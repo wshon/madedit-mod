@@ -290,7 +290,11 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	minipython/Modules/zlib/compress.c \
 	minipython/Modules/zlib/crc32.c \
 	minipython/Modules/zlib/deflate.c \
-	minipython/Modules/zlib/gzio.c \
+	minipython/Modules/zlib/gzclose.c \
+	minipython/Modules/zlib/gzguts.h \
+	minipython/Modules/zlib/gzlib.c \
+	minipython/Modules/zlib/gzread.c \
+	minipython/Modules/zlib/gzwrite.c \
 	minipython/Modules/zlib/infback.c \
 	minipython/Modules/zlib/inffast.c \
 	minipython/Modules/zlib/inflate.c \
