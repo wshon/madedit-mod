@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([madedit-mod], [0.2.5], [liminggang@gmail.com])
+AC_INIT([madedit-mod], [0.3.2], [liminggang@gmail.com])
 AC_CONFIG_SRCDIR([src/MadEditApp.cpp])
 AC_CONFIG_HEADER([config.h])
 AC_PREFIX_DEFAULT([/usr])
@@ -114,13 +114,13 @@ LIBS="$LIBS -lX11"
 # Checks for header files.
 #AC_CHECK_HEADERS([hunspell/hunspell.hxx])
 #LIBS="$LIBS -lhunspell"
-if test "x$IS_MACOS" == "x"; then
-    PKG_CHECK_MODULES(hunspell, [
-            hunspell >= 1.3
-    ])
-    CXXFLAGS="$CXXFLAGS $hunspell_CFLAGS"
-    LIBS="$LIBS $hunspell_LIBS"
-fi
+#if test "x$IS_MACOS" == "x"; then
+#    PKG_CHECK_MODULES(hunspell, [
+#            hunspell >= 1.3
+#    ])
+#    CXXFLAGS="$CXXFLAGS $hunspell_CFLAGS"
+#    LIBS="$LIBS $hunspell_LIBS"
+#fi
 
 # Checks for header files.
 AC_CHECK_HEADERS([boost/config.hpp])
