@@ -42,13 +42,13 @@ if test "x$IS_MACOS" == "x"; then
     LIBS="$LIBS $glib_gtk2_LIBS"
 fi
 
-#if test "x$IS_MACOS" == "x"; then
-#    PKG_CHECK_MODULES(python, [
-#            python >= 2.7
-#    ])
-#    CXXFLAGS="$CXXFLAGS $python_CFLAGS"
-#    LIBS="$LIBS $python_LIBS"
-#fi
+if test "x$IS_MACOS" == "x"; then
+    PKG_CHECK_MODULES(python, [
+            python >= 2.7
+    ])
+    CXXFLAGS="$CXXFLAGS $python_CFLAGS"
+    LIBS="$LIBS $python_LIBS"
+fi
 
 # option for additional Xpressive lib
 AC_ARG_WITH(xpressive, 
