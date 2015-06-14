@@ -17,9 +17,8 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
       1. wxWidgets-2.8.x or higher with Unicode and IPC enabled
       2. Boost-1.33.0 or higher(build Boost-Python)
       3. Boost.Xpressive latest version
-      4. Python 2.7 or higher
-      5. hunspell 1.3.3 or higher
-      (gtk2-devel gtext-devel automake rpm-build hunspell-devel python-devel)
+
+      (gtk2-devel gtext-devel automake rpm-build)
       copy wxwin.m4 to usr/share/acloXXX/ or install wxGTK-devel
 
 
