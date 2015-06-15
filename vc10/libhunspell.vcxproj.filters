@@ -9,111 +9,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h">
-      <Filter>_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\win_api\hunspelldll.h">
-      <Filter>_Main</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\affentry.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\affixmgr.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\atypes.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\baseaffix.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\csutil.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\dictmgr.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\filemgr.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\hashmgr.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\htypes.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\hunspell.h">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\hunspell.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\hunvisapi.h">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\hunzip.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\langnum.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\phonet.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\replist.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\suggestmgr.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
-    <ClInclude Include="hunspell\src\hunspell\w_char.hxx">
-      <Filter>hunspell</Filter>
-    </ClInclude>
+    <ClInclude Include="..\spellchecker\hunspell\src\win_api\config.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\win_api\hunspelldll.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\affentry.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\affixmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\atypes.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\baseaffix.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\csutil.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\dictmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\filemgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hashmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\htypes.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunspell.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunspell.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunvisapi.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunzip.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\langnum.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\phonet.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\replist.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\suggestmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\w_char.hxx" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="hunspell\src\win_api\Hunspell.rc">
-      <Filter>_Main</Filter>
-    </ResourceCompile>
+    <ResourceCompile Include="..\spellchecker\hunspell\src\win_api\Hunspell.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hunspell\src\win_api\hunspelldll.c">
-      <Filter>_Main</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\affentry.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\affixmgr.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\csutil.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\dictmgr.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\filemgr.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\hashmgr.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\hunspell.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\hunzip.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\phonet.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\replist.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\suggestmgr.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\utf_info.cxx">
-      <Filter>hunspell</Filter>
-    </ClCompile>
+    <ClCompile Include="..\spellchecker\hunspell\src\win_api\hunspelldll.c" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\affentry.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\affixmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\csutil.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\dictmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\filemgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hashmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hunspell.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hunzip.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\phonet.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\replist.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\suggestmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\utf_info.cxx" />
   </ItemGroup>
 </Project>
