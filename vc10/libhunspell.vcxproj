@@ -79,7 +79,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\hunspell\src;.\hunspell\src\hunspell;.\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spellchecker\hunspell\src;..\spellchecker\hunspell\src\hunspell;..\spellchecker\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;HUNSPELL_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -95,7 +95,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>.\hunspell\src\hunspell;.\hunspell\src\win_api;.;$(WXWIN3)\include;$(WXWIN3)\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spellchecker\hunspell\src\hunspell;..\spellchecker\hunspell\src\win_api;.;$(WXWIN3)\include;$(WXWIN3)\lib\vc_lib\mswu;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;HUNSPELL_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -119,7 +119,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>.\hunspell\src\hunspell;.\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spellchecker\hunspell\src\hunspell;..\spellchecker\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;HUNSPELL_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -146,7 +146,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_dll|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\hunspell\src\hunspell;.\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\spellchecker\hunspell\src\hunspell;..\spellchecker\hunspell\src\win_api;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;HUNSPELL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -164,49 +164,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
-    <ClInclude Include="hunspell\src\win_api\hunspelldll.h" />
-    <ClInclude Include="hunspell\src\hunspell\affentry.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\affixmgr.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\atypes.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\baseaffix.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\csutil.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\dictmgr.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\filemgr.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\hashmgr.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\htypes.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\hunspell.h" />
-    <ClInclude Include="hunspell\src\hunspell\hunspell.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\hunvisapi.h" />
-    <ClInclude Include="hunspell\src\hunspell\hunzip.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\langnum.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\phonet.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\replist.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\suggestmgr.hxx" />
-    <ClInclude Include="hunspell\src\hunspell\w_char.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\win_api\config.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\win_api\hunspelldll.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\affentry.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\affixmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\atypes.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\baseaffix.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\csutil.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\dictmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\filemgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hashmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\htypes.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunspell.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunspell.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunvisapi.h" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\hunzip.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\langnum.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\phonet.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\replist.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\suggestmgr.hxx" />
+    <ClInclude Include="..\spellchecker\hunspell\src\hunspell\w_char.hxx" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="hunspell\src\win_api\Hunspell.rc" />
+    <ResourceCompile Include="..\spellchecker\hunspell\src\win_api\Hunspell.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="hunspell\src\win_api\hunspelldll.c">
+    <ClCompile Include="..\spellchecker\hunspell\src\win_api\hunspelldll.c">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug_dll|Win32'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release_dll|Win32'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsCpp</CompileAs>
     </ClCompile>
-    <ClCompile Include="hunspell\src\hunspell\affentry.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\affixmgr.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\csutil.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\dictmgr.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\filemgr.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\hashmgr.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\hunspell.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\hunzip.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\phonet.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\replist.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\suggestmgr.cxx" />
-    <ClCompile Include="hunspell\src\hunspell\utf_info.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\affentry.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\affixmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\csutil.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\dictmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\filemgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hashmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hunspell.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\hunzip.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\phonet.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\replist.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\suggestmgr.cxx" />
+    <ClCompile Include="..\spellchecker\hunspell\src\hunspell\utf_info.cxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
