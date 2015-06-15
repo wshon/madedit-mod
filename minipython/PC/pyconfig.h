@@ -568,8 +568,11 @@ Py_NO_ENABLE_SHARED to find out.  Also support MS_NO_COREDLL for b/w compat */
 
 /* Define as the size of the unicode type. */
 /* This is enough for unicodeobject.h to do the "right thing" on Windows. */
+#ifdef WIN32
 #define Py_UNICODE_SIZE 2
-
+#else //WIN64
+#define Py_UNICODE_SIZE 4
+#endif
 /* Use Python's own small-block memory-allocator. */
 #define WITH_PYMALLOC 1
 
