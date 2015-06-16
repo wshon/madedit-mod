@@ -105,6 +105,7 @@ Mod v0.3.2
 7. Debian packaging supported(tested with Ubuntu 15.04)
 8. VS2010 project files refactored, X64 was added
 9. Win64 was released
+10. Update MiniPython to Python 2.7.10(in X64 version)
 Todo: FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.1
