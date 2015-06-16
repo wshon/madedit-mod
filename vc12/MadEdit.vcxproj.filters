@@ -408,8 +408,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\spellchecker\libhunspell_v80.vcproj">
-      <Filter>Source files\SpellChecker</Filter>
-    </None>
+    <None Include="libhunspell.vcxproj" />
   </ItemGroup>
 </Project>
