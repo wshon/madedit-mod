@@ -182,6 +182,7 @@ void MadReplaceDialog::CreateGUIControls(void)
     m_FindText->SetInsertSpacesInsteadOfTab(false);
     m_FindText->SetWantTab(false);
     m_FindText->LoadDefaultSyntaxScheme();
+    m_FindText->SetMaxLineLength(DEFAULT_MAX_LINELEN);
 
     WxBoxSizer4->Add(m_FindText,0,wxALIGN_CENTER_HORIZONTAL | wxALL,2);
     WxBoxSizer4->SetItemMinSize(m_FindText, 400, bh);
@@ -205,6 +206,7 @@ void MadReplaceDialog::CreateGUIControls(void)
     m_ReplaceText->SetInsertSpacesInsteadOfTab(false);
     m_ReplaceText->SetWantTab(false);
     m_ReplaceText->LoadDefaultSyntaxScheme();
+    m_ReplaceText->SetMaxLineLength(DEFAULT_MAX_LINELEN);
 
     WxBoxSizer5->Add(m_ReplaceText,0,wxALIGN_CENTER_HORIZONTAL | wxALL,2);
     WxBoxSizer5->SetItemMinSize(m_ReplaceText, 400, bh);

@@ -94,6 +94,16 @@ Feature/issues to be released
 
 ChangeLog:
 ----------
+Todo: FreeBSD packaging (with FreeBSD 10.01)
+
+Mod v0.3.3
+1. Update MiniPython to Python 2.7.10
+2. Change display of Space and Tab char
+3. Fix hang issue of Search/ReplaceTextAll
+4. Fix issue of Search/Replace dialog while maxLine is set to less than or equal to 100
+5. Refactoring VS2013 project files, X64 was added
+6. Refactoring VS2005 project files
+
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
 2. Fix caret display issue after hiding Quick Search bar
@@ -103,10 +113,9 @@ Mod v0.3.2
 5. Fix a random hang in Search/Replace (PaintTextLines), patch release
 6. RPM packaging supported(tested with Fedora 20/21)
 7. Debian packaging supported(tested with Ubuntu 15.04)
-8. VS2010 project files refactored, X64 was added
+8. Refactoring VS2010 project files, X64 was added
 9. Win64 was released
 10. Update MiniPython to Python 2.7.10(in X64 version)
-Todo: FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.1
 Note: You have to change the madedit.mo to MadEdit-Mod.mo since then

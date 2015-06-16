@@ -51,6 +51,8 @@ using std::shared_ptr;
 #define DBOUT( s )
 #endif
 
+#define DEFAULT_MAX_LINELEN 4096
+
 enum { ID_VSCROLLBAR=19876, ID_HSCROLLBAR };
 
 namespace mad_python
@@ -763,6 +765,7 @@ public: // basic functions
 
     long GetMaxColumns() { return m_MaxColumns; }
     void SetMaxColumns(long cols);
+    void SetMaxLineLength(long lens) {m_MaxLineLength = lens;}
 
     bool GetAutoIndent() { return m_AutoIndent; }
     void SetAutoIndent(bool value) { m_AutoIndent=value; }
@@ -945,6 +948,8 @@ public: // basic functions
     int ReplaceHexAll(const wxString &expr, const wxString &fmt,
             vector<wxFileOffset> *pbegpos = NULL, vector<wxFileOffset> *pendpos = NULL,
             wxFileOffset rangeFrom = -1, wxFileOffset rangeTo = -1);
+    
+    bool NextRegexSearchingPos(MadCaretPos& cp, const wxString &expr);
 
     // list the matched data to pbegpos & pendpos
     // return the found count or SR_EXPR_ERROR

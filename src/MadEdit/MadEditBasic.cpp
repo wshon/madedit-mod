@@ -330,15 +330,15 @@ void MadEdit::SetTextFont(const wxString &name, int size, bool forceReset)
             {
                 const int t1 = m_TextFontHeight / 5;
                 const int y = 1 + m_TextFontHeight - t1;
-                const int x = cw / 4;
+                const int x = cw-1;
                 m_Space_Points[0].x = x;
-                m_Space_Points[0].y = y;
-                m_Space_Points[1].x = 3 * x;
+                m_Space_Points[0].y = y - m_TextFontHeight/6;
+                m_Space_Points[1].x = x;
                 m_Space_Points[1].y = y;
-                m_Space_Points[2].x = cw >> 1;
-                m_Space_Points[2].y = y - m_TextFontHeight/6;
-                m_Space_Points[3].x = x;
-                m_Space_Points[3].y = y;
+                m_Space_Points[2].x = 1;
+                m_Space_Points[2].y = y;
+                m_Space_Points[3].x = 1;
+                m_Space_Points[3].y = y - m_TextFontHeight/6;
             }
             {
                 const int t1 = m_TextFontHeight / 5;
@@ -1256,7 +1256,7 @@ void MadEdit::SetText(const wxString &ws)
             ++wcs;
         }
 
-        long maxlen = m_MaxLineLength - 100;
+        long maxlen = m_MaxLineLength - 80;
         if(m_Lines->m_Size + sss > maxlen)
             sss = maxlen - long (m_Lines->m_Size);
 
@@ -3262,6 +3262,9 @@ int MadEdit::ReplaceTextAll(const wxString &expr, const wxString &fmt,
         if(bpos.iter!=epos.iter)
             ++multi;
 
+        if (bpos.pos == epos.pos && !NextRegexSearchingPos(epos, expr))
+            break;
+
         bpos=epos;
         epos=endpos;
     }
@@ -3487,6 +3490,9 @@ int MadEdit::FindTextAll(const wxString &expr,
         if (IsTextFile() && m_BookmarkInSearch) m_Lines->m_LineList.SetBookmark(bpos.iter);
 
         if(bFirstOnly) break;
+
+        if (bpos.pos == epos.pos && !NextRegexSearchingPos(epos, expr))
+            break;
 
         bpos=epos;
         epos=endpos;
@@ -4084,3 +4090,4 @@ bool StrToInt64(wxString str, wxInt64 &i64)
 
     return ok;
 }
+

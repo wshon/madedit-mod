@@ -807,11 +807,11 @@ MadEdit::MadEdit(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSi
     SetCaret(caret);
     //caret->Show();    // first Show() in OnPaint()
 
-    m_Config->Read(wxT("MaxLineLength"), &m_MaxLineLength, 4096);
+    m_Config->Read(wxT("MaxLineLength"), &m_MaxLineLength, DEFAULT_MAX_LINELEN);
     if(m_MaxLineLength<80) m_MaxLineLength=80;
 
 #if PATCH_MAXLINELENGTH == 1
-    if(m_MaxLineLength>4096) m_MaxLineLength=4096;
+    if(m_MaxLineLength>4096) m_MaxLineLength=DEFAULT_MAX_LINELEN;
 #endif
 
     m_WordBuffer = new ucs4_t[m_MaxLineLength+1];
@@ -2100,22 +2100,26 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
                                     {
                                         if(m_ShowTabChar)
                                         {
-                                            const int t1 = m_TextFontHeight / 5;
-                                            const int y = text_top + 1 + m_TextFontHeight - t1;
-                                            const int t2 = t1 > (m_WidthBuffer[idx] >> 1) ? (m_WidthBuffer[idx] >> 1) : t1 + 1;
-                                            int x = x0 + 2 + t2;
+                                    		const int t1 = m_TextFontHeight / 7 + 1;
+                                    		const int  y = text_top + m_TextFontHeight * 3 / 5 + 1;
+                                     
+                                    		const int tx = (t1 > (m_WidthBuffer[idx] >> 1)) ? (m_WidthBuffer[idx] >> 1) : t1;
+                                    		const int x = x0 + 1;
+                                    		const int dx = m_WidthBuffer[idx] - 2;
 
-                                            wxPoint pts[6]=
+                                            wxPoint pts[8]=
                                             {
+                                                wxPoint(x, y - t1 * 2 / 3),
+                                                wxPoint(x, y + t1 * 2 / 3),
                                                 wxPoint(x, y),
-                                                wxPoint(x, y - t1),
-                                                wxPoint(x -= t2, y),
-                                                wxPoint(x += (m_WidthBuffer[idx] - 3), y),
-                                                wxPoint(x -= t2, y - t1),
-                                                wxPoint(x,y)
+                                                wxPoint(x + dx, y),
+                                                wxPoint(x + dx - tx, y - t1),
+                                                wxPoint(x + dx, y),
+                                                wxPoint(x + dx - tx, y + t1),
+                                                wxPoint(x + dx, y)
                                             };
 
-                                            dc->DrawLines(6, pts);
+                                            dc->DrawLines(8, pts);
                                         }
                                     }
                                 }
