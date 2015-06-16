@@ -983,13 +983,14 @@
 /* #undef Py_DEBUG */
 
 /* Defined if Python is built as a shared library. */
-/* #undef Py_ENABLE_SHARED */
+#undef Py_ENABLE_SHARED
 
 /* Define as the size of the unicode type. */
-#ifdef ARCH_I686
-#define Py_UNICODE_SIZE 2
-#else
+/* This should be enough for most CPU Arch */
+#if defined(__x86_64__) || defined(__LP64__)
 #define Py_UNICODE_SIZE 4
+#else
+#define Py_UNICODE_SIZE 2
 #endif
 
 /* Define if you want to have a Unicode type. */
