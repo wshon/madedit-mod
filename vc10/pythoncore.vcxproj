@@ -153,8 +153,9 @@
     <ClCompile>
       <AdditionalOptions>/Zm200  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>..\minipython\Python;..\minipython\Modules\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>Py_BUILD_CORE;Py_NO_ENABLE_SHARED</PreprocessorDefinitions>
+      <PreprocessorDefinitions>Py_BUILD_CORE;Py_NO_ENABLE_SHARED;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4706;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
