@@ -533,7 +533,7 @@ noinst_HEADERS =	description-pak \
 	charset-detector/src/tables/JISFreq.tab \
 	charset-detector/src/entry/export-symbol.list
 
-DOMAIN = madedit
+DOMAIN = Madedit-Mod
 podir = $(top_srcdir)/po
 LINGUAS = @ALL_LINGUAS@
 

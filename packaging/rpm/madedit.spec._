@@ -57,9 +57,9 @@ rm -rf $RPM_BUILD_DIR/%{name}-%{version}
 %{_datadir}/applications/*
 %{_datadir}/pixmaps/*
 %{_datadir}/madedit-mod/*
-%{_datadir}/locale/it_IT/LC_MESSAGES/madedit-mod.mo
-%{_datadir}/locale/ja_JP/LC_MESSAGES/madedit-mod.mo
-%{_datadir}/locale/zh_CN/LC_MESSAGES/madedit-mod.mo
-%{_datadir}/locale/zh_TW/LC_MESSAGES/madedit-mod.mo
+%{_datadir}/locale/it_IT/LC_MESSAGES/Madedit-Mod.mo
+%{_datadir}/locale/ja_JP/LC_MESSAGES/Madedit-Mod.mo
+%{_datadir}/locale/zh_CN/LC_MESSAGES/Madedit-Mod.mo
+%{_datadir}/locale/zh_TW/LC_MESSAGES/Madedit-Mod.mo
 
 
