@@ -167,11 +167,11 @@
       <DisableSpecificWarnings>4706;4068;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4217 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_aui.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_56.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_aui.lib;wxmsw30u_html.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_56.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)MadEdit.exe</OutputFile>
       <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_x64_lib;$(TargetDir);$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>

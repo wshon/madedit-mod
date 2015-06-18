@@ -17,6 +17,7 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <wx/snglinst.h>
+
 #include <algorithm>
 
 IMPLEMENT_APP(MadEditApp)
@@ -37,6 +38,7 @@ wxLocale g_Locale;
 wxString g_MadEditAppDir;
 wxString g_MadEditHomeDir;
 wxString g_MadEditConfigName;
+
 #ifdef __WXMSW__
 wxString g_MadEditRegkeyPath = wxT("HKEY_CURRENT_USER\\Software\\Classes\\");
 #endif
@@ -246,7 +248,7 @@ bool MadEditApp::OnInit()
     wxFileName filename(GetExecutablePath());
     filename.MakeAbsolute();
     g_MadEditAppDir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
-    
+
     m_SigleAppChecker = 0;
     m_AppServer = 0;
 #ifdef __WXMSW__
@@ -330,6 +332,7 @@ bool MadEditApp::OnInit()
         }
     }
 
+    wxHandleFatalExceptions();
 
 #ifdef __WXGTK__
     bool bDisableWarningMessage = true;
@@ -394,7 +397,7 @@ bool MadEditApp::OnInit()
             break;
         }
     }
-    //if(!maximize)	// removed: gogo, 30.08.2009
+    //if(!maximize)    // removed: gogo, 30.08.2009
     {
         long x=0,y=0,w=0,h=0;
         cfg->Read(wxT("/MadEdit/WindowLeft"), &x);
@@ -425,7 +428,7 @@ bool MadEditApp::OnInit()
     SetTopWindow(myFrame);
 
 #ifdef __WXMSW__
-    //if(maximize)	// removed: gogo, 30.08.2009
+    //if(maximize)    // removed: gogo, 30.08.2009
     {
         WINDOWPLACEMENT wp;
         wp.length=sizeof(WINDOWPLACEMENT);
@@ -460,6 +463,10 @@ bool MadEditApp::OnInit()
         myFrame->OpenFile(wxEmptyString, false);
     }
 
+#if 0
+    // force crash
+    wxWindow *w = NULL; w->Show();
+#endif
     return TRUE;
 }
 
@@ -473,3 +480,38 @@ int MadEditApp::OnExit()
 
     return 0;
 }
+
+#if (wxUSE_ON_FATAL_EXCEPTION == 1) && (wxUSE_STACKWALKER == 1)
+void MadStackWalker::OnStackFrame(const wxStackFrame & frame)
+{
+    if(m_DumpFile) 
+    {
+        m_DumpFile->Write(wxString::Format(wxT("[%02u]: %s(%i)\t%s\n"),
+            (unsigned)frame.GetLevel(),
+            frame.GetFileName().c_str(),
+            (unsigned)frame.GetLine(),
+            frame.GetName().c_str()
+            ));
+    }
+}
+
+void MadEditApp::OnFatalException()
+{
+    wxString name = g_MadEditHomeDir + wxString::Format(
+                                                            wxT("%s_%s_%lu.dmp"),
+                                                            wxTheApp ? (const wxChar*)wxTheApp->GetAppDisplayName().c_str()
+                                                                     : wxT("wxwindows"),
+                                                            wxDateTime::Now().Format(wxT("%Y%m%dT%H%M%S")).c_str(),
+                                                            ::GetCurrentProcessId()
+                                                        );
+    wxFile dmpFile(name.c_str(), wxFile::write); 
+    if(dmpFile.IsOpened())
+    {
+        m_StackWalker.SetDumpFile(&dmpFile);
+        m_StackWalker.WalkFromException();
+        dmpFile.Close();
+    }
+}
+#endif
+
+

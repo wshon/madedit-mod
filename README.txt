@@ -94,7 +94,9 @@ Feature/issues to be released
 
 ChangeLog:
 ----------
-Todo: FreeBSD packaging (with FreeBSD 10.01)
+Todo:
+Preview window/Document map
+FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
@@ -105,7 +107,8 @@ Mod v0.3.3
 6. Refactoring VS2005 project files
 7. Improve version number string
 8. Update rpm packaging
-9. Update translation file for linux
+9. Update language files for linux
+10. Add crash dump support
 
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"

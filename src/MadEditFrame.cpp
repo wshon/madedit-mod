@@ -46,6 +46,7 @@
 #include <wx/msgdlg.h>
 #include <wx/dnd.h>
 #include <wx/printdlg.h>
+#include "wx/wxhtml.h"
 
 #include <algorithm>
 
@@ -3566,7 +3567,15 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     int size;
     madedit->GetFont(str, size);
     m_RecentFonts->AddFileToHistory(str);
+#if 0
+    wxHtmlWindow* ctrl = new wxHtmlWindow(this, wxID_ANY);
+    wxString text;
+    madedit->GetText(text, true);
 
+    ctrl->SetPage(text);
+    m_AuiManager.AddPane(ctrl, wxAuiPaneInfo(). Name(wxT("test8")).Caption(wxT("Tree Pane")).Right().Layer(1).Position(1).CloseButton(true).MaximizeButton(true));
+    m_AuiManager.Update();
+#endif
     str= wxString(wxT('['))+ madedit->GetEncodingName() + wxT("] ")+ wxGetTranslation(madedit->GetEncodingDescription().c_str());
     m_RecentEncodings->AddFileToHistory(str);
 
