@@ -38,7 +38,11 @@ wxString g_MadEdit_Version(wxT("MadEdit-Mod 0.3.3 win32"));
 #elif defined(__WXMAC__)
 wxString g_MadEdit_Version(wxT("MadEdit-Mod 0.3.3 MacOS"));
 #else
+#if defined(__x86_64__) || defined(__LP64__)
 wxString g_MadEdit_Version(wxT("MadEdit-Mod 0.3.3 x86_x64"));
+#else
+wxString g_MadEdit_Version(wxT("MadEdit-Mod 0.3.3 i686"));
+#endif
 #endif
 
 wxString g_MadEdit_URL(wxT("http://sourceforge.net/projects/madedit/ or http://sourceforge.net/projects/madedit-mod/"));

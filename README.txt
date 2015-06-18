@@ -103,6 +103,9 @@ Mod v0.3.3
 4. Fix issue of Search/Replace dialog while maxLine is set to less than or equal to 100
 5. Refactoring VS2013 project files, X64 was added
 6. Refactoring VS2005 project files
+7. Improve version number string
+8. Update rpm packaging
+9. Update translation file for linux
 
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
