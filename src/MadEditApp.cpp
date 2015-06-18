@@ -375,7 +375,7 @@ bool MadEditApp::OnInit()
 #   endif
 
 #endif
-    g_Locale.AddCatalog(wxT("MadEdit-Mod"));
+    g_Locale.AddCatalog(wxT("madedit-mod"));
 
     // set colors
     SetHtmlColors();
