@@ -370,9 +370,9 @@ bool MadEditApp::OnInit()
     g_Locale.AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale/"));
 #ifndef __WXMSW__
     g_Locale.AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale/"));
-#   if defined (DATA_DIR)
+#if defined (DATA_DIR)
     g_Locale.AddCatalogLookupPathPrefix(wxT(DATA_DIR"/locale/"));
-#   endif
+#endif
 
 #endif
     g_Locale.AddCatalog(wxT("madedit-mod"));
@@ -482,12 +482,24 @@ int MadEditApp::OnExit()
 }
 
 #if (wxUSE_ON_FATAL_EXCEPTION == 1) && (wxUSE_STACKWALKER == 1)
+#include <wx/longlong.h>
 void MadStackWalker::OnStackFrame(const wxStackFrame & frame)
 {
     if(m_DumpFile) 
     {
-        m_DumpFile->Write(wxString::Format(wxT("[%02u]: %s(%i)\t%s\n"),
+        wxULongLong address((size_t)frame.GetAddress());
+#if defined(__x86_64__) || defined(__LP64__) || defined(_WIN64)
+        wxString fmt(wxT("[%02u]:[%08X%08X] %s(%i)\t%s\n"));
+#else
+        wxString fmt(wxT("[%02u]:[%08X] %s(%i)\t%s\n"));
+#endif
+
+        m_DumpFile->Write(wxString::Format(fmt,
             (unsigned)frame.GetLevel(),
+#if defined(__x86_64__) || defined(__LP64__) || defined(_WIN64)
+            address.GetHi(),
+#endif
+            address.GetLo(),
             frame.GetFileName().c_str(),
             (unsigned)frame.GetLine(),
             frame.GetName().c_str()
