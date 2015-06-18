@@ -39,6 +39,8 @@ B. MS Windows (__WXMSW__):
       4. libunicows: it's optional under WinNT/XP, but required under Win98
       5. Set WXWIN and BOOST to the root directory of your local ones
 
+P.S.: Please put the debug info(.pdb) under the App directory in case there was a 
+      crash happened. Paste the call stack and open a ticket
 P.S.: If you use CVS version of Boost, Boost.Xpressive has been included in the
       CVS HEAD, or you must get 'xpressive.zip' at:
       http://www.boost-consulting.com/vault/index.php?directory=Strings%20-%20Text%20Processing

@@ -502,7 +502,11 @@ void MadEditApp::OnFatalException()
                                                             wxTheApp ? (const wxChar*)wxTheApp->GetAppDisplayName().c_str()
                                                                      : wxT("wxwindows"),
                                                             wxDateTime::Now().Format(wxT("%Y%m%dT%H%M%S")).c_str(),
+#if defined(__WXMSW__)
                                                             ::GetCurrentProcessId()
+#else
+                                                            (unsigned)getpid()
+#endif
                                                         );
     wxFile dmpFile(name.c_str(), wxFile::write); 
     if(dmpFile.IsOpened())
