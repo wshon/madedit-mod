@@ -107,7 +107,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)/../minipython/Include;$(SolutionDir)/../minipython/PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)/../minipython/Include;$(SolutionDir)/../minipython/PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;_DEBUG;_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -117,6 +117,7 @@
       </PrecompiledHeaderOutputFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4068</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -158,7 +159,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">
     <ClCompile>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -180,6 +181,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\markdown\markdown-tokens.cpp" />
+    <ClCompile Include="..\markdown\markdown.cpp" />
     <ClCompile Include="..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\src\MadAboutDialog.cpp" />
     <ClCompile Include="..\src\MadConvEncDialog.cpp" />
@@ -244,6 +247,8 @@
     <ClCompile Include="..\spellchecker\SpellCheckUserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\markdown\markdown-tokens.h" />
+    <ClInclude Include="..\markdown\markdown.h" />
     <ClInclude Include="..\spellchecker\HunspellInterface.h" />
     <ClInclude Include="..\spellchecker\PersonalDictionary.h" />
     <ClInclude Include="..\spellchecker\SpellCheckEngineInterface.h" />

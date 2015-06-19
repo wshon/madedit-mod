@@ -97,13 +97,13 @@ Feature/issues to be released
 ChangeLog:
 ----------
 Todo:
-Preview window/Document map
+MarkDown/Html Preview
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
 2. Change display of Space and Tab char
-3. Fix hang issue of Search/ReplaceTextAll
+3. Fix hang issue of Search/ReplaceTextAll(Use RegEx with ^, $ or (?:))
 4. Fix issue of Search/Replace dialog while maxLine is set to less than or equal to 100
 5. Refactoring VS2013 project files, X64 was added
 6. Refactoring VS2005 project files

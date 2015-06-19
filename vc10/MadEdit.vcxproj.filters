@@ -28,6 +28,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
+    <Filter Include="Source Files\MarkDown">
+      <UniqueIdentifier>{13aaaa2a-eecb-4bed-8e68-4e09ad719229}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EmbeddedPython.cpp">
@@ -216,6 +219,12 @@
     <ClCompile Include="..\spellchecker\SpellCheckUserInterface.cpp">
       <Filter>Source Files\SpellChecker</Filter>
     </ClCompile>
+    <ClCompile Include="..\markdown\markdown.cpp">
+      <Filter>Source Files\MarkDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\markdown\markdown-tokens.cpp">
+      <Filter>Source Files\MarkDown</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\spellchecker\HunspellInterface.h">
@@ -316,6 +325,12 @@
     </ClInclude>
     <ClInclude Include="..\charset-detector\include\chardetect.h">
       <Filter>Header Files\charset-detector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\markdown\markdown.h">
+      <Filter>Source Files\MarkDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\markdown\markdown-tokens.h">
+      <Filter>Source Files\MarkDown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

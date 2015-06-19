@@ -226,6 +226,7 @@ wxMenu *g_Menu_View_Font5 = NULL;
 wxMenu *g_Menu_View_Font6 = NULL;
 wxMenu *g_Menu_View_FontSize = NULL;
 wxMenu *g_Menu_View_TabColumn = NULL;
+wxMenu *g_Menu_View_Preview = NULL;
 wxMenu *g_Menu_View_LineSpacing = NULL;
 wxMenu *g_Menu_Tools_BOM = NULL;
 wxMenu *g_Menu_Tools_NewLineChar = NULL;
@@ -247,6 +248,7 @@ int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 #endif
 
 std::map<int, wxString>g_ToolbarNames;
+std::map<int, wxString>g_PreviewTypeNames;
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 int MadMessageBox(const wxString& message,
@@ -1274,6 +1276,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_UPDATE_UI(menuTextMode, MadEditFrame::OnUpdateUI_MenuViewTextMode)
     EVT_UPDATE_UI(menuColumnMode, MadEditFrame::OnUpdateUI_MenuViewColumnMode)
     EVT_UPDATE_UI(menuHexMode, MadEditFrame::OnUpdateUI_MenuViewHexMode)
+    EVT_UPDATE_UI(menuPreview, MadEditFrame::OnUpdateUI_MenuViewPreview)
+    EVT_UPDATE_UI_RANGE(menuPreview1, menuPreview16, MadEditFrame::OnUpdateUI_MenuViewPreviewList)
     EVT_UPDATE_UI(menuSpellChecker, MadEditFrame::OnUpdateUI_MenuViewSpellChecker)
     EVT_UPDATE_UI(menuSpellIgnore, MadEditFrame::OnUpdateUI_MenuSpellIgnore)
     EVT_UPDATE_UI(menuSpellAdd2Dict, MadEditFrame::OnUpdateUI_MenuSpellAdd2Dict)
@@ -1407,6 +1411,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuSetFont, MadEditFrame::OnViewSetFont)
     EVT_MENU(menuFixedWidthMode, MadEditFrame::OnViewFixedWidthMode)
     EVT_MENU_RANGE(menuTabColumn1, menuTabColumn16, MadEditFrame::OnViewTabColumn)
+    EVT_MENU_RANGE(menuPreview1, menuPreview16, MadEditFrame::OnViewPreview)
     EVT_MENU_RANGE(menuLineSpacing100, menuLineSpacing250, MadEditFrame::OnViewLineSpacing)
     EVT_MENU(menuNoWrap, MadEditFrame::OnViewNoWrap)
     EVT_MENU(menuWrapByWindow, MadEditFrame::OnViewWrapByWindow)
@@ -1806,6 +1811,10 @@ CommandData CommandTable[]=
     { ecTextMode,     1, menuTextMode,          wxT("menuTextMode"),          _("&Text Mode"),           wxT("Alt-1"),        wxITEM_CHECK,     textmode_xpm_idx,   0,                         _("Change the editing mode to Text-Mode")},
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
     { ecHexMode,      1, menuHexMode,           wxT("menuHexMode"),           _("&Hex Mode"),            wxT("Alt-3"),        wxITEM_CHECK,     hexmode_xpm_idx,    0,                         _("Change the editing mode to Hex-Mode")},
+    { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
+    { 0,              1, menuPreview,           wxT("menuPreview"),           _("Preview as: "),         0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_TabColumn,    0},
+    { 0,              2, menuPreview1,          wxT("menuPreview1"),          wxT("HTML"),               0,                   wxITEM_NORMAL,    -1,                 0,                         _("Preview as HTML")},
+    { 0,              2, menuPreview1+ 1,       wxT("menuTabColumn2"),        wxT("Markdown"),           0,                   wxITEM_NORMAL,    -1,                 0,                         _("Preview as MarkDown")},
 
     // Macro
     { 0, 0, 0, 0, _("&Macro"), 0, wxITEM_NORMAL, 0, &g_Menu_MadMacro, 0},
@@ -2037,6 +2046,8 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     m_MacroDebug = false;
 
     m_SearchDirectionNext = true;
+    m_HtmlPreview = 0;
+    m_PreviewType = ptPREVIEW_NONE;
     g_MainFrame=this;
 }
 
@@ -2116,6 +2127,9 @@ void MadEditFrame::CreateGUIControls(void)
     m_Notebook->wxControl::SetWindowStyleFlag(m_Notebook->wxControl::GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
     m_Notebook->SetDropTarget(new DnDFile());
     m_Notebook->SetArtProvider(new wxAuiSimpleTabArt);
+
+    g_PreviewTypeNames[ptPREVIEW_HTML] = _("HTML");
+    g_PreviewTypeNames[ptPREVIEW_MARKDOWN] = _("Markdown");
 
     WxMenuBar1 = new wxMenuBar();
     this->SetMenuBar(WxMenuBar1);
@@ -2318,6 +2332,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_View_FontSize = new wxMenu((long)0);
     g_Menu_View_LineSpacing = new wxMenu((long)0);
     g_Menu_View_TabColumn = new wxMenu((long)0);
+    g_Menu_View_Preview = new wxMenu((long)0);
     g_Menu_Tools_BOM = new wxMenu((long)0);
     g_Menu_MadMacro = new wxMenu((long)0);
     g_Menu_Toolbars = new wxMenu((long)0);
@@ -2510,6 +2525,14 @@ void MadEditFrame::CreateGUIControls(void)
             g_Menu_Toolbars->Append(menuToolBar1 + i, g_ToolbarNames[i], wxEmptyString, wxITEM_CHECK);
             g_Menu_Toolbars->Check(menuToolBar1 + i, m_ToolbarStatus[i]);
             g_Menu_Toolbars->Enable(menuToolBar1 + i, m_ToolbarStatus[tbMAX]);
+        }
+    }
+    {
+        for(int i=ptPREVIEW_HTML; i<ptPREVIEW_MAXTYPE; ++i)
+        {
+            g_Menu_Toolbars->Append(i, g_PreviewTypeNames[i], wxEmptyString, wxITEM_CHECK);
+            g_Menu_Toolbars->Check(i, false);
+            g_Menu_Toolbars->Enable(i, false);
         }
     }
 
@@ -3567,15 +3590,6 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     int size;
     madedit->GetFont(str, size);
     m_RecentFonts->AddFileToHistory(str);
-#if 0
-    wxHtmlWindow* ctrl = new wxHtmlWindow(this, wxID_ANY);
-    wxString text;
-    madedit->GetText(text, true);
-
-    ctrl->SetPage(text);
-    m_AuiManager.AddPane(ctrl, wxAuiPaneInfo(). Name(wxT("test8")).Caption(wxT("Tree Pane")).Right().Layer(1).Position(1).CloseButton(true).MaximizeButton(true));
-    m_AuiManager.Update();
-#endif
     str= wxString(wxT('['))+ madedit->GetEncodingName() + wxT("] ")+ wxGetTranslation(madedit->GetEncodingDescription().c_str());
     m_RecentEncodings->AddFileToHistory(str);
 
@@ -3893,6 +3907,55 @@ void MadEditFrame::OnUpdateUI_MenuViewTabColumn(wxUpdateUIEvent& event)
     }
 }
 
+void MadEditFrame::OnUpdateUI_MenuViewPreview(wxUpdateUIEvent& event)
+{
+    wxString viewType(_("None"));
+    if(g_ActiveMadEdit!=NULL)
+    {
+        switch(m_PreviewType)
+        {
+            case ptPREVIEW_HTML:
+                viewType = _("HTML");
+                break;
+            case ptPREVIEW_MARKDOWN:
+                viewType = _("Markdown");
+                break;
+            default:
+                break;
+        }
+        event.Enable(true);
+    }
+    else
+    {
+        event.Enable(false);
+    }
+
+    event.SetText(wxString(_("Preview as: "))+viewType );
+}
+
+void MadEditFrame::OnUpdateUI_MenuViewPreviewList(wxUpdateUIEvent& event)
+{
+    for(int menuId = ptPREVIEW_HTML; menuId < ptPREVIEW_MAXTYPE; ++menuId)
+    {
+        if(menuId != m_PreviewType)
+        {
+            g_Menu_View_Preview->Check(menuId, false);
+        }
+        else
+        {
+            g_Menu_View_Preview->Check(menuId, true);
+        }
+        if(g_ActiveMadEdit!=NULL)
+        {
+            g_Menu_View_Preview->Enable(menuId, true);
+        }
+        else
+        {
+            g_Menu_View_Preview->Enable(menuId, false);
+        }
+    }
+}
+
 void MadEditFrame::OnUpdateUI_MenuViewLineSpacing(wxUpdateUIEvent& event)
 {
     if(g_ActiveMadEdit!=NULL)
@@ -4038,6 +4101,7 @@ void MadEditFrame::OnUpdateUI_MenuViewToolbarList(wxUpdateUIEvent& event)
             g_Menu_Toolbars->Enable(menuItemId, false);
     }
 }
+
 void MadEditFrame::OnUpdateUI_MenuToolsByteOrderMark(wxUpdateUIEvent& event)
 {
     MadEncodingType type;
@@ -5971,6 +6035,23 @@ void MadEditFrame::OnViewTabColumn(wxCommandEvent& event)
     g_ActiveMadEdit->SetTabColumns(col);
     RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("SetTabColumns(%d)"), col));
 }
+
+void MadEditFrame::OnViewPreview(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+
+    int menuItemId = event.GetId();
+
+    if(menuItemId != m_PreviewType)
+    {
+        m_PreviewType = menuItemId;
+    }
+    else
+    {
+        m_PreviewType = ptPREVIEW_NONE;
+    }
+}
+
 
 void MadEditFrame::OnViewLineSpacing(wxCommandEvent& event)
 {

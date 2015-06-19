@@ -5,7 +5,7 @@ INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-dete
 -I$(top_srcdir)/charset-detector/src/tables -I$(top_srcdir)/spellchecker -I$(top_srcdir)/spellchecker/hunspell/src \
 -I$(top_srcdir)/spellchecker/hunspell/src/hunspell -I$(top_srcdir)/spellchecker/hunspell/src/win_api \
 -I$(top_srcdir)/minipython -I$(top_srcdir)/minipython/Include -I$(top_srcdir)/minipython/Python \
--I$(top_srcdir)/minipython/Modules/zlib
+-I$(top_srcdir)/minipython/Modules/zlib -I$(top_srcdir)/markdown
 
 madedit_CXXFLAGS = -DDATA_DIR=\"${datadir}\"
 madedit_SOURCES =	src/MadAboutDialog.cpp \
@@ -166,6 +166,10 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	spellchecker/hunspell/src/hunspell/replist.hxx \
 	spellchecker/hunspell/src/hunspell/suggestmgr.hxx \
 	spellchecker/hunspell/src/hunspell/w_char.hxx \
+	markdown/markdown-tokens.cpp \
+	markdown/markdown-tokens.h \
+	markdown/markdown.cpp \
+	markdown/markdown.h \
 	minipython/Include/abstract.h \
 	minipython/Include/asdl.h \
 	minipython/Include/ast.h \

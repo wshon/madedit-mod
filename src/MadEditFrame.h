@@ -52,6 +52,7 @@ class MadEdit;
 class MadTreeCtrl;
 class MadRecentList;
 class wxSpellCheckEngineInterface;
+class wxHtmlWindow;
 
 enum MadToolBarType
 {
@@ -122,6 +123,8 @@ public:
     wxAuiNotebook *m_InfoNotebook; //
     //wxTreeCtrl *m_FindInFilesResults;
     MadTreeCtrl   *m_FindInFilesResults;
+    wxHtmlWindow  *m_HtmlPreview;
+    int            m_PreviewType;
     wxComboBox    *m_QuickSearch;
     wxCheckBox    *m_CheckboxWholeWord;
     wxCheckBox    *m_CheckboxRegEx;
@@ -168,6 +171,8 @@ public:
     void OnUpdateUI_MenuViewFixedWidthMode(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewTabColumn(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewLineSpacing(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewPreview(wxUpdateUIEvent& event);
+    void OnUpdateUI_MenuViewPreviewList(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewNoWrap(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewWrapByWindow(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuViewWrapByColumn(wxUpdateUIEvent& event);
@@ -312,8 +317,9 @@ public:
     void OnViewFontSize(wxCommandEvent& event);
     void OnViewSetFont(wxCommandEvent& event);
     void OnViewFixedWidthMode(wxCommandEvent& event);
-    void OnViewTabColumn(wxCommandEvent& event);
     void OnViewLineSpacing(wxCommandEvent& event);
+    void OnViewTabColumn(wxCommandEvent& event);
+    void OnViewPreview(wxCommandEvent& event);
     void OnViewNoWrap(wxCommandEvent& event);
     void OnViewWrapByWindow(wxCommandEvent& event);
     void OnViewWrapByColumn(wxCommandEvent& event);
@@ -612,6 +618,9 @@ enum { // menu id
     menuShowEndOfLine,
     menuShowTabChar,
     menuShowSpaceChar,
+    menuPreview,
+    menuPreview1,
+    menuPreview16 = menuPreview1 + 15,
     menuShowAllChars,
     menuMarkActiveLine,
     menuMarkBracePair,
@@ -684,6 +693,14 @@ enum { // menu id
     menuResetCurResult,
 };
 
+enum MadPreviewType
+{
+    ptPREVIEW_NONE,
+    ptPREVIEW_HTML = menuPreview1,
+    ptPREVIEW_MARKDOWN,
+    ptPREVIEW_MAXTYPE,
+    //MAX::menuPreview16
+};
 extern MadEditFrame *g_MainFrame;
 extern void OnReceiveMessage(const wchar_t *msg, size_t size);
 
