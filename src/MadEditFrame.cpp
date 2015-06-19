@@ -1812,9 +1812,7 @@ CommandData CommandTable[]=
     { ecColumnMode,   1, menuColumnMode,        wxT("menuColumnMode"),        _("&Column Mode"),         wxT("Alt-2"),        wxITEM_CHECK,     columnmode_xpm_idx, 0,                         _("Change the editing mode to Column-Mode")},
     { ecHexMode,      1, menuHexMode,           wxT("menuHexMode"),           _("&Hex Mode"),            wxT("Alt-3"),        wxITEM_CHECK,     hexmode_xpm_idx,    0,                         _("Change the editing mode to Hex-Mode")},
     { 0,              1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
-    { 0,              1, menuPreview,           wxT("menuPreview"),           _("Preview as: "),         0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_TabColumn,    0},
-    { 0,              2, menuPreview1,          wxT("menuPreview1"),          wxT("HTML"),               0,                   wxITEM_NORMAL,    -1,                 0,                         _("Preview as HTML")},
-    { 0,              2, menuPreview1+ 1,       wxT("menuTabColumn2"),        wxT("Markdown"),           0,                   wxITEM_NORMAL,    -1,                 0,                         _("Preview as MarkDown")},
+    { 0,              1, menuPreview,           wxT("menuPreview"),           _("Preview as: "),         0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Preview,      0},
 
     // Macro
     { 0, 0, 0, 0, _("&Macro"), 0, wxITEM_NORMAL, 0, &g_Menu_MadMacro, 0},
@@ -2530,9 +2528,9 @@ void MadEditFrame::CreateGUIControls(void)
     {
         for(int i=ptPREVIEW_HTML; i<ptPREVIEW_MAXTYPE; ++i)
         {
-            g_Menu_Toolbars->Append(i, g_PreviewTypeNames[i], wxEmptyString, wxITEM_CHECK);
-            g_Menu_Toolbars->Check(i, false);
-            g_Menu_Toolbars->Enable(i, false);
+            g_Menu_View_Preview->Append(i, g_PreviewTypeNames[i], wxEmptyString, wxITEM_CHECK);
+            g_Menu_View_Preview->Check(i, false);
+            g_Menu_View_Preview->Enable(i, false);
         }
     }
 
