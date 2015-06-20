@@ -28,6 +28,9 @@
     <Filter Include="Source files\SpellChecker">
       <UniqueIdentifier>{5f0e3579-ebac-49d7-9215-f04bcba14878}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\Markdown">
+      <UniqueIdentifier>{854d836e-f59d-4a9a-9850-fe95492eafb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\MadAboutDialog.h">
@@ -206,6 +209,12 @@
     </ClInclude>
     <ClInclude Include="..\spellchecker\SpellCheckerManager.h">
       <Filter>Source files\SpellChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\markdown\markdown.h">
+      <Filter>Source files\Markdown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\markdown\markdown-tokens.h">
+      <Filter>Source files\Markdown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +409,12 @@
     </ClCompile>
     <ClCompile Include="..\spellchecker\SpellCheckerManager.cpp">
       <Filter>Source files\SpellChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\markdown\markdown.cpp">
+      <Filter>Source files\Markdown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\markdown\markdown-tokens.cpp">
+      <Filter>Source files\Markdown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

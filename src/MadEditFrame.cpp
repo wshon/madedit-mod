@@ -1307,6 +1307,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_UPDATE_UI(menuKanji2TradChinese, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuKanji2SimpChinese, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuChinese2Kanji, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
+    EVT_UPDATE_UI(menuMarkdown2Html, MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html)
     EVT_UPDATE_UI(menuWordCount, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
     // window
     EVT_UPDATE_UI(menuToggleWindow, MadEditFrame::OnUpdateUI_MenuWindow_CheckCount)
@@ -1467,7 +1468,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuKanji2TradClipboard, MadEditFrame::OnToolsKanji2TradClipboard)
     EVT_MENU(menuKanji2SimpClipboard, MadEditFrame::OnToolsKanji2SimpClipboard)
     EVT_MENU(menuChinese2KanjiClipboard, MadEditFrame::OnToolsChinese2KanjiClipboard)
-    EVT_MENU(menuWordCount, MadEditFrame::OnToolsWordCount)
+    EVT_MENU(menuMarkdown2Html, MadEditFrame::OnToolsMarkdown2Html)
+	EVT_MENU(menuWordCount, MadEditFrame::OnToolsWordCount)
     // window
     EVT_MENU(menuToggleWindow, MadEditFrame::OnWindowToggleWindow)
     EVT_MENU(menuNextWindow, MadEditFrame::OnWindowNextWindow)
@@ -1862,7 +1864,8 @@ CommandData CommandTable[]=
     { 0,               2, menuKanji2SimpClipboard,    wxT("menuKanji2SimpClipboard"),    _("Clipboard: Japanese Kanji to Sim&plified Chinese"),      0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to simplified Chinese chars in the clipboard")},
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuWordCount,          wxT("menuWordCount"),          _("&Word Count..."),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
+    { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to Html"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to Html")},
+    { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
     { 0, 0, 0, 0, _("&Window"), 0, wxITEM_NORMAL, 0, &g_Menu_Window, 0},
@@ -4174,6 +4177,12 @@ void MadEditFrame::OnUpdateUI_MenuToolsConvertNL(wxUpdateUIEvent& event)
 }
 
 void MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL &&
+        !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
+}
+
+void MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL &&
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
@@ -7182,6 +7191,12 @@ void MadEditFrame::OnToolsWordCount(wxCommandEvent& event)
 
     MadWordCountDialog dialog(this, -1);
     dialog.ShowModal();
+}
+
+void MadEditFrame::OnToolsMarkdown2Html(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+
 }
 
 void MadEditFrame::OnWindowToggleWindow(wxCommandEvent& event)

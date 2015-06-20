@@ -188,6 +188,8 @@
     <ClInclude Include="..\charset-detector\src\nsUniversalDetector.h" />
     <ClInclude Include="..\charset-detector\src\nsUTF8Prober.h" />
     <ClInclude Include="..\charset-detector\src\prmem.h" />
+    <ClInclude Include="..\markdown\markdown-tokens.h" />
+    <ClInclude Include="..\markdown\markdown.h" />
     <ClInclude Include="..\spellchecker\HunspellInterface.h" />
     <ClInclude Include="..\spellchecker\PersonalDictionary.h" />
     <ClInclude Include="..\spellchecker\SpellCheckEngineInterface.h" />
@@ -259,6 +261,8 @@
     <ClCompile Include="..\charset-detector\src\nsSJISProber.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUniversalDetector.cpp" />
     <ClCompile Include="..\charset-detector\src\nsUTF8Prober.cpp" />
+    <ClCompile Include="..\markdown\markdown-tokens.cpp" />
+    <ClCompile Include="..\markdown\markdown.cpp" />
     <ClCompile Include="..\spellchecker\HunspellInterface.cpp" />
     <ClCompile Include="..\spellchecker\PersonalDictionary.cpp" />
     <ClCompile Include="..\spellchecker\SpellCheckEngineInterface.cpp" />
