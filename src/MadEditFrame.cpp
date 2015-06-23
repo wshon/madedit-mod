@@ -53,6 +53,8 @@
 #include "EmbeddedPython.hpp"
 #include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
+#include "markdown.h"
+
 #ifdef __WXMSW__
 #include <io.h>
 #else
@@ -249,6 +251,54 @@ int g_StatusWidths[7]={ 0, 220, 235, 135, 155, 65, (40 + 0)};
 
 std::map<int, wxString>g_ToolbarNames;
 std::map<int, wxString>g_PreviewTypeNames;
+
+class MadHtmlPreview : public wxHtmlWindow
+{
+    int & m_PreviewType;
+public:
+	MadHtmlPreview::MadHtmlPreview(int &previewType, wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &pos=wxDefaultPosition, const wxSize &size=wxDefaultSize, long style=wxHW_DEFAULT_STYLE, const wxString &name="MadhtmlWindow")
+    : wxHtmlWindow(parent, id, pos, size, style, name), m_PreviewType(previewType)
+    {}
+	~MadHtmlPreview() {}
+protected:
+    void OnPaint(wxPaintEvent& event);
+	DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(MadHtmlPreview, wxHtmlWindow)
+    EVT_PAINT(MadHtmlPreview::OnPaint)
+END_EVENT_TABLE()
+
+void MadHtmlPreview::OnPaint(wxPaintEvent& event)
+{
+    if(g_ActiveMadEdit != NULL && m_PreviewType != ptPREVIEW_NONE)
+    {
+        if(g_ActiveMadEdit->CanUndo() || g_ActiveMadEdit->CanRedo())
+        {
+            wxString text;
+            g_ActiveMadEdit->GetText(text, false);
+            if(m_PreviewType == ptPREVIEW_MARKDOWN)
+            {
+                std::wstring src = text.ToStdWstring();
+                std::wostringstream out;
+            	markdown::Document doc;
+            	doc.read(src);
+            	doc.write(out);
+                text = out.str();
+            }
+            SetPage(text);
+
+        }
+    }
+    else
+    {
+        if((g_ActiveMadEdit == NULL && m_PreviewType != ptPREVIEW_NONE))
+        {
+            SetPage(wxT(""));
+        }
+    }
+    wxHtmlWindow::OnPaint(event);
+}
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 int MadMessageBox(const wxString& message,
@@ -3124,6 +3174,23 @@ void MadEditFrame::OnNotebookPageChanged(wxAuiNotebookEvent& event)
         if(g_CheckModTimeForReload)
         {
             g_ActiveMadEdit->ReloadByModificationTime();
+        }
+        
+        if(m_PreviewType != ptPREVIEW_NONE)
+        {
+            wxString text;
+            g_ActiveMadEdit->GetText(text, false);
+            if(m_PreviewType == ptPREVIEW_MARKDOWN)
+            {
+                std::wstring src = text.ToStdWstring();
+                std::wostringstream out;
+                markdown::Document doc;
+                doc.read(src);
+                doc.write(out);
+                text = out.str();
+            }
+            m_HtmlPreview->SetPage(text);
+
         }
     }
     else
@@ -6052,11 +6119,40 @@ void MadEditFrame::OnViewPreview(wxCommandEvent& event)
     if(menuItemId != m_PreviewType)
     {
         m_PreviewType = menuItemId;
+        
+        if(m_HtmlPreview)
+        {
+            m_AuiManager.GetPane(m_HtmlPreview).Show();
+        }
+        else
+        {
+            m_HtmlPreview = new MadHtmlPreview(this->m_PreviewType, this, wxID_ANY,
+                                   wxDefaultPosition,
+                                   wxSize(400,300));
+            m_AuiManager.AddPane(m_HtmlPreview,wxAuiPaneInfo().Name(wxT("Markdown/Html Preview")).Caption(_("Markdown/Html Preview")).Floatable(false).Right().CloseButton(false));
+        }
+        wxString text;
+        g_ActiveMadEdit->GetText(text, false);
+        if(m_PreviewType == ptPREVIEW_MARKDOWN)
+        {
+            std::wstring src = text.ToStdWstring();
+            std::wostringstream out;
+        	markdown::Document doc;
+        	doc.read(src);
+        	doc.write(out);
+            text = out.str();
+        }
+        m_HtmlPreview->SetPage(text);
     }
     else
     {
         m_PreviewType = ptPREVIEW_NONE;
+        if(m_HtmlPreview)
+        {
+            m_AuiManager.GetPane(m_HtmlPreview).Hide();
+        }
     }
+    m_AuiManager.Update();
 }
 
 

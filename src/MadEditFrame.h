@@ -52,7 +52,7 @@ class MadEdit;
 class MadTreeCtrl;
 class MadRecentList;
 class wxSpellCheckEngineInterface;
-class wxHtmlWindow;
+class MadHtmlPreview;
 
 enum MadToolBarType
 {
@@ -123,7 +123,7 @@ public:
     wxAuiNotebook *m_InfoNotebook; //
     //wxTreeCtrl *m_FindInFilesResults;
     MadTreeCtrl   *m_FindInFilesResults;
-    wxHtmlWindow  *m_HtmlPreview;
+    MadHtmlPreview *m_HtmlPreview;
     int            m_PreviewType;
     wxComboBox    *m_QuickSearch;
     wxCheckBox    *m_CheckboxWholeWord;
@@ -133,7 +133,6 @@ public:
     bool           m_PurgeHistory;
     bool           m_SearchDirectionNext;
     bool           m_ToolbarStatus[tbMAX+1];
-
     void OnUpdateUI_MenuFile_CheckCount(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileReload(wxUpdateUIEvent& event);
     void OnUpdateUI_MenuFileRecentFiles(wxUpdateUIEvent& event);

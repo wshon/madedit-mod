@@ -84,7 +84,7 @@ class TextHolder: public Token {
 
 	virtual void writeAsHtml(std::wostream& out) const;
 
-	virtual void writeToken(std::wostream& out) const { out << L"TextHolder: " << mText << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"TextHolder: " << mText << (wchar_t)'\n'; }
 
 	virtual optional<const std::wstring&> text() const { return mText; }
 
@@ -101,7 +101,7 @@ class RawText: public TextHolder {
 	RawText(const std::wstring& text, bool canContainMarkup=true):
 		TextHolder(text, canContainMarkup, cAmps|cAngles|cQuotes) { }
 
-	virtual void writeToken(std::wostream& out) const { out << L"RawText: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"RawText: " << *text() << (wchar_t)'\n'; }
 
 	virtual optional<TokenGroup> processSpanElements(const LinkIds& idTable);
 
@@ -123,18 +123,18 @@ class HtmlTag: public TextHolder {
 	public:
 	HtmlTag(const std::wstring& contents): TextHolder(contents, false, cAmps|cAngles) { }
 
-	virtual void writeToken(std::wostream& out) const { out << L"HtmlTag: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"HtmlTag: " << *text() << (wchar_t)'\n'; }
 
 	protected:
-	virtual void preWrite(std::wostream& out) const { out << '<'; }
-	virtual void postWrite(std::wostream& out) const { out << '>'; }
+	virtual void preWrite(std::wostream& out) const { out << (wchar_t)'<'; }
+	virtual void postWrite(std::wostream& out) const { out << (wchar_t)'>'; }
 };
 
 class HtmlAnchorTag: public TextHolder {
 	public:
 	HtmlAnchorTag(const std::wstring& url, const std::wstring& title=std::wstring());
 
-	virtual void writeToken(std::wostream& out) const { out << L"HtmlAnchorTag: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"HtmlAnchorTag: " << *text() << (wchar_t)'\n'; }
 };
 
 class InlineHtmlContents: public TextHolder {
@@ -142,7 +142,7 @@ class InlineHtmlContents: public TextHolder {
 	InlineHtmlContents(const std::wstring& contents): TextHolder(contents, false,
 		cAmps|cAngles) { }
 
-	virtual void writeToken(std::wostream& out) const { out << L"InlineHtmlContents: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"InlineHtmlContents: " << *text() << (wchar_t)'\n'; }
 };
 
 class InlineHtmlComment: public TextHolder {
@@ -150,7 +150,7 @@ class InlineHtmlComment: public TextHolder {
 	InlineHtmlComment(const std::wstring& contents): TextHolder(contents, false,
 		0) { }
 
-	virtual void writeToken(std::wostream& out) const { out << L"InlineHtmlComment: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"InlineHtmlComment: " << *text() << (wchar_t)'\n'; }
 };
 
 class CodeBlock: public TextHolder {
@@ -160,7 +160,7 @@ class CodeBlock: public TextHolder {
 
 	virtual void writeAsHtml(std::wostream& out) const;
 
-	virtual void writeToken(std::wostream& out) const { out << L"CodeBlock: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"CodeBlock: " << *text() << (wchar_t)'\n'; }
 };
 
 class CodeSpan: public TextHolder {
@@ -170,7 +170,7 @@ class CodeSpan: public TextHolder {
 
 	virtual void writeAsHtml(std::wostream& out) const;
 	virtual void writeAsOriginal(std::wostream& out) const;
-	virtual void writeToken(std::wostream& out) const { out << L"CodeSpan: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"CodeSpan: " << *text() << (wchar_t)'\n'; }
 };
 
 class Header: public TextHolder {
@@ -179,13 +179,13 @@ class Header: public TextHolder {
 		cAmps|cAngles|cQuotes), mLevel(level) { }
 
 	virtual void writeToken(std::wostream& out) const { out << L"Header " <<
-		mLevel << ": " << *text() << '\n'; }
+		mLevel << ": " << *text() << (wchar_t)'\n'; }
 
 	virtual bool inhibitParagraphs() const { return true; }
 
 	protected:
-	virtual void preWrite(std::wostream& out) const { out << L"<h" << mLevel << ">"; }
-	virtual void postWrite(std::wostream& out) const { out << L"</h" << mLevel << ">\n"; }
+	virtual void preWrite(std::wostream& out) const { out << L"<h" << mLevel << (wchar_t)">"; }
+	virtual void postWrite(std::wostream& out) const { out << L"</h" << mLevel << (wchar_t)">\n"; }
 
 	private:
 	size_t mLevel;
@@ -196,7 +196,7 @@ class BlankLine: public TextHolder {
 	BlankLine(const std::wstring& actualContents=std::wstring()):
 		TextHolder(actualContents, false, 0) { }
 
-	virtual void writeToken(std::wostream& out) const { out << L"BlankLine: " << *text() << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"BlankLine: " << *text() << (wchar_t)'\n'; }
 
 	virtual bool isBlankLine() const { return true; }
 };
@@ -205,14 +205,14 @@ class BlankLine: public TextHolder {
 
 class EscapedCharacter: public Token {
 	public:
-	EscapedCharacter(char c): mChar(c) { }
+	EscapedCharacter(wchar_t c): mChar(c) { }
 
 	virtual void writeAsHtml(std::wostream& out) const { out << mChar; }
-	virtual void writeAsOriginal(std::wostream& out) const { out << '\\' << mChar; }
-	virtual void writeToken(std::wostream& out) const { out << L"EscapedCharacter: " << mChar << '\n'; }
+	virtual void writeAsOriginal(std::wostream& out) const { out << (wchar_t)'\\' << mChar; }
+	virtual void writeToken(std::wostream& out) const { out << L"EscapedCharacter: " << mChar << (wchar_t)'\n'; }
 
 	private:
-	const char mChar;
+	const wchar_t mChar;
 };
 
 
@@ -230,7 +230,7 @@ class Container: public Token {
 
 	virtual void writeAsHtml(std::wostream& out) const;
 
-	virtual void writeToken(std::wostream& out) const { out << L"Container: error!" << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"Container: error!" << (wchar_t)'\n'; }
 	virtual void writeToken(size_t indent, std::wostream& out) const;
 
 	virtual optional<TokenGroup> processSpanElements(const LinkIds& idTable);
@@ -338,7 +338,7 @@ class Paragraph: public Container {
 
 class BoldOrItalicMarker: public Token {
 	public:
-	BoldOrItalicMarker(bool open, char c, size_t size): mOpenMarker(open),
+	BoldOrItalicMarker(bool open, wchar_t c, size_t size): mOpenMarker(open),
 		mTokenCharacter(c), mSize(size), mMatch(0), mCannotMatch(false),
 		mDisabled(false), mId(-1) { }
 
@@ -350,7 +350,7 @@ class BoldOrItalicMarker: public Token {
 	virtual void writeToken(std::wostream& out) const;
 
 	bool isOpenMarker() const { return mOpenMarker; }
-	char tokenCharacter() const { return mTokenCharacter; }
+	wchar_t tokenCharacter() const { return mTokenCharacter; }
 	size_t size() const { return mSize; }
 	bool matched() const { return (mMatch!=0); }
 	BoldOrItalicMarker* matchedTo() const { return mMatch; }
@@ -362,7 +362,7 @@ class BoldOrItalicMarker: public Token {
 
 	private:
 	bool mOpenMarker; // Otherwise it's a close-marker
-	char mTokenCharacter; // Underscore or asterisk
+	wchar_t mTokenCharacter; // Underscore or asterisk
 	size_t mSize; // 1=italics, 2=bold, 3=both
 	BoldOrItalicMarker* mMatch;
 	bool mCannotMatch;
@@ -377,7 +377,7 @@ class Image: public Token {
 
 	virtual void writeAsHtml(std::wostream& out) const;
 
-	virtual void writeToken(std::wostream& out) const { out << L"Image: " << mUrl << '\n'; }
+	virtual void writeToken(std::wostream& out) const { out << L"Image: " << mUrl << (wchar_t)'\n'; }
 
 	private:
 	const std::wstring mAltText, mUrl, mTitle;
