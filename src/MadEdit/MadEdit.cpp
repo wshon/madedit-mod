@@ -5084,6 +5084,7 @@ void MadEdit::InsertString(const ucs4_t *ucs, size_t count, bool bColumnEditing,
                                         oudata->m_InsSize, &oudata->m_InsData);
 
                 MadUndo *undo = m_UndoBuffer->Add();
+                SetNeedSync();
 
                 undo->m_CaretPosBefore=m_CaretPos.pos;
                 undo->m_CaretPosAfter=oudata->m_Pos + oudata->m_InsSize;
@@ -5184,6 +5185,7 @@ void MadEdit::InsertString(const ucs4_t *ucs, size_t count, bool bColumnEditing,
                     indata->m_Pos = m_CaretPos.pos-dltOff;
 
                     MadUndo *undo = m_UndoBuffer->Add();
+                    SetNeedSync();
                     if(!m_DragCopyFlag)
                     {
                         lit = DeleteInsertData(oudata->m_Pos, oudata->m_Size, NULL, 0, NULL);
@@ -5297,6 +5299,7 @@ void MadEdit::InsertString(const ucs4_t *ucs, size_t count, bool bColumnEditing,
                                     oudata->m_InsSize, &oudata->m_InsData);
 
             MadUndo *undo = m_UndoBuffer->Add();
+            SetNeedSync();
             undo->m_CaretPosBefore=m_CaretPos.pos;
             undo->m_CaretPosAfter=oudata->m_Pos + oudata->m_InsSize;
             undo->m_Undos.push_back(oudata);
@@ -5375,6 +5378,7 @@ void MadEdit::InsertString(const ucs4_t *ucs, size_t count, bool bColumnEditing,
             insud->m_Data.push_back(blk);
 
             MadUndo *undo = m_UndoBuffer->Add();
+            SetNeedSync();
             undo->m_CaretPosBefore = m_CaretPos.pos;
             if(moveCaret)
             {
@@ -5561,6 +5565,7 @@ void MadEdit::InsertColumnString(const ucs4_t *ucs, size_t count, int linecount,
     if(undo == NULL)
     {
         undo = m_UndoBuffer->Add();
+        SetNeedSync();
     }
     undo->m_CaretPosBefore=m_CaretPos.pos;
 
@@ -6314,6 +6319,7 @@ MadUndo *MadEdit::DeleteSelection(bool bCorrectCaretPos, vector <int> *rpos, boo
                     if(undo == NULL)
                     {
                         undo = m_UndoBuffer->Add();
+                        SetNeedSync();
                     }
                     undo->m_Undos.push_back(dudata);
 
@@ -6499,6 +6505,7 @@ MadUndo *MadEdit::DeleteSelection(bool bCorrectCaretPos, vector <int> *rpos, boo
     MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
     MadUndo *undo = m_UndoBuffer->Add();
+    SetNeedSync();
     undo->m_CaretPosBefore = m_CaretPos.pos;
     undo->m_CaretPosAfter = m_SelectionBegin->pos;
     undo->m_Undos.push_back(dudata);
@@ -6573,6 +6580,7 @@ void MadEdit::InsertHexChar(int hc) // handle input in hexarea
         insud->m_Data.push_back(blk);
 
         MadUndo *undo = m_UndoBuffer->Add();
+        SetNeedSync();
         undo->m_CaretPosBefore=undo->m_CaretPosAfter=m_CaretPos.pos;
         undo->m_Undos.push_back(insud);
 
@@ -6633,6 +6641,7 @@ void MadEdit::InsertHexChar(int hc) // handle input in hexarea
                                 oudata->m_InsSize, &oudata->m_InsData);
 
         MadUndo *undo = m_UndoBuffer->Add();
+        SetNeedSync();
         undo->m_CaretPosBefore=undo->m_CaretPosAfter=m_CaretPos.pos;
         if(m_CaretAtHalfByte==false) --undo->m_CaretPosBefore;
         undo->m_Undos.push_back(oudata);
@@ -6701,6 +6710,7 @@ void MadEdit::InsertHexData(wxByte *hex, size_t count)
                                 oudata->m_InsSize, &oudata->m_InsData);
 
         MadUndo *undo = m_UndoBuffer->Add();
+        SetNeedSync();
         undo->m_CaretPosBefore=m_CaretPos.pos;
         undo->m_CaretPosAfter=oudata->m_Pos + oudata->m_InsSize;
         undo->m_Undos.push_back(oudata);
@@ -6740,6 +6750,7 @@ void MadEdit::InsertHexData(wxByte *hex, size_t count)
         insud->m_Data.push_back(blk);
 
         MadUndo *undo = m_UndoBuffer->Add();
+        SetNeedSync();
         undo->m_CaretPosBefore=m_CaretPos.pos;
         undo->m_CaretPosAfter=m_CaretPos.pos+blk.m_Size;
         undo->m_Undos.push_back(insud);
@@ -6908,6 +6919,7 @@ void MadEdit::OverwriteDataSingle(vector<wxFileOffset> &del_bpos, vector<wxFileO
                                         oudata->m_InsSize, &oudata->m_InsData);
 
     MadUndo *undo=m_UndoBuffer->Add();
+    SetNeedSync();
     undo->m_CaretPosBefore=m_CaretPos.pos;
     undo->m_CaretPosAfter=newCaretPos;
     undo->m_Undos.push_back(oudata);
@@ -6986,6 +6998,7 @@ void MadEdit::OverwriteDataMultiple(vector<wxFileOffset> &del_bpos, vector<wxFil
     wxFileOffset caretdiffsize;
 
     MadUndo *undo = m_UndoBuffer->Add();
+    SetNeedSync();
 
     do
     {
@@ -8680,6 +8693,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                         DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                     MadUndo *undo = m_UndoBuffer->Add();
+                                    SetNeedSync();
                                     undo->m_CaretPosBefore = m_CaretPos.pos;
                                     undo->m_CaretPosAfter = m_CaretPos.pos;
                                     undo->m_Undos.push_back(dudata);
@@ -8730,6 +8744,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                                                                oudata->m_InsSize, &oudata->m_InsData);
 
                                         MadUndo *undo = m_UndoBuffer->Add();
+                                        SetNeedSync();
                                         undo->m_CaretPosBefore = m_CaretPos.pos;
                                         undo->m_Undos.push_back(oudata);
 
@@ -8774,6 +8789,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                             DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                         MadUndo *undo = m_UndoBuffer->Add();
+                                        SetNeedSync();
                                         undo->m_CaretPosBefore = m_CaretPos.pos;
                                         undo->m_CaretPosAfter = m_CaretPos.pos;
                                         undo->m_Undos.push_back(dudata);
@@ -8946,6 +8962,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                             MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                             MadUndo *undo = m_UndoBuffer->Add();
+                                            SetNeedSync();
                                             undo->m_CaretPosBefore=m_CaretPos.pos;
                                             undo->m_CaretPosAfter=dudata->m_Pos;
                                             undo->m_Undos.push_back(dudata);
@@ -8985,6 +9002,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                             lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                             MadUndo *undo = m_UndoBuffer->Add();
+                                            SetNeedSync();
                                             undo->m_CaretPosBefore=m_CaretPos.pos;
                                             undo->m_CaretPosAfter=dudata->m_Pos;
                                             undo->m_Undos.push_back(dudata);
@@ -9024,6 +9042,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                         MadLineIterator lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
                                         MadUndo *undo = m_UndoBuffer->Add();
+                                        SetNeedSync();
                                         undo->m_CaretPosBefore=m_CaretPos.pos;
                                         undo->m_CaretPosAfter=dudata->m_Pos;
                                         undo->m_Undos.push_back(dudata);

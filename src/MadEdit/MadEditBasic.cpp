@@ -1277,6 +1277,7 @@ void MadEdit::SetText(const wxString &ws)
             lit = DeleteInsertData(0, dudata->m_Size, &dudata->m_Data, 0, NULL);
 
             undo = m_UndoBuffer->Add();
+            SetNeedSync();
             undo->m_Undos.push_back(dudata);
         }
         else                        // overwrite
@@ -1299,6 +1300,7 @@ void MadEdit::SetText(const wxString &ws)
                                       oudata->m_InsSize, &oudata->m_InsData);
 
             undo = m_UndoBuffer->Add();
+            SetNeedSync();
             undo->m_Undos.push_back(oudata);
         }
     }
@@ -1321,6 +1323,7 @@ void MadEdit::SetText(const wxString &ws)
         lit = DeleteInsertData(0, 0, NULL, insud->m_Size, &insud->m_Data);
 
         undo = m_UndoBuffer->Add();
+        SetNeedSync();
         undo->m_Undos.push_back(insud);
     }
 
@@ -1999,6 +2002,8 @@ void MadEdit::Undo()
         return;
     }
 
+    SetNeedSync();
+
     size_t oldrows = m_Lines->m_RowCount;
     size_t oldlines = m_Lines->m_LineCount;
 
@@ -2129,6 +2134,8 @@ void MadEdit::Redo()
         m_RecordCaretMovements=oldrcm;
         return;
     }
+
+    SetNeedSync();
 
     size_t oldrows = m_Lines->m_RowCount;
     size_t oldlines = m_Lines->m_LineCount;
@@ -2360,6 +2367,7 @@ bool MadEdit::LoadFromFile(const wxString &filename, const wxString &encoding)
         return false;
 
     m_UndoBuffer->Clear();
+    SetNeedSync();
     m_SavePoint = NULL;
     m_Modified = false;
     m_ModificationTime = wxFileModificationTime(filename);

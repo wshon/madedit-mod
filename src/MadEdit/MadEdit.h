@@ -262,6 +262,8 @@ private:
     MadUndo         *m_SavePoint;
     bool            m_RecordCaretMovements;
 
+    bool            m_NeedSync;
+
     ucs4_t          *m_WordBuffer;
     int             *m_WidthBuffer;
     wchar_t         *m_WCWordBuffer;
@@ -908,6 +910,10 @@ public: // basic functions
     void Undo();
     void Redo();
 
+    bool NeedSync() {return m_NeedSync;}
+    void SetNeedSync() {m_NeedSync = true;}
+    void Synced() {m_NeedSync = false;}
+     
     void GoToLine(int line);
     void SetCaretPosition(wxFileOffset pos, wxFileOffset selbeg=-1, wxFileOffset selend=-1);
 

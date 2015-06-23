@@ -275,7 +275,7 @@ void MadHtmlPreview::OnPaint(wxPaintEvent& event)
 {
     if(g_ActiveMadEdit != NULL && m_PreviewType != ptPREVIEW_NONE)
     {
-        if(g_ActiveMadEdit->CanUndo() || g_ActiveMadEdit->CanRedo())
+        if(g_ActiveMadEdit->NeedSync())
         {
             wxString text;
             g_ActiveMadEdit->GetText(text, false);
@@ -289,6 +289,7 @@ void MadHtmlPreview::OnPaint(wxPaintEvent& event)
                 text = out.str();
             }
             SetPage(text);
+            g_ActiveMadEdit->Synced();
         }
     }
     else
@@ -3195,6 +3196,7 @@ void MadEditFrame::OnNotebookPageChanged(wxAuiNotebookEvent& event)
                 text = out.str();
             }
             m_HtmlPreview->SetPage(text);
+            g_ActiveMadEdit->Synced();
 
         }
     }
@@ -6154,6 +6156,7 @@ void MadEditFrame::OnViewPreview(wxCommandEvent& event)
             text = out.str();
         }
         m_HtmlPreview->SetPage(text);
+        g_ActiveMadEdit->Synced();
     }
     else
     {
