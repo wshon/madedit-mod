@@ -8,6 +8,7 @@
 #include "markdown-tokens.h"
 
 #include <stack>
+#include <locale>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/xpressive/xpressive.hpp>
@@ -22,100 +23,100 @@ namespace markdown {
 namespace token {
 namespace {
 
-const std::string cEscapedCharacters("\\`*_{}[]()#+-.!>");
+const std::wstring cEscapedCharacters(L"\\`*_{}[]()#+-.!>");
 
-optional<size_t> isEscapedCharacter(char c) {
-	std::string::const_iterator i=std::find(cEscapedCharacters.begin(),
+optional<size_t> isEscapedCharacter(wchar_t c) {
+	std::wstring::const_iterator i=std::find(cEscapedCharacters.begin(),
 		cEscapedCharacters.end(), c);
 	if (i!=cEscapedCharacters.end())
 		return std::distance(cEscapedCharacters.begin(), i);
 	else return none;
 }
 
-char escapedCharacter(size_t index) {
+wchar_t escapedCharacter(size_t index) {
 	return cEscapedCharacters[index];
 }
 
-std::string encodeString(const std::string& src, int encodingFlags) {
+std::wstring encodeString(const std::wstring& src, int encodingFlags) {
 	bool amps=(encodingFlags & cAmps)!=0,
 		doubleAmps=(encodingFlags & cDoubleAmps)!=0,
 		angleBrackets=(encodingFlags & cAngles)!=0,
 		quotes=(encodingFlags & cQuotes)!=0;
 
-	std::string tgt;
-	for (std::string::const_iterator i=src.begin(), ie=src.end(); i!=ie; ++i) {
-		if (*i=='&' && amps) {
-			static const xpressive::sregex cIgnore = xpressive::sregex::compile("^(&amp;)|(&#[0-9]{1,3};)|(&#[xX][0-9a-fA-F]{1,2};)");
+	std::wstring tgt;
+	for (std::wstring::const_iterator i=src.begin(), ie=src.end(); i!=ie; ++i) {
+		if (*i==(wchar_t)'&' && amps) {
+			static const xpressive::wsregex cIgnore = xpressive::wsregex::compile(L"^(&amp;)|(&#[0-9]{1,3};)|(&#[xX][0-9a-fA-F]{1,2};)");
 			if (xpressive::regex_search(i, ie, cIgnore)) {
 				tgt.push_back(*i);
 			} else {
-				tgt+="&amp;";
+				tgt+=L"&amp;";
 			}
 		}
-		else if (*i=='&' && doubleAmps) tgt+="&amp;";
-		else if (*i=='<' && angleBrackets) tgt+="&lt;";
-		else if (*i=='>' && angleBrackets) tgt+="&gt;";
-		else if (*i=='\"' && quotes) tgt+="&quot;";
+		else if (*i==(wchar_t)'&' && doubleAmps) tgt+=L"&amp;";
+		else if (*i==(wchar_t)'<' && angleBrackets) tgt+=L"&lt;";
+		else if (*i==(wchar_t)'>' && angleBrackets) tgt+=L"&gt;";
+		else if (*i==(wchar_t)'\"' && quotes) tgt+=L"&quot;";
 		else tgt.push_back(*i);
 	}
 	return tgt;
 }
 
-bool looksLikeUrl(const std::string& str) {
-	const char *schemes[]={ "http://", "https://", "ftp://", "ftps://",
-		"file://", "www.", "ftp.", 0 };
+bool looksLikeUrl(const std::wstring& str) {
+	const wchar_t *schemes[]={ L"http://", L"https://", L"ftp://", L"ftps://",
+		L"file://", L"www.", L"ftp.", 0 };
 	for (size_t x=0; schemes[x]!=0; ++x) {
-		const char *s=str.c_str(), *t=schemes[x];
+		const wchar_t *s=str.c_str(), *t=schemes[x];
 		while (*s!=0 && *t!=0 && *s==*t) { ++s; ++t; }
 		if (*t==0) return true;
 	}
 	return false;
 }
 
-bool notValidNameCharacter(char c) {
-	return !(isalnum(c) || c=='.' || c=='_' || c=='%' || c=='-' || c=='+');
+bool notValidNameCharacter(wchar_t c) {
+	return !(iswalnum(c) || c==(wchar_t)'.' || c==(wchar_t)'_' || c==(wchar_t)'%' || c==(wchar_t)'-' || c==(wchar_t)'+');
 }
 
-bool notValidSiteCharacter(char c) {
+bool notValidSiteCharacter(wchar_t c) {
 	// NOTE: Kludge alert! The official spec for site characters is only
 	// "a-zA-Z._%-". However, MDTest supports "international domain names,"
 	// which use characters other than that; I'm kind of cheating here, handling
 	// those by allowing all utf8-encoded characters too.
-	return !(isalnum(c) || c=='.' || c=='_' || c=='%' || c=='-' || (c & 0x80));
+	return !(iswalnum(c) || c==(wchar_t)'.' || c==(wchar_t)'_' || c==(wchar_t)'%' || c==(wchar_t)'-' || (c & 0x80));
 }
 
-bool isNotAlpha(char c) {
-	return !isalpha(c);
+bool isNotAlpha(wchar_t c) {
+	return !iswalpha(c);
 }
 
-std::string emailEncode(const std::string& src) {
-	std::ostringstream out;
+std::wstring emailEncode(const std::wstring& src) {
+	std::wostringstream out;
 	bool inHex=false;
-	for (std::string::const_iterator i=src.begin(), ie=src.end(); i!=ie;
+	for (std::wstring::const_iterator i=src.begin(), ie=src.end(); i!=ie;
 		++i)
 	{
 		if (*i & 0x80) out << *i;
 		else if (inHex) {
-			out << "&#x" << std::hex << static_cast<int>(*i) << ';';
+			out << L"&#x" << std::hex << static_cast<int>(*i) << (wchar_t)';';
 		} else {
-			out << "&#" << std::dec << static_cast<int>(*i) << ';';
+			out << L"&#" << std::dec << static_cast<int>(*i) << (wchar_t)';';
 		}
 		inHex=!inHex;
 	}
 	return out.str();
 }
 
-bool looksLikeEmailAddress(const std::string& str) {
-	typedef std::string::const_iterator Iter;
-	typedef std::string::const_reverse_iterator RIter;
+bool looksLikeEmailAddress(const std::wstring& str) {
+	typedef std::wstring::const_iterator Iter;
+	typedef std::wstring::const_reverse_iterator RIter;
 	Iter i=std::find_if(str.begin(), str.end(), notValidNameCharacter);
-	if (i!=str.end() && *i=='@' && i!=str.begin()) {
+	if (i!=str.end() && *i==(wchar_t)'@' && i!=str.begin()) {
 		// The name part is valid.
 		i=std::find_if(i+1, str.end(), notValidSiteCharacter);
 		if (i==str.end()) {
 			// The site part doesn't contain any invalid characters.
 			RIter ri=std::find_if(str.rbegin(), str.rend(), isNotAlpha);
-			if (ri!=str.rend() && *ri=='.') {
+			if (ri!=str.rend() && *ri==(wchar_t)'.') {
 				// It ends with a dot and only alphabetic characters.
 				size_t d=std::distance(ri.base(), str.end());
 				if (d>=2 && d<=4) {
@@ -130,37 +131,37 @@ bool looksLikeEmailAddress(const std::string& str) {
 
 // From <http://en.wikipedia.org/wiki/HTML_element>
 
-const char *cOtherTagInit[]={
+const wchar_t *cOtherTagInit[]={
 	// Header tags
-	"title/", "base", "link", "basefont", "script/", "style/",
-	"object/", "meta",
+	L"title/", L"base", L"link", L"basefont", L"script/", L"style/",
+	L"object/", L"meta",
 
 	// Inline tags
-	"em/", "strong/", "q/", "cite/", "dfn/", "abbr/", "acronym/",
-	"code/", "samp/", "kbd/", "var/", "sub/", "sup/", "del/", "ins/",
-	"isindex", "a/", "img", "br", "map/", "area", "object/", "param",
-	"applet/", "span/",
+	L"em/", L"strong/", L"q/", L"cite/", L"dfn/", L"abbr/", L"acronym/",
+	L"code/", L"samp/", L"kbd/", L"var/", L"sub/", L"sup/", L"del/", L"ins/",
+	L"isindex", L"a/", L"img", L"br", L"map/", L"area", L"object/", L"param",
+	L"applet/", L"span/",
 
 	0 };
 
-const char *cBlockTagInit[]={ "p/", "blockquote/", "hr", "h1/", "h2/",
-	"h3/", "h4/", "h5/", "h6/", "dl/", "dt/", "dd/", "ol/", "ul/",
-	"li/", "dir/", "menu/", "table/", "tr/", "th/", "td/", "col",
-	"colgroup/", "caption/", "thead/", "tbody/", "tfoot/", "form/",
-	"select/", "option", "input", "label/", "textarea/", "div/", "pre/",
-	"address/", "iframe/", "frame/", "frameset/", "noframes/",
-	"center/", "b/", "i/", "big/", "small/", /*"s/",*/ "strike/", "tt/",
-	"u/", "font/", "ins/", "del/", 0 };
+const wchar_t *cBlockTagInit[]={ L"p/", L"blockquote/", L"hr", L"h1/", L"h2/",
+	L"h3/", L"h4/", L"h5/", L"h6/", L"dl/", L"dt/", L"dd/", L"ol/", L"ul/",
+	L"li/", L"dir/", L"menu/", L"table/", L"tr/", L"th/", L"td/", L"col",
+	L"colgroup/", L"caption/", L"thead/", L"tbody/", L"tfoot/", L"form/",
+	L"select/", L"option", L"input", L"label/", L"textarea/", L"div/", L"pre/",
+	L"address/", L"iframe/", L"frame/", L"frameset/", L"noframes/",
+	L"center/", L"b/", L"i/", L"big/", L"small/", /*"s/",*/ L"strike/", L"tt/",
+	L"u/", L"font/", L"ins/", L"del/", 0 };
 
 // Other official ones (not presently in use in this code)
 //"!doctype", "bdo", "body", "button", "fieldset", "head", "html",
 //"legend", "noscript", "optgroup", "xmp",
 
-boost::unordered_set<std::string> otherTags, blockTags;
+boost::unordered_set<std::wstring> otherTags, blockTags;
 
-void initTag(boost::unordered_set<std::string> &set, const char *init[]) {
+void initTag(boost::unordered_set<std::wstring> &set, const wchar_t *init[]) {
 	for (size_t x=0; init[x]!=0; ++x) {
-		std::string str=init[x];
+		std::wstring str=init[x];
 		if (*str.rbegin()=='/') {
 			// Means it can have a closing tag
 			str=str.substr(0, str.length()-1);
@@ -169,9 +170,9 @@ void initTag(boost::unordered_set<std::string> &set, const char *init[]) {
 	}
 }
 
-std::string cleanTextLinkRef(const std::string& ref) {
-	std::string r;
-	for (std::string::const_iterator i=ref.begin(), ie=ref.end(); i!=ie;
+std::wstring cleanTextLinkRef(const std::wstring& ref) {
+	std::wstring r;
+	for (std::wstring::const_iterator i=ref.begin(), ie=ref.end(); i!=ie;
 		++i)
 	{
 		if (*i==' ') {
@@ -185,7 +186,7 @@ std::string cleanTextLinkRef(const std::string& ref) {
 
 
 
-size_t isValidTag(const std::string& tag, bool nonBlockFirst) {
+size_t isValidTag(const std::wstring& tag, bool nonBlockFirst) {
 	if (blockTags.empty()) {
 		initTag(otherTags, cOtherTagInit);
 		initTag(blockTags, cBlockTagInit);
@@ -203,7 +204,7 @@ size_t isValidTag(const std::string& tag, bool nonBlockFirst) {
 
 
 
-void TextHolder::writeAsHtml(std::ostream& out) const {
+void TextHolder::writeAsHtml(std::wostream& out) const {
 	preWrite(out);
 	if (mEncodingFlags!=0) {
 		out << encodeString(mText, mEncodingFlags);
@@ -217,53 +218,53 @@ optional<TokenGroup> RawText::processSpanElements(const LinkIds& idTable) {
 	if (!canContainMarkup()) return none;
 
 	ReplacementTable replacements;
-	std::string str=_processHtmlTagAttributes(*text(), replacements);
+	std::wstring str=_processHtmlTagAttributes(*text(), replacements);
 	str=_processCodeSpans(str, replacements);
 	str=_processEscapedCharacters(str);
 	str=_processLinksImagesAndTags(str, replacements, idTable);
 	return _processBoldAndItalicSpans(str, replacements);
 }
 
-std::string RawText::_processHtmlTagAttributes(std::string src, ReplacementTable&
+std::wstring RawText::_processHtmlTagAttributes(std::wstring src, ReplacementTable&
 	replacements)
 {
 	// Because "Attribute Content Is Not A Code Span"
-	std::string tgt;
-	std::string::const_iterator prev=src.begin(), end=src.end();
+	std::wstring tgt;
+	std::wstring::const_iterator prev=src.begin(), end=src.end();
 	while (1) {
-		static const xpressive::sregex cHtmlToken = xpressive::sregex::compile("<((/?)([a-zA-Z0-9]+)(?:( +[a-zA-Z0-9]+?(?: ?= ?(\"|').*?\\5))+? */? *))>");
-		xpressive::smatch m;
+		static const xpressive::wsregex cHtmlToken = xpressive::wsregex::compile(L"<((/?)([a-zA-Z0-9]+)(?:( +[a-zA-Z0-9]+?(?: ?= ?(\"|').*?\\5))+? */? *))>");
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, end, m, cHtmlToken)) {
 			// NOTE: Kludge alert! The `isValidTag` test is a cheat, only here
 			// to handle some edge cases between the Markdown test suite and the
 			// PHP-Markdown one, which seem to conflict.
 			if (isValidTag(m[3])) {
-				tgt+=std::string(prev, m[0].first);
+				tgt+=std::wstring(prev, m[0].first);
 
-				std::string fulltag=m[0], tgttag;
-				std::string::const_iterator prevtag=fulltag.begin(), endtag=fulltag.end();
+				std::wstring fulltag=m[0], tgttag;
+				std::wstring::const_iterator prevtag=fulltag.begin(), endtag=fulltag.end();
 				while (1) {
-					static const xpressive::sregex cAttributeStrings = xpressive::sregex::compile("= ?(\"|').*?\\1");
-					xpressive::smatch mtag;
+					static const xpressive::wsregex cAttributeStrings = xpressive::wsregex::compile(L"= ?(\"|').*?\\1");
+					xpressive::wsmatch mtag;
 					if (xpressive::regex_search(prevtag, endtag, mtag, cAttributeStrings)) {
-						tgttag+=std::string(prevtag, mtag[0].first);
-						tgttag+="\x01@"+boost::lexical_cast<std::string>(replacements.size())+"@htmlTagAttr\x01";
+						tgttag+=std::wstring(prevtag, mtag[0].first);
+						tgttag+=L"\x01@"+boost::lexical_cast<std::wstring>(replacements.size())+L"@htmlTagAttr\x01";
 						prevtag=mtag[0].second;
 
-						replacements.push_back(TokenPtr(new TextHolder(std::string(mtag[0]), false, cAmps|cAngles)));
+						replacements.push_back(TokenPtr(new TextHolder(std::wstring(mtag[0]), false, cAmps|cAngles)));
 					} else {
-						tgttag+=std::string(prevtag, endtag);
+						tgttag+=std::wstring(prevtag, endtag);
 						break;
 					}
 				}
 				tgt+=tgttag;
 				prev=m[0].second;
 			} else {
-				tgt+=std::string(prev, m[0].second);
+				tgt+=std::wstring(prev, m[0].second);
 				prev=m[0].second;
 			}
 		} else {
-			tgt+=std::string(prev, end);
+			tgt+=std::wstring(prev, end);
 			break;
 		}
 	}
@@ -271,25 +272,25 @@ std::string RawText::_processHtmlTagAttributes(std::string src, ReplacementTable
 	return tgt;
 }
 
-std::string RawText::_processCodeSpans(std::string src, ReplacementTable&
+std::wstring RawText::_processCodeSpans(std::wstring src, ReplacementTable&
 	replacements)
 {
-	static const xpressive::sregex cCodeSpan[2]={
-		xpressive::sregex::compile("(?:^|(?<=[^\\\\]))`` (.+?) ``"),
-		xpressive::sregex::compile("(?:^|(?<=[^\\\\]))`(.+?)`")
+	static const xpressive::wsregex cCodeSpan[2]={
+		xpressive::wsregex::compile(L"(?:^|(?<=[^\\\\]))`` (.+?) ``"),
+		xpressive::wsregex::compile(L"(?:^|(?<=[^\\\\]))`(.+?)`")
 	};
 	for (int pass=0; pass<2; ++pass) {
-		std::string tgt;
-		std::string::const_iterator prev=src.begin(), end=src.end();
+		std::wstring tgt;
+		std::wstring::const_iterator prev=src.begin(), end=src.end();
 		while (1) {
-			xpressive::smatch m;
+			xpressive::wsmatch m;
 			if (xpressive::regex_search(prev, end, m, cCodeSpan[pass])) {
-				tgt+=std::string(prev, m[0].first);
-				tgt+="\x01@"+boost::lexical_cast<std::string>(replacements.size())+"@codeSpan\x01";
+				tgt+=std::wstring(prev, m[0].first);
+				tgt+=L"\x01@"+boost::lexical_cast<std::wstring>(replacements.size())+L"@codeSpan\x01";
 				prev=m[0].second;
 				replacements.push_back(TokenPtr(new CodeSpan(_restoreProcessedItems(m[1], replacements))));
 			} else {
-				tgt+=std::string(prev, end);
+				tgt+=std::wstring(prev, end);
 				break;
 			}
 		}
@@ -299,54 +300,54 @@ std::string RawText::_processCodeSpans(std::string src, ReplacementTable&
 	return src;
 }
 
-std::string RawText::_processEscapedCharacters(const std::string& src) {
-	std::string tgt;
-	std::string::const_iterator prev=src.begin(), end=src.end();
+std::wstring RawText::_processEscapedCharacters(const std::wstring& src) {
+	std::wstring tgt;
+	std::wstring::const_iterator prev=src.begin(), end=src.end();
 	while (1) {
-		std::string::const_iterator i=std::find(prev, end, '\\');
+		std::wstring::const_iterator i=std::find(prev, end, '\\');
 		if (i!=end) {
-			tgt+=std::string(prev, i);
+			tgt+=std::wstring(prev, i);
 			++i;
 			if (i!=end) {
 				optional<size_t> e=isEscapedCharacter(*i);
-				if (e) tgt+="\x01@#"+boost::lexical_cast<std::string>(*e)+"@escaped\x01";
-				else tgt=tgt+'\\'+*i;
+				if (e) tgt+=L"\x01@#"+boost::lexical_cast<std::wstring>(*e)+L"@escaped\x01";
+				else tgt=tgt+(wchar_t)'\\'+*i;
 				prev=i+1;
 			} else {
 				tgt+='\\';
 				break;
 			}
 		} else {
-			tgt+=std::string(prev, end);
+			tgt+=std::wstring(prev, end);
 			break;
 		}
 	}
 	return tgt;
 }
 
-std::string RawText::_processSpaceBracketedGroupings(const std::string &src,
+std::wstring RawText::_processSpaceBracketedGroupings(const std::wstring &src,
 	ReplacementTable& replacements)
 {
-	static const xpressive::sregex cRemove = xpressive::sregex::compile("(?:(?: \\*+ )|(?: _+ ))");
+	static const xpressive::wsregex cRemove = xpressive::wsregex::compile(L"(?:(?: \\*+ )|(?: _+ ))");
 
-	std::string tgt;
-	std::string::const_iterator prev=src.begin(), end=src.end();
+	std::wstring tgt;
+	std::wstring::const_iterator prev=src.begin(), end=src.end();
 	while (1) {
-		xpressive::smatch m;
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, end, m, cRemove)) {
-			tgt+=std::string(prev, m[0].first);
-			tgt+="\x01@"+boost::lexical_cast<std::string>(replacements.size())+"@spaceBracketed\x01";
+			tgt+=std::wstring(prev, m[0].first);
+			tgt+=L"\x01@"+boost::lexical_cast<std::wstring>(replacements.size())+L"@spaceBracketed\x01";
 			replacements.push_back(TokenPtr(new RawText(m[0])));
 			prev=m[0].second;
 		} else {
-			tgt+=std::string(prev, end);
+			tgt+=std::wstring(prev, end);
 			break;
 		}
 	}
 	return tgt;
 }
 
-std::string RawText::_processLinksImagesAndTags(const std::string &src,
+std::wstring RawText::_processLinksImagesAndTags(const std::wstring &src,
 	ReplacementTable& replacements, const LinkIds& idTable)
 {
 	// NOTE: Kludge alert! The "inline link or image" regex should be...
@@ -365,25 +366,25 @@ std::string RawText::_processLinksImagesAndTags(const std::string &src,
 	//
 	//   "|(?:(!?)\\[(.+?)\\](?: *\\[(.*?)\\])?)"
 	//
-	static const xpressive::sregex cExpression = xpressive::sregex::compile(
-		"(?:(!?)\\[([^\\]]+?)\\] *\\(([^\\(]*(?:\\(.*?\\).*?)*?)\\))" // Inline link or image
-		"|(?:(!?)\\[((?:[^]]*?\\[.*?\\].*?)|(?:.+?))\\](?: *\\[(.*?)\\])?)" // Reference link or image
-		"|(?:<(/?([a-zA-Z0-9]+).*?)>)" // potential HTML tag or auto-link
+	static const xpressive::wsregex cExpression = xpressive::wsregex::compile(
+		L"(?:(!?)\\[([^\\]]+?)\\] *\\(([^\\(]*(?:\\(.*?\\).*?)*?)\\))" // Inline link or image
+		L"|(?:(!?)\\[((?:[^]]*?\\[.*?\\].*?)|(?:.+?))\\](?: *\\[(.*?)\\])?)" // Reference link or image
+		L"|(?:<(/?([a-zA-Z0-9]+).*?)>)" // potential HTML tag or auto-link
 	);
 	// Important captures: 1/4=image indicator, 2/5=contents/alttext,
 	// 3=URL/title, 6=optional link ID, 7=potential HTML tag or auto-link
 	// contents, 8=actual tag from 7.
 
-	std::string tgt;
-	std::string::const_iterator prev=src.begin(), end=src.end();
+	std::wstring tgt;
+	std::wstring::const_iterator prev=src.begin(), end=src.end();
 	while (1) {
-		xpressive::smatch m;
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, end, m, cExpression)) {
 			assert(m[0].matched);
 			assert(m[0].length()!=0);
 
-			tgt+=std::string(prev, m[0].first);
-			tgt+="\x01@"+boost::lexical_cast<std::string>(replacements.size())+"@links&Images1\x01";
+			tgt+=std::wstring(prev, m[0].first);
+			tgt+=L"\x01@"+boost::lexical_cast<std::wstring>(replacements.size())+L"@links&Images1\x01";
 			prev=m[0].second;
 
 			bool isImage=false, isLink=false, isReference=false;
@@ -393,21 +394,21 @@ std::string RawText::_processLinksImagesAndTags(const std::string &src,
 			else if (m[2].matched) isLink=true;
 
 			if (isImage || isLink) {
-				std::string contentsOrAlttext, url, title;
+				std::wstring contentsOrAlttext, url, title;
 				bool resolved=false;
 				if (isReference) {
 					contentsOrAlttext=m[5];
-					std::string linkId=(m[6].matched ? std::string(m[6]) : std::string());
+					std::wstring linkId=(m[6].matched ? std::wstring(m[6]) : std::wstring());
 					if (linkId.empty()) linkId=cleanTextLinkRef(contentsOrAlttext);
 
 					optional<markdown::LinkIds::Target> target=idTable.find(linkId);
 					if (target) { url=target->url; title=target->title; resolved=true; };
 				} else {
-					static const xpressive::sregex cReference = xpressive::sregex::compile("^<?([^ >]*)>?(?: *(?:('|\")(.*)\\2)|(?:\\((.*)\\)))? *$");
+					static const xpressive::wsregex cReference = xpressive::wsregex::compile(L"^<?([^ >]*)>?(?: *(?:('|\")(.*)\\2)|(?:\\((.*)\\)))? *$");
 					// Useful captures: 1=url, 3/4=title
 					contentsOrAlttext=m[2];
-					std::string urlAndTitle=m[3];
-					xpressive::smatch mm;
+					std::wstring urlAndTitle=m[3];
+					xpressive::wsmatch mm;
 					if (xpressive::regex_match(urlAndTitle, mm, cReference)) {
 						url=mm[1];
 						if (mm[3].matched) title=mm[3];
@@ -420,34 +421,34 @@ std::string RawText::_processLinksImagesAndTags(const std::string &src,
 					// Just encode the first character as-is, and continue
 					// searching after it.
 					prev=m[0].first+1;
-					replacements.push_back(TokenPtr(new RawText(std::string(m[0].first, prev))));
+					replacements.push_back(TokenPtr(new RawText(std::wstring(m[0].first, prev))));
 				} else if (isImage) {
 					replacements.push_back(TokenPtr(new Image(contentsOrAlttext,
 						url, title)));
 				} else {
 					replacements.push_back(TokenPtr(new HtmlAnchorTag(url, title)));
 					tgt+=contentsOrAlttext;
-					tgt+="\x01@"+boost::lexical_cast<std::string>(replacements.size())+"@links&Images2\x01";
-					replacements.push_back(TokenPtr(new HtmlTag("/a")));
+					tgt+=L"\x01@"+boost::lexical_cast<std::wstring>(replacements.size())+L"@links&Images2\x01";
+					replacements.push_back(TokenPtr(new HtmlTag(L"/a")));
 				}
 			} else {
 				// Otherwise it's an HTML tag or auto-link.
-				std::string contents=m[7];
+				std::wstring contents=m[7];
 
 //				cerr << "Evaluating potential HTML or auto-link: " << contents << endl;
-//				cerr << "m[8]=" << m[8] << endl;
+//				cerr << "m[8]=L" << m[8] << endl;
 
 				if (looksLikeUrl(contents)) {
 					TokenGroup subgroup;
 					subgroup.push_back(TokenPtr(new HtmlAnchorTag(contents)));
 					subgroup.push_back(TokenPtr(new RawText(contents, false)));
-					subgroup.push_back(TokenPtr(new HtmlTag("/a")));
+					subgroup.push_back(TokenPtr(new HtmlTag(L"/a")));
 					replacements.push_back(TokenPtr(new Container(subgroup)));
 				} else if (looksLikeEmailAddress(contents)) {
 					TokenGroup subgroup;
-					subgroup.push_back(TokenPtr(new HtmlAnchorTag(emailEncode("mailto:"+contents))));
+					subgroup.push_back(TokenPtr(new HtmlAnchorTag(emailEncode(L"mailto:"+contents))));
 					subgroup.push_back(TokenPtr(new RawText(emailEncode(contents), false)));
-					subgroup.push_back(TokenPtr(new HtmlTag("/a")));
+					subgroup.push_back(TokenPtr(new HtmlTag(L"/a")));
 					replacements.push_back(TokenPtr(new Container(subgroup)));
 				} else if (isValidTag(m[8])) {
 					replacements.push_back(TokenPtr(new HtmlTag(_restoreProcessedItems(contents, replacements))));
@@ -457,51 +458,51 @@ std::string RawText::_processLinksImagesAndTags(const std::string &src,
 				}
 			}
 		} else {
-			tgt+=std::string(prev, end);
+			tgt+=std::wstring(prev, end);
 			break;
 		}
 	}
 	return tgt;
 }
 
-TokenGroup RawText::_processBoldAndItalicSpans(const std::string& src,
+TokenGroup RawText::_processBoldAndItalicSpans(const std::wstring& src,
 	ReplacementTable& replacements)
 {
-	static const xpressive::sregex cEmphasisExpression = xpressive::sregex::compile(
-		"(?:(?<![*_])([*_]{1,3})([^*_ ]+?)\\1(?![*_]))"                                    // Mid-word emphasis
-		"|((?:(?<!\\*)\\*{1,3}(?!\\*)|(?<!_)_{1,3}(?!_))(?=.)(?! )(?![.,:;] )(?![.,:;]$))" // Open
-		"|((?<![* ])\\*{1,3}(?!\\*)|(?<![ _])_{1,3}(?!_))"                                 // Close
+	static const xpressive::wsregex cEmphasisExpression = xpressive::wsregex::compile(
+		L"(?:(?<![*_])([*_]{1,3})([^*_ ]+?)\\1(?![*_]))"                                    // Mid-word emphasis
+		L"|((?:(?<!\\*)\\*{1,3}(?!\\*)|(?<!_)_{1,3}(?!_))(?=.)(?! )(?![.,:;] )(?![.,:;]$))" // Open
+		L"|((?<![* ])\\*{1,3}(?!\\*)|(?<![ _])_{1,3}(?!_))"                                 // Close
 	);
 
 	TokenGroup tgt;
-	std::string::const_iterator i=src.begin(), end=src.end(), prev=i;
+	std::wstring::const_iterator i=src.begin(), end=src.end(), prev=i;
 
 	while (1) {
-		xpressive::smatch m;
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, end, m, cEmphasisExpression)) {
 			if (prev!=m[0].first) tgt.push_back(TokenPtr(new
-				RawText(std::string(prev, m[0].first))));
+				RawText(std::wstring(prev, m[0].first))));
 			if (m[3].matched) {
-				std::string token=m[3];
+				std::wstring token=m[3];
 				tgt.push_back(TokenPtr(new BoldOrItalicMarker(true, token[0],
 					token.length())));
 				prev=m[0].second;
 			} else if (m[4].matched) {
-				std::string token=m[4];
+				std::wstring token=m[4];
 				tgt.push_back(TokenPtr(new BoldOrItalicMarker(false, token[0],
 					token.length())));
 				prev=m[0].second;
 			} else {
-				std::string token=m[1], contents=m[2];
+				std::wstring token=m[1], contents=m[2];
 				tgt.push_back(TokenPtr(new BoldOrItalicMarker(true, token[0],
 					token.length())));
-				tgt.push_back(TokenPtr(new RawText(std::string(contents))));
+				tgt.push_back(TokenPtr(new RawText(std::wstring(contents))));
 				tgt.push_back(TokenPtr(new BoldOrItalicMarker(false, token[0],
 					token.length())));
 				prev=m[0].second;
 			}
 		} else {
-			if (prev!=end) tgt.push_back(TokenPtr(new RawText(std::string(prev,
+			if (prev!=end) tgt.push_back(TokenPtr(new RawText(std::wstring(prev,
 				end))));
 			break;
 		}
@@ -591,21 +592,21 @@ TokenGroup RawText::_processBoldAndItalicSpans(const std::string& src,
 	return r;
 }
 
-TokenGroup RawText::_encodeProcessedItems(const std::string &src,
+TokenGroup RawText::_encodeProcessedItems(const std::wstring &src,
 	ReplacementTable& replacements)
 {
-	static const xpressive::sregex cReplaced = xpressive::sregex::compile("\x01@(#?[0-9]*)@.+?\x01");
+	static const xpressive::wsregex cReplaced = xpressive::wsregex::compile(L"\x01@(#?[0-9]*)@.+?\x01");
 
 	TokenGroup r;
-	std::string::const_iterator prev=src.begin();
+	std::wstring::const_iterator prev=src.begin();
 	while (1) {
-		xpressive::smatch m;
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, src.end(), m, cReplaced)) {
-			std::string pre=std::string(prev, m[0].first);
+			std::wstring pre=std::wstring(prev, m[0].first);
 			if (!pre.empty()) r.push_back(TokenPtr(new RawText(pre)));
 			prev=m[0].second;
 
-			std::string ref=m[1];
+			std::wstring ref=m[1];
 			if (ref[0]=='#') {
 				size_t n=boost::lexical_cast<size_t>(ref.substr(1));
 				r.push_back(TokenPtr(new EscapedCharacter(escapedCharacter(n))));
@@ -616,7 +617,7 @@ TokenGroup RawText::_encodeProcessedItems(const std::string &src,
 				r.push_back(replacements[n]);
 			} // Otherwise just eat it
 		} else {
-			std::string pre=std::string(prev, src.end());
+			std::wstring pre=std::wstring(prev, src.end());
 			if (!pre.empty()) r.push_back(TokenPtr(new RawText(pre)));
 			break;
 		}
@@ -624,21 +625,21 @@ TokenGroup RawText::_encodeProcessedItems(const std::string &src,
 	return r;
 }
 
-std::string RawText::_restoreProcessedItems(const std::string &src,
+std::wstring RawText::_restoreProcessedItems(const std::wstring &src,
 	ReplacementTable& replacements)
 {
-	static const xpressive::sregex cReplaced = xpressive::sregex::compile("\x01@(#?[0-9]*)@.+?\x01");
+	static const xpressive::wsregex cReplaced = xpressive::wsregex::compile(L"\x01@(#?[0-9]*)@.+?\x01");
 
-	std::ostringstream r;
-	std::string::const_iterator prev=src.begin();
+	std::wostringstream r;
+	std::wstring::const_iterator prev=src.begin();
 	while (1) {
-		xpressive::smatch m;
+		xpressive::wsmatch m;
 		if (xpressive::regex_search(prev, src.end(), m, cReplaced)) {
-			std::string pre=std::string(prev, m[0].first);
+			std::wstring pre=std::wstring(prev, m[0].first);
 			if (!pre.empty()) r << pre;
 			prev=m[0].second;
 
-			std::string ref=m[1];
+			std::wstring ref=m[1];
 			if (ref[0]=='#') {
 				size_t n=boost::lexical_cast<size_t>(ref.substr(1));
 				r << '\\' << escapedCharacter(n);
@@ -649,7 +650,7 @@ std::string RawText::_restoreProcessedItems(const std::string &src,
 				replacements[n]->writeAsOriginal(r);
 			} // Otherwise just eat it
 		} else {
-			std::string pre=std::string(prev, src.end());
+			std::wstring pre=std::wstring(prev, src.end());
 			if (!pre.empty()) r << pre;
 			break;
 		}
@@ -657,41 +658,41 @@ std::string RawText::_restoreProcessedItems(const std::string &src,
 	return r.str();
 }
 
-HtmlAnchorTag::HtmlAnchorTag(const std::string& url, const std::string& title):
-	TextHolder("<a href=\""+encodeString(url, cQuotes|cAmps)+"\""
-		+(title.empty() ? std::string() : " title=\""+encodeString(title, cQuotes|cAmps)+"\"")
-		+">", false, 0)
+HtmlAnchorTag::HtmlAnchorTag(const std::wstring& url, const std::wstring& title):
+	TextHolder(L"<a href=\""+encodeString(url, cQuotes|cAmps)+L"\""
+		+(title.empty() ? std::wstring() : L" title=\""+encodeString(title, cQuotes|cAmps)+L"\"")
+		+L">", false, 0)
 {
 	// This space deliberately blank. ;-)
 }
 
-void CodeBlock::writeAsHtml(std::ostream& out) const {
-	out << "<pre><code>";
+void CodeBlock::writeAsHtml(std::wostream& out) const {
+	out << L"<pre><code>";
 	TextHolder::writeAsHtml(out);
-	out << "</code></pre>\n\n";
+	out << L"</code></pre>\n\n";
 }
 
-void CodeSpan::writeAsHtml(std::ostream& out) const {
-	out << "<code>";
+void CodeSpan::writeAsHtml(std::wostream& out) const {
+	out << L"<code>";
 	TextHolder::writeAsHtml(out);
-	out << "</code>";
+	out << L"</code>";
 }
 
-void CodeSpan::writeAsOriginal(std::ostream& out) const {
+void CodeSpan::writeAsOriginal(std::wostream& out) const {
 	out << '`' << *text() << '`';
 }
 
 
 
-void Container::writeAsHtml(std::ostream& out) const {
+void Container::writeAsHtml(std::wostream& out) const {
 	preWrite(out);
 	for (CTokenGroupIter i=mSubTokens.begin(), ie=mSubTokens.end(); i!=ie; ++i)
 		(*i)->writeAsHtml(out);
 	postWrite(out);
 }
 
-void Container::writeToken(size_t indent, std::ostream& out) const {
-	out << std::string(indent*2, ' ') << containerName() << endl;
+void Container::writeToken(size_t indent, std::wostream& out) const {
+	out << std::wstring(indent*2, ' ') << containerName() << endl;
 	for (CTokenGroupIter ii=mSubTokens.begin(), iie=mSubTokens.end(); ii!=iie;
 		++ii)
 			(*ii)->writeToken(indent+1, out);
@@ -735,40 +736,40 @@ UnorderedList::UnorderedList(const TokenGroup& contents, bool paragraphMode) {
 
 
 
-void BoldOrItalicMarker::writeAsHtml(std::ostream& out) const {
+void BoldOrItalicMarker::writeAsHtml(std::wostream& out) const {
 	if (!mDisabled) {
 		if (mMatch!=0) {
 			assert(mSize>=1 && mSize<=3);
 			if (mOpenMarker) {
-				out << (mSize==1 ? "<em>" : mSize==2 ? "<strong>" : "<strong><em>");
+				out << (mSize==1 ? L"<em>" : mSize==2 ? L"<strong>" : L"<strong><em>");
 			} else {
-				out << (mSize==1 ? "</em>" : mSize==2 ? "</strong>" : "</em></strong>");
+				out << (mSize==1 ? L"</em>" : mSize==2 ? L"</strong>" : L"</em></strong>");
 			}
-		} else out << std::string(mSize, mTokenCharacter);
+		} else out << std::wstring(mSize, mTokenCharacter);
 	}
 }
 
-void BoldOrItalicMarker::writeToken(std::ostream& out) const {
+void BoldOrItalicMarker::writeToken(std::wostream& out) const {
 	if (!mDisabled) {
 		if (mMatch!=0) {
-			std::string type=(mSize==1 ? "italic" : mSize==2 ? "bold" : "italic&bold");
+			std::wstring type=(mSize==1 ? L"italic" : mSize==2 ? L"bold" : L"italic&bold");
 			if (mOpenMarker) {
-				out << "Matched open-" << type << " marker" << endl;
+				out << L"Matched open-" << type << L" marker" << endl;
 			} else {
-				out << "Matched close-" << type << " marker" << endl;
+				out << L"Matched close-" << type << L" marker" << endl;
 			}
 		} else {
-			if (mOpenMarker) out << "Unmatched bold/italic open marker: " <<
-				std::string(mSize, mTokenCharacter) << endl;
-			else out << "Unmatched bold/italic close marker: " <<
-				std::string(mSize, mTokenCharacter) << endl;
+			if (mOpenMarker) out << L"Unmatched bold/italic open marker: " <<
+				std::wstring(mSize, mTokenCharacter) << endl;
+			else out << L"Unmatched bold/italic close marker: " <<
+				std::wstring(mSize, mTokenCharacter) << endl;
 		}
 	}
 }
 
-void Image::writeAsHtml(std::ostream& out) const {
-	out << "<img src=\"" << mUrl << "\" alt=\"" << mAltText << "\"";
-	if (!mTitle.empty()) out << " title=\"" << mTitle << "\"";
+void Image::writeAsHtml(std::wostream& out) const {
+	out << L"<img src=\"" << mUrl << L"\" alt=\"" << mAltText << L"\"";
+	if (!mTitle.empty()) out << L" title=\"" << mTitle << L"\"";
 	out << "/>";
 }
 

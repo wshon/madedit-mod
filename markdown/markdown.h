@@ -32,16 +32,16 @@ namespace markdown {
 	class Document: private boost::noncopyable {
 		public:
 		Document(size_t spacesPerTab=cDefaultSpacesPerTab);
-		Document(std::istream& in, size_t spacesPerTab=cDefaultSpacesPerTab);
+		Document(std::wistream& in, size_t spacesPerTab=cDefaultSpacesPerTab);
 		~Document();
 
 		// You can call read() functions multiple times before writing if
 		// desirable. Once the document has been processed for writing, it can't
 		// accept any more input.
-		bool read(const std::string&);
-		bool read(std::istream&);
-		void write(std::ostream&);
-		void writeTokens(std::ostream&); // For debugging
+		bool read(const std::wstring&);
+		bool read(std::wistream&);
+		void write(std::wostream&);
+		void writeTokens(std::wostream&); // For debugging
 
 		// The class is marked noncopyable because it uses reference-counted
 		// links to things that get changed during processing. If you want to
@@ -49,7 +49,7 @@ namespace markdown {
 		Document copy() const; // TODO: Copy function not yet written.
 
 		private:
-		bool _getline(std::istream& in, std::string& line);
+		bool _getline(std::wistream& in, std::wstring& line);
 		void _process();
 		void _mergeMultilineHtmlTags();
 		void _processInlineHtmlAndReferences();
