@@ -256,7 +256,7 @@ class MadHtmlPreview : public wxHtmlWindow
 {
     int & m_PreviewType;
 public:
-	MadHtmlPreview::MadHtmlPreview(int &previewType, wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &pos=wxDefaultPosition, const wxSize &size=wxDefaultSize, long style=wxHW_DEFAULT_STYLE, const wxString &name="MadhtmlWindow")
+	MadHtmlPreview(int &previewType, wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &pos=wxDefaultPosition, const wxSize &size=wxDefaultSize, long style=wxHW_DEFAULT_STYLE, const wxString &name="MadhtmlWindow")
     : wxHtmlWindow(parent, id, pos, size, style, name), m_PreviewType(previewType)
     {}
 	~MadHtmlPreview() {}

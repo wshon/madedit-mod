@@ -678,8 +678,14 @@ bool Document::read(std::wistream& in) {
 }
 
 void Document::write(std::wostream& out) {
-	_process();
-	mTokenContainer->writeAsHtml(out);
+    try {
+    	_process();
+    	mTokenContainer->writeAsHtml(out);
+    }
+    catch(...)
+    {
+        out<< L"\n\n\nInvalid Markdown format!!";
+    }
 }
 
 void Document::writeTokens(std::wostream& out) {

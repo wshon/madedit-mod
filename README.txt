@@ -67,7 +67,7 @@ MadEdit-Mod
 
 Syntax files, Locale files and Settings:
 ---------------------------------------
-  Syntax files: in the path $(MadEditConfigPath)/syntax/
+  Syntax files: in the path $(MadEditConfigPath)/syntax/safs
   Locale files: in the path $(MadEditConfigPath)/locale/
 
   $(MadEditConfigPath) are the one of below paths:
@@ -111,6 +111,9 @@ Mod v0.3.3
 8. Update rpm packaging
 9. Update language files for linux
 10. Add crash dump support
+11. Markdown/Html preview(Lightweight Markdown/Html Editor)
+12. Convert between Markdown and Html
+13. Convert Html to plain text
 
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
