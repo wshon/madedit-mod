@@ -660,14 +660,10 @@ MadSearchResult MadEdit::Search(/*IN_OUT*/MadCaretPos &beginpos, /*IN_OUT*/MadCa
         return SR_NO;
 
     regex_constants::syntax_option_type opt = regex_constants::ECMAScript;
+    const wxString *text_ptr = &text;
     if(bCaseSensitive == false)
     {
         opt = opt | regex_constants::icase;
-    }
-
-    const wxString *text_ptr = &text;
-    if(!bCaseSensitive)
-    {
         static wxString text_lower;
         text_lower = MadStrLower(text);
         //text_lower = text.Lower();
