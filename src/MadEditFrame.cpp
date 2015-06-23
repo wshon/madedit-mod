@@ -190,6 +190,8 @@ extern wxString MadEncodingGrpName[];
 EmbeddedPython *g_EmbeddedPython = 0;
 MadRecentList  *g_RecentFindText = NULL;
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
+wxHtmlWindow * g_MadToolHtmlWin = NULL;
+
 
 MadEditFrame *g_MainFrame=NULL;
 MadEdit *g_ActiveMadEdit=NULL;
@@ -287,7 +289,6 @@ void MadHtmlPreview::OnPaint(wxPaintEvent& event)
                 text = out.str();
             }
             SetPage(text);
-
         }
     }
     else
@@ -1358,6 +1359,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_UPDATE_UI(menuKanji2SimpChinese, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuChinese2Kanji, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuMarkdown2Html, MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html)
+    EVT_UPDATE_UI(menuHtml2PlainText, MadEditFrame::OnUpdateUI_MenuFile_Html2PlainText)
     EVT_UPDATE_UI(menuWordCount, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
     // window
     EVT_UPDATE_UI(menuToggleWindow, MadEditFrame::OnUpdateUI_MenuWindow_CheckCount)
@@ -1519,6 +1521,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuKanji2SimpClipboard, MadEditFrame::OnToolsKanji2SimpClipboard)
     EVT_MENU(menuChinese2KanjiClipboard, MadEditFrame::OnToolsChinese2KanjiClipboard)
     EVT_MENU(menuMarkdown2Html, MadEditFrame::OnToolsMarkdown2Html)
+    EVT_MENU(menuHtml2PlainText, MadEditFrame::OnToolsHtml2PlainText)
 	EVT_MENU(menuWordCount, MadEditFrame::OnToolsWordCount)
     // window
     EVT_MENU(menuToggleWindow, MadEditFrame::OnWindowToggleWindow)
@@ -1915,6 +1918,7 @@ CommandData CommandTable[]=
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to Html"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to Html")},
+    { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&Html to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Html to Plain Text")},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
@@ -3012,6 +3016,7 @@ void MadEditFrame::MadEditFrameClose(wxCloseEvent& event)
 
     m_AuiManager.UnInit();
 
+    if(g_MadToolHtmlWin) delete g_MadToolHtmlWin;
     g_MainFrame = 0;
 #ifndef __WXMSW__
     // it will crash randomly under linux.
@@ -4250,6 +4255,12 @@ void MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding(wxUpdateUIEvent& event)
 }
 
 void MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL &&
+        !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
+}
+
+void MadEditFrame::OnUpdateUI_MenuFile_Html2PlainText(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL &&
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
@@ -7292,8 +7303,39 @@ void MadEditFrame::OnToolsWordCount(wxCommandEvent& event)
 void MadEditFrame::OnToolsMarkdown2Html(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
-
+    wxString text;
+	g_ActiveMadEdit->GetText(text, false);
+    std::wstring src = text.ToStdWstring();
+    std::wostringstream out;
+    markdown::Document doc;
+    doc.read(src);
+    doc.write(out);
+    text = out.str();
+    g_ActiveMadEdit->SetText(text);
 }
+
+void MadEditFrame::OnToolsHtml2PlainText(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+    if(g_MadToolHtmlWin == NULL)
+    {
+        try
+        {
+            g_MadToolHtmlWin = new wxHtmlWindow(this, wxID_ANY);
+        }
+        catch(...)
+        {
+            return;
+        }
+    }
+    wxString text;
+	g_ActiveMadEdit->GetText(text, false);
+
+    g_MadToolHtmlWin->SetPage(text);
+    text = g_MadToolHtmlWin->ToText();
+    g_ActiveMadEdit->SetText(text);
+}
+
 
 void MadEditFrame::OnWindowToggleWindow(wxCommandEvent& event)
 {
