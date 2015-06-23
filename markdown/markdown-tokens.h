@@ -184,8 +184,8 @@ class Header: public TextHolder {
 	virtual bool inhibitParagraphs() const { return true; }
 
 	protected:
-	virtual void preWrite(std::wostream& out) const { out << L"<h" << mLevel << (wchar_t)">"; }
-	virtual void postWrite(std::wostream& out) const { out << L"</h" << mLevel << (wchar_t)">\n"; }
+	virtual void preWrite(std::wostream& out) const { out << L"<h" << mLevel << L">"; }
+	virtual void postWrite(std::wostream& out) const { out << L"</h" << mLevel << L">\n"; }
 
 	private:
 	size_t mLevel;
