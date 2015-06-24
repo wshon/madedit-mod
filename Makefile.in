@@ -400,7 +400,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = syntax po
-INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-detector/src -I$(top_srcdir)/charset-detector/src/tables -I$(top_srcdir)/spellchecker -I$(top_srcdir)/spellchecker/hunspell/src
+INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-detector/src \
+-I$(top_srcdir)/charset-detector/src/tables -I$(top_srcdir)/spellchecker \
+-I$(top_srcdir)/spellchecker/hunspell/src -I$(top_srcdir)/spellchecker/hunspell/src/win_api \
+-I$(top_srcdir)/minipython -I$(top_srcdir)/minipython/Include -I$(top_srcdir)/minipython/Python \
+-I$(top_srcdir)/minipython/Modules/zlib -I$(top_srcdir)/markdown
+
 madedit_CXXFLAGS = -DDATA_DIR=\"${datadir}\"
 madedit_SOURCES = src/MadAboutDialog.cpp \
 	src/MadAboutDialog.h \
