@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.3.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-24 10:33+0800\n"
-"PO-Revision-Date: 2015-06-24 10:37+0800\n"
+"PO-Revision-Date: 2015-06-24 11:41+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit-mod@gmail.com>\n"
 "Language: zh_CN\n"
@@ -1530,7 +1530,7 @@ msgstr "改变编辑模式为十六进制模式"
 
 #: ../src/MadEditFrame.cpp:1871 ../src/MadEditFrame.cpp:4008
 msgid "Preview as: "
-msgstr ""
+msgstr "预览为："
 
 #: ../src/MadEditFrame.cpp:1874
 msgid "&Macro"
@@ -1788,19 +1788,19 @@ msgstr "把剪贴板中的中文字转换成日文汉字"
 
 #: ../src/MadEditFrame.cpp:1921
 msgid "&Markdown to Html"
-msgstr ""
+msgstr "Markdown转换为Html(&M)"
 
 #: ../src/MadEditFrame.cpp:1921
 msgid "Convert Markdown to Html"
-msgstr ""
+msgstr "Markdown转换为Html"
 
 #: ../src/MadEditFrame.cpp:1922
 msgid "&Html to Plain Text"
-msgstr ""
+msgstr "HTML转换为文本"
 
 #: ../src/MadEditFrame.cpp:1922
 msgid "Convert Html to Plain Text"
-msgstr ""
+msgstr "HTML转换为文本"
 
 #: ../src/MadEditFrame.cpp:1923
 msgid "&Word Count..."

@@ -320,7 +320,7 @@ optional<TokenPtr> parseListBlock(CTokenGroupIter& i, CTokenGroupIter end, bool 
 				subItemTokens.push_back(TokenPtr(new markdown::token::RawText(m[3])));
 
 				std::wostringstream next;
-				next << (wchar_t)"^" << std::wstring(indent, (wchar_t)' ') << L"\\" << startChar << L" +([^*-].*)$";
+				next << L"^" << std::wstring(indent, (wchar_t)' ') << L"\\" << startChar << L" +([^*-].*)$";
 				nextItemExpression=xpressive::wsregex::compile(next.str());
 			}
 		} else if (xpressive::regex_match(line, m, cOrderedListExpression)) {
