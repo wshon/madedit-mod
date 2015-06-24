@@ -320,7 +320,7 @@ optional<TokenPtr> parseListBlock(CTokenGroupIter& i, CTokenGroupIter end, bool 
 				subItemTokens.push_back(TokenPtr(new markdown::token::RawText(m[3])));
 
 				std::wostringstream next;
-				next << "^" << std::wstring(indent, ' ') << L"\\" << startChar << L" +([^*-].*)$";
+				next << (wchar_t)"^" << std::wstring(indent, (wchar_t)' ') << L"\\" << startChar << L" +([^*-].*)$";
 				nextItemExpression=xpressive::wsregex::compile(next.str());
 			}
 		} else if (xpressive::regex_match(line, m, cOrderedListExpression)) {
@@ -330,7 +330,7 @@ optional<TokenPtr> parseListBlock(CTokenGroupIter& i, CTokenGroupIter end, bool 
 				subItemTokens.push_back(TokenPtr(new markdown::token::RawText(m[3])));
 
 				std::wostringstream next;
-				next << L"^" << std::wstring(indent, ' ') << L"[0-9]+\\. +(.*)$";
+				next << L"^" << std::wstring(indent, (wchar_t)' ') << L"[0-9]+\\. +(.*)$";
 				nextItemExpression=xpressive::wsregex::compile(next.str());
 			}
 		}
@@ -339,7 +339,7 @@ optional<TokenPtr> parseListBlock(CTokenGroupIter& i, CTokenGroupIter end, bool 
 			CTokenGroupIter originalI=i;
 			size_t itemCount=1;
 			std::wostringstream sub;
-			sub << L"^" << std::wstring(indent, ' ') << L" +(([*+-])|([0-9]+\\.)) +.*$";
+			sub << L"^" << std::wstring(indent, (wchar_t)' ') << L" +(([*+-])|([0-9]+\\.)) +.*$";
 			startSublistExpression=xpressive::wsregex::compile(sub.str());
 
 			// There are several options for the next line. It's another item in
@@ -639,7 +639,7 @@ bool Document::_getline(std::wistream& in, std::wstring& line) {
 	bool initialWhitespace=true;
 	wchar_t c;
 	while (in.get(c)) {
-		if (c=='\r') {
+		if (c==(wchar_t)'\r') {
 			if ((in.get(c)) && c!=(wchar_t)'\n') in.unget();
 			return true;
 		} else if (c==(wchar_t)'\n') {
@@ -648,7 +648,7 @@ bool Document::_getline(std::wistream& in, std::wstring& line) {
 		} else if (c==(wchar_t)'\t') {
 			size_t convert=(initialWhitespace ? cSpacesPerInitialTab :
 				cSpacesPerTab);
-			line+=std::wstring(convert-(line.length()%convert), ' ');
+			line+=std::wstring(convert-(line.length()%convert), (wchar_t)' ');
 		} else {
 			line.push_back(c);
 			if (c!=(wchar_t)' ') initialWhitespace=false;
