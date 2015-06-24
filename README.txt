@@ -113,7 +113,8 @@ Mod v0.3.3
 11. Markdown/Html preview(Lightweight Markdown/Html Editor). DON'T use it to edit
   huge Markdown files like me, eg. 20MB. The performance is not good.
 12. Convert Markdown to Html
-13. Convert Html to plain text
+13. Convert Html to plain text, so, Markdown => Html => text
+14. Use static link of Python and Hunspell
 
 Mod v0.3.2
 1. Change RegKey to "MadEdit-Mod" and add RegKey value "Edit with MadEdit-Mod"
