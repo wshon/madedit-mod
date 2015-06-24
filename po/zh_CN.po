@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.3.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-24 10:33+0800\n"
-"PO-Revision-Date: 2015-06-24 11:41+0800\n"
+"POT-Creation-Date: 2015-06-24 23:11+0800\n"
+"PO-Revision-Date: 2015-06-24 23:12+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit-mod@gmail.com>\n"
 "Language: zh_CN\n"
@@ -533,9 +533,9 @@ msgid "Cannot save this file:"
 msgstr "无法保存这个文件："
 
 #: ../src/MadEdit/MadEditBasic.cpp:2454 ../src/MadEdit/MadEditBasic.cpp:2861
-#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:715
-#: ../src/MadEdit/MadEditSearch.cpp:841 ../src/MadEdit/MadEditSearch.cpp:933
-#: ../src/MadEdit/MadEditSearch.cpp:984 ../src/MadEditFrame.cpp:345
+#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:711
+#: ../src/MadEdit/MadEditSearch.cpp:837 ../src/MadEdit/MadEditSearch.cpp:929
+#: ../src/MadEdit/MadEditSearch.cpp:980 ../src/MadEditFrame.cpp:345
 #: ../src/MadEditFrame.cpp:349
 msgid "&Ok"
 msgstr "确定(&O)"
@@ -594,12 +594,12 @@ msgstr "这个不是正确的十六进制字符串："
 msgid "Found %d matched texts..."
 msgstr "找到 %d 个符合筛选条件的文本..."
 
-#: ../src/MadEdit/MadEditSearch.cpp:713
+#: ../src/MadEdit/MadEditSearch.cpp:709
 #, c-format
 msgid "'%s' is not a valid regular expression.(Or empty (), [] or {})"
 msgstr "'%s' 不是正确的正规表示式。（或者有空的()，[]，{}）"
 
-#: ../src/MadEdit/MadEditSearch.cpp:839
+#: ../src/MadEdit/MadEditSearch.cpp:835
 msgid ""
 "Catched a exception of 'regex_error'.\n"
 "Maybe the regular expression is invalid."
@@ -607,12 +607,12 @@ msgstr ""
 "发生意外状况： 'regex_error'\n"
 "可能是正规表示式不正确所造成的。"
 
-#: ../src/MadEdit/MadEditSearch.cpp:931
+#: ../src/MadEdit/MadEditSearch.cpp:927
 #, c-format
 msgid "'%s' is not a valid regular expression."
 msgstr "'%s' 不是正确的正规表示式。"
 
-#: ../src/MadEdit/MadEditSearch.cpp:982
+#: ../src/MadEdit/MadEditSearch.cpp:978
 #, c-format
 msgid "The format of '%s' is invalid."
 msgstr "'%s' 的格式不正确。"
@@ -1787,20 +1787,20 @@ msgid "Convert Chinese chars to Japanese Kanji in the clipboard"
 msgstr "把剪贴板中的中文字转换成日文汉字"
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "&Markdown to Html"
-msgstr "Markdown转换为Html(&M)"
+msgid "&Markdown to HTML"
+msgstr "Markdown转换成HTML(&M)"
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "Convert Markdown to Html"
-msgstr "Markdown转换为Html"
+msgid "Convert Markdown to HTML"
+msgstr "Markdown转换成HTML"
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "&Html to Plain Text"
-msgstr "HTML转换为文本"
+msgid "&HTML to Plain Text"
+msgstr "HTML转换成纯文本(&H)"
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "Convert Html to Plain Text"
-msgstr "HTML转换为文本"
+msgid "Convert HTML to Plain Text"
+msgstr "HTML转换成纯文本"
 
 #: ../src/MadEditFrame.cpp:1923
 msgid "&Word Count..."
@@ -2456,8 +2456,8 @@ msgid "Go To Position"
 msgstr "跳到文件位置"
 
 #: ../src/MadEditFrame.cpp:6145
-msgid "Markdown/Html Preview"
-msgstr "Markdown/Html预览"
+msgid "Markdown/HTML Preview"
+msgstr ""
 
 #: ../src/MadEditFrame.cpp:6919 ../src/MadEditFrame.cpp:7028
 msgid "Open Mad Macro File"
@@ -3452,6 +3452,21 @@ msgstr "MadEdit-Mod预览打印"
 msgid ""
 "Unsure how to update the possible values for %s based on the value of %s"
 msgstr "不确定如何更新%s的可能值（基于%s的值）"
+
+#~ msgid "Convert Markdown to Html"
+#~ msgstr "Markdown转换为Html"
+
+#~ msgid "Convert Html to Plain Text"
+#~ msgstr "HTML转换为纯文本"
+
+#~ msgid "&Markdown to Html"
+#~ msgstr "Markdown转换为Html(&M)"
+
+#~ msgid "&Html to Plain Text"
+#~ msgstr "HTML转换为纯文本"
+
+#~ msgid "Markdown/Html Preview"
+#~ msgstr "Markdown/Html预览"
 
 #~ msgid "[@]"
 #~ msgstr "[@]"

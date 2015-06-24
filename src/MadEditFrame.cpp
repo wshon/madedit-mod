@@ -1918,8 +1918,8 @@ CommandData CommandTable[]=
     { 0,               2, menuKanji2SimpClipboard,    wxT("menuKanji2SimpClipboard"),    _("Clipboard: Japanese Kanji to Sim&plified Chinese"),      0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to simplified Chinese chars in the clipboard")},
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to Html"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to Html")},
-    { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&Html to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Html to Plain Text")},
+    { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
+    { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
@@ -6142,7 +6142,7 @@ void MadEditFrame::OnViewPreview(wxCommandEvent& event)
             m_HtmlPreview = new MadHtmlPreview(this->m_PreviewType, this, wxID_ANY,
                                    wxDefaultPosition,
                                    wxSize(400,300));
-            m_AuiManager.AddPane(m_HtmlPreview,wxAuiPaneInfo().Name(wxT("Markdown/Html Preview")).Caption(_("Markdown/Html Preview")).Floatable(false).Right().CloseButton(false));
+            m_AuiManager.AddPane(m_HtmlPreview,wxAuiPaneInfo().Name(wxT("Markdown/HTML Preview")).Caption(_("Markdown/HTML Preview")).Floatable(false).Right().CloseButton(false));
         }
         wxString text;
         g_ActiveMadEdit->GetText(text, false);

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-24 10:38+0800\n"
-"PO-Revision-Date: 2015-06-24 10:38+0800\n"
+"POT-Creation-Date: 2015-06-24 23:13+0800\n"
+"PO-Revision-Date: 2015-06-24 23:13+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -529,9 +529,9 @@ msgid "Cannot save this file:"
 msgstr "無法儲存這個檔案："
 
 #: ../src/MadEdit/MadEditBasic.cpp:2454 ../src/MadEdit/MadEditBasic.cpp:2861
-#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:715
-#: ../src/MadEdit/MadEditSearch.cpp:841 ../src/MadEdit/MadEditSearch.cpp:933
-#: ../src/MadEdit/MadEditSearch.cpp:984 ../src/MadEditFrame.cpp:345
+#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:711
+#: ../src/MadEdit/MadEditSearch.cpp:837 ../src/MadEdit/MadEditSearch.cpp:929
+#: ../src/MadEdit/MadEditSearch.cpp:980 ../src/MadEditFrame.cpp:345
 #: ../src/MadEditFrame.cpp:349
 msgid "&Ok"
 msgstr ""
@@ -590,12 +590,12 @@ msgstr "這不是正確的十六進位字串："
 msgid "Found %d matched texts..."
 msgstr ""
 
-#: ../src/MadEdit/MadEditSearch.cpp:713
+#: ../src/MadEdit/MadEditSearch.cpp:709
 #, c-format
 msgid "'%s' is not a valid regular expression.(Or empty (), [] or {})"
 msgstr ""
 
-#: ../src/MadEdit/MadEditSearch.cpp:839
+#: ../src/MadEdit/MadEditSearch.cpp:835
 msgid ""
 "Catched a exception of 'regex_error'.\n"
 "Maybe the regular expression is invalid."
@@ -603,12 +603,12 @@ msgstr ""
 "出現異常： 'regex_error'\n"
 "可能是正規運算式不正確所造成的。"
 
-#: ../src/MadEdit/MadEditSearch.cpp:931
+#: ../src/MadEdit/MadEditSearch.cpp:927
 #, c-format
 msgid "'%s' is not a valid regular expression."
 msgstr "'%s' 不是正確的正規運算式。"
 
-#: ../src/MadEdit/MadEditSearch.cpp:982
+#: ../src/MadEdit/MadEditSearch.cpp:978
 #, c-format
 msgid "The format of '%s' is invalid."
 msgstr "'%s' 的格式不正確。"
@@ -1782,19 +1782,19 @@ msgid "Convert Chinese chars to Japanese Kanji in the clipboard"
 msgstr "把剪貼簿中的中文漢字轉換成日文漢字"
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "&Markdown to Html"
+msgid "&Markdown to HTML"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "Convert Markdown to Html"
+msgid "Convert Markdown to HTML"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "&Html to Plain Text"
+msgid "&HTML to Plain Text"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "Convert Html to Plain Text"
+msgid "Convert HTML to Plain Text"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1923
@@ -2453,7 +2453,7 @@ msgid "Go To Position"
 msgstr "跳到檔案位置"
 
 #: ../src/MadEditFrame.cpp:6145
-msgid "Markdown/Html Preview"
+msgid "Markdown/HTML Preview"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:6919 ../src/MadEditFrame.cpp:7028

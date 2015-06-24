@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-24 10:37+0800\n"
-"PO-Revision-Date: 2015-06-24 10:37+0800\n"
+"POT-Creation-Date: 2015-06-24 23:13+0800\n"
+"PO-Revision-Date: 2015-06-24 23:13+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit@gmail.com>\n"
 "Language: zh_CN\n"
@@ -524,9 +524,9 @@ msgid "Cannot save this file:"
 msgstr "ファイルを保存できません:"
 
 #: ../src/MadEdit/MadEditBasic.cpp:2454 ../src/MadEdit/MadEditBasic.cpp:2861
-#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:715
-#: ../src/MadEdit/MadEditSearch.cpp:841 ../src/MadEdit/MadEditSearch.cpp:933
-#: ../src/MadEdit/MadEditSearch.cpp:984 ../src/MadEditFrame.cpp:345
+#: ../src/MadEdit/MadEditBasic.cpp:2874 ../src/MadEdit/MadEditSearch.cpp:711
+#: ../src/MadEdit/MadEditSearch.cpp:837 ../src/MadEdit/MadEditSearch.cpp:929
+#: ../src/MadEdit/MadEditSearch.cpp:980 ../src/MadEditFrame.cpp:345
 #: ../src/MadEditFrame.cpp:349
 msgid "&Ok"
 msgstr ""
@@ -585,12 +585,12 @@ msgstr "入力された文字列は有効な16進文字列ではありません:
 msgid "Found %d matched texts..."
 msgstr ""
 
-#: ../src/MadEdit/MadEditSearch.cpp:713
+#: ../src/MadEdit/MadEditSearch.cpp:709
 #, fuzzy, c-format
 msgid "'%s' is not a valid regular expression.(Or empty (), [] or {})"
 msgstr "'%s' は有効な正規表現ではありません"
 
-#: ../src/MadEdit/MadEditSearch.cpp:839
+#: ../src/MadEdit/MadEditSearch.cpp:835
 msgid ""
 "Catched a exception of 'regex_error'.\n"
 "Maybe the regular expression is invalid."
@@ -598,12 +598,12 @@ msgstr ""
 "'regex_error' が起こりました.\n"
 "無効な正規表現です"
 
-#: ../src/MadEdit/MadEditSearch.cpp:931
+#: ../src/MadEdit/MadEditSearch.cpp:927
 #, c-format
 msgid "'%s' is not a valid regular expression."
 msgstr "'%s' は有効な正規表現ではありません"
 
-#: ../src/MadEdit/MadEditSearch.cpp:982
+#: ../src/MadEdit/MadEditSearch.cpp:978
 #, c-format
 msgid "The format of '%s' is invalid."
 msgstr "この形式 '%s' は無効です"
@@ -1786,19 +1786,19 @@ msgid "Convert Chinese chars to Japanese Kanji in the clipboard"
 msgstr "クリップボード内の日本語漢字を中国語に変換"
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "&Markdown to Html"
+msgid "&Markdown to HTML"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1921
-msgid "Convert Markdown to Html"
+msgid "Convert Markdown to HTML"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "&Html to Plain Text"
+msgid "&HTML to Plain Text"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1922
-msgid "Convert Html to Plain Text"
+msgid "Convert HTML to Plain Text"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:1923
@@ -2459,7 +2459,7 @@ msgid "Go To Position"
 msgstr "位置の移動"
 
 #: ../src/MadEditFrame.cpp:6145
-msgid "Markdown/Html Preview"
+msgid "Markdown/HTML Preview"
 msgstr ""
 
 #: ../src/MadEditFrame.cpp:6919 ../src/MadEditFrame.cpp:7028
