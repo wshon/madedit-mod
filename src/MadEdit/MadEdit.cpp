@@ -3483,9 +3483,9 @@ void MadEdit::UpdateAppearance()
         m_RowHeight=m_HexFontHeight;
     }
 
-
+    if(m_RowHeight == 0) m_RowHeight = 9;
     m_CompleteRowCount = m_ClientHeight / m_RowHeight;
-    if(m_CompleteRowCount == 0)             ++m_CompleteRowCount;
+    if(m_CompleteRowCount == 0)  ++m_CompleteRowCount;
 
     m_VisibleRowCount = m_CompleteRowCount;
     if(m_VisibleRowCount*m_RowHeight < m_ClientHeight)   ++m_VisibleRowCount;

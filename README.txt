@@ -97,7 +97,6 @@ Feature/issues to be released
 ChangeLog:
 ----------
 Todo:
-MarkDown/Html Preview
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.3
@@ -111,8 +110,9 @@ Mod v0.3.3
 8. Update rpm packaging
 9. Update language files for linux
 10. Add crash dump support
-11. Markdown/Html preview(Lightweight Markdown/Html Editor)
-12. Convert between Markdown and Html
+11. Markdown/Html preview(Lightweight Markdown/Html Editor). DON'T use it to edit
+  huge Markdown files like me, eg. 20MB. The performance is not good.
+12. Convert Markdown to Html
 13. Convert Html to plain text
 
 Mod v0.3.2

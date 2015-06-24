@@ -65,7 +65,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049 /ignore:4204"
-				AdditionalDependencies="wxmsw28ud_core.lib wxbase28ud.lib wxmsw28ud_aui.lib wxpng.lib wxzlib.lib python27_d.lib libboost_python-vc80-mt-sgyd-1_56.lib libhunspell.lib comctl32.lib uuid.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
+				AdditionalDependencies="wxmsw30ud_core.lib wxbase30ud.lib wxmsw30ud_aui.lib wxmsw30ud_html.lib wxpngd.lib wxzlibd.lib python27_d.lib libhunspell.lib comctl32.lib uuid.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)stage/lib&quot;"
@@ -144,7 +144,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049"
-				AdditionalDependencies="wxmsw30u_core.lib wxbase30u.lib wxmsw30u_aui.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib libhunspell.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib Winspool.lib"
+				AdditionalDependencies="wxmsw30u_core.lib wxbase30u.lib wxmsw30u_aui.lib wxmsw30u_html.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_56.lib libhunspell.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib Winspool.lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(WXWIN3)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)\stage\lib&quot;;$(NOINHERIT)"
