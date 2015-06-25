@@ -1142,7 +1142,7 @@
 /* #undef WITH_TSC */
 
 /* Define if you want pymalloc to be disabled when running under valgrind */
-#define WITH_VALGRIND 1
+/* #undef WITH_VALGRIND */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

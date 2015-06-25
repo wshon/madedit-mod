@@ -625,7 +625,7 @@ SUBDIRS = syntax po
 INCLUDES = -I$(top_srcdir)/charset-detector/include -I$(top_srcdir)/charset-detector/src \
 -I$(top_srcdir)/charset-detector/src/tables -I$(top_srcdir)/spellchecker -I$(top_srcdir)/spellchecker/hunspell/src \
 -I$(top_srcdir)/spellchecker/hunspell/src/hunspell -I$(top_srcdir)/spellchecker/hunspell/src/win_api \
--I$(top_srcdir)/minipython -I$(top_srcdir)/minipython/Include -I$(top_srcdir)/minipython/Python \
+-I$(top_srcdir)/minipython/Include -I$(top_srcdir)/minipython/Python \
 -I$(top_srcdir)/minipython/Modules/zlib -I$(top_srcdir)/markdown
 
 madedit_CXXFLAGS = -DDATA_DIR=\"${datadir}\"
@@ -877,6 +877,9 @@ madedit_SOURCES = src/MadAboutDialog.cpp \
 	minipython/Include/ucnhash.h \
 	minipython/Include/unicodeobject.h \
 	minipython/Include/weakrefobject.h \
+	minipython/Include/pyconfig-64.h \
+	minipython/Include/pyconfig-32.h \
+	minipython/Include/pyconfig-win.h \
 	minipython/Modules/_math.h \
 	minipython/Modules/zlib/crc32.h \
 	minipython/Modules/zlib/deflate.h \
@@ -897,7 +900,6 @@ madedit_SOURCES = src/MadAboutDialog.cpp \
 	minipython/Objects/unicodetype_db.h \
 	minipython/Parser/parser.h \
 	minipython/Parser/tokenizer.h \
-	minipython/pyconfig.h \
 	minipython/Python/importdl.h \
 	minipython/Python/thread_pthread.h \
 	minipython/Modules/_codecsmodule.c \
