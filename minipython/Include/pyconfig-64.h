@@ -19,6 +19,12 @@
 /* Define this if you have BeOS threads. */
 /* #undef BEOS_THREADS */
 
+/* Define to keep records on function call invocation */
+/* #undef CALL_PROFILE */
+
+/* Define to keep records of the number of instances of each type */
+/* #undef COUNT_ALLOCS */
+
 /* Define if you have the Mach cthreads package */
 /* #undef C_THREADS */
 
@@ -56,9 +62,6 @@
 /* Define to 1 if you have the `alarm' function. */
 #define HAVE_ALARM 1
 
-/* Define to 1 if you have the <alloca.h> header file. */
-#define HAVE_ALLOCA_H 1
-
 /* Define this if your time.h defines altzone. */
 /* #undef HAVE_ALTZONE */
 
@@ -78,7 +81,7 @@
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
 /* Define to 1 if you have the <bluetooth/bluetooth.h> header file. */
-/* #undef HAVE_BLUETOOTH_BLUETOOTH_H */
+#define HAVE_BLUETOOTH_BLUETOOTH_H 1
 
 /* Define to 1 if you have the <bluetooth.h> header file. */
 /* #undef HAVE_BLUETOOTH_H */
@@ -135,16 +138,16 @@
 /* #undef HAVE_CTERMID_R */
 
 /* Define to 1 if you have the <curses.h> header file. */
-/* #undef HAVE_CURSES_H */
+#define HAVE_CURSES_H 1
 
 /* Define if you have the 'is_term_resized' function. */
-/* #undef HAVE_CURSES_IS_TERM_RESIZED */
+#define HAVE_CURSES_IS_TERM_RESIZED 1
 
 /* Define if you have the 'resizeterm' function. */
-/* #undef HAVE_CURSES_RESIZETERM */
+#define HAVE_CURSES_RESIZETERM 1
 
 /* Define if you have the 'resize_term' function. */
-/* #undef HAVE_CURSES_RESIZE_TERM */
+#define HAVE_CURSES_RESIZE_TERM 1
 
 /* Define to 1 if you have the declaration of `isfinite', and to 0 if you
    don't. */
@@ -188,7 +191,7 @@
 #define HAVE_DUP2 1
 
 /* Defined when any dynamic module loading is enabled. */
-/* #define HAVE_DYNAMIC_LOADING 1 */
+#define HAVE_DYNAMIC_LOADING 1
 
 /* Define if you have the 'epoll' functions. */
 #define HAVE_EPOLL 1
@@ -280,9 +283,6 @@
 
 /* Define this if you have flockfile(), getc_unlocked(), and funlockfile() */
 #define HAVE_GETC_UNLOCKED 1
-
-/* Define to 1 if you have the `getentropy' function. */
-/* #undef HAVE_GETENTROPY */
 
 /* Define to 1 if you have the `getgroups' function. */
 #define HAVE_GETGROUPS 1
@@ -432,7 +432,7 @@
 #define HAVE_LIBINTL_H 1
 
 /* Define if you have the readline library (-lreadline). */
-/* #undef HAVE_LIBREADLINE */
+#define HAVE_LIBREADLINE 1
 
 /* Define to 1 if you have the `resolv' library (-lresolv). */
 /* #undef HAVE_LIBRESOLV */
@@ -479,14 +479,11 @@
 /* Define to 1 if you have the `mktime' function. */
 #define HAVE_MKTIME 1
 
-/* Define to 1 if you have the `mmap' function. */
-#define HAVE_MMAP 1
-
 /* Define to 1 if you have the `mremap' function. */
 #define HAVE_MREMAP 1
 
 /* Define to 1 if you have the <ncurses.h> header file. */
-/* #undef HAVE_NCURSES_H */
+#define HAVE_NCURSES_H 1
 
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 /* #undef HAVE_NDIR_H */
@@ -527,9 +524,6 @@
 /* Define if you have GNU PTH threads. */
 /* #undef HAVE_PTH */
 
-/* Define to 1 if you have the `pthread_atfork' function. */
-#define HAVE_PTHREAD_ATFORK 1
-
 /* Defined for Solaris 2.6 bug in pthread header. */
 /* #undef HAVE_PTHREAD_DESTRUCTOR */
 
@@ -548,9 +542,6 @@
 /* Define to 1 if you have the `putenv' function. */
 #define HAVE_PUTENV 1
 
-/* Define if the libcrypto has RAND_egd */
-#define HAVE_RAND_EGD 1
-
 /* Define to 1 if you have the `readlink' function. */
 #define HAVE_READLINK 1
 
@@ -558,25 +549,25 @@
 #define HAVE_REALPATH 1
 
 /* Define if you have readline 2.1 */
-/* #undef HAVE_RL_CALLBACK */
+#define HAVE_RL_CALLBACK 1
 
 /* Define if you can turn off readline's signal handling. */
-/* #undef HAVE_RL_CATCH_SIGNAL */
+#define HAVE_RL_CATCH_SIGNAL 1
 
 /* Define if you have readline 2.2 */
-/* #undef HAVE_RL_COMPLETION_APPEND_CHARACTER */
+#define HAVE_RL_COMPLETION_APPEND_CHARACTER 1
 
 /* Define if you have readline 4.0 */
-/* #undef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK */
+#define HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK 1
 
 /* Define if you have readline 4.2 */
-/* #undef HAVE_RL_COMPLETION_MATCHES */
+#define HAVE_RL_COMPLETION_MATCHES 1
 
 /* Define if you have rl_completion_suppress_append */
-/* #undef HAVE_RL_COMPLETION_SUPPRESS_APPEND */
+#define HAVE_RL_COMPLETION_SUPPRESS_APPEND 1
 
 /* Define if you have readline 4.0 */
-/* #undef HAVE_RL_PRE_INPUT_HOOK */
+#define HAVE_RL_PRE_INPUT_HOOK 1
 
 /* Define to 1 if you have the `round' function. */
 #define HAVE_ROUND 1
@@ -832,7 +823,7 @@
 #define HAVE_TERMIOS_H 1
 
 /* Define to 1 if you have the <term.h> header file. */
-/* #undef HAVE_TERM_H */
+#define HAVE_TERM_H 1
 
 /* Define to 1 if you have the `tgamma' function. */
 #define HAVE_TGAMMA 1
@@ -941,7 +932,7 @@
 /* #undef MAJOR_IN_SYSMACROS */
 
 /* Define if mvwdelch in curses.h is an expression. */
-/* #undef MVWDELCH_IS_EXPRESSION */
+#define MVWDELCH_IS_EXPRESSION 1
 
 /* Define to the address where bug reports for this package should be sent. */
 /* #undef PACKAGE_BUGREPORT */
@@ -977,21 +968,16 @@
 #define PY_FORMAT_SIZE_T "z"
 
 /* Define as the integral type used for Unicode representation. */
-#define PY_UNICODE_TYPE unsigned short
+/* #undef PY_UNICODE_TYPE */
 
 /* Define if you want to build an interpreter with many run-time checks. */
 /* #undef Py_DEBUG */
 
 /* Defined if Python is built as a shared library. */
-#undef Py_ENABLE_SHARED
+#define Py_ENABLE_SHARED 1
 
 /* Define as the size of the unicode type. */
-/* This should be enough for most CPU Arch */
-#if defined(__x86_64__) || defined(__LP64__)
 #define Py_UNICODE_SIZE 4
-#else
-#define Py_UNICODE_SIZE 2
-#endif
 
 /* Define if you want to have a Unicode type. */
 #define Py_USING_UNICODE 1
@@ -1111,10 +1097,13 @@
 /* #undef WANT_WCTYPE_FUNCTIONS */
 
 /* Define if WINDOW in curses.h offers a field _flags. */
-/* #undef WINDOW_HAS_FLAGS */
+#define WINDOW_HAS_FLAGS 1
 
 /* Define if you want documentation strings in extension modules */
 #define WITH_DOC_STRINGS 1
+
+/* Define if you want to compile in Dtrace support */
+#define WITH_DTRACE 1
 
 /* Define if you want to use the new-style (Openstep, Rhapsody, MacOS) dynamic
    linker (dyld) instead of the old-style (NextStep) dynamic linker (rld).
@@ -1138,7 +1127,7 @@
 /* #undef WITH_TSC */
 
 /* Define if you want pymalloc to be disabled when running under valgrind */
-/* #undef WITH_VALGRIND */
+#define WITH_VALGRIND 1
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
