@@ -191,7 +191,7 @@
 #define HAVE_DUP2 1
 
 /* Defined when any dynamic module loading is enabled. */
-#define HAVE_DYNAMIC_LOADING 1
+/* #undef HAVE_DYNAMIC_LOADING */
 
 /* Define if you have the 'epoll' functions. */
 #define HAVE_EPOLL 1
@@ -974,7 +974,9 @@
 /* #undef Py_DEBUG */
 
 /* Defined if Python is built as a shared library. */
-#define Py_ENABLE_SHARED 1
+/* #undef Py_ENABLE_SHARED */
+#define Py_BUILD_CORE
+#define Py_NO_ENABLE_SHARED 1
 
 /* Define as the size of the unicode type. */
 #define Py_UNICODE_SIZE 4
