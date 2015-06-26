@@ -34,12 +34,22 @@ esac
 #AM_PATH_GTK_2_0(2.6.0)
 
 if test "x$IS_MACOS" == "x"; then
+    use_GTK2=yes
     PKG_CHECK_MODULES(glib_gtk2, [
             glib-2.0 >= 2.6.0
             gtk+-2.0 >= 2.6.0
-    ])
-    CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
-    LIBS="$LIBS $glib_gtk2_LIBS"
+    ], use_GTK2=yes, use_GTK2=no)
+    if test "$use_GTK2" == "yes"; then
+        CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
+        LIBS="$LIBS $glib_gtk2_LIBS"
+    else
+        PKG_CHECK_MODULES(glib_gtk3, [
+            glib-2.0 >= 2.6.0
+            gtk+-3.0
+        ])
+        CXXFLAGS="$CXXFLAGS $glib_gtk3_CFLAGS"
+        LIBS="$LIBS $glib_gtk3_LIBS"
+    fi
 fi
 
 #if test "x$IS_MACOS" == "x"; then
@@ -72,7 +82,7 @@ if test "x$WX_LIBS" != "x"; then
 fi
 
 AM_OPTIONS_WXCONFIG
-AM_PATH_WXCONFIG(2.8.0, wxWin=1, , [std,net,aui,html], [--static])
+AM_PATH_WXCONFIG(2.8.0, wxWin=1, , [std,net,aui,html,png,zlib], [--static])
 if test "$wxWin" != 1; then
    AC_MSG_ERROR([
            wxWidgets must be installed on your system
