@@ -877,6 +877,10 @@ madedit_SOURCES = src/MadAboutDialog.cpp \
 	minipython/Include/ucnhash.h \
 	minipython/Include/unicodeobject.h \
 	minipython/Include/weakrefobject.h \
+	minipython/Include/pyconfig.h \
+	minipython/Include/pyconfig-64.h \
+	minipython/Include/pyconfig-32.h \
+	minipython/Include/pyconfig-win.h \
 	minipython/Modules/_math.h \
 	minipython/Modules/zlib/crc32.h \
 	minipython/Modules/zlib/deflate.h \
@@ -897,7 +901,6 @@ madedit_SOURCES = src/MadAboutDialog.cpp \
 	minipython/Objects/unicodetype_db.h \
 	minipython/Parser/parser.h \
 	minipython/Parser/tokenizer.h \
-	minipython/pyconfig.h \
 	minipython/Python/importdl.h \
 	minipython/Python/thread_pthread.h \
 	minipython/Modules/_codecsmodule.c \
@@ -1075,7 +1078,6 @@ noinst_HEADERS = description-pak \
 	minipython/PC/import_nt.c \
 	minipython/Python/dynload_win.c \
 	minipython/PC/errmap.h \
-	minipython/PC/pyconfig.h \
 	devcpp/MadEdit.dev \
 	devcpp/MadEdit.layout \
 	devcpp/MadEdit_private.h \
@@ -3771,6 +3773,8 @@ loc:
 		dir=./locale/$$lang; \
 		$(mkinstalldirs) $$dir; \
 		if test -r $(podir)/$$lang.gmo; then \
+		    msgmerge -U $(podir)/$$lang.po $(podir)/madedit.pot \
+			msgfmt -o $(podir)/$$lang.gmo $(podir)/$$lang.po \
 			cp $(podir)/$$lang.gmo $$dir/$(DOMAIN).mo; \
 			echo "installing $(podir)/$$lang.gmo as $$dir/$(DOMAIN).mo"; \
 		fi; \

@@ -460,7 +460,6 @@ noinst_HEADERS =	description-pak \
 	minipython/PC/import_nt.c \
 	minipython/Python/dynload_win.c \
 	minipython/PC/errmap.h \
-	minipython/PC/pyconfig.h \
 	devcpp/MadEdit.dev \
 	devcpp/MadEdit.layout \
 	devcpp/MadEdit_private.h \
@@ -550,6 +549,8 @@ loc:
 		dir=./locale/$$lang; \
 		$(mkinstalldirs) $$dir; \
 		if test -r $(podir)/$$lang.gmo; then \
+		    msgmerge -U $(podir)/$$lang.po $(podir)/madedit.pot \
+			msgfmt -o $(podir)/$$lang.gmo $(podir)/$$lang.po \
 			cp $(podir)/$$lang.gmo $$dir/$(DOMAIN).mo; \
 			echo "installing $(podir)/$$lang.gmo as $$dir/$(DOMAIN).mo"; \
 		fi; \
