@@ -194,7 +194,7 @@
 #define HAVE_DUP2 1
 
 /* Defined when any dynamic module loading is enabled. */
-#define HAVE_DYNAMIC_LOADING 1
+/* #undef HAVE_DYNAMIC_LOADING */
 
 /* Define if you have the 'epoll' functions. */
 #define HAVE_EPOLL 1
@@ -989,7 +989,9 @@
 /* #undef Py_DEBUG */
 
 /* Defined if Python is built as a shared library. */
-#define Py_ENABLE_SHARED 1
+/* #undef Py_ENABLE_SHARED */
+#define Py_BUILD_CORE
+#define Py_NO_ENABLE_SHARED 1
 
 /* Define as the size of the unicode type. */
 #define Py_UNICODE_SIZE 4
@@ -1142,7 +1144,7 @@
 /* #undef WITH_TSC */
 
 /* Define if you want pymalloc to be disabled when running under valgrind */
-#define WITH_VALGRIND 1
+/* #undef WITH_VALGRIND */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
