@@ -667,7 +667,7 @@ void MadReplaceDialog::WxButtonReplaceAllClick(wxCommandEvent& event)
                 WxCheckBoxCaseSensitive->GetValue(),
                 WxCheckBoxWholeWord->GetValue(),
                 NULL, NULL, rangeFrom, rangeTo);
-            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("FindTextAll(\"%s\", \"%s\", %s, %s, %s, %s)"), text.c_str(), reptext.c_str(),
+            RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceTextAll(\"%s\", \"%s\", %s, %s, %s, %s)"), text.c_str(), reptext.c_str(),
                             WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
                             WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));

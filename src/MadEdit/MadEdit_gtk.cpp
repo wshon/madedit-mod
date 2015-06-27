@@ -1479,6 +1479,27 @@ void MadEdit::ConnectToFixedKeyPressHandler()
 }
 
 #ifdef __WXGTK3__
+// GSource callback functions for source used to detect new GDK events
+extern "C" {
+static gboolean source_prepare(GSource*, int*)
+{
+    return !gs_isNewEvent;
+}
+
+static gboolean source_check(GSource*)
+{
+    // 'check' will only be called if 'prepare' returned false
+    return false;
+}
+
+static gboolean source_dispatch(GSource*, GSourceFunc, void*)
+{
+    gs_isNewEvent = true;
+    // don't remove this source
+    return true;
+}
+}
+
 void MadEdit::ConnectWidget( GtkWidget *widget )
 {
     static bool isSourceAttached;
