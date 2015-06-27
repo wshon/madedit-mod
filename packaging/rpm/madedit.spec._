@@ -15,8 +15,8 @@ Source0: %{name}-%{version}.tar.gz
 Packager: LiMinggang <minggang.li@gmail.com>
 BuildRoot: %{_builddir}/%{name}-%{version}-root
 
-BuildRequires: gtk2-devel >= 2.6.0, automake >= 1.9.0, gettext-devel
-Requires: gtk2 >= 2.6.0
+BuildRequires: automake >= 1.9.0, gettext-devel
+#Requires: gtk2 >= 2.6.0
 
 Docdir: %{prefix}/share/doc
 
