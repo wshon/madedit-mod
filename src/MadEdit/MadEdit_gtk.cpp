@@ -9,7 +9,6 @@
 
 #include "MadEdit.h"
 //#include <wx/gtk/private.h> // wxGTK-2.6.3 above
-#include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkprivate.h>
 #include <gtk/gtk.h>
@@ -1446,6 +1445,7 @@ void MadEdit::ConnectToFixedKeyPressHandler()
 {
     GtkWidget *connect_widget = GetConnectWidget();
 
+#ifndef __WXGTK3__
     // get signal_id & signal_detail of "key_press_event"
     guint sid;
     GQuark det;
@@ -1473,6 +1473,54 @@ void MadEdit::ConnectToFixedKeyPressHandler()
     // connect to the fixed key_press handler
     g_signal_connect (connect_widget, "key_press_event", G_CALLBACK (gtk_window_key_press_callback), this);
     g_signal_connect (connect_widget, "key_release_event", G_CALLBACK (gtk_window_key_release_callback), this);
+#else
+    ConnectWidget( connect_widget );
+#endif
 }
 
+#ifdef __WXGTK3__
+void MadEdit::ConnectWidget( GtkWidget *widget )
+{
+    static bool isSourceAttached;
+    if (!isSourceAttached)
+    {
+        // attach GSource to detect new GDK events
+        isSourceAttached = true;
+        static GSourceFuncs funcs = {
+            source_prepare, source_check, source_dispatch,
+            NULL, NULL, NULL
+        };
+        GSource* source = g_source_new(&funcs, sizeof(GSource));
+        // priority slightly higher than GDK_PRIORITY_EVENTS
+        g_source_set_priority(source, GDK_PRIORITY_EVENTS - 1);
+        g_source_attach(source, NULL);
+    }
+
+    g_signal_connect (widget, "key_press_event",
+                      G_CALLBACK (gtk_window_key_press_callback), this);
+    g_signal_connect (widget, "key_release_event",
+                      G_CALLBACK (gtk_window_key_release_callback), this);
+    g_signal_connect (widget, "button_press_event",
+                      G_CALLBACK (gtk_window_button_press_callback), this);
+    g_signal_connect (widget, "button_release_event",
+                      G_CALLBACK (gtk_window_button_release_callback), this);
+    g_signal_connect (widget, "motion_notify_event",
+                      G_CALLBACK (gtk_window_motion_notify_callback), this);
+
+    g_signal_connect(widget, "scroll_event", G_CALLBACK(scroll_event), this);
+    GtkRange* range = m_scrollBar[ScrollDir_Horz];
+    if (range)
+        g_signal_connect(range, "scroll_event", G_CALLBACK(scroll_event), this);
+    range = m_scrollBar[ScrollDir_Vert];
+    if (range)
+        g_signal_connect(range, "scroll_event", G_CALLBACK(scroll_event), this);
+
+    g_signal_connect (widget, "popup_menu",
+                     G_CALLBACK (wxgtk_window_popup_menu_callback), this);
+    g_signal_connect (widget, "enter_notify_event",
+                      G_CALLBACK (gtk_window_enter_callback), this);
+    g_signal_connect (widget, "leave_notify_event",
+                      G_CALLBACK (gtk_window_leave_callback), this);
+}
+#endif
 #endif // __WXGTK__
