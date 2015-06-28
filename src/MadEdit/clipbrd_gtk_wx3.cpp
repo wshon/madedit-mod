@@ -768,12 +768,12 @@ wxDataObject* wxClipboard::GTKGetDataObject( GdkAtom atom )
     }
 }
 
-wxClipboardGtk *g_ClipboardGtk=NULL;
-wxClipboardGtk *GetClipboardGtk()
+wxClipboard *g_ClipboardGtk=NULL;
+wxClipboard *GetClipboardGtk()
 {
     if(g_ClipboardGtk==NULL)
     {
-        g_ClipboardGtk=new wxClipboardGtk;
+        g_ClipboardGtk=new wxClipboard;
     }
     return g_ClipboardGtk;
 }
