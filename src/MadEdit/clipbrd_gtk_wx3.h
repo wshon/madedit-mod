@@ -132,4 +132,10 @@ private:
     DECLARE_DYNAMIC_CLASS(wxClipboard)
 };
 
+extern wxClipboardGtk *GetClipboardGtk();
+#ifdef wxTheClipboard
+#undef wxTheClipboard
+#endif
+#define wxTheClipboard GetClipboardGtk()
+
 #endif // _WX_GTK_CLIPBOARD_H_
