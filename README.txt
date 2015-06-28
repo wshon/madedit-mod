@@ -99,6 +99,11 @@ ChangeLog:
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.3.4
+1. Fix issue of ReplaceTextAll being recorded as FindTextAll
+2. New: GTK+3 support (GTK+2 as default)
+3. New: Dynamically add recorded scripts in Toolbar
+
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
 2. Change display of Space and Tab char

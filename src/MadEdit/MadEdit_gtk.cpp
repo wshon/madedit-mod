@@ -1444,8 +1444,7 @@ GtkIMContext *GetWindowIMContext(wxWindow *win)
 void MadEdit::ConnectToFixedKeyPressHandler()
 {
     GtkWidget *connect_widget = GetConnectWidget();
-
-#ifndef __WXGTK3__
+#if wxMAJOR_VERSION < 3
     // get signal_id & signal_detail of "key_press_event"
     guint sid;
     GQuark det;
@@ -1478,7 +1477,7 @@ void MadEdit::ConnectToFixedKeyPressHandler()
 #endif
 }
 
-#ifdef __WXGTK3__
+#if wxMAJOR_VERSION >= 3
 // GSource callback functions for source used to detect new GDK events
 extern "C" {
 static gboolean source_prepare(GSource*, int*)

@@ -402,7 +402,7 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	minipython/Python/thread.c \
 	minipython/Python/traceback.c
 
-dist_doc_DATA = gpl-3.0.txt README.txt
+dist_doc_DATA = gpl-3.0.txt README.txt MadPython.txt
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = madedit.xpm
 
