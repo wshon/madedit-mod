@@ -52,6 +52,10 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	src/plugin.h \
 	src/MadEdit/caret_new.cpp \
 	src/MadEdit/caret_new.h \
+	src/MadEdit/clipbrd_gtk_wx2.cpp \
+	src/MadEdit/clipbrd_gtk_wx2.h \
+	src/MadEdit/clipbrd_gtk_wx3.cpp \
+	src/MadEdit/clipbrd_gtk_wx3.h \
 	src/MadEdit/clipbrd_gtk.cpp \
 	src/MadEdit/clipbrd_gtk.h \
 	src/MadEdit/MadDeque.hpp \

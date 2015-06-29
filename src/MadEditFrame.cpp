@@ -3616,7 +3616,7 @@ void MadEditFrame::OpenFile(const wxString &fname, bool mustExist)
     else
     {
         // create a new MadEdit
-        madedit=new MadEdit(m_Notebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, /*wxSIMPLE_BORDER|*/wxWANTS_CHARS);
+        madedit=new MadEdit(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, /*wxSIMPLE_BORDER|*/wxWANTS_CHARS);
         madedit->SetWindowStyleFlag(madedit->GetWindowStyleFlag() & ~wxTAB_TRAVERSAL);
         //madedit->SetDropTarget(new DnDFile());
         madedit->SetOnSelectionChanged(&OnEditSelectionChanged);
