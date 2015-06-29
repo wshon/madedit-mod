@@ -7,16 +7,22 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _WX_GTK_CLIPBOARD_H_
-#define _WX_GTK_CLIPBOARD_H_
+#ifndef _WX_GTK_CLIPBOARD_GTK_H_
+#define _WX_GTK_CLIPBOARD_GTK_H_
 
+#include <wx/object.h>
+#include <wx/list.h>
+#include <wx/dataobj.h>
+#include <wx/control.h>
+#include <wx/module.h>
+#include <wx/clipbrd.h>
 // ----------------------------------------------------------------------------
 // wxClipboard
 // ----------------------------------------------------------------------------
 
-#include "wx/weakref.h"
+#include <wx/weakref.h>
 
-class WXDLLIMPEXP_CORE wxClipboard : public wxClipboardBase
+class WXDLLIMPEXP_CORE wxClipboardGtk : public wxClipboardBase
 {
 public:
     // there are several clipboards in X11 (and in GDK)
@@ -26,8 +32,8 @@ public:
         Clipboard
     };
 
-    wxClipboard();
-    virtual ~wxClipboard();
+    wxClipboardGtk();
+    virtual ~wxClipboardGtk();
 
     // open the clipboard before SetData() and GetData()
     virtual bool Open();
@@ -56,8 +62,11 @@ public:
     // clears wxTheClipboard and the system's clipboard if possible
     virtual void Clear();
 
-
-
+    // If primary == TRUE, use primary selection in all further ops,
+    // primary == FALSE resets it.
+    virtual void UsePrimarySelection(bool primary = TRUE)
+        { m_usePrimary = primary; }
+    
     // implementation from now on
     // --------------------------
 
@@ -129,10 +138,10 @@ public:
 private:
     GtkWidget         *m_targetsWidgetAsync;  // for getting list of supported formats
 
-    DECLARE_DYNAMIC_CLASS(wxClipboard)
+    DECLARE_DYNAMIC_CLASS(wxClipboardGtk)
 };
 
-extern wxClipboard *GetClipboardGtk();
+extern wxClipboardGtk *GetClipboardGtk();
 #ifdef wxTheClipboard
 #undef wxTheClipboard
 #endif

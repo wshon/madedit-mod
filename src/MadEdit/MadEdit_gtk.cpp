@@ -707,6 +707,11 @@ GtkIMContext *GetWindowIMContext(wxWindow *win)
     return win->m_imData->context;
 }
 #else
+#ifdef __WXGTK3__
+#include <gdk/gdkkeysyms-compat.h>
+#endif
+static bool gs_isNewEvent;
+
 #include <X11/XKBlib.h> 
 
 //extern bool g_blockEventsOnDrag;
@@ -1438,6 +1443,26 @@ GtkIMContext *GetWindowIMContext(wxWindow *win)
 {
     return win->m_imContext;
 }
+// GSource callback functions for source used to detect new GDK events
+extern "C" {
+static gboolean source_prepare(GSource*, int*)
+{
+    return !gs_isNewEvent;
+}
+
+static gboolean source_check(GSource*)
+{
+    // 'check' will only be called if 'prepare' returned false
+    return false;
+}
+
+static gboolean source_dispatch(GSource*, GSourceFunc, void*)
+{
+    gs_isNewEvent = true;
+    // don't remove this source
+    return true;
+}
+}
 
 #endif
 
@@ -1468,39 +1493,7 @@ void MadEdit::ConnectToFixedKeyPressHandler()
         std::wcout<<"cannot disconnect old key_release handler\n";
         return;
     }
-    
-    // connect to the fixed key_press handler
-    g_signal_connect (connect_widget, "key_press_event", G_CALLBACK (gtk_window_key_press_callback), this);
-    g_signal_connect (connect_widget, "key_release_event", G_CALLBACK (gtk_window_key_release_callback), this);
 #else
-    ConnectWidget( connect_widget );
-#endif
-}
-
-#if wxMAJOR_VERSION >= 3
-// GSource callback functions for source used to detect new GDK events
-extern "C" {
-static gboolean source_prepare(GSource*, int*)
-{
-    return !gs_isNewEvent;
-}
-
-static gboolean source_check(GSource*)
-{
-    // 'check' will only be called if 'prepare' returned false
-    return false;
-}
-
-static gboolean source_dispatch(GSource*, GSourceFunc, void*)
-{
-    gs_isNewEvent = true;
-    // don't remove this source
-    return true;
-}
-}
-
-void MadEdit::ConnectWidget( GtkWidget *widget )
-{
     static bool isSourceAttached;
     if (!isSourceAttached)
     {
@@ -1515,32 +1508,11 @@ void MadEdit::ConnectWidget( GtkWidget *widget )
         g_source_set_priority(source, GDK_PRIORITY_EVENTS - 1);
         g_source_attach(source, NULL);
     }
-
-    g_signal_connect (widget, "key_press_event",
-                      G_CALLBACK (gtk_window_key_press_callback), this);
-    g_signal_connect (widget, "key_release_event",
-                      G_CALLBACK (gtk_window_key_release_callback), this);
-    g_signal_connect (widget, "button_press_event",
-                      G_CALLBACK (gtk_window_button_press_callback), this);
-    g_signal_connect (widget, "button_release_event",
-                      G_CALLBACK (gtk_window_button_release_callback), this);
-    g_signal_connect (widget, "motion_notify_event",
-                      G_CALLBACK (gtk_window_motion_notify_callback), this);
-
-    g_signal_connect(widget, "scroll_event", G_CALLBACK(scroll_event), this);
-    GtkRange* range = m_scrollBar[ScrollDir_Horz];
-    if (range)
-        g_signal_connect(range, "scroll_event", G_CALLBACK(scroll_event), this);
-    range = m_scrollBar[ScrollDir_Vert];
-    if (range)
-        g_signal_connect(range, "scroll_event", G_CALLBACK(scroll_event), this);
-
-    g_signal_connect (widget, "popup_menu",
-                     G_CALLBACK (wxgtk_window_popup_menu_callback), this);
-    g_signal_connect (widget, "enter_notify_event",
-                      G_CALLBACK (gtk_window_enter_callback), this);
-    g_signal_connect (widget, "leave_notify_event",
-                      G_CALLBACK (gtk_window_leave_callback), this);
-}
 #endif
+    
+    // connect to the fixed key_press handler
+    g_signal_connect (connect_widget, "key_press_event", G_CALLBACK (gtk_window_key_press_callback), this);
+    g_signal_connect (connect_widget, "key_release_event", G_CALLBACK (gtk_window_key_release_callback), this);
+}
+
 #endif // __WXGTK__

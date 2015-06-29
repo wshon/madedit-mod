@@ -1,5 +1,5 @@
 #ifdef __WXGTK__
-#include <wx/verstion.h>
+#include <wx/version.h>
 #if wxMAJOR_VERSION >= 3
 #include "clipbrd_gtk_wx3.h"
 #else
