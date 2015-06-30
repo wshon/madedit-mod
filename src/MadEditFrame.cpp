@@ -2189,7 +2189,7 @@ void MadEditFrame::CreateGUIControls(void)
 
     WxMenuBar1 = new wxMenuBar();
     this->SetMenuBar(WxMenuBar1);
-#if USE_CONTEXT_MENU
+#if USE_CONTEXT_MENU && !defined(__WXGTK__) /*GTK+3 will show this while right clicking on editing erea*/
     Connect(wxEVT_CONTEXT_MENU, wxContextMenuEventHandler(MadEditFrame::OnContextMenu)); 
 #endif    
 
@@ -2509,12 +2509,12 @@ void MadEditFrame::CreateGUIControls(void)
     }
     {
         // enum all madpython files under scripts
-        wxString scriptsLibDir = g_MadEditAppDir + wxT("scripts/"), filename;
+        wxString scriptsLibDir = g_MadEditHomeDir + wxT("scripts/"), filename;
         if(wxDirExists(scriptsLibDir))
         {
             wxDir dir(scriptsLibDir);
      
-            wxString hlp_prefix(wxT("####"));
+            static wxString hlp_prefix(wxT("####"));
             size_t i=0;
             bool hasHelp = false;
             bool cont = dir.GetFirst(&filename, wxT("*.mpy"), wxDIR_FILES);
@@ -7016,16 +7016,16 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
 
 void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
 {
-    wxString dir;
-    if(m_RecentFiles->GetCount())
-    {
-        wxFileName filename(m_RecentFiles->GetHistoryFile(0));
-        dir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
-    }
+    wxString dir(g_MadEditHomeDir + wxT("scripts"));
+    //if(m_RecentFiles->GetCount())
+    //{
+    //    wxFileName filename(m_RecentFiles->GetHistoryFile(0));
+    //    dir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
+    //}
 
     static int filterIndex = 0;
     wxString fileFilter = wxString(wxT("Mad Macro(*.mpy)|*.mpy|")) + wxFileSelectorDefaultWildcardStr + wxT("|All files(*;*.*)");
-    wxFileDialog dlg(this, _("Open Mad Macro File"), dir, wxEmptyString, fileFilter,
+    wxFileDialog dlg(this, _("Save Mad Macro File"), dir, wxEmptyString, fileFilter,
 #if wxCHECK_VERSION(2,8,0)
         wxFD_OPEN );
 #else
@@ -7068,7 +7068,19 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
 #else
                 scriptfile.Write(wxTextFileType_Unix);
 #endif           
-             }
+            }
+            wxString saveDir(dlg.GetDirectory());
+            if(dir == saveDir)
+            {
+                static wxString hlp_prefix(wxT("####"));
+                wxString help, firstLine;
+                firstLine = scriptfile.GetFirstLine();
+                wxFileName fn(filename);
+                if (firstLine.StartsWith(hlp_prefix, &help))
+                    g_Menu_MadMacro_Scripts->Append(menuMadScrip1 + int(g_Menu_MadMacro_Scripts->GetMenuItemCount()), fn.GetName(), help);
+                else
+                    g_Menu_MadMacro_Scripts->Append(menuMadScrip1 + int(g_Menu_MadMacro_Scripts->GetMenuItemCount()), fn.GetName());
+            }
             scriptfile.Close();
         }
     }

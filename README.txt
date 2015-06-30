@@ -102,8 +102,13 @@ FreeBSD packaging (with FreeBSD 10.01)
 Mod v0.3.4
 1. Fix: ReplaceTextAll being recorded as FindTextAll
 2. Fix: Replace button did the same as ReplaceAll
-3. New: GTK+3 support (GTK+2 as default), still has bugs
-4. New: Dynamically add recorded scripts in Toolbar
+3. Fix: Change local scripts dir to HomeDir instead of AppDir for Linux
+4. Fix: Change default saving dir to HomeDir
+4. New: GTK+3 support (GTK+2 as default)
+   a) Updated clipbrd_gtk and MadEdit_gtk
+   b) Fix right click menu issue under GTK+3
+5. New: Dynamically show recorded scripts in Toolbar/Menu if you save the script
+   under scripthome/
 
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
