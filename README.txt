@@ -99,7 +99,7 @@ ChangeLog:
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
-Mod v0.3.4
+Mod v0.3.3.1
 1. Fix: ReplaceTextAll being recorded as FindTextAll
 2. Fix: Replace button did the same as ReplaceAll
 3. Fix: Change local scripts dir to HomeDir instead of AppDir for Linux
@@ -107,8 +107,8 @@ Mod v0.3.4
 5. Fix: Text inversion not working under GTK+3
 6. New: Dynamically add saved script on menu list if saving in script home
 7. New: GTK+3 support (GTK+2 as default)
-   a) Updated clipbrd_gtk and MadEdit_gtk
-   b) Fix right click menu issue under GTK+3
+8. Fix: Right click menu issue under GTK+3
+9. Fix: Test inversion issue under GTK+3
 
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
