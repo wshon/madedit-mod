@@ -538,26 +538,50 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                 rangeFrom = m_SearchFrom;
         }
 
-        for(;;)
+        MadReplaceResult ret=RR_EXPR_ERROR;
+        if(WxCheckBoxFindHex->GetValue())
         {
-            MadReplaceResult ret=RR_EXPR_ERROR;
-            if(WxCheckBoxFindHex->GetValue())
+            ret=g_ActiveMadEdit->ReplaceHex(text, reptext, rangeFrom, rangeTo);
+            
+            if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
             {
-                ret=g_ActiveMadEdit->ReplaceHex(text, reptext, rangeFrom, rangeTo);
+                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %s, %s)"), text.c_str(), reptext.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
+            }
+        }
+        else
+        {
+            ret=g_ActiveMadEdit->ReplaceText(text, reptext,
+                WxCheckBoxRegex->GetValue(),
+                WxCheckBoxCaseSensitive->GetValue(),
+                WxCheckBoxWholeWord->GetValue(),
+                rangeFrom, rangeTo);
+            if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
+            {
+                RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %s, %s)"), text.c_str(), reptext.c_str(),
+                                WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
+                                WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
+                                WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
+            }
+        }
+
+        switch(ret)
+        {
+        case RR_REP_NNEXT:
+        case RR_NREP_NNEXT:
+            // handle latter
+            break;
+        case RR_REP_NEXT:
+        case RR_NREP_NEXT:
+            if(WxCheckBoxMoveFocus->GetValue())
+            {
+                ((wxFrame*)wxTheApp->GetTopWindow())->Raise();
+                g_ActiveMadEdit->SetFocus();
                 
-                if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
+                if(WxCheckBoxFindHex->GetValue())
                 {
                     RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %s, %s)"), text.c_str(), reptext.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
                 }
-            }
-            else
-            {
-                ret=g_ActiveMadEdit->ReplaceText(text, reptext,
-                    WxCheckBoxRegex->GetValue(),
-                    WxCheckBoxCaseSensitive->GetValue(),
-                    WxCheckBoxWholeWord->GetValue(),
-                    rangeFrom, rangeTo);
-                if(ret == RR_REP_NEXT || ret == RR_NREP_NEXT)
+                else
                 {
                     RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %s, %s)"), text.c_str(), reptext.c_str(),
                                     WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
@@ -565,58 +589,30 @@ void MadReplaceDialog::WxButtonReplaceClick(wxCommandEvent& event)
                                     WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
                 }
             }
+            break;
+        default:
+            break;
+        }
+        if(ret == RR_REP_NNEXT || ret == RR_NREP_NNEXT)
+        {
+            wxString msg(_("Cannot find the matched string.\nReplace is finished."));
+            msg += wxT("\n\n");
+            msg += WxCheckBoxSearchInSelection->IsChecked()?
+                _("Do you want to find from begin of selection?"):
+                _("Do you want to find from begin of file?");
 
-            switch(ret)
-            {
-            case RR_REP_NNEXT:
-            case RR_NREP_NNEXT:
-                // handle latter
-                break;
-            case RR_REP_NEXT:
-            case RR_NREP_NEXT:
-                if(WxCheckBoxMoveFocus->GetValue())
-                {
-                    ((wxFrame*)wxTheApp->GetTopWindow())->Raise();
-                    g_ActiveMadEdit->SetFocus();
-                    
-                    if(WxCheckBoxFindHex->GetValue())
-                    {
-                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceHex(\"%s\", \"%s\", %s, %s)"), text.c_str(), reptext.c_str(), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
-                    }
-                    else
-                    {
-                        RecordAsMadMacro(g_ActiveMadEdit, wxString::Format(wxT("ReplaceText(\"%s\", \"%s\", %s, %s, %s, %s, %s)"), text.c_str(), reptext.c_str(),
-                                        WxCheckBoxRegex->GetValue()?wxT("True"):wxT("False"),
-                                        WxCheckBoxCaseSensitive->GetValue()?wxT("True"):wxT("False"),
-                                        WxCheckBoxWholeWord->GetValue()?wxT("True"):wxT("False"), (wxLongLong(rangeFrom).ToString()).c_str(), (wxLongLong(rangeTo).ToString()).c_str()));
-                    }
-                }
-                break;
-            default:
-                break;
-            }
-            if(ret == RR_REP_NNEXT || ret == RR_NREP_NNEXT)
-            {
-                wxString msg(_("Cannot find the matched string.\nReplace is finished."));
-                msg += wxT("\n\n");
-                msg += WxCheckBoxSearchInSelection->IsChecked()?
-                    _("Do you want to find from begin of selection?"):
-                    _("Do you want to find from begin of file?");
-    
-                if(wxCANCEL == MadMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
+            if(wxCANCEL == MadMessageBox(msg, _("Find Next"), wxOK|wxCANCEL
 #if (wxMAJOR_VERSION == 2 && wxMINOR_VERSION > 9)
-                    |wxCANCEL_DEFAULT
+                |wxCANCEL_DEFAULT
 #endif
-                    |wxICON_QUESTION ))
-                {
-                    m_FindText->SetFocus();
-                    break;
-                }
-                rangeFrom = WxCheckBoxSearchInSelection->IsChecked()? m_SearchFrom : 0;
-                if(WxCheckBoxSearchInSelection->IsChecked())
-                {
-                    g_ActiveMadEdit->SetSelection(m_SearchFrom, m_SearchTo);
-                }
+                |wxICON_QUESTION ))
+            {
+                m_FindText->SetFocus();
+            }
+            rangeFrom = WxCheckBoxSearchInSelection->IsChecked()? m_SearchFrom : 0;
+            if(WxCheckBoxSearchInSelection->IsChecked())
+            {
+                g_ActiveMadEdit->SetSelection(m_SearchFrom, m_SearchTo);
             }
         }
     }
