@@ -67,7 +67,7 @@ MadEdit-Mod
 
 Syntax files, Locale files and Settings:
 ---------------------------------------
-  Syntax files: in the path $(MadEditConfigPath)/syntax/safs
+  Syntax files: in the path $(MadEditConfigPath)/syntax/
   Locale files: in the path $(MadEditConfigPath)/locale/
 
   $(MadEditConfigPath) are the one of below paths:
