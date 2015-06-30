@@ -103,9 +103,9 @@ Mod v0.3.4
 1. Fix: ReplaceTextAll being recorded as FindTextAll
 2. Fix: Replace button did the same as ReplaceAll
 3. Fix: Change local scripts dir to HomeDir instead of AppDir for Linux
-4. Fix: Change default saving dir to HomeDir
-5. Fix: Use FileSelector instead of Openfile dialog to save script
-6. Fix: Text inversion not working under GTK+3
+4. Fix: Use FileSelector instead of Openfile dialog to save script
+5. Fix: Text inversion not working under GTK+3
+6. New: Dynamically add saved script on menu list if saving in script home
 7. New: GTK+3 support (GTK+2 as default)
    a) Updated clipbrd_gtk and MadEdit_gtk
    b) Fix right click menu issue under GTK+3

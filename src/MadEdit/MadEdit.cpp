@@ -54,7 +54,7 @@ using std::list;
 #   ifdef __WXMSW__
 #       define FIXINVERT 0
 #   else
-#       ifdef __WXGTK30__ 
+#       ifdef __WXGTK3__ 
 #           define FIXINVERT 1
 #       else
 #           define FIXINVERT 0
