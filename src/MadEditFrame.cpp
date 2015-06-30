@@ -7017,25 +7017,11 @@ void MadEditFrame::OnToolsPlayRecMacro(wxCommandEvent& event)
 void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
 {
     wxString dir(g_MadEditHomeDir + wxT("scripts"));
-    //if(m_RecentFiles->GetCount())
-    //{
-    //    wxFileName filename(m_RecentFiles->GetHistoryFile(0));
-    //    dir=filename.GetPath(wxPATH_GET_VOLUME|wxPATH_GET_SEPARATOR);
-    //}
-
-    static int filterIndex = 0;
     wxString fileFilter = wxString(wxT("Mad Macro(*.mpy)|*.mpy|")) + wxFileSelectorDefaultWildcardStr + wxT("|All files(*;*.*)");
-    wxFileDialog dlg(this, _("Save Mad Macro File"), dir, wxEmptyString, fileFilter,
-#if wxCHECK_VERSION(2,8,0)
-        wxFD_OPEN );
-#else
-        wxOPEN );
-#endif
-    dlg.SetFilterIndex(filterIndex);
-    if (dlg.ShowModal()==wxID_OK)
-    {
-        wxString filename = dlg.GetPath();
+    wxString filename = wxSaveFileSelector (_("Mad Macro"), fileFilter);
 
+    if(!filename.IsEmpty())
+    {
         wxTextFile scriptfile(filename);
         if(scriptfile.Exists())
         {
@@ -7069,13 +7055,13 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
                 scriptfile.Write(wxTextFileType_Unix);
 #endif           
             }
-            wxString saveDir(dlg.GetDirectory());
+            wxFileName fn(filename);
+            wxString saveDir(fn.GetPath());
             if(dir == saveDir)
             {
                 static wxString hlp_prefix(wxT("####"));
                 wxString help, firstLine;
                 firstLine = scriptfile.GetFirstLine();
-                wxFileName fn(filename);
                 if (firstLine.StartsWith(hlp_prefix, &help))
                     g_Menu_MadMacro_Scripts->Append(menuMadScrip1 + int(g_Menu_MadMacro_Scripts->GetMenuItemCount()), fn.GetName(), help);
                 else

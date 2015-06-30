@@ -104,10 +104,11 @@ Mod v0.3.4
 2. Fix: Replace button did the same as ReplaceAll
 3. Fix: Change local scripts dir to HomeDir instead of AppDir for Linux
 4. Fix: Change default saving dir to HomeDir
-4. New: GTK+3 support (GTK+2 as default)
+5. Fix: Use FileSelector instead of Openfile dialog to save script
+6. New: GTK+3 support (GTK+2 as default)
    a) Updated clipbrd_gtk and MadEdit_gtk
    b) Fix right click menu issue under GTK+3
-5. New: Dynamically show recorded scripts in Toolbar/Menu if you save the script
+7. New: Dynamically show recorded scripts in Toolbar/Menu if you save the script
    under scripthome/
 
 Mod v0.3.3
