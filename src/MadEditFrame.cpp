@@ -2076,9 +2076,9 @@ MadEditFrame::MadEditFrame( wxWindow *parent, wxWindowID id, const wxString &tit
     MadSyntax::AddSyntaxFilesPath(g_MadEditAppDir + wxT("syntax/"));
     MadSyntax::AddSyntaxFilesPath(g_MadEditHomeDir + wxT("syntax/"));
     #if defined (DATA_DIR)
-    MadSyntax::AddSyntaxFilesPath(wxT(DATA_DIR"/madedit/syntax/"));
+    MadSyntax::AddSyntaxFilesPath(wxT(DATA_DIR"/madedit-mod/syntax/"));
     #else
-    MadSyntax::AddSyntaxFilesPath(wxT("/usr/share/madedit/syntax/"));
+    MadSyntax::AddSyntaxFilesPath(wxT("/usr/share/madedit-mod/syntax/"));
     #endif
 #else // other platform
     MadSyntax::AddSyntaxFilesPath(g_MadEditAppDir + wxT("syntax/"));

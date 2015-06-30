@@ -25,14 +25,15 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-2.8.x or higher with Unicode enabled(wxWidgets-2.8.12 is
-         recommended, and apply patches)
+      1. wxWidgets-2.8.x or higher with Unicode enabled(wxWidgets-3.0.2 is
+         recommended)
       2. Boost-1.33.0 or higher(build Boost-Python)
       3. Boost.Xpressive latest version
       4. libunicows: it's optional under WinNT/XP, but required under Win98
-   b. Visual C++ 7.1 (VS.Net 2003) or higher:
+   b. Visual C++ 7.1 (VS.Net 2005) or higher:
       Required Libraries to compile:
-      1. wxWidgets-2.6.1 or higher with Unicode enabled
+      1. wxWidgets-2.8.x or higher with Unicode enabled(wxWidgets-3.0.2 is
+         recommended)
       2. Boost-1.33.0 or higher(Source code is enough for MadEdit, build
          Boost-Python)
       3. Boost.Xpressive latest version
@@ -109,6 +110,7 @@ Mod v0.3.3.1
 7. New: GTK+3 support (GTK+2 as default)
 8. Fix: Right click menu issue under GTK+3
 9. Fix: Test inversion issue under GTK+3
+10. Fix: Syntax/Locale directory update for Linux
 
 Mod v0.3.3
 1. Update MiniPython to Python 2.7.10
