@@ -7055,7 +7055,7 @@ void MadEditFrame::OnToolsSaveRecMacro(wxCommandEvent& event)
             }
             wxFileName fn(filename);
             wxString saveDir(fn.GetPath());
-            if(dir == saveDir)
+            //if(dir == saveDir)
             {
                 static wxString hlp_prefix(wxT("####"));
                 wxString help, firstLine;

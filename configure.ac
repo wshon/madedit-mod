@@ -34,21 +34,54 @@ esac
 #AM_PATH_GTK_2_0(2.6.0)
 
 if test "x$IS_MACOS" == "x"; then
-    use_GTK2=yes
-    PKG_CHECK_MODULES(glib_gtk2, [
-            glib-2.0 >= 2.6.0
-            gtk+-2.0 >= 2.6.0
-    ], use_GTK2=yes, use_GTK2=no)
-    if test "$use_GTK2" == "yes"; then
-        CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
-        LIBS="$LIBS $glib_gtk2_LIBS"
+    gtk_VER=0
+    # option for additional Xpressive lib
+    AC_ARG_WITH(gtk,
+    [  --with-gtk=version    use specified GTK+,
+                otherwise try to find GTK+2 then try GTK+3],
+    [gtk_VER="$withval"],
+    [gtk_VER=0])
+
+    if test "$gtk_VER" == "0"; then
+        use_GTK2=no
+        PKG_CHECK_MODULES(glib_gtk2, [
+                glib-2.0 >= 2.6.0
+                gtk+-2.0 >= 2.6.0
+        ], use_GTK2=yes, use_GTK2=no)
+        if test "$use_GTK2" == "yes"; then
+            CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
+            LIBS="$LIBS $glib_gtk2_LIBS"
+        else
+            PKG_CHECK_MODULES(glib_gtk3, [
+                glib-2.0 >= 2.6.0
+                gtk+-3.0
+            ])
+            CXXFLAGS="$CXXFLAGS $glib_gtk3_CFLAGS"
+            LIBS="$LIBS $glib_gtk3_LIBS"
+        fi
     else
-        PKG_CHECK_MODULES(glib_gtk3, [
-            glib-2.0 >= 2.6.0
-            gtk+-3.0
-        ])
-        CXXFLAGS="$CXXFLAGS $glib_gtk3_CFLAGS"
-        LIBS="$LIBS $glib_gtk3_LIBS"
+        if test "$gtk_VER" == "3"; then
+            PKG_CHECK_MODULES(glib_gtk3, [
+                glib-2.0 >= 2.6.0
+                gtk+-3.0
+            ])
+            CXXFLAGS="$CXXFLAGS $glib_gtk3_CFLAGS"
+            LIBS="$LIBS $glib_gtk3_LIBS"
+        else
+            if test "$gtk_VER" == "2"; then
+                PKG_CHECK_MODULES(glib_gtk2, [
+                    glib-2.0 >= 2.6.0
+                    gtk+-2.0 >= 2.6.0
+                ])
+                CXXFLAGS="$CXXFLAGS $glib_gtk2_CFLAGS"
+                LIBS="$LIBS $glib_gtk2_LIBS"
+            else
+               AC_MSG_ERROR([
+               Unsupported GTK+ version $withval specified. Only GTK+2 and GTK+3
+               are supported
+               ])
+            fi
+        fi
     fi
 fi
 
