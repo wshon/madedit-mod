@@ -2407,6 +2407,50 @@ void MadEditFrame::CreateGUIControls(void)
 
     list<wxMenu*> menu_stack;
     CommandData *cd = &CommandTable[0];
+#if 0 //Output all accel key to text file
+    wxTextFile KeyTable(g_MadEditAppDir + wxT("key_table.csv"));
+    KeyTable.Create();
+    KeyTable.Open(wxConvFile);
+    if(KeyTable.IsOpened())
+    {
+        wxString mapStr, col1(wxT("             ")), col2(wxT("                                 "));
+		wxString tTitle(wxT("  Shortcut   |              Menu               |           Function"));
+        wxString tSep(wxT("-------------|---------------------------------|-------------------------------------------------"));
+        wxArrayString keymap;
+		KeyTable.Clear();
+		KeyTable.AddLine(tTitle);
+		KeyTable.AddLine(tSep);
+        for(int i  = 0; i < sizeof(CommandTable)/sizeof(CommandData); ++i)
+        {
+            if(CommandTable[i].key != 0/* && *(CommandTable[i].key) != 0*/)
+            {
+                wxString tKey(CommandTable[i].key), tMenu(CommandTable[i].text), tHint(CommandTable[i].hint);
+                if(tKey.Length()<col1.Length()) tKey +=col1.Left(col1.Length()-tKey.Length());
+                if(tMenu.Length()<col2.Length()) tMenu += col2.Left(col2.Length()-tMenu.Length());
+                mapStr = tKey + wxT('|') + tMenu + wxT('|')+tHint;
+                keymap.Add(mapStr);
+				KeyTable.AddLine(mapStr);
+            }
+        }
+
+		KeyTable.AddLine( wxString(wxT("\n")));
+		KeyTable.AddLine( wxString(wxT("\n")));
+		KeyTable.AddLine(tTitle);
+		KeyTable.AddLine(tSep);
+        keymap.Sort();
+        for(int j = 0; j < keymap.GetCount(); ++j)
+        {
+            KeyTable.AddLine(keymap[j]);
+        }
+#ifdef __WXMAC__
+        KeyTable.Write(wxTextFileType_Mac);
+#else
+        KeyTable.Write(wxTextFileType_Unix);
+#endif  
+        KeyTable.Close();
+    }
+#endif
+
 #ifdef __WXMSW__
     bool bHasMenuIcon = (wxGetOsVersion()!=wxOS_WINDOWS_9X); // fixed win98 will crash if menuitem has icon
 #endif
