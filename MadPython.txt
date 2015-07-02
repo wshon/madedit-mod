@@ -24,13 +24,14 @@ Note: The locale of the MadPython should be the default locale of your system.
 Don't support locale changing unless there was oustanding reason for the feature!
 
 Note: The APIs are listed as C++ functions.
+
 C++ Key word|In Python's world
 ------------|------------------
-void|No return value
-int|integer
-string|string
-tuple|tuple
-bool|bool
+void        |No return value
+int         |integer
+string      |string
+tuple       |tuple
+bool        |bool
 
 
 Simple examples:

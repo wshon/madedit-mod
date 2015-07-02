@@ -151,7 +151,7 @@ F6           |&Next Window                     |Activate the next window
              |&About MadEdit-Mod...            |
 
 
-Alphabet list
+Alphabet List
 ====
   Shortcut   |             Menu                |           Function
 -------------|---------------------------------|-------------------------------------------------
