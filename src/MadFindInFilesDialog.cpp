@@ -33,6 +33,7 @@
 
 MadFindInFilesDialog *g_FindInFilesDialog=NULL;
 extern wxStatusBar *g_StatusBar;
+extern MadEdit *g_ActiveMadEdit;
 extern void DisplayFindAllResult(vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL);
 extern int MadMessageBox(const wxString& message,
                              const wxString& caption = wxMessageBoxCaptionStr,
