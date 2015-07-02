@@ -320,8 +320,14 @@ void MadSearchDialog::MadSearchDialogClose(wxCloseEvent& event)
 void MadSearchDialog::WxButtonCloseClick(wxCommandEvent& event)
 {
     Show(false);
+
+    ((wxFrame*)wxTheApp->GetTopWindow())->Raise();
+
     if(g_ActiveMadEdit!=NULL)
+    {
         g_ActiveMadEdit->Refresh(false);
+        g_ActiveMadEdit->SetFocus();
+    }
 }
 
 /*

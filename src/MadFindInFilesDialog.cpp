@@ -378,6 +378,14 @@ void MadFindInFilesDialog::MadFindInFilesDialogClose(wxCloseEvent& event)
     {
         event.Veto();
         Show(false);
+        
+        ((wxFrame*)wxTheApp->GetTopWindow())->Raise();
+        
+        if(g_ActiveMadEdit!=NULL)
+        {
+            g_ActiveMadEdit->Refresh(false);
+            g_ActiveMadEdit->SetFocus();
+        }
         return;
     }
 
