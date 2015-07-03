@@ -321,7 +321,6 @@
     <ClInclude Include="..\minipython\Parser\parser.h" />
     <ClInclude Include="..\minipython\Parser\tokenizer.h" />
     <ClInclude Include="..\minipython\PC\errmap.h" />
-    <ClInclude Include="..\minipython\PC\pyconfig.h" />
     <ClInclude Include="..\minipython\Python\importdl.h" />
     <ClInclude Include="..\minipython\Python\thread_nt.h" />
   </ItemGroup>

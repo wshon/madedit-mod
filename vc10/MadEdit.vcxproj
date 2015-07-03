@@ -78,7 +78,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)\..\minipython\Include;$(SolutionDir)\..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)\..\minipython\Include;$(SolutionDir)\..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)..\markdown;$(SolutionDir)..\astyle;$(SolutionDir)..\astyle\astyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -107,7 +107,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)/../minipython/Include;$(SolutionDir)/../minipython/PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswud;$(WXWIN3)\include;$(BOOST);..\charset-detector\include;..\charset-detector\src;..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)..\spellchecker;$(SolutionDir)..\spellchecker\hunspell\src;$(SolutionDir)..\markdown;$(SolutionDir)..\astyle;$(SolutionDir)..\astyle\astyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;_DEBUG;_WINDOWS;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -134,7 +134,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">
     <ClCompile>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)..\markdown;$(SolutionDir)..\astyle;$(SolutionDir)..\astyle\astyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -159,7 +159,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">
     <ClCompile>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_x64_lib\mswu;$(WXWIN3)\include;$(BOOST);$(SolutionDir)..\charset-detector\include;$(SolutionDir)..\charset-detector\src;$(SolutionDir)..\charset-detector\src\tables;$(SolutionDir)..\minipython\Include;$(SolutionDir)..\minipython\PC;$(SolutionDir)\..\spellchecker;$(SolutionDir)\..\spellchecker\hunspell\src;$(SolutionDir)\..\markdown;$(SolutionDir)..\astyle;$(SolutionDir)..\astyle\astyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN64;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;HUNSPELL_STATIC;Py_NO_ENABLE_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -181,6 +181,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\astyle\asstreamiterator.cpp" />
+    <ClCompile Include="..\astyle\astyle\ASBeautifier.cpp" />
+    <ClCompile Include="..\astyle\astyle\ASEnhancer.cpp" />
+    <ClCompile Include="..\astyle\astyle\ASFormatter.cpp" />
+    <ClCompile Include="..\astyle\astyle\ASResource.cpp" />
+    <ClCompile Include="..\astyle\formattersettings.cpp" />
     <ClCompile Include="..\markdown\markdown-tokens.cpp" />
     <ClCompile Include="..\markdown\markdown.cpp" />
     <ClCompile Include="..\src\EmbeddedPython.cpp" />
@@ -247,6 +253,10 @@
     <ClCompile Include="..\spellchecker\SpellCheckUserInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\astyle\asstreamiterator.h" />
+    <ClInclude Include="..\astyle\astylepredefinedstyles.h" />
+    <ClInclude Include="..\astyle\astyle\astyle.h" />
+    <ClInclude Include="..\astyle\formattersettings.h" />
     <ClInclude Include="..\markdown\markdown-tokens.h" />
     <ClInclude Include="..\markdown\markdown.h" />
     <ClInclude Include="..\spellchecker\HunspellInterface.h" />

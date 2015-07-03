@@ -348,9 +348,6 @@
     <ClInclude Include="..\minipython\PC\errmap.h">
       <Filter>PC</Filter>
     </ClInclude>
-    <ClInclude Include="..\minipython\PC\pyconfig.h">
-      <Filter>PC</Filter>
-    </ClInclude>
     <ClInclude Include="..\minipython\Python\importdl.h">
       <Filter>Python</Filter>
     </ClInclude>

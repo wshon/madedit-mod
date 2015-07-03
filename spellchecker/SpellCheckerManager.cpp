@@ -25,7 +25,7 @@
 
 #include "HunspellInterface.h"
 
-extern wxString g_MadEditAppDir;
+extern wxString g_MadEditHomeDir;
 
 #define CFG_SPELLCHECK_ENABLE_ONLINE_CHECK      _T("EnableOnlineChecker")
 #define CFG_SPELLCHECK_ENABLE_PERSONAL_DICT     _T("EnablePersonalDictionary")
@@ -228,7 +228,7 @@ void SpellCheckerManager::Load()
     {
         wxString oldpath=m_Config->GetPath();
         m_Config->SetPath(wxT("/SpellChecker"));
-        wxString dictDir = g_MadEditAppDir+wxT("Dictionaries");
+        wxString dictDir = g_MadEditHomeDir+wxT("Dictionaries");
         m_Config->Read(CFG_SPELLCHECK_ENABLE_ONLINE_CHECK, &m_EnableOnlineChecker, false);
         m_Config->Read(CFG_SPELLCHECK_ENABLE_PERSONAL_DICT, &m_EnablePersonalDictionary, false);
         m_Config->Read(CFG_SPELLCHECK_SPELL_TOOLTIPS_CHECK, &m_EnableSpellTooltips, false);

@@ -31,6 +31,9 @@
     <Filter Include="Source Files\MarkDown">
       <UniqueIdentifier>{13aaaa2a-eecb-4bed-8e68-4e09ad719229}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Astyle">
+      <UniqueIdentifier>{fab3ae52-7fc0-4177-83a5-138779940783}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\EmbeddedPython.cpp">
@@ -225,6 +228,24 @@
     <ClCompile Include="..\markdown\markdown-tokens.cpp">
       <Filter>Source Files\MarkDown</Filter>
     </ClCompile>
+    <ClCompile Include="..\astyle\asstreamiterator.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASBeautifier.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASEnhancer.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASFormatter.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASResource.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\formattersettings.cpp">
+      <Filter>Source Files\Astyle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\spellchecker\HunspellInterface.h">
@@ -331,6 +352,18 @@
     </ClInclude>
     <ClInclude Include="..\markdown\markdown-tokens.h">
       <Filter>Source Files\MarkDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\asstreamiterator.h">
+      <Filter>Source Files\Astyle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\astylepredefinedstyles.h">
+      <Filter>Source Files\Astyle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\formattersettings.h">
+      <Filter>Source Files\Astyle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\astyle\astyle.h">
+      <Filter>Source Files\Astyle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

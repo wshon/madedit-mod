@@ -54,6 +54,8 @@
 #include "SpellCheckerManager.h"
 #include "HunspellInterface.h"
 #include "markdown.h"
+#include "formattersettings.h"
+#include "asstreamiterator.h"
 
 #ifdef __WXMSW__
 #include <io.h>
@@ -1359,8 +1361,9 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_UPDATE_UI(menuKanji2TradChinese, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuKanji2SimpChinese, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuChinese2Kanji, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
-    EVT_UPDATE_UI(menuMarkdown2Html, MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html)
-    EVT_UPDATE_UI(menuHtml2PlainText, MadEditFrame::OnUpdateUI_MenuFile_Html2PlainText)
+    EVT_UPDATE_UI(menuMarkdown2Html, MadEditFrame::OnUpdateUI_MenuTools_Markdown2Html)
+    EVT_UPDATE_UI(menuHtml2PlainText, MadEditFrame::OnUpdateUI_MenuTools_Html2PlainText)
+    EVT_UPDATE_UI(menuAutoFormat, MadEditFrame::OnUpdateUI_MenuTools_menuAutoFormat)
     EVT_UPDATE_UI(menuWordCount, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
     // window
     EVT_UPDATE_UI(menuToggleWindow, MadEditFrame::OnUpdateUI_MenuWindow_CheckCount)
@@ -1523,6 +1526,7 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuChinese2KanjiClipboard, MadEditFrame::OnToolsChinese2KanjiClipboard)
     EVT_MENU(menuMarkdown2Html, MadEditFrame::OnToolsMarkdown2Html)
     EVT_MENU(menuHtml2PlainText, MadEditFrame::OnToolsHtml2PlainText)
+    EVT_MENU(menuAutoFormat, MadEditFrame::OnToolsAutoFormat)
 	EVT_MENU(menuWordCount, MadEditFrame::OnToolsWordCount)
     // window
     EVT_MENU(menuToggleWindow, MadEditFrame::OnWindowToggleWindow)
@@ -1920,6 +1924,8 @@ CommandData CommandTable[]=
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
     { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
+    { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               1, menuAutoFormat,             wxT("menuAutoFormat"),             _("&Format Text"),                                          0,             wxITEM_NORMAL,    -1, 0,                                _("Format Selection or whole file")},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
@@ -4298,13 +4304,19 @@ void MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding(wxUpdateUIEvent& event)
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
 }
 
-void MadEditFrame::OnUpdateUI_MenuFile_Markdown2Html(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuTools_Markdown2Html(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL &&
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
 }
 
-void MadEditFrame::OnUpdateUI_MenuFile_Html2PlainText(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuTools_Html2PlainText(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL &&
+        !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
+}
+
+void MadEditFrame::OnUpdateUI_MenuTools_menuAutoFormat(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL &&
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
@@ -7379,6 +7391,153 @@ void MadEditFrame::OnToolsHtml2PlainText(wxCommandEvent& event)
     g_ActiveMadEdit->SetText(text);
 }
 
+// Special code to compare strings which doesn't care
+// about spaces leading up to the EOL.
+static bool BuffersDiffer( const wxString &a, const wxString &b )
+{
+    const wxChar *aCurrent = a.c_str();
+    const wxChar *bCurrent = b.c_str();
+    const wxChar * const aEnd = aCurrent + a.Len();
+    const wxChar * const bEnd = bCurrent + b.Len();
+
+    while ( aCurrent != aEnd && bCurrent != bEnd )
+    {
+        if ( *aCurrent != *bCurrent )
+        {
+            // Check for varying space at EOL
+            while ( *aCurrent == ' ' || *aCurrent == '\t' )
+            {
+                if ( ++aCurrent == aEnd )
+                    break;
+            }
+            while ( *bCurrent == ' ' || *bCurrent == '\t' )
+            {
+                if ( ++bCurrent == bEnd )
+                    break;
+            }
+
+            // Make sure it was at EOL
+            if ( ( *aCurrent != '\r' && *aCurrent != '\n' ) || ( *bCurrent != '\r' && *bCurrent != '\n' ) )
+                return true;
+        }
+
+        ++aCurrent;
+        ++bCurrent;
+    }
+
+    while ( aCurrent != aEnd )
+    {
+        if ( *aCurrent != ' ' && *aCurrent != '\t' )
+            return true;
+        ++aCurrent;
+    }
+
+    while ( bCurrent != bEnd )
+    {
+        if ( *bCurrent != ' ' && *bCurrent != '\t' )
+            return true;
+        ++bCurrent;
+    }
+
+    return false;
+}
+
+void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
+{
+    if(g_ActiveMadEdit==NULL) return;
+    wxString text;
+    bool onlySelected = false;
+    if(g_ActiveMadEdit->IsSelected())
+    {
+        onlySelected = true;
+        g_ActiveMadEdit->GetSelText(text);
+    }
+    else
+    {
+        g_ActiveMadEdit->GetText(text, false);
+    }
+
+    wxString eolChars;
+    switch(g_ActiveMadEdit->GetNewLineType())
+    {
+    case nltDOS:  eolChars = wxT("\r\n"); break;
+    case nltUNIX: eolChars = wxT("\n"); break;
+    case nltMAC:  eolChars = wxT("\r"); break;
+    default: break;
+    }
+
+    if (text.size() && text.Last() != _T('\r') && text.Last() != _T('\n') && !onlySelected)
+    {
+        text += eolChars;
+    }
+    
+    wxString formattedText;
+
+    astyle::ASFormatter formatter;
+
+    // load settings
+    FormatterSettings settings;
+    settings.ApplyTo(formatter);
+    ASStreamIterator *asi = new ASStreamIterator(g_ActiveMadEdit, text);
+
+    formatter.init(asi);
+
+    int lineCounter = 0;
+    
+    while (formatter.hasMoreLines())
+    {
+        formattedText << wxString(formatter.nextLine().c_str(), wxCSConv(g_ActiveMadEdit->GetEncodingName()));
+
+        if (formatter.hasMoreLines())
+            formattedText << eolChars;
+
+        ++lineCounter;
+    }
+
+#if 0
+    if (onlySelected && leftBracesNumber > 0)
+    {
+        while (leftBracesNumber > 0)
+        {
+            --leftBracesNumber;
+            formattedText = formattedText.SubString(formattedText.Find(_T('{')) + 1, formattedText.Length());
+        }
+        formattedText = formattedText.SubString(formattedText.Find(eolChars) + eolChars.Length(), formattedText.Length());
+    }
+#endif
+    bool changed = BuffersDiffer( formattedText, text);
+
+    if ( changed )
+    {
+#if 0
+        control->BeginUndoAction();
+        // TODO: this can be made a lot smarter (see ApplyTextDelta() in r9575), however that
+        // particular implementation contains unidentifiable bugs, and must be rewritten
+        if (onlySelected)
+            control->ReplaceSelection(formattedText);
+        else
+            control->SetText(formattedText);
+
+        for (std::vector<int>::const_iterator i = new_bookmark.begin(); i != new_bookmark.end(); ++i)
+            ed->ToggleBookmark(*i);
+
+        for (std::vector<int>::const_iterator i = ed_breakpoints.begin(); i != ed_breakpoints.end(); ++i)
+            ed->ToggleBreakpoint(*i);
+
+        control->EndUndoAction();
+        control->GotoPos(pos);
+        ed->SetModified(true);
+#endif
+		if(onlySelected)
+		{
+			//g_ActiveMadEdit->InsertString(formattedText.c_str(), formattedText.length(), false, true, false);
+		}
+		else
+		{
+			g_ActiveMadEdit->SetText(formattedText);
+		}
+	}
+}
 
 void MadEditFrame::OnWindowToggleWindow(wxCommandEvent& event)
 {
