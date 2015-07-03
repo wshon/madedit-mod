@@ -160,6 +160,7 @@ void SpellCheckerManager::DetectDictionaryPath()
         dictPaths.Add(wxT("/usr/share/myspell/dicts"));
     }
 #endif
+	dictPaths.Add(g_MadEditHomeDir+wxT("Dictionaries"));
 
     //dictPaths.Add(m_pPlugin->GetOnlineCheckerConfigPath());
     for (size_t i = 0; i < dictPaths.GetCount(); ++i)
