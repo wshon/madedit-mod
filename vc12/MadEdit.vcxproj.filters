@@ -31,6 +31,9 @@
     <Filter Include="Source files\Markdown">
       <UniqueIdentifier>{854d836e-f59d-4a9a-9850-fe95492eafb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\Astyle">
+      <UniqueIdentifier>{2f2d5553-279c-4b1a-907b-b0414e85ef76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\MadAboutDialog.h">
@@ -215,6 +218,12 @@
     </ClInclude>
     <ClInclude Include="..\markdown\markdown-tokens.h">
       <Filter>Source files\Markdown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\asstreamiterator.h">
+      <Filter>Source files\Astyle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\astyle\formattersettings.h">
+      <Filter>Source files\Astyle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,6 +424,24 @@
     </ClCompile>
     <ClCompile Include="..\markdown\markdown-tokens.cpp">
       <Filter>Source files\Markdown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\asstreamiterator.cpp">
+      <Filter>Source files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASBeautifier.cpp">
+      <Filter>Source files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASEnhancer.cpp">
+      <Filter>Source files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASResource.cpp">
+      <Filter>Source files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\formattersettings.cpp">
+      <Filter>Source files\Astyle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\astyle\astyle\ASFormatter.cpp">
+      <Filter>Source files\Astyle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
