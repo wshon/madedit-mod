@@ -18,6 +18,8 @@
 #include "MadUtils.h"
 #include "MadEdit/MadEditPv.h"
 #include "SpellCheckerManager.h"
+#include "astyle/astyle.h"
+#include "astylepredefinedstyles.h"
 
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
@@ -1631,6 +1633,79 @@ void MadOptionsDialog::LoadOptions(void)
         WxTreeCtrl1->Unselect();
         WxTreeCtrl1->SelectItem(selid, true);
     }
+
+    cfg->SetPath(wxT("/astyle"));
+    WxRadioBoxBracketStyle->SetSelection(cfg->ReadLong(_T("/style"), aspsAllman));
+    WxCheckAttachClasses->SetValue(cfg->ReadBool(_T("/attach_classes"), false));
+    WxCheckAttachExternC->SetValue(cfg->ReadBool(_T("/attach_extern_c"), true));
+    WxCheckAttachNamespaces->SetValue(cfg->ReadBool(_T("/attach_namespaces"), true));
+    WxCheckAttachInlines->SetValue(cfg->ReadBool(_T("/attach_inlines"), true));
+
+    WxCheckForceUseTabs->SetValue(cfg->ReadBool(_T("/force_tabs"), false));
+    WxSpinIndentation->SetValue(cfg->ReadLong(_T("/indentation"), 4));
+    WxCheckUseTab->SetValue(cfg->ReadBool(_T("/use_tabs"), false));
+
+    WxCheckIndentCase->SetValue(cfg->ReadBool(_T("/indent_case"), true));
+    WxCheckIndentClasses->SetValue(cfg->ReadBool(_T("/indent_classes"), false));
+    WxCheckIndentLabels->SetValue(cfg->ReadBool(_T("/indent_labels"), false));
+    WxCheckIndentModifiers->SetValue(cfg->ReadBool(_T("/indent_modifiers"), false));
+    WxCheckIndentNamespaces->SetValue(cfg->ReadBool(_T("/indent_namespaces"), true));
+    WxCheckIndentSwitches->SetValue(cfg->ReadBool(_T("/indent_switches"), false));
+    WxCheckIndentPreprocBlock->SetValue(cfg->ReadBool(_T("/indent_preproc_block"), true));
+    WxCheckIndentPreprocDefine->SetValue(cfg->ReadBool(_T("/indent_preproc_define"), false));
+    WxCheckIndentPreprocCond->SetValue(cfg->ReadBool(_T("/indent_preproc_cond"), false));
+    WxCheckIndentCol1Comments->SetValue(cfg->ReadBool(_T("/indent_col1_comments"), true));
+    WxSpinMinConditionalEvent->SetValue(cfg->ReadLong(_T("/min_conditional_indent"), 2));
+    WxEditMaxInStatementIndent->SetValue(wxString()<<cfg->ReadLong(_T("/max_instatement_indent"), 40));
+
+    WxCheckBreakClosing->SetValue(cfg->ReadBool(_T("/break_closing"), true));
+    WxCheckBreakElseIfs->SetValue(cfg->ReadBool(_T("/break_elseifs"), true));
+    WxCheckAddBrackets->SetValue(cfg->ReadBool(_T("/add_brackets"), false));
+    WxCheckAddOneLineBrackets->SetValue(cfg->ReadBool(_T("/add_one_line_brackets"), true));
+    WxCheckKeepComplex->SetValue(cfg->ReadBool(_T("/keep_complex"), true));
+    WxCheckRemoveBrackets->SetValue(cfg->ReadBool(_T("/remove_brackets"), false));
+    WxCheckKeepBlocks->SetValue(cfg->ReadBool(_T("/keep_blocks"), true));
+    WxCheckConvertTabs->SetValue(cfg->ReadBool(_T("/convert_tabs"), true));
+    WxCheckCloseTemplates->SetValue(cfg->ReadBool(_T("/close_templates"), false));
+    WxCheckRemoveCommentPrefix->SetValue(cfg->ReadBool(_T("/remove_comment_prefix"), false));
+
+    bb = cfg->ReadBool(_T("/break_lines"), false);
+    WxCheckBreakLines->SetValue(bb);
+    if(bb)
+    {
+        WxEditSFMaxLineLength->SetValue(cfg->Read(_T("/max_line_length"), wxString(wxT("200"))));
+        WxCheckBreakAfterLogical->SetValue(cfg->ReadBool(_T("/break_after_mode"), false));
+    }
+
+    WxCheckBreakBlocks->SetValue(cfg->ReadBool(_T("/break_blocks"), true));
+    WxCheckBreakBlocksAll->SetValue(cfg->ReadBool(_T("/break_blocks_all"), false));
+    WxCheckPadOperators->SetValue(cfg->ReadBool(_T("/pad_operators"), true));
+    WxCheckPadParensOut->SetValue(cfg->ReadBool(_T("/pad_parentheses_out"), false));
+    WxCheckPadParensIn->SetValue(cfg->ReadBool(_T("/pad_parentheses_in"), true));
+    WxCheckPadHeader->SetValue(cfg->ReadBool(_T("/pad_header"), false));
+    WxCheckUnpadParens ->SetValue(cfg->ReadBool(_T("/unpad_parentheses"), true));
+    WxCheckDelEmptyLine->SetValue(cfg->ReadBool(_T("/delete_empty_lines"), true));
+    WxCheckFillEmptyLines->SetValue(cfg->ReadBool(_T("/fill_empty_lines"), false));
+
+    wxString pointerAlign = cfg->Read(_T("/pointer_align"), wxEmptyString);
+    if(pointerAlign == _T("Type"))
+        WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_TYPE);
+    else if (pointerAlign == _T("Middle"))
+        WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_MIDDLE);
+    else if (pointerAlign == _T("Name"))
+        WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NAME);
+    else
+        WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NONE);
+
+    wxString referenceAlign = cfg->Read(_T("/reference_align"), wxEmptyString);
+    if (referenceAlign == _T("Type"))
+        WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_TYPE);
+    else if (referenceAlign == _T("Middle"))
+        WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_MIDDLE);
+    else if (referenceAlign == _T("Name"))
+        WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NAME);
+    else
+        WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NONE);
 
     cfg->SetPath(oldpath);
 

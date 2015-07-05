@@ -116,7 +116,8 @@ void FormatterSettings::ApplyTo(astyle::ASFormatter& formatter)
   formatter.setPreprocDefineIndent(cfg->ReadBool(_T("/indent_preproc_define"), false));
   formatter.setPreprocConditionalIndent(cfg->ReadBool(_T("/indent_preproc_cond"), false));
   formatter.setIndentCol1CommentsMode(cfg->ReadBool(_T("/indent_col1_comments"), true));
-  formatter.setMaxInStatementIndentLength(cfg->ReadBool(_T("/max_instatement_indent"), true));
+  formatter.setMinConditionalIndentOption(cfg->ReadLong(_T("/min_conditional_indent"), 2));
+  formatter.setMaxInStatementIndentLength(cfg->ReadLong(_T("/max_instatement_indent"), 40));
 
   formatter.setBreakClosingHeaderBracketsMode(cfg->ReadBool(_T("/break_closing"), true));
   formatter.setBreakElseIfsMode(cfg->ReadBool(_T("/break_elseifs"), true));
