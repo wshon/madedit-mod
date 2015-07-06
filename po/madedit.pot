@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-06 20:11+0800\n"
+"POT-Creation-Date: 2015-07-06 23:28+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3231,7 +3231,7 @@ msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:1061
 msgid ""
-"Remove brackets from conditional statements (ingle statement on a single "
+"Remove brackets from conditional statements (single statement on a single "
 "line)"
 msgstr ""
 
@@ -3295,7 +3295,7 @@ msgid "Insert space padding around parenthesies on the inside"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:1150
-msgid "Insert space padding between a header and the following paren"
+msgid "Insert space padding between a header and the following parenthesis"
 msgstr ""
 
 #: ../src/MadOptionsDialog.cpp:1155

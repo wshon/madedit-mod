@@ -105,7 +105,8 @@ Fix: Record string issue in FindNext, FindPrev, Replace, ReplaceAll while Regex
     was enabled
 New: Automatically raise window after closing Search/Replace/FindInFiles dialog
 New: GTK+ version selection supported(--with-gtk=[VERSION]), 2 and 3 are supported
-New: Astyle is integrated for formatting C/C++/C#/Java code
+New: Astyle is integrated for formatting C/C++/C#/Java code(Ctrl-Shift-K)
+Updated Simplified Chinese
 
 
 Mod v0.3.3.1

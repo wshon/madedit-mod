@@ -1058,7 +1058,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer42->Add(WxCheckAddOneLineBrackets, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckAddOneLineBrackets);
 
-	WxCheckRemoveBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBOX17, _("Remove brackets from conditional statements (ingle statement on a single line)"), wxPoint(2, 86), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveBrackets"));
+	WxCheckRemoveBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBOX17, _("Remove brackets from conditional statements (single statement on a single line)"), wxPoint(2, 86), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveBrackets"));
 	WxCheckRemoveBrackets->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer42->Add(WxCheckRemoveBrackets, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckRemoveBrackets);
@@ -1147,7 +1147,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer45->Add(WxCheckPadParensIn, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadParensIn);
 
-	WxCheckPadHeader = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADHEADER, _("Insert space padding between a header and the following paren"), wxPoint(167, 107), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadHeader"));
+	WxCheckPadHeader = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADHEADER, _("Insert space padding between a header and the following parenthesis"), wxPoint(167, 107), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadHeader"));
 	WxCheckPadHeader->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer45->Add(WxCheckPadHeader, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadHeader);
