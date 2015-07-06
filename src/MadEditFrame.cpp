@@ -7576,10 +7576,21 @@ void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
     if(g_ActiveMadEdit==NULL) return;
     wxString text;
     bool onlySelected = false;
+    int leftBracesNumber = 0;
     if(g_ActiveMadEdit->IsSelected())
     {
+        wxString seltext;
         onlySelected = true;
-        g_ActiveMadEdit->GetSelText(text);
+        // Ajust to select the whole line
+        wxString key(wxT("{"));
+        leftBracesNumber = g_ActiveMadEdit->CountSingleLeftBracket(0, g_ActiveMadEdit->GetSelectionBeginPos());
+        g_ActiveMadEdit->AjustWholeLineSel();
+        g_ActiveMadEdit->GetSelText(seltext);
+        for(int i = 0; i < leftBracesNumber; ++i)
+        {
+            text.Append(_T('{'));
+        }
+        text.Append(seltext);
     }
     else
     {
@@ -7623,7 +7634,6 @@ void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
         ++lineCounter;
     }
 
-#if 0
     if (onlySelected && leftBracesNumber > 0)
     {
         while (leftBracesNumber > 0)
@@ -7633,7 +7643,7 @@ void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
         }
         formattedText = formattedText.SubString(formattedText.Find(eolChars) + eolChars.Length(), formattedText.Length());
     }
-#endif
+
     bool changed = BuffersDiffer( formattedText, text);
 
     if ( changed )
@@ -7659,7 +7669,7 @@ void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
 #endif
 		if(onlySelected)
 		{
-			//g_ActiveMadEdit->InsertString(formattedText.c_str(), formattedText.length(), false, true, false);
+			g_ActiveMadEdit->ReplaceSelection(formattedText);
 		}
 		else
 		{

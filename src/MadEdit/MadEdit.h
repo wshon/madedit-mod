@@ -870,6 +870,9 @@ public: // basic functions
     bool GetLine(wxString &ws, int line, size_t maxlen = 0, bool ignoreBOM = true);
     int GetLineByPos(const wxFileOffset &pos);
 
+    int CountSingleLeftBracket(wxFileOffset startpos, wxFileOffset endpos);
+    void AjustWholeLineSel();
+    void ReplaceSelection(wxString &ws);
     void GetSelHexString(wxString &ws, bool withSpace);
 
     void GetWordFromCaretPos(wxString &ws)

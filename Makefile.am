@@ -410,7 +410,7 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	astyle/astyle/ASEnhancer.cpp \
 	astyle/astyle/ASFormatter.cpp \
 	astyle/astyle/ASResource.cpp \
-	astyle/astyle/astyle.h \
+	astyle/astyle/astyle.h
 
 dist_doc_DATA = gpl-3.0.txt README.txt MadPython.txt
 pixmapsdir = $(datadir)/pixmaps
