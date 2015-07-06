@@ -1925,7 +1925,7 @@ CommandData CommandTable[]=
     { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
     { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuAutoFormat,             wxT("menuAutoFormat"),             _("&Format Text"),                                          0,             wxITEM_NORMAL,    -1, 0,                                _("Format Selection or whole file")},
+    { 0,               1, menuAutoFormat,             wxT("menuAutoFormat"),             _("&Format Text(Astyle)"),                  0,             wxITEM_NORMAL,    -1, 0,                                _("Format Selection or whole file")},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
