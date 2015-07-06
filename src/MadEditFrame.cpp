@@ -6691,7 +6691,6 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             if(ic.ToLong(&lo)) madedit->SetIndentColumns(lo);
         }
 
-
         extern bool g_ResetAllKeys;
         g_ResetAllKeys=g_OptionsDialog->WxCheckBoxResetAllKeys->GetValue();
 
@@ -6873,7 +6872,7 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             bb=g_OptionsDialog->WxCheckBreakAfterLogical->GetValue();
             m_Config->Write(wxT("break_after_mode"), bb);
         }
-        
+
         bb=g_OptionsDialog->WxCheckBreakBlocks->GetValue();
         m_Config->Write(wxT("break_blocks"), bb);
         bb=g_OptionsDialog->WxCheckBreakBlocksAll->GetValue();
@@ -6892,43 +6891,42 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         m_Config->Write(wxT("delete_empty_lines"), bb);
         bb=g_OptionsDialog->WxCheckFillEmptyLines->GetValue();
         m_Config->Write(wxT("fill_empty_lines"), bb);
-        
-        wxString pointerAlign("None");
+
+        wxString pointerAlign(wxT("None"));
         switch(g_OptionsDialog->WxChoicePointerAlign->GetSelection())
         {
         case astyle::PTR_ALIGN_TYPE:
-            pointerAlign = wxString(_("Type"));
+            pointerAlign = wxString(wxT("Type"));
             break;
         case astyle::PTR_ALIGN_MIDDLE:
-            pointerAlign = wxString(_("Middle"));
+            pointerAlign = wxString(wxT("Middle"));
             break;
         case astyle::PTR_ALIGN_NAME:
-            pointerAlign = wxString(_("Name"));
+            pointerAlign = wxString(wxT("Name"));
             break;
         default :
             break;
         }
-        
+
         m_Config->Write(wxT("pointer_align"), pointerAlign);
         
-        wxString referenceAlign("None");
+        wxString referenceAlign(wxT("None"));
         switch(g_OptionsDialog->WxChoiceReferenceAlign->GetSelection())
         {
         case astyle::REF_ALIGN_TYPE:
-            referenceAlign = wxString(_("Type"));
+            referenceAlign = wxString(wxT("Type"));
             break;
         case astyle::REF_ALIGN_MIDDLE:
-            referenceAlign = wxString(_("Middle"));
+            referenceAlign = wxString(wxT("Middle"));
             break;
         case astyle::REF_ALIGN_NAME:
-            referenceAlign = wxString(_("Name"));
+            referenceAlign = wxString(wxT("Name"));
             break;
         default :
             break;
         }
-        
+
         m_Config->Write(wxT("reference_align"), referenceAlign);
-        
         m_Config->SetPath(oldpath);
     }
 }

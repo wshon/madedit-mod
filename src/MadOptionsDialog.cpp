@@ -1706,21 +1706,21 @@ void MadOptionsDialog::LoadOptions(void)
     WxCheckFillEmptyLines->SetValue(cfg->ReadBool(wxT("fill_empty_lines"), false));
 
     wxString pointerAlign = cfg->Read(wxT("pointer_align"), wxEmptyString);
-    if(pointerAlign == _("Type"))
+    if(pointerAlign == wxT("Type"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_TYPE);
-    else if (pointerAlign == _("Middle"))
+    else if (pointerAlign == wxT("Middle"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_MIDDLE);
-    else if (pointerAlign == _("Name"))
+    else if (pointerAlign == wxT("Name"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NAME);
     else
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NONE);
 
     wxString referenceAlign = cfg->Read(wxT("reference_align"), wxEmptyString);
-    if (referenceAlign == _("Type"))
+    if (referenceAlign == wxT("Type"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_TYPE);
-    else if (referenceAlign == _("Middle"))
+    else if (referenceAlign == wxT("Middle"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_MIDDLE);
-    else if (referenceAlign == _("Name"))
+    else if (referenceAlign == wxT("Name"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NAME);
     else
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NONE);
