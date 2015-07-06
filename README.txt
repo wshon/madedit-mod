@@ -101,8 +101,12 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.4
+Fix: Record string issue in FindNext, FindPrev, Replace, ReplaceAll while Regex
+    was enabled
 New: Automatically raise window after closing Search/Replace/FindInFiles dialog
 New: GTK+ version selection supported(--with-gtk=[VERSION]), 2 and 3 are supported
+New: Astyle is integrated for formatting C/C++/C#/Java code
+
 
 Mod v0.3.3.1
 1. Fix: ReplaceTextAll being recorded as FindTextAll

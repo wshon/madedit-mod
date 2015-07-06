@@ -36,7 +36,24 @@ TreeItemData *g_SelectedCommandItem=NULL;
 int g_SelectedKeyId=-1;
 TreeItemData *g_CommandItemOfNewKey=NULL;
 #define ENABLE_BITMAP_THUARI 0
-
+static wxString bracket_style[aspsCustom+1] = 
+{
+    wxT("int Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n"),
+    wxT("int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{\n     if (isBar) {\n          bar();\n          return 1;\n     } else\n          return 0;\n}"),
+    wxT("int Foo(bool isBar)\n    {\n    if (isBar)\n        {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n"),
+    wxT("int Foo(bool isBar)\n    {\n        if (isBar)\n            {\n            bar();\n            return 1;\n            }\n        else\n            return 0;\n    }\n"),
+    wxT("int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n"),
+    wxT("int Foo(bool isBar)\n{\n  if (isBar)\n    {\n      bar();\n      return 1;\n    }\n  else\n    return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{\n        if (isBar) {\n                bar();\n                return 1;\n        } else\n                return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1;\n   }\n   else\n      return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{\n    if (isFoo) {\n        bar();\n        return 1;\n    } else {\n        return 0;\n    }\n}\n"),
+    wxT("int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n"),
+    wxT("int Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1; }\n    else\n      return 0; }\n"),
+    wxT("int Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n"),
+    wxT("int Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n"),   
+};
 class KeyTextCtrl : public wxTextCtrl
 {
     DECLARE_EVENT_TABLE()
@@ -159,6 +176,7 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_BUTTON(ID_WXBUTTONDELETEKEY,MadOptionsDialog::WxButtonDeleteKeyClick)
 	EVT_BUTTON(ID_WXBUTTONADDKEY,MadOptionsDialog::WxButtonAddKeyClick)
 	EVT_LISTBOX(ID_WXLISTBOXKEYS,MadOptionsDialog::WxListBoxKeysSelected)
+	EVT_RADIOBOX(ID_WXRADIOBOXBRACKETSTYLE, MadOptionsDialog::OnRadioBoxBracketStyleClick)
 	
 	EVT_TREE_SEL_CHANGED(ID_WXTREECTRL1,MadOptionsDialog::WxTreeCtrl1SelChanged)
 	EVT_CHECKBOX(ID_WXCHECKBOXMOUSESELECTTOCOPY,MadOptionsDialog::OnMouseAutoCopyClicked)
@@ -869,9 +887,9 @@ void MadOptionsDialog::CreateGUIControls(void)
     WxTextSample->SetMaxLineLength(DEFAULT_MAX_LINELEN);
     WxTextSample->SetText(wxT("int Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n"));
     */
-	WxTextSample = new wxTextCtrl(WxAuiNoteBookPage1, ID_WXRICHTEXTSAMPLE, wxT(""), wxPoint(19, 47), wxSize(219, 300), wxTE_MULTILINE | wxVSCROLL | wxHSCROLL, wxDefaultValidator, wxT("WxTextSample"));
+	WxTextSample = new wxTextCtrl(WxAuiNoteBookPage1, ID_WXRICHTEXTSAMPLE, wxT(""), wxPoint(19, 47), wxSize(219, 300), wxTE_MULTILINE | wxVSCROLL | wxHSCROLL | wxTE_READONLY, wxDefaultValidator, wxT("WxTextSample"));
 	WxTextSample->SetMaxLength(0);
-	WxTextSample->AppendText(wxT("int Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n"));
+	WxTextSample->AppendText(bracket_style[aspsAllman]);
 	WxTextSample->SetFocus();
 	WxTextSample->SetInsertionPointEnd();
 	WxTextSample->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
@@ -1328,7 +1346,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 
 #ifdef __WXMSW__
-    WxCheckBoxRightClickMenu = new wxCheckBox(WxNoteBookPage1, -1, _("Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry from Windows Registry)"), wxPoint(5,5), wxSize(400,20), 0, wxDefaultValidator, _T("WxCheckBoxRightClickMenu"));
+    WxCheckBoxRightClickMenu = new wxCheckBox(WxNoteBookPage1, -1, _("Add MadEdit to the RightClickMenu of Explorer(Deselect to Remove the Entry from Windows Registry)"), wxPoint(5,5), wxSize(400,20), 0, wxDefaultValidator, wxT("WxCheckBoxRightClickMenu"));
     WxBoxSizer7->Add(WxCheckBoxRightClickMenu,0,wxALIGN_LEFT | wxALL,2);
     ResizeItem(WxBoxSizer7, WxCheckBoxRightClickMenu, 25, 4);
     SET_CONTROLPARENT(WxCheckBoxRightClickMenu);
@@ -1635,74 +1653,74 @@ void MadOptionsDialog::LoadOptions(void)
     }
 
     cfg->SetPath(wxT("/astyle"));
-    WxRadioBoxBracketStyle->SetSelection(cfg->ReadLong(_T("/style"), aspsAllman));
-    WxCheckAttachClasses->SetValue(cfg->ReadBool(_T("/attach_classes"), false));
-    WxCheckAttachExternC->SetValue(cfg->ReadBool(_T("/attach_extern_c"), true));
-    WxCheckAttachNamespaces->SetValue(cfg->ReadBool(_T("/attach_namespaces"), true));
-    WxCheckAttachInlines->SetValue(cfg->ReadBool(_T("/attach_inlines"), true));
+    WxRadioBoxBracketStyle->SetSelection(cfg->ReadLong(wxT("style"), aspsAllman));
+    WxCheckAttachClasses->SetValue(cfg->ReadBool(wxT("attach_classes"), false));
+    WxCheckAttachExternC->SetValue(cfg->ReadBool(wxT("attach_extern_c"), true));
+    WxCheckAttachNamespaces->SetValue(cfg->ReadBool(wxT("attach_namespaces"), true));
+    WxCheckAttachInlines->SetValue(cfg->ReadBool(wxT("attach_inlines"), true));
 
-    WxCheckForceUseTabs->SetValue(cfg->ReadBool(_T("/force_tabs"), false));
-    WxSpinIndentation->SetValue(cfg->ReadLong(_T("/indentation"), 4));
-    WxCheckUseTab->SetValue(cfg->ReadBool(_T("/use_tabs"), false));
+    WxCheckForceUseTabs->SetValue(cfg->ReadBool(wxT("force_tabs"), false));
+    WxSpinIndentation->SetValue(cfg->ReadLong(wxT("indentation"), 4));
+    WxCheckUseTab->SetValue(cfg->ReadBool(wxT("use_tabs"), false));
 
-    WxCheckIndentCase->SetValue(cfg->ReadBool(_T("/indent_case"), true));
-    WxCheckIndentClasses->SetValue(cfg->ReadBool(_T("/indent_classes"), false));
-    WxCheckIndentLabels->SetValue(cfg->ReadBool(_T("/indent_labels"), false));
-    WxCheckIndentModifiers->SetValue(cfg->ReadBool(_T("/indent_modifiers"), false));
-    WxCheckIndentNamespaces->SetValue(cfg->ReadBool(_T("/indent_namespaces"), true));
-    WxCheckIndentSwitches->SetValue(cfg->ReadBool(_T("/indent_switches"), false));
-    WxCheckIndentPreprocBlock->SetValue(cfg->ReadBool(_T("/indent_preproc_block"), true));
-    WxCheckIndentPreprocDefine->SetValue(cfg->ReadBool(_T("/indent_preproc_define"), false));
-    WxCheckIndentPreprocCond->SetValue(cfg->ReadBool(_T("/indent_preproc_cond"), false));
-    WxCheckIndentCol1Comments->SetValue(cfg->ReadBool(_T("/indent_col1_comments"), true));
-    WxSpinMinConditionalEvent->SetValue(cfg->ReadLong(_T("/min_conditional_indent"), 2));
-    WxEditMaxInStatementIndent->SetValue(wxString()<<cfg->ReadLong(_T("/max_instatement_indent"), 40));
+    WxCheckIndentCase->SetValue(cfg->ReadBool(wxT("indent_case"), true));
+    WxCheckIndentClasses->SetValue(cfg->ReadBool(wxT("indent_classes"), false));
+    WxCheckIndentLabels->SetValue(cfg->ReadBool(wxT("indent_labels"), false));
+    WxCheckIndentModifiers->SetValue(cfg->ReadBool(wxT("indent_modifiers"), false));
+    WxCheckIndentNamespaces->SetValue(cfg->ReadBool(wxT("indent_namespaces"), true));
+    WxCheckIndentSwitches->SetValue(cfg->ReadBool(wxT("indent_switches"), false));
+    WxCheckIndentPreprocBlock->SetValue(cfg->ReadBool(wxT("indent_preproc_block"), true));
+    WxCheckIndentPreprocDefine->SetValue(cfg->ReadBool(wxT("indent_preproc_define"), false));
+    WxCheckIndentPreprocCond->SetValue(cfg->ReadBool(wxT("indent_preproc_cond"), false));
+    WxCheckIndentCol1Comments->SetValue(cfg->ReadBool(wxT("indent_col1_comments"), true));
+    WxSpinMinConditionalEvent->SetValue(cfg->ReadLong(wxT("min_conditional_indent"), 2));
+    WxEditMaxInStatementIndent->SetValue(wxString()<<cfg->ReadLong(wxT("max_instatement_indent"), 40));
 
-    WxCheckBreakClosing->SetValue(cfg->ReadBool(_T("/break_closing"), true));
-    WxCheckBreakElseIfs->SetValue(cfg->ReadBool(_T("/break_elseifs"), true));
-    WxCheckAddBrackets->SetValue(cfg->ReadBool(_T("/add_brackets"), false));
-    WxCheckAddOneLineBrackets->SetValue(cfg->ReadBool(_T("/add_one_line_brackets"), true));
-    WxCheckKeepComplex->SetValue(cfg->ReadBool(_T("/keep_complex"), true));
-    WxCheckRemoveBrackets->SetValue(cfg->ReadBool(_T("/remove_brackets"), false));
-    WxCheckKeepBlocks->SetValue(cfg->ReadBool(_T("/keep_blocks"), true));
-    WxCheckConvertTabs->SetValue(cfg->ReadBool(_T("/convert_tabs"), true));
-    WxCheckCloseTemplates->SetValue(cfg->ReadBool(_T("/close_templates"), false));
-    WxCheckRemoveCommentPrefix->SetValue(cfg->ReadBool(_T("/remove_comment_prefix"), false));
+    WxCheckBreakClosing->SetValue(cfg->ReadBool(wxT("break_closing"), true));
+    WxCheckBreakElseIfs->SetValue(cfg->ReadBool(wxT("break_elseifs"), true));
+    WxCheckAddBrackets->SetValue(cfg->ReadBool(wxT("add_brackets"), false));
+    WxCheckAddOneLineBrackets->SetValue(cfg->ReadBool(wxT("add_one_line_brackets"), true));
+    WxCheckKeepComplex->SetValue(cfg->ReadBool(wxT("keep_complex"), true));
+    WxCheckRemoveBrackets->SetValue(cfg->ReadBool(wxT("remove_brackets"), false));
+    WxCheckKeepBlocks->SetValue(cfg->ReadBool(wxT("keep_blocks"), true));
+    WxCheckConvertTabs->SetValue(cfg->ReadBool(wxT("convert_tabs"), true));
+    WxCheckCloseTemplates->SetValue(cfg->ReadBool(wxT("close_templates"), false));
+    WxCheckRemoveCommentPrefix->SetValue(cfg->ReadBool(wxT("remove_comment_prefix"), false));
 
-    bb = cfg->ReadBool(_T("/break_lines"), false);
+    bb = cfg->ReadBool(wxT("break_lines"), false);
     WxCheckBreakLines->SetValue(bb);
     if(bb)
     {
-        WxEditSFMaxLineLength->SetValue(cfg->Read(_T("/max_line_length"), wxString(wxT("200"))));
-        WxCheckBreakAfterLogical->SetValue(cfg->ReadBool(_T("/break_after_mode"), false));
+        WxEditSFMaxLineLength->SetValue(cfg->Read(wxT("max_line_length"), wxString(wxT("200"))));
+        WxCheckBreakAfterLogical->SetValue(cfg->ReadBool(wxT("break_after_mode"), false));
     }
 
-    WxCheckBreakBlocks->SetValue(cfg->ReadBool(_T("/break_blocks"), true));
-    WxCheckBreakBlocksAll->SetValue(cfg->ReadBool(_T("/break_blocks_all"), false));
-    WxCheckPadOperators->SetValue(cfg->ReadBool(_T("/pad_operators"), true));
-    WxCheckPadParensOut->SetValue(cfg->ReadBool(_T("/pad_parentheses_out"), false));
-    WxCheckPadParensIn->SetValue(cfg->ReadBool(_T("/pad_parentheses_in"), true));
-    WxCheckPadHeader->SetValue(cfg->ReadBool(_T("/pad_header"), false));
-    WxCheckUnpadParens ->SetValue(cfg->ReadBool(_T("/unpad_parentheses"), true));
-    WxCheckDelEmptyLine->SetValue(cfg->ReadBool(_T("/delete_empty_lines"), true));
-    WxCheckFillEmptyLines->SetValue(cfg->ReadBool(_T("/fill_empty_lines"), false));
+    WxCheckBreakBlocks->SetValue(cfg->ReadBool(wxT("break_blocks"), true));
+    WxCheckBreakBlocksAll->SetValue(cfg->ReadBool(wxT("break_blocks_all"), false));
+    WxCheckPadOperators->SetValue(cfg->ReadBool(wxT("pad_operators"), true));
+    WxCheckPadParensOut->SetValue(cfg->ReadBool(wxT("pad_parentheses_out"), false));
+    WxCheckPadParensIn->SetValue(cfg->ReadBool(wxT("pad_parentheses_in"), true));
+    WxCheckPadHeader->SetValue(cfg->ReadBool(wxT("pad_header"), false));
+    WxCheckUnpadParens ->SetValue(cfg->ReadBool(wxT("unpad_parentheses"), true));
+    WxCheckDelEmptyLine->SetValue(cfg->ReadBool(wxT("delete_empty_lines"), true));
+    WxCheckFillEmptyLines->SetValue(cfg->ReadBool(wxT("fill_empty_lines"), false));
 
-    wxString pointerAlign = cfg->Read(_T("/pointer_align"), wxEmptyString);
-    if(pointerAlign == _T("Type"))
+    wxString pointerAlign = cfg->Read(wxT("pointer_align"), wxEmptyString);
+    if(pointerAlign == _("Type"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_TYPE);
-    else if (pointerAlign == _T("Middle"))
+    else if (pointerAlign == _("Middle"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_MIDDLE);
-    else if (pointerAlign == _T("Name"))
+    else if (pointerAlign == _("Name"))
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NAME);
     else
         WxChoicePointerAlign->SetSelection(astyle::PTR_ALIGN_NONE);
 
-    wxString referenceAlign = cfg->Read(_T("/reference_align"), wxEmptyString);
-    if (referenceAlign == _T("Type"))
+    wxString referenceAlign = cfg->Read(wxT("reference_align"), wxEmptyString);
+    if (referenceAlign == _("Type"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_TYPE);
-    else if (referenceAlign == _T("Middle"))
+    else if (referenceAlign == _("Middle"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_MIDDLE);
-    else if (referenceAlign == _T("Name"))
+    else if (referenceAlign == _("Name"))
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NAME);
     else
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NONE);
@@ -2124,5 +2142,33 @@ void MadOptionsDialog::OnSelectDictionary(wxCommandEvent& event)
 void MadOptionsDialog::OnMouseAutoCopyClicked(wxCommandEvent& event)
 {
     WxCheckBoxCtrlWithMouseToSelect->Enable(WxCheckBoxMouseSelectToCopy->GetValue());
+}
+
+void MadOptionsDialog::OnRadioBoxBracketStyleClick(wxCommandEvent& event)
+{
+    long style=WxRadioBoxBracketStyle->GetSelection();
+
+    switch (style)
+    {
+        case aspsAllman: // Allman (ANSI)
+        case aspsJava: // Java
+        case aspsKr: // K&R
+        case aspsStroustrup: // Stroustrup
+        case aspsWhitesmith: // Whitesmith
+        case aspsVTK: // VTK
+        case aspsBanner: // Banner
+        case aspsGnu: // GNU
+        case aspsLinux: // Linux
+        case aspsHorstmann: // Horstmann
+        case asps1TBS: // 1TBS
+        case aspsGoogle: // Google
+        case aspsPico: // Pico
+        case aspsLisp: // Lisp
+            WxTextSample->SetValue(bracket_style[style]);
+            break;
+        default: // Custom
+            WxTextSample->SetValue(bracket_style[aspsCustom]);
+            break;
+    }
 }
 

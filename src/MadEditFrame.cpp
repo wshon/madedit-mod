@@ -6798,6 +6798,137 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
             ResetAcceleratorTable();
         }
 
+        //Write config for Astyle
+        m_Config->SetPath(wxT("/astyle"));
+        ll=g_OptionsDialog->WxRadioBoxBracketStyle->GetSelection();
+        m_Config->Write(wxT("style"), ll);
+        bb=g_OptionsDialog->WxCheckAttachClasses->GetValue();
+        m_Config->Write(wxT("attach_classes"), bb);
+        bb=g_OptionsDialog->WxCheckAttachExternC->GetValue();
+        m_Config->Write(wxT("attach_extern_c"), bb);
+        bb=g_OptionsDialog->WxCheckAttachNamespaces->GetValue();
+        m_Config->Write(wxT("attach_namespaces"), bb);
+        bb=g_OptionsDialog->WxCheckAttachInlines->GetValue();
+        m_Config->Write(wxT("attach_inlines"), bb);
+
+        bb=g_OptionsDialog->WxCheckForceUseTabs->GetValue();
+        m_Config->Write(wxT("forcewxTabs"), bb);
+        ll=g_OptionsDialog->WxSpinIndentation->GetValue();
+        m_Config->Write(wxT("indentation"), ll);
+        bb=g_OptionsDialog->WxCheckUseTab->GetValue();
+        m_Config->Write(wxT("usewxTabs"), bb);
+
+        bb=g_OptionsDialog->WxCheckIndentCase->GetValue();
+        m_Config->Write(wxT("indent_case"), bb);
+        bb=g_OptionsDialog->WxCheckIndentClasses->GetValue();
+        m_Config->Write(wxT("indent_classes"), bb);
+        bb=g_OptionsDialog->WxCheckIndentLabels->GetValue();
+        m_Config->Write(wxT("indent_labels"), bb);
+        bb=g_OptionsDialog->WxCheckIndentModifiers->GetValue();
+        m_Config->Write(wxT("indent_modifiers"), bb);
+        bb=g_OptionsDialog->WxCheckIndentNamespaces->GetValue();
+        m_Config->Write(wxT("indent_namespaces"), bb);
+        bb=g_OptionsDialog->WxCheckIndentSwitches->GetValue();
+        m_Config->Write(wxT("indent_switches"), bb);
+        bb=g_OptionsDialog->WxCheckIndentPreprocBlock->GetValue();
+        m_Config->Write(wxT("indent_preproc_block"), bb);
+        bb=g_OptionsDialog->WxCheckIndentPreprocDefine->GetValue();
+        m_Config->Write(wxT("indent_preproc_define"), bb);
+        bb=g_OptionsDialog->WxCheckIndentPreprocCond->GetValue();
+        m_Config->Write(wxT("indent_preproc_cond"), bb);
+        bb=g_OptionsDialog->WxCheckIndentCol1Comments->GetValue();
+        m_Config->Write(wxT("indent_col1_comments"), bb);
+        ll=g_OptionsDialog->WxSpinMinConditionalEvent->GetValue();
+        m_Config->Write(wxT("min_conditional_indent"), ll);
+        g_OptionsDialog->WxEditMaxInStatementIndent->GetValue().ToLong(&ll);
+        m_Config->Write(wxT("max_instatement_indent"), ll);
+
+        bb=g_OptionsDialog->WxCheckBreakClosing->GetValue();
+        m_Config->Write(wxT("break_closing"), bb);
+        bb=g_OptionsDialog->WxCheckBreakElseIfs->GetValue();
+        m_Config->Write(wxT("break_elseifs"), bb);
+        bb=g_OptionsDialog->WxCheckAddBrackets->GetValue();
+        m_Config->Write(wxT("add_brackets"), bb);
+        bb=g_OptionsDialog->WxCheckAddOneLineBrackets->GetValue();
+        m_Config->Write(wxT("add_one_line_brackets"), bb);
+        bb=g_OptionsDialog->WxCheckKeepComplex->GetValue();
+        m_Config->Write(wxT("keep_complex"), bb);
+        bb=g_OptionsDialog->WxCheckRemoveBrackets->GetValue();
+        m_Config->Write(wxT("remove_brackets"), bb);
+        bb=g_OptionsDialog->WxCheckKeepBlocks->GetValue();
+        m_Config->Write(wxT("keep_blocks"), bb);
+        bb=g_OptionsDialog->WxCheckConvertTabs->GetValue();
+        m_Config->Write(wxT("convertwxTabs"), bb);
+        bb=g_OptionsDialog->WxCheckCloseTemplates->GetValue();
+        m_Config->Write(wxT("closewxTemplates"), bb);
+        bb=g_OptionsDialog->WxCheckRemoveCommentPrefix->GetValue();
+        m_Config->Write(wxT("remove_comment_prefix"), bb);
+
+        bb=g_OptionsDialog->WxCheckBreakLines->GetValue();
+        bb = m_Config->Write(wxT("break_lines"), bb);
+        if(bb)
+        {
+            wxString maxLine = g_OptionsDialog->WxEditSFMaxLineLength->GetValue();
+            m_Config->Read(wxT("max_line_length"), maxLine);
+            bb=g_OptionsDialog->WxCheckBreakAfterLogical->GetValue();
+            m_Config->Write(wxT("break_after_mode"), bb);
+        }
+        
+        bb=g_OptionsDialog->WxCheckBreakBlocks->GetValue();
+        m_Config->Write(wxT("break_blocks"), bb);
+        bb=g_OptionsDialog->WxCheckBreakBlocksAll->GetValue();
+        m_Config->Write(wxT("break_blocks_all"), bb);
+        bb=g_OptionsDialog->WxCheckPadOperators->GetValue();
+        m_Config->Write(wxT("pad_operators"), bb);
+        bb=g_OptionsDialog->WxCheckPadParensOut->GetValue();
+        m_Config->Write(wxT("pad_parentheses_out"), bb);
+        bb=g_OptionsDialog->WxCheckPadParensIn->GetValue();
+        m_Config->Write(wxT("pad_parentheses_in"), bb);
+        bb=g_OptionsDialog->WxCheckPadHeader->GetValue();
+        m_Config->Write(wxT("pad_header"), bb);
+        bb=g_OptionsDialog->WxCheckUnpadParens ->GetValue();
+        m_Config->Write(wxT("unpad_parentheses"), bb);
+        bb=g_OptionsDialog->WxCheckDelEmptyLine->GetValue();
+        m_Config->Write(wxT("delete_empty_lines"), bb);
+        bb=g_OptionsDialog->WxCheckFillEmptyLines->GetValue();
+        m_Config->Write(wxT("fill_empty_lines"), bb);
+        
+        wxString pointerAlign("None");
+        switch(g_OptionsDialog->WxChoicePointerAlign->GetSelection())
+        {
+        case astyle::PTR_ALIGN_TYPE:
+            pointerAlign = wxString(_("Type"));
+            break;
+        case astyle::PTR_ALIGN_MIDDLE:
+            pointerAlign = wxString(_("Middle"));
+            break;
+        case astyle::PTR_ALIGN_NAME:
+            pointerAlign = wxString(_("Name"));
+            break;
+        default :
+            break;
+        }
+        
+        m_Config->Write(wxT("pointer_align"), pointerAlign);
+        
+        wxString referenceAlign("None");
+        switch(g_OptionsDialog->WxChoiceReferenceAlign->GetSelection())
+        {
+        case astyle::REF_ALIGN_TYPE:
+            referenceAlign = wxString(_("Type"));
+            break;
+        case astyle::REF_ALIGN_MIDDLE:
+            referenceAlign = wxString(_("Middle"));
+            break;
+        case astyle::REF_ALIGN_NAME:
+            referenceAlign = wxString(_("Name"));
+            break;
+        default :
+            break;
+        }
+        
+        m_Config->Write(wxT("reference_align"), referenceAlign);
+        
         m_Config->SetPath(oldpath);
     }
 }

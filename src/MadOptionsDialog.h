@@ -520,6 +520,7 @@ public:
 	void OnDictionaryDirChange(wxCommandEvent& event);
 	void OnSelectDictionary(wxCommandEvent& event);
 	void OnMouseAutoCopyClicked(wxCommandEvent& event);
+    void OnRadioBoxBracketStyleClick(wxCommandEvent& event);
 };
 
 
