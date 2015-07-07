@@ -1931,47 +1931,20 @@ bool IsTheSame(vector< T >& First, T * Second, size_t Len)
     return true;
 }
 
-int MadEdit::CountSingleLeftBracket(wxFileOffset startpos, wxFileOffset endpos)
+int MadEdit::GetIndentCountByPos(wxFileOffset endpos)
 {
-    MadLineIterator lineiter, startit, endit;
-    int endrow = -1, startrow = -1;
-
-    GetLineByPos(endit, endpos, endrow);
-    GetLineByPos(startit, startpos, startrow);
-    int subrowid = endrow;
-    wxFileOffset notused;
-    int lineid = GetLineByRow(lineiter, notused, subrowid) + 1;
-    int totalrow = endrow-startrow;
-    int wordwidth = 0, wordlength = 0, lastwordwidth = -1, count = 0;
-
-    //subrowid=endrow-subrowid;
+    MadLineIterator lineiter, lit;
+    int endrow = -1, count = 0;
+    vector <ucs4_t> spaces;
+    int lineid = GetLineByPos(lit, endpos, endrow);
     
-    m_Syntax->InitNextWord2(lineiter, startrow);
-    if(subrowid != 0)           // ignore rows above toprow
-    {
-        size_t hiderows = subrowid;
-        do
-        {
-            do
-            {
-                wordlength = m_Syntax->NextWord(wordwidth);
-                if(m_WordBuffer[0] == '{')
-                {
-                    ++count;
-                }
-                else if(m_WordBuffer[0] == '}')
-                {
-                    --count;
-                }
-            }
-            while(m_Syntax->nw_LineWidth != 0);
-        }
-        while(--hiderows != 0);
-    }
+    GetIndentSpaces(lineid, lit, spaces, true, false);
+    count = spaces.size()/GetIndentColumns();
+
 	return count;
 }
 
-void MadEdit::AjustWholeLineSel()
+void MadEdit::WholeLineSelection()
 {
     SetSelection(m_SelectionBegin->pos-m_SelectionBegin->linepos, m_SelectionEnd->pos-m_SelectionEnd->linepos+m_SelectionEnd->iter->m_Size);
 }
