@@ -1,0 +1,20 @@
+﻿生成启动时间为 2014/8/31 20:52:58。
+     1>项目“D:\madedit-mod\minipython\PC\VS8.0\python.vcxproj”在节点 2 上(Build 个目标)。
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (D:\madedit-mod\minipython\PC\VS8.0\Debug\) contains files shared from another project (pythoncore.vcxproj, pythonw.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\Include /I..\..\PC /Zi /nologo /W3 /WX- /Od /Ob1 /Oy- /D _CONSOLE /D _DEBUG /D _WIN32 /GF /Gm- /MTd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\madedit-mod\minipython\PC\VS8.0\Debug\\" /Fd"D:\madedit-mod\minipython\PC\VS8.0\Debug\vc120.pdb" /FR"D:\madedit-mod\minipython\PC\VS8.0\Debug\\" /Gd /TC /analyze- /errorReport:prompt ..\..\Modules\python.c
+         python.c
+     1>..\..\Modules\python.c(12): warning C4273: “Py_Main”: dll 链接不一致
+                 d:\madedit-mod\minipython\include\pythonrun.h(81) : 参见“Py_Main”的前一个定义
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\madedit-mod\minipython\PC\VS8.0\Debug\python_d.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"D:\madedit-mod\minipython\PC\VS8.0\Debug\\" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\madedit-mod\minipython\PC\VS8.0\Debug\python_d.pdb" /SUBSYSTEM:CONSOLE /STACK:"2000000" /TLBID:1 /BASE:"0x1d000000" /DYNAMICBASE:NO /IMPLIB:"D:\madedit-mod\minipython\PC\VS8.0\Debug\python_d.lib" /MACHINE:X86 /SAFESEH "D:\madedit-mod\minipython\PC\VS8.0\Debug\python_exe.res"
+         "D:\madedit-mod\minipython\PC\VS8.0\Debug\python.obj"
+         "D:\madedit-mod\minipython\PC\VS8.0\Debug\python27_d.lib"
+         python.vcxproj -> D:\madedit-mod\minipython\PC\VS8.0\Debug\python_d.exe
+       BscMake:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\bscmake.exe /nologo /o"D:\madedit-mod\minipython\PC\VS8.0\Debug\python_d.bsc" "D:\madedit-mod\minipython\PC\VS8.0\Debug\python.sbr"
+     1>已完成生成项目“D:\madedit-mod\minipython\PC\VS8.0\python.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:01.73

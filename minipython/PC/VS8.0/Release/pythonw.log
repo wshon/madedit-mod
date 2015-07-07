@@ -1,0 +1,12 @@
+﻿生成启动时间为 2014/8/31 20:58:25。
+     1>项目“D:\madedit-mod\minipython\PC\VS8.0\pythonw.vcxproj”在节点 3 上(Build 个目标)。
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (D:\madedit-mod\minipython\PC\VS8.0\Release\) contains files shared from another project (python.vcxproj, pythoncore.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\Include /I..\..\PC /Zi /nologo /W3 /WX- /O2 /Ob1 /Oi /Oy- /D _WINDOWS /D NDEBUG /D _WIN32 /GF /Gm- /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\madedit-mod\minipython\PC\VS8.0\Release\\" /Fd"D:\madedit-mod\minipython\PC\VS8.0\Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt ..\WinMain.c
+         WinMain.c
+     1>..\WinMain.c : fatal error C1041: 无法打开程序数据库“d:\madedit-mod\minipython\pc\vs8.0\release\vc120.pdb”；如果要将多个 CL.EXE 写入同一个 .PDB 文件，请使用 /FS
+     1>已完成生成项目“D:\madedit-mod\minipython\PC\VS8.0\pythonw.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:00.27

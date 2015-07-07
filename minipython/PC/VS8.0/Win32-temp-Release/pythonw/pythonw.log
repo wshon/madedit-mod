@@ -1,0 +1,21 @@
+﻿生成启动时间为 2014/8/31 20:54:42。
+     1>项目“D:\madedit-mod\minipython\PC\VS8.0\pythonw.vcxproj”在节点 3 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\Include /I..\..\PC /Zi /nologo /W3 /WX- /O2 /Ob1 /Oi /Oy- /D _WINDOWS /D NDEBUG /D _WIN32 /GF /Gm- /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\\" /Fd"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt ..\WinMain.c
+         WinMain.c
+     1>d:\madedit-mod\minipython\include\pymath.h(22): warning C4273: “round”: dll 链接不一致
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(516) : 参见“round”的前一个定义
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D NDEBUG /l"0x0409" /I..\..\PC /I..\..\Include /nologo /fo"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\python_exe.res" ..\python_exe.rc 
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1186,5): warning MSB8012: TargetPath(D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\pythonw.exe) does not match the Linker's OutputFile property value (D:\madedit-mod\minipython\bin\pythonw.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\madedit-mod\minipython\PC\VS8.0\\..\..\bin\pythonw.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\\" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\pythonw.pdb" /SUBSYSTEM:WINDOWS /STACK:"2000000" /TLBID:1 /BASE:"0x1d000000" /DYNAMICBASE:NO /IMPLIB:"D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\pythonw.lib" /MACHINE:X86 /SAFESEH "D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\python_exe.res"
+         "D:\madedit-mod\minipython\PC\VS8.0\Win32-temp-Release\pythonw\WinMain.obj"
+         "D:\madedit-mod\minipython\PC\VS8.0\Release\python27.lib"
+     1>WinMain.obj : error LNK2019: 无法解析的外部符号 __imp__Py_Main，该符号在函数 _WinMain@16 中被引用
+     1>D:\madedit-mod\minipython\PC\VS8.0\\..\..\bin\pythonw.exe : fatal error LNK1120: 1 个无法解析的外部命令
+     1>已完成生成项目“D:\madedit-mod\minipython\PC\VS8.0\pythonw.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:00.89
