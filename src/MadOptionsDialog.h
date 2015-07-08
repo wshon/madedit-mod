@@ -83,6 +83,14 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+		wxTextCtrl *WxEditXmlIndentSize;
+		wxStaticText *WxStaticText29;
+		wxBoxSizer *WxBoxSizer50;
+		wxTextCtrl *WxEditXMLversion;
+		wxStaticText *WxStaticText28;
+		wxBoxSizer *WxBoxSizer49;
+		wxBoxSizer *WxBoxSizer48;
+		wxPanel *WxAuiNoteBookPage6;
 		wxTextCtrl *WxEditMaxInStatementIndent;
 		wxStaticText *WxStaticText23;
 		wxBoxSizer *WxBoxSizer41;
@@ -303,6 +311,11 @@ public:
     //Try copy pasting the below block in your old Form header Files.
 	enum {
 ////GUI Enum Control ID Start
+			ID_WXEDITXMLINDENTSIZE = 1387,
+			ID_WXSTATICTEXT29 = 1386,
+			ID_WXEDITXMLVERSION = 1384,
+			ID_WXSTATICTEXT28 = 1383,
+			ID_WXAUINOTEBOOKPAGE6 = 1379,
 			ID_WXEDITMAXINSTATEMENTINDENT = 1322,
 			ID_WXSTATICTEXT23 = 1321,
 			ID_WXSPINCTRLMININDENT = 1319,

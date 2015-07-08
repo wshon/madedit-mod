@@ -100,6 +100,12 @@ ChangeLog:
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.3.4.1
+Fix: Saved config of Astyle don't take effect
+New: Group text convert/format into menu group
+New: Added XML formatter and config
+Updated translation
+
 Mod v0.3.4
 1.Fix: Record string issue in FindNext, FindPrev, Replace, ReplaceAll while Regex
     was enabled

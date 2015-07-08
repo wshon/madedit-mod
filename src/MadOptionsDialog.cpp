@@ -506,6 +506,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxCheckBoxPrintLineNumber->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer1->Add(WxCheckBoxPrintLineNumber, 0, wxALIGN_LEFT | wxALL, 1);
     SET_CONTROLPARENT(WxCheckBoxPrintLineNumber);
+
 	WxCheckBoxPrintBookmark = new wxCheckBox(WxNoteBookPage3, ID_WXCHECKBOXPRINTBOOKMARK, _("Print Bookmark"), wxPoint(6, 54), wxSize(150, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPrintBookmark"));
 	WxCheckBoxPrintBookmark->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxStaticBoxSizer1->Add(WxCheckBoxPrintBookmark, 0, wxALIGN_LEFT | wxALL, 1);
@@ -1114,7 +1115,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer44->Add(WxCheckBreakAfterLogical, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxCheckBreakAfterLogical);
 
-	WxAuiNoteBookPage5 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE2, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage5 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE5, wxPoint(4, 24), wxSize(675, 414));
 	WxAuiNoteBookPage5->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage5, _("Padding"));
 
@@ -1250,6 +1251,38 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->AppendSeparator();
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
+
+	WxAuiNoteBookPage6 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE6, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage6->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxAuiNotebook1->AddPage(WxAuiNoteBookPage6, wxT("XML"));
+
+	WxBoxSizer48 = new wxBoxSizer(wxVERTICAL);
+	WxAuiNoteBookPage6->SetSizer(WxBoxSizer48);
+	WxAuiNoteBookPage6->SetAutoLayout(true);
+
+	WxBoxSizer49 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer48->Add(WxBoxSizer49, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxStaticText28 = new wxStaticText(WxAuiNoteBookPage6, ID_WXSTATICTEXT28, _("XML version:"), wxPoint(5, 6), wxDefaultSize, 0, wxT("WxStaticText28"));
+	WxStaticText28->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer49->Add(WxStaticText28, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxEditXMLversion = new wxTextCtrl(WxAuiNoteBookPage6, ID_WXEDITXMLVERSION, wxT("1.0"), wxPoint(81, 5), wxSize(49, 19), 0, wxTextValidator(wxFILTER_ASCII, NULL), wxT("WxEditXMLversion"));
+	WxEditXMLversion->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer49->Add(WxEditXMLversion, 0, wxALIGN_LEFT | wxALL, 5);
+	SET_CONTROLPARENT(WxEditXMLversion);
+
+	WxBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer48->Add(WxBoxSizer50, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxStaticText29 = new wxStaticText(WxAuiNoteBookPage6, ID_WXSTATICTEXT29, _("Indentation size(in spaces):"), wxPoint(5, 6), wxDefaultSize, 0, wxT("WxStaticText29"));
+	WxStaticText29->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer50->Add(WxStaticText29, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxEditXmlIndentSize = new wxTextCtrl(WxAuiNoteBookPage6, ID_WXEDITXMLINDENTSIZE, wxT("4"), wxPoint(147, 5), wxSize(49, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditXmlIndentSize"));
+	WxEditXmlIndentSize->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
+	WxBoxSizer50->Add(WxEditXmlIndentSize, 0, wxALIGN_LEFT | wxALL, 5);
+	SET_CONTROLPARENT(WxEditXmlIndentSize);
 
 	SetTitle(_("Options"));
 	SetIcon(wxNullIcon);
@@ -1724,6 +1757,11 @@ void MadOptionsDialog::LoadOptions(void)
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NAME);
     else
         WxChoiceReferenceAlign->SetSelection(astyle::REF_ALIGN_NONE);
+
+    cfg->SetPath(wxT("/xml"));
+
+    WxEditXmlIndentSize->SetValue(wxString()<<cfg->ReadLong(wxT("indentation"), 4));
+	WxEditXMLversion->SetValue(cfg->Read(wxT("version"), wxString(wxT("1.0"))));
 
     cfg->SetPath(oldpath);
 

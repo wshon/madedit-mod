@@ -47,6 +47,8 @@
 #include <wx/dnd.h>
 #include <wx/printdlg.h>
 #include "wx/wxhtml.h"
+#include <wx/xml/xml.h>
+#include <wx/sstream.h>
 
 #include <algorithm>
 
@@ -238,6 +240,7 @@ wxMenu *g_Menu_Tools_BOM = NULL;
 wxMenu *g_Menu_Tools_NewLineChar = NULL;
 wxMenu *g_Menu_Tools_InsertNewLineChar = NULL;
 wxMenu *g_Menu_Tools_ConvertChineseChar = NULL;
+wxMenu *g_Menu_Tools_TextConvFormatter = NULL;
 wxMenu *g_Menu_MadMacro = NULL;
 wxMenu *g_Menu_MadMacro_Scripts = NULL;
 wxMenu *g_Menu_Toolbars = NULL;
@@ -1363,7 +1366,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_UPDATE_UI(menuChinese2Kanji, MadEditFrame::OnUpdateUI_MenuToolsConvertEncoding)
     EVT_UPDATE_UI(menuMarkdown2Html, MadEditFrame::OnUpdateUI_MenuTools_Markdown2Html)
     EVT_UPDATE_UI(menuHtml2PlainText, MadEditFrame::OnUpdateUI_MenuTools_Html2PlainText)
-    EVT_UPDATE_UI(menuAutoFormat, MadEditFrame::OnUpdateUI_MenuTools_menuAutoFormat)
+    EVT_UPDATE_UI(menuAstyleFormat, MadEditFrame::OnUpdateUI_MenuTools_AstyleFormat)
+    EVT_UPDATE_UI(menuXMLFormat, MadEditFrame::OnUpdateUI_MenuTools_XMLFormat)
     EVT_UPDATE_UI(menuWordCount, MadEditFrame::OnUpdateUI_MenuFile_CheckCount)
     // window
     EVT_UPDATE_UI(menuToggleWindow, MadEditFrame::OnUpdateUI_MenuWindow_CheckCount)
@@ -1526,7 +1530,8 @@ BEGIN_EVENT_TABLE(MadEditFrame,wxFrame)
     EVT_MENU(menuChinese2KanjiClipboard, MadEditFrame::OnToolsChinese2KanjiClipboard)
     EVT_MENU(menuMarkdown2Html, MadEditFrame::OnToolsMarkdown2Html)
     EVT_MENU(menuHtml2PlainText, MadEditFrame::OnToolsHtml2PlainText)
-    EVT_MENU(menuAutoFormat, MadEditFrame::OnToolsAutoFormat)
+    EVT_MENU(menuAstyleFormat, MadEditFrame::OnToolsAstyleFormat)
+	EVT_MENU(menuXMLFormat, MadEditFrame::OnToolsXMLFormat)
 	EVT_MENU(menuWordCount, MadEditFrame::OnToolsWordCount)
     // window
     EVT_MENU(menuToggleWindow, MadEditFrame::OnWindowToggleWindow)
@@ -1900,8 +1905,8 @@ CommandData CommandTable[]=
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuNewLineChar,        wxT("menuNewLineChar"),        _("NewLine Char (File Format): "),                  0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_NewLineChar,        0},
     { 0,               2, menuConvertToDOS,       wxT("menuConvertToDOS"),       _("Convert To CRLF/0D0A (&DOS)"),                   wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Convert the file format to DOS format")},
-    { 0,               2, menuConvertToMAC,       wxT("menuConvertToMAC"),       _("Convert To CR/0D (Old &MAC)"),                       wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Convert the file format to MAC format")},
-    { 0,               2, menuConvertToUNIX,      wxT("menuConvertToUNIX"),      _("Convert To LF/0A (&UNIX/OSX)"),                      wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Convert the file format to UNIX format")},
+    { 0,               2, menuConvertToMAC,       wxT("menuConvertToMAC"),       _("Convert To CR/0D (Old &MAC)"),                   wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Convert the file format to MAC format")},
+    { 0,               2, menuConvertToUNIX,      wxT("menuConvertToUNIX"),      _("Convert To LF/0A (&UNIX/OSX)"),                  wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Convert the file format to UNIX format")},
     { 0,               1, menuInsertNewLineChar,  wxT("menuInsertNewLineChar"),  _("Press Enter to Insert NewLine Char: "),          0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_InsertNewLineChar,  0},
     { 0,               2, menuInsertDOS,          wxT("menuInsertDOS"),          _("Insert CRLF/0D0A (&DOS)"),                       wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Insert CR&LF chars when pressing Enter key")},
     { 0,               2, menuInsertMAC,          wxT("menuInsertMAC"),          _("Insert CR/0D (Old &MAC)"),                       wxT(""),       wxITEM_NORMAL,    -1, 0,                                _("Insert CR char when pressing Enter key")},
@@ -1922,10 +1927,13 @@ CommandData CommandTable[]=
     { 0,               2, menuKanji2SimpClipboard,    wxT("menuKanji2SimpClipboard"),    _("Clipboard: Japanese Kanji to Sim&plified Chinese"),      0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to simplified Chinese chars in the clipboard")},
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
-    { 0,               1, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
+    { 0,               1, menuTextConvFormatter,      wxT("menuTextConvFormatter"),      _("Text Converter/Formatter"),                              0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_TextConvFormatter, 0},
+    { 0,               2, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
+    { 0,               2, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
+    { 0,               2, 0,                          0,                                 0,                                                          0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               2, menuAstyleFormat,           wxT("menuAstyleFormat"),           _("&Astyle(C++/C#/Java/ObjC)"),                             0,             wxITEM_NORMAL,    -1, 0,                                _("Format selection or whole file(C++/C#/Java)")},
+    { 0,               2, menuXMLFormat,              wxT("menuXMLFormat"),              _("&XML Formatter"),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Format XML(whole file)")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               1, menuAutoFormat,             wxT("menuAutoFormat"),             _("&Format Text"),                                          0,             wxITEM_NORMAL,    -1, 0,                                _("Format Selection or whole file")},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
@@ -2402,6 +2410,7 @@ void MadEditFrame::CreateGUIControls(void)
     g_Menu_Tools_NewLineChar = new wxMenu((long)0);
     g_Menu_Tools_InsertNewLineChar = new wxMenu((long)0);
     g_Menu_Tools_ConvertChineseChar = new wxMenu((long)0);
+    g_Menu_Tools_TextConvFormatter = new wxMenu((long)0);
     g_Menu_View_Font0 = new wxMenu((long)0);
     g_Menu_View_Font1 = new wxMenu((long)0);
     g_Menu_View_Font2 = new wxMenu((long)0);
@@ -4316,7 +4325,13 @@ void MadEditFrame::OnUpdateUI_MenuTools_Html2PlainText(wxUpdateUIEvent& event)
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
 }
 
-void MadEditFrame::OnUpdateUI_MenuTools_menuAutoFormat(wxUpdateUIEvent& event)
+void MadEditFrame::OnUpdateUI_MenuTools_AstyleFormat(wxUpdateUIEvent& event)
+{
+    event.Enable(g_ActiveMadEdit!=NULL &&
+        !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
+}
+
+void MadEditFrame::OnUpdateUI_MenuTools_XMLFormat(wxUpdateUIEvent& event)
 {
     event.Enable(g_ActiveMadEdit!=NULL &&
         !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->IsTextFile());
@@ -6927,6 +6942,10 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         }
 
         m_Config->Write(wxT("reference_align"), referenceAlign);
+		
+		m_Config->Write(wxT("xmlindentation"), g_OptionsDialog->WxEditXmlIndentSize->GetValue());
+		m_Config->Write(wxT("xmlversion"), g_OptionsDialog->WxEditXMLversion->GetValue());
+
         m_Config->SetPath(oldpath);
     }
 }
@@ -7571,7 +7590,7 @@ static bool BuffersDiffer( const wxString &a, const wxString &b )
     return false;
 }
 
-void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
+void MadEditFrame::OnToolsAstyleFormat(wxCommandEvent& event)
 {
     if(g_ActiveMadEdit==NULL) return;
     wxString text;
@@ -7673,6 +7692,34 @@ void MadEditFrame::OnToolsAutoFormat(wxCommandEvent& event)
 		else
 		{
 			g_ActiveMadEdit->SetText(formattedText);
+		}
+	}
+}
+
+void MadEditFrame::OnToolsXMLFormat(wxCommandEvent& event)
+{
+	static wxXmlDocument xmlDoc;
+    if(g_ActiveMadEdit==NULL) return;
+    wxString text;
+	g_ActiveMadEdit->GetText(text, false);
+	if(!text.IsEmpty())
+	{
+		wxStringInputStream instr(text);
+		wxCSConv docConv(g_ActiveMadEdit->GetEncodingName());
+		xmlDoc.Load(instr, g_ActiveMadEdit->GetEncodingName());
+		if(xmlDoc.IsOk())
+		{
+			wxConfigBase	*cfg=wxConfigBase::Get(false);
+		    wxString oldpath = cfg->GetPath();
+			cfg->SetPath(wxT("/xml"));
+			long indentsize = cfg->ReadLong(wxT("indentation"), 4);
+			wxString ver(cfg->Read(wxT("version"), wxString(wxT("1.0"))));
+
+			xmlDoc.SetVersion(ver);
+			wxStringOutputStream outstr(0, docConv);
+			xmlDoc.Save(outstr, (int)indentsize);
+			g_ActiveMadEdit->SetText(outstr.GetString());
+			cfg->SetPath(oldpath);
 		}
 	}
 }
