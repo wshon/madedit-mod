@@ -6942,9 +6942,10 @@ void MadEditFrame::OnToolsOptions(wxCommandEvent& event)
         }
 
         m_Config->Write(wxT("reference_align"), referenceAlign);
-		
-		m_Config->Write(wxT("xmlindentation"), g_OptionsDialog->WxEditXmlIndentSize->GetValue());
-		m_Config->Write(wxT("xmlversion"), g_OptionsDialog->WxEditXMLversion->GetValue());
+
+		m_Config->SetPath(wxT("/xml"));
+		m_Config->Write(wxT("indentation"), g_OptionsDialog->WxEditXmlIndentSize->GetValue());
+		m_Config->Write(wxT("version"), g_OptionsDialog->WxEditXMLversion->GetValue());
 
         m_Config->SetPath(oldpath);
     }
@@ -7713,9 +7714,12 @@ void MadEditFrame::OnToolsXMLFormat(wxCommandEvent& event)
 		    wxString oldpath = cfg->GetPath();
 			cfg->SetPath(wxT("/xml"));
 			long indentsize = cfg->ReadLong(wxT("indentation"), 4);
-			wxString ver(cfg->Read(wxT("version"), wxString(wxT("1.0"))));
-
-			xmlDoc.SetVersion(ver);
+			wxString xmlver(xmlDoc.GetVersion());
+			if (xmlver.IsEmpty())
+			{
+				wxString ver(cfg->Read(wxT("version"), wxString(wxT("1.0"))));
+				xmlDoc.SetVersion(ver);
+			}
 			wxStringOutputStream outstr(0, docConv);
 			xmlDoc.Save(outstr, (int)indentsize);
 			g_ActiveMadEdit->SetText(outstr.GetString());
