@@ -1,3 +1,12 @@
+madedit-mod (0.3.4.1-1) unstable; urgency=low
+
+  1. Fix: Saved config of Astyle don't take effect
+  2. New: Group text convert/format into menu group
+  3. New: Added XML formatter and config
+  4. Updated translation
+
+ -- Minggang Li <liminggang@gmail.com>  Wed, 8 July 2015 21:05:40 +0800
+
 madedit-mod (0.3.4-1) unstable; urgency=low
 
   1. Fix: Record string issue in FindNext, FindPrev, Replace, ReplaceAll while Regex was enabled
