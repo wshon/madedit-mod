@@ -534,6 +534,8 @@ public:
 	void OnSelectDictionary(wxCommandEvent& event);
 	void OnMouseAutoCopyClicked(wxCommandEvent& event);
     void OnRadioBoxBracketStyleClick(wxCommandEvent& event);
+	void OnFormattingBreakLinesClick(wxCommandEvent& event);
+	void OnPaddingBreakBlocksClick(wxCommandEvent& event);
 };
 
 

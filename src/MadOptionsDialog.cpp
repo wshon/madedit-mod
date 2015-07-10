@@ -176,11 +176,14 @@ BEGIN_EVENT_TABLE(MadOptionsDialog,wxDialog)
 	EVT_BUTTON(ID_WXBUTTONDELETEKEY,MadOptionsDialog::WxButtonDeleteKeyClick)
 	EVT_BUTTON(ID_WXBUTTONADDKEY,MadOptionsDialog::WxButtonAddKeyClick)
 	EVT_LISTBOX(ID_WXLISTBOXKEYS,MadOptionsDialog::WxListBoxKeysSelected)
-	EVT_RADIOBOX(ID_WXRADIOBOXBRACKETSTYLE, MadOptionsDialog::OnRadioBoxBracketStyleClick)
-	
+
 	EVT_TREE_SEL_CHANGED(ID_WXTREECTRL1,MadOptionsDialog::WxTreeCtrl1SelChanged)
 	EVT_CHECKBOX(ID_WXCHECKBOXMOUSESELECTTOCOPY,MadOptionsDialog::OnMouseAutoCopyClicked)
 	EVT_BUTTON(ID_WXBUTTONDATETIME,MadOptionsDialog::WxButtonDateTimeClick)
+
+	EVT_RADIOBOX(ID_WXRADIOBOXBRACKETSTYLE, MadOptionsDialog::OnRadioBoxBracketStyleClick)
+	EVT_CHECKBOX(ID_WXCHECKBREAKLINES,MadOptionsDialog::OnFormattingBreakLinesClick)
+	EVT_CHECKBOX(ID_WXCHECKBREAKBLOCKS,MadOptionsDialog::OnPaddingBreakBlocksClick)
 END_EVENT_TABLE()
     ////Event Table End
 
@@ -938,9 +941,9 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxStaticText17 = new wxStaticText(WxAuiNoteBookPage3, ID_WXSTATICTEXT17, _("Indentation size (in spaces):"), wxPoint(1, 3), wxDefaultSize, 0, wxT("WxStaticText17"));
 	WxStaticText17->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer37->Add(WxStaticText17, 0, wxALIGN_LEFT | wxALL, 1);
+	WxBoxSizer37->Add(WxStaticText17, 0, wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 1);
 
-	WxSpinIndentation = new wxSpinCtrl(WxAuiNoteBookPage3, ID_WXSPINCTRLINDENTSIZE, wxT("4"), wxPoint(138, 1), wxSize(457, 22), wxSP_ARROW_KEYS, 2, 8, 4);
+	WxSpinIndentation = new wxSpinCtrl(WxAuiNoteBookPage3, ID_WXSPINCTRLINDENTSIZE, wxT("4"), wxPoint(138, 1), wxSize(60, 19), wxSP_ARROW_KEYS, 2, 8, 4);
 	WxSpinIndentation->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer37->Add(WxSpinIndentation, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxSpinIndentation);
@@ -1012,9 +1015,9 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxStaticText22 = new wxStaticText(WxAuiNoteBookPage3, ID_WXSTATICTEXT22, _("Minimal indent added when a header is built of multiple lines:"), wxPoint(1, 3), wxDefaultSize, 0, wxT("WxStaticText22"));
 	WxStaticText22->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer40->Add(WxStaticText22, 0, wxALIGN_LEFT | wxALL, 1);
+	WxBoxSizer40->Add(WxStaticText22, 0, wxALIGN_LEFT | wxALIGN_BOTTOM | wxALL, 1);
 
-	WxSpinMinConditionalEvent = new wxSpinCtrl(WxAuiNoteBookPage3, ID_WXSPINCTRLMININDENT, wxT("2"), wxPoint(290, 1), wxSize(121, 22), wxSP_ARROW_KEYS, 0, 3, 2);
+	WxSpinMinConditionalEvent = new wxSpinCtrl(WxAuiNoteBookPage3, ID_WXSPINCTRLMININDENT, wxT("2"), wxPoint(290, 1), wxSize(60, 19), wxSP_ARROW_KEYS, 0, 3, 2);
 	WxSpinMinConditionalEvent->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer40->Add(WxSpinMinConditionalEvent, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxSpinMinConditionalEvent);
@@ -1026,7 +1029,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText23->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer41->Add(WxStaticText23, 0, wxALIGN_LEFT | wxALL, 1);
 
-	WxEditMaxInStatementIndent = new wxTextCtrl(WxAuiNoteBookPage3, ID_WXEDITMAXINSTATEMENTINDENT, wxT("40"), wxPoint(298, 1), wxSize(121, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditMaxInStatementIndent"));
+	WxEditMaxInStatementIndent = new wxTextCtrl(WxAuiNoteBookPage3, ID_WXEDITMAXINSTATEMENTINDENT, wxT("40"), wxPoint(298, 1), wxSize(60, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditMaxInStatementIndent"));
 	WxEditMaxInStatementIndent->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer41->Add(WxEditMaxInStatementIndent, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxEditMaxInStatementIndent);
@@ -1097,11 +1100,11 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer43 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer42->Add(WxBoxSizer43, 0, wxALIGN_LEFT | wxALL, 1);
 
-	WxStaticText24 = new wxStaticText(WxAuiNoteBookPage4, ID_WXSTATICTEXT24, _("Break lines after amount of chars (range: 50-200)"), wxPoint(5, 2), wxDefaultSize, 0, wxT("WxStaticText24"));
+	WxStaticText24 = new wxStaticText(WxAuiNoteBookPage4, ID_WXSTATICTEXT24, _("Break lines after amount of chars (range: 50-200)"), wxPoint(15, 2), wxDefaultSize, 0, wxT("WxStaticText24"));
 	WxStaticText24->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer43->Add(WxStaticText24, 0, wxALIGN_LEFT | wxALL, 1);
 
-	WxEditSFMaxLineLength = new wxTextCtrl(WxAuiNoteBookPage4, ID_WXEDITSFMAXLINELENGTH, wxT("200"), wxPoint(237, 1), wxSize(121, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditSFMaxLineLength"));
+	WxEditSFMaxLineLength = new wxTextCtrl(WxAuiNoteBookPage4, ID_WXEDITSFMAXLINELENGTH, wxT("200"), wxPoint(247, 1), wxSize(60, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditSFMaxLineLength"));
 	WxEditSFMaxLineLength->Enable(false);
 	WxEditSFMaxLineLength->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer43->Add(WxEditSFMaxLineLength, 0, wxALIGN_LEFT | wxALL, 1);
@@ -1110,7 +1113,8 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer44 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer42->Add(WxBoxSizer44, 0, wxALIGN_LEFT | wxALL, 1);
 
-	WxCheckBreakAfterLogical = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKAFTERLOGICAL, _("Break logical conditionals to be placed last on the previous line"), wxPoint(5, 1), wxSize(497, 17), 0, wxDefaultValidator, wxT("WxCheckBreakAfterLogical"));
+	WxCheckBreakAfterLogical = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKAFTERLOGICAL, _("Break logical conditionals to be placed last on the previous line"), wxPoint(15, 1), wxSize(497, 17), 0, wxDefaultValidator, wxT("WxCheckBreakAfterLogical"));
+    WxCheckBreakAfterLogical->Enable(false);
 	WxCheckBreakAfterLogical->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer44->Add(WxCheckBreakAfterLogical, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxCheckBreakAfterLogical);
@@ -1123,12 +1127,13 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxAuiNoteBookPage5->SetSizer(WxBoxSizer45);
 	WxAuiNoteBookPage5->SetAutoLayout(true);
 
-	WxCheckBreakBlocks = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKS, _("Pad empty lines around header blocks (e.g. 'if', 'while'...)"), wxPoint(167, 2), wxSize(97, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocks"));
+	WxCheckBreakBlocks = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKS, _("Pad empty lines around header blocks (e.g. 'if', 'while'...)"), wxPoint(167, 2), wxSize(467, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocks"));
 	WxCheckBreakBlocks->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer45->Add(WxCheckBreakBlocks, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakBlocks);
 
-	WxCheckBreakBlocksAll = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKSALL, _("Treat closing header blocks (e.g. 'else', 'catch') as stand-alone blocks"), wxPoint(167, 23), wxSize(97, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocksAll"));
+	WxCheckBreakBlocksAll = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKSALL, _("Treat closing header blocks (e.g. 'else', 'catch') as stand-alone blocks"), wxPoint(167, 23), wxSize(467, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocksAll"));
+    WxCheckBreakBlocksAll->Enable(false);
 	WxCheckBreakBlocksAll->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer45->Add(WxCheckBreakBlocksAll, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakBlocksAll);
@@ -1169,11 +1174,11 @@ void MadOptionsDialog::CreateGUIControls(void)
 	SET_CONTROLPARENT(WxCheckFillEmptyLines);
 
 	WxBoxSizer46 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer45->Add(WxBoxSizer46, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer45->Add(WxBoxSizer46, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxStaticText25 = new wxStaticText(WxAuiNoteBookPage5, ID_WXSTATICTEXT25, _("Pointer alignment:"), wxPoint(5, 7), wxDefaultSize, 0, wxT("WxStaticText25"));
 	WxStaticText25->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer46->Add(WxStaticText25, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer46->Add(WxStaticText25, 0, wxALIGN_LEFT | wxALL, 2);
 
 	wxArrayString arrayStringFor_WxChoicePointerAlign;
 	arrayStringFor_WxChoicePointerAlign.Add(_("None"));
@@ -1261,27 +1266,27 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxAuiNoteBookPage6->SetAutoLayout(true);
 
 	WxBoxSizer49 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer48->Add(WxBoxSizer49, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer48->Add(WxBoxSizer49, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxStaticText28 = new wxStaticText(WxAuiNoteBookPage6, ID_WXSTATICTEXT28, _("XML version:"), wxPoint(5, 6), wxDefaultSize, 0, wxT("WxStaticText28"));
 	WxStaticText28->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer49->Add(WxStaticText28, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer49->Add(WxStaticText28, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxEditXMLversion = new wxTextCtrl(WxAuiNoteBookPage6, ID_WXEDITXMLVERSION, wxT("1.0"), wxPoint(81, 5), wxSize(49, 19), 0, wxTextValidator(wxFILTER_ASCII, NULL), wxT("WxEditXMLversion"));
 	WxEditXMLversion->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer49->Add(WxEditXMLversion, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer49->Add(WxEditXMLversion, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxEditXMLversion);
 
 	WxBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer48->Add(WxBoxSizer50, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer48->Add(WxBoxSizer50, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxStaticText29 = new wxStaticText(WxAuiNoteBookPage6, ID_WXSTATICTEXT29, _("Indentation size(in spaces):"), wxPoint(5, 6), wxDefaultSize, 0, wxT("WxStaticText29"));
 	WxStaticText29->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer50->Add(WxStaticText29, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer50->Add(WxStaticText29, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxEditXmlIndentSize = new wxTextCtrl(WxAuiNoteBookPage6, ID_WXEDITXMLINDENTSIZE, wxT("4"), wxPoint(147, 5), wxSize(49, 19), 0, wxTextValidator(wxFILTER_NUMERIC, NULL), wxT("WxEditXmlIndentSize"));
 	WxEditXmlIndentSize->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer50->Add(WxEditXmlIndentSize, 0, wxALIGN_LEFT | wxALL, 5);
+	WxBoxSizer50->Add(WxEditXmlIndentSize, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxEditXmlIndentSize);
 
 	SetTitle(_("Options"));
@@ -1724,12 +1729,28 @@ void MadOptionsDialog::LoadOptions(void)
     WxCheckBreakLines->SetValue(bb);
     if(bb)
     {
+        WxEditSFMaxLineLength->Enable(true);
+        WxCheckBreakAfterLogical->Enable(true);
         WxEditSFMaxLineLength->SetValue(cfg->Read(wxT("max_line_length"), wxString(wxT("200"))));
         WxCheckBreakAfterLogical->SetValue(cfg->ReadBool(wxT("break_after_mode"), false));
     }
+    else
+    {
+        WxEditSFMaxLineLength->Enable(false);
+        WxCheckBreakAfterLogical->Enable(false);
+    }
 
     WxCheckBreakBlocks->SetValue(cfg->ReadBool(wxT("break_blocks"), true));
-    WxCheckBreakBlocksAll->SetValue(cfg->ReadBool(wxT("break_blocks_all"), false));
+    
+    if(WxCheckBreakBlocks->GetValue())
+    {
+        WxCheckBreakBlocksAll->Enable(true);
+        WxCheckBreakBlocksAll->SetValue(cfg->ReadBool(wxT("break_blocks_all"), false));
+    }
+    else
+    {
+        WxCheckBreakBlocksAll->Enable(false);
+    }
     WxCheckPadOperators->SetValue(cfg->ReadBool(wxT("pad_operators"), true));
     WxCheckPadParensOut->SetValue(cfg->ReadBool(wxT("pad_parentheses_out"), false));
     WxCheckPadParensIn->SetValue(cfg->ReadBool(wxT("pad_parentheses_in"), true));
@@ -2207,6 +2228,32 @@ void MadOptionsDialog::OnRadioBoxBracketStyleClick(wxCommandEvent& event)
         default: // Custom
             WxTextSample->SetValue(bracket_style[aspsCustom]);
             break;
+    }
+}
+
+void MadOptionsDialog::OnFormattingBreakLinesClick(wxCommandEvent& event)
+{
+    if(WxCheckBreakLines->GetValue())
+    {
+        WxEditSFMaxLineLength->Enable(true);
+        WxCheckBreakAfterLogical->Enable(true);
+    }
+    else
+    {
+    	WxEditSFMaxLineLength->Enable(false);
+    	WxCheckBreakAfterLogical->Enable(false);
+    }
+}
+
+void MadOptionsDialog::OnPaddingBreakBlocksClick(wxCommandEvent& event)
+{
+    if(WxCheckBreakBlocks->GetValue())
+    {
+        WxCheckBreakBlocksAll->Enable(true);
+    }
+    else
+    {
+        WxCheckBreakBlocksAll->Enable(false);
     }
 }
 
