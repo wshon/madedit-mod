@@ -1931,7 +1931,7 @@ CommandData CommandTable[]=
     { 0,               2, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
     { 0,               2, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
     { 0,               2, 0,                          0,                                 0,                                                          0,             wxITEM_SEPARATOR, -1, 0,                                0},
-    { 0,               2, menuAstyleFormat,           wxT("menuAstyleFormat"),           _("&Astyle(C++/C#/Java/ObjC)"),                             0,             wxITEM_NORMAL,    -1, 0,                                _("Format selection or whole file(C++/C#/Java)")},
+    { 0,               2, menuAstyleFormat,           wxT("menuAstyleFormat"),           _("&Astyle(C++/C#/Java/ObjC)"),             wxT("Ctrl-Shift-F"),           wxITEM_NORMAL,    -1, 0,                                _("Format selection or whole file(C++/C#/Java)")},
     { 0,               2, menuXMLFormat,              wxT("menuXMLFormat"),              _("&XML Formatter"),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Format XML(whole file)")},
     { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
@@ -2422,7 +2422,7 @@ void MadEditFrame::CreateGUIControls(void)
 
     list<wxMenu*> menu_stack;
     CommandData *cd = &CommandTable[0];
-#if 0 //Output all accel key to text file
+#if defined(_DEBUG) && defined(__WXMSW__) //Output all accel key to text file
     wxTextFile KeyTable(g_MadEditAppDir + wxT("key_table.csv"));
     KeyTable.Create();
     KeyTable.Open(wxConvFile);
@@ -2437,7 +2437,7 @@ void MadEditFrame::CreateGUIControls(void)
 		KeyTable.AddLine(tSep);
         for(int i  = 0; i < sizeof(CommandTable)/sizeof(CommandData); ++i)
         {
-            if(CommandTable[i].key != 0/* && *(CommandTable[i].key) != 0*/)
+            if(CommandTable[i].menu_id != 0/* && *(CommandTable[i].key) != 0*/)
             {
                 wxString tKey(CommandTable[i].key), tMenu(CommandTable[i].text), tHint(CommandTable[i].hint);
                 if(tKey.Length()<col1.Length()) tKey +=col1.Left(col1.Length()-tKey.Length());
