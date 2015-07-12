@@ -2500,7 +2500,9 @@ void MadEditFrame::CreateGUIControls(void)
         }
         else
         {
-            wxMenuItem *mit=new wxMenuItem(menu_stack.back(), cd->menu_id, wxString(wxGetTranslation(cd->text)) + GetMenuKey(cd->menuid_name,cd->key), wxGetTranslation(cd->hint), cd->kind);
+            wxString memLabel(wxGetTranslation(cd->text));
+            if(memLabel == wxString(wxEmptyString)) memLabel = cd->text;
+            wxMenuItem *mit=new wxMenuItem(menu_stack.back(), cd->menu_id, memLabel + GetMenuKey(cd->menuid_name,cd->key), wxGetTranslation(cd->hint), cd->kind);
 
 #ifdef __WXMSW__
             if(bHasMenuIcon)
