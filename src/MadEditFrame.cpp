@@ -1172,6 +1172,7 @@ void UpdateMenus()
     g_Menu_Edit->UpdateUI();
     g_Menu_Search->UpdateUI();
     g_Menu_View->UpdateUI();
+	g_Menu_MadMacro->UpdateUI();
     g_Menu_Tools->UpdateUI();
     g_Menu_Window->UpdateUI();
     g_Menu_Help->UpdateUI();
