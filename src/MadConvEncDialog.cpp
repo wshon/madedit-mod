@@ -64,17 +64,17 @@ void MadConvEncDialog::CreateGUIControls(void)
 	this->SetAutoLayout(true);
 
 	WxBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxEXPAND | wxALL, 5);
 
 	WxStaticText1 = new wxStaticText(this, ID_WXSTATICTEXT1, _("New Encoding:"), wxPoint(5, 7), wxDefaultSize, 0, wxT("WxStaticText1"));
-	WxBoxSizer2->Add(WxStaticText1,0,wxALIGN_CENTER | wxALL,5);
+	WxBoxSizer2->Add(WxStaticText1,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	wxArrayString arrayStringFor_WxComboBoxEncoding;
 	WxComboBoxEncoding = new wxComboBox(this, ID_WXCOMBOBOXENCODING, wxT("WxComboBoxEncoding"), wxPoint(92, 5), wxSize(200, 21), arrayStringFor_WxComboBoxEncoding, wxCB_DROPDOWN | wxCB_READONLY, wxDefaultValidator, wxT("WxComboBoxEncoding"));
-	WxBoxSizer2->Add(WxComboBoxEncoding,0,wxALIGN_CENTER | wxALL,5);
+	WxBoxSizer2->Add(WxComboBoxEncoding,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_CENTER | wxEXPAND | wxALL, 5);
 
 	wxArrayString arrayStringFor_WxRadioBoxOption;
 	arrayStringFor_WxRadioBoxOption.Add(_("None"));
@@ -83,18 +83,18 @@ void MadConvEncDialog::CreateGUIControls(void)
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Traditional Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Simplified Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Chinese => Japanese Kanji"));
-	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(400, 300), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
+	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(300, 200), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
 	WxRadioBoxOption->SetSelection(0);
 	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER | wxEXPAND | wxALL, 5);
 
 	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(11, 5), wxSize(91, 30), 0, wxDefaultValidator, wxT("WxButtonOK"));
-	WxBoxSizer4->Add(WxButtonOK,0,wxALIGN_CENTER | wxALL,5);
+	WxBoxSizer4->Add(WxButtonOK,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	WxButtonCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(106, 5), wxSize(90, 30), 0, wxDefaultValidator, wxT("WxButtonCancel"));
-	WxBoxSizer4->Add(WxButtonCancel,0,wxALIGN_CENTER | wxALL,5);
+	WxBoxSizer4->Add(WxButtonCancel,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	SetTitle(_("Convert Encoding"));
 	SetIcon(wxNullIcon);
