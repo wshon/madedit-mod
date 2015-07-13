@@ -892,7 +892,7 @@ void MadOptionsDialog::CreateGUIControls(void)
     WxTextSample->SetText(wxT("int Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n"));
     */
 	WxTextSample = new wxTextCtrl(WxAuiNoteBookPage1, ID_WXRICHTEXTSAMPLE, wxT(""), wxPoint(19, 47), wxSize(219, 300), wxTE_MULTILINE | wxVSCROLL | wxHSCROLL | wxTE_READONLY, wxDefaultValidator, wxT("WxTextSample"));
-	WxTextSample->SetMaxLength(0);
+	//WxTextSample->SetMaxLength(0);
 	WxTextSample->AppendText(bracket_style[aspsAllman]);
 	WxTextSample->SetFocus();
 	WxTextSample->SetInsertionPointEnd();
