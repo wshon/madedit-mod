@@ -408,7 +408,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer23->Add(WxButtonDateTime, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1);
     SET_CONTROLPARENT(WxButtonDateTime);
 
-	WxCheckBoxDateTimeInEnglish = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXDATETIMEINENGLISH, _("Use English instead of current locale"), wxPoint(301, 3), wxSize(200, 20), 0, wxDefaultValidator, wxT("WxCheckBoxDateTimeInEnglish"));
+	WxCheckBoxDateTimeInEnglish = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXDATETIMEINENGLISH, _("Use English instead of current locale"), wxPoint(301, 3), wxSize(300, 20), 0, wxDefaultValidator, wxT("WxCheckBoxDateTimeInEnglish"));
 	WxBoxSizer23->Add(WxCheckBoxDateTimeInEnglish, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxDateTimeInEnglish);
 
@@ -485,7 +485,7 @@ void MadOptionsDialog::CreateGUIControls(void)
     SET_CONTROLPARENT(WxCheckBoxPrintSpaceChar);
 	
 	wxStaticBox* WxStaticBoxSizer2_StaticBoxObj = new wxStaticBox(WxNoteBookPage3, wxID_ANY, wxT("Hex Mode"));
-	WxStaticBoxSizer2 = new wxStaticBoxSizer(WxStaticBoxSizer2_StaticBoxObj, wxHORIZONTAL);
+	WxStaticBoxSizer2 = new wxStaticBoxSizer(WxStaticBoxSizer2_StaticBoxObj, wxVERTICAL);
 	WxBoxSizer15->Add(WxStaticBoxSizer2, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 4);
 
 	wxArrayString arrayStringFor_WxRadioBoxPrintOffset;

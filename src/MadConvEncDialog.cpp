@@ -88,7 +88,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER | wxEXPAND | wxALL, 5);
+	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER_HORIZONTAL | wxBOTTOM | wxEXPAND | wxALL, 5);
 
 	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(11, 5), wxSize(91, 30), 0, wxDefaultValidator, wxT("WxButtonOK"));
 	WxBoxSizer4->Add(WxButtonOK,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
