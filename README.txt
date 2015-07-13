@@ -94,6 +94,9 @@ Syntax files, Locale files and Settings:
 
 Feature/issues to be released
 -----------------------------
+WARNING:
+GTK3 build has issues introduced by wxWidgets. It has some assertion failures although it might do no harm 
+to what you are working on. However, please don't try it on your important work.
 
 ChangeLog:
 ----------
@@ -103,8 +106,9 @@ FreeBSD packaging (with FreeBSD 10.01)
 Mod v0.3.4.2
 Fix: Enable line breaking to enable disable 2 belows
 Fix: Pad empty lines function
-Fix: Ajust XML formatting config GUI
+Fix: XML formatting config GUI
 Fix: Ctrl-Shift-K for Astyle formatter
+Fix: Assertion if the string was not found in Translation
 
 Mod v0.3.4.1
 1. Fix: Saved config of Astyle don't take effect
