@@ -976,7 +976,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer44 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer42->Add(WxBoxSizer44, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1);
 
-	WxCheckBreakAfterLogical = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKAFTERLOGICAL, _("Break logical conditionals to be placed last on the previous line"), wxPoint(15, 1), wxSize(497, 17), 0, wxDefaultValidator, wxT("WxCheckBreakAfterLogical"));
+	WxCheckBreakAfterLogical = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKAFTERLOGICAL, _("Break logical conditionals to be placed last on the previous line"), wxPoint(15, 1), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakAfterLogical"));
     WxCheckBreakAfterLogical->Enable(false);
 	WxBoxSizer44->Add(WxCheckBreakAfterLogical, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1);
 	SET_CONTROLPARENT(WxCheckBreakAfterLogical);
@@ -988,40 +988,40 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxAuiNoteBookPage5->SetSizer(WxBoxSizer45);
 	WxAuiNoteBookPage5->SetAutoLayout(true);
 
-	WxCheckBreakBlocks = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKS, _("Pad empty lines around header blocks (e.g. 'if', 'while'...)"), wxPoint(167, 2), wxSize(467, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocks"));
+	WxCheckBreakBlocks = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKS, _("Pad empty lines around header blocks (e.g. 'if', 'while'...)"), wxPoint(167, 2), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocks"));
 	WxBoxSizer45->Add(WxCheckBreakBlocks, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakBlocks);
 
-	WxCheckBreakBlocksAll = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKSALL, _("Treat closing header blocks (e.g. 'else', 'catch') as stand-alone blocks"), wxPoint(167, 23), wxSize(467, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocksAll"));
+	WxCheckBreakBlocksAll = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKSALL, _("Treat closing header blocks (e.g. 'else', 'catch') as stand-alone blocks"), wxPoint(177, 23), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakBlocksAll"));
     WxCheckBreakBlocksAll->Enable(false);
 	WxBoxSizer45->Add(WxCheckBreakBlocksAll, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakBlocksAll);
 
-	WxCheckPadOperators = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADOPERATORS, _("Insert space padding around operators"), wxPoint(167, 44), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadOperators"));
+	WxCheckPadOperators = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADOPERATORS, _("Insert space padding around operators"), wxPoint(167, 44), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckPadOperators"));
 	WxBoxSizer45->Add(WxCheckPadOperators, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadOperators);
 
-	WxCheckPadParensOut = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADPARENSOUT, _("Insert space padding around parenthesies on the outside"), wxPoint(167, 65), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadParensOut"));
+	WxCheckPadParensOut = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADPARENSOUT, _("Insert space padding around parenthesies on the outside"), wxPoint(167, 65), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckPadParensOut"));
 	WxBoxSizer45->Add(WxCheckPadParensOut, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadParensOut);
 
-	WxCheckPadParensIn = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADPARENSIN, _("Insert space padding around parenthesies on the inside"), wxPoint(167, 86), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadParensIn"));
+	WxCheckPadParensIn = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADPARENSIN, _("Insert space padding around parenthesies on the inside"), wxPoint(167, 86), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckPadParensIn"));
 	WxBoxSizer45->Add(WxCheckPadParensIn, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadParensIn);
 
-	WxCheckPadHeader = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADHEADER, _("Insert space padding between a header and the following parenthesis"), wxPoint(167, 107), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckPadHeader"));
+	WxCheckPadHeader = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKPADHEADER, _("Insert space padding between a header and the following parenthesis"), wxPoint(167, 107), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckPadHeader"));
 	WxBoxSizer45->Add(WxCheckPadHeader, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckPadHeader);
 
-	WxCheckUnpadParens = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKUNPADPARENS, _("Remove extra space padding around parenthesis"), wxPoint(167, 128), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckUnpadParens"));
+	WxCheckUnpadParens = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKUNPADPARENS, _("Remove extra space padding around parenthesis"), wxPoint(167, 128), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckUnpadParens"));
 	WxBoxSizer45->Add(WxCheckUnpadParens, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckUnpadParens);
 
-	WxCheckDelEmptyLine = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKDELEMPTYLINE, _("Delete empty lines within a function or method"), wxPoint(167, 149), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckDelEmptyLine"));
+	WxCheckDelEmptyLine = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKDELEMPTYLINE, _("Delete empty lines within a function or method"), wxPoint(167, 149), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckDelEmptyLine"));
 	WxBoxSizer45->Add(WxCheckDelEmptyLine, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckDelEmptyLine);
 
-	WxCheckFillEmptyLines = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKFILLEMPTYLINES, _("Fill empty lines with the whitespace of their previous lines"), wxPoint(167, 170), wxSize(446, 17), 0, wxDefaultValidator, wxT("WxCheckFillEmptyLines"));
+	WxCheckFillEmptyLines = new wxCheckBox(WxAuiNoteBookPage5, ID_WXCHECKFILLEMPTYLINES, _("Fill empty lines with the whitespace of their previous lines"), wxPoint(167, 170), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckFillEmptyLines"));
 	WxBoxSizer45->Add(WxCheckFillEmptyLines, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckFillEmptyLines);
 

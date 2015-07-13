@@ -83,7 +83,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Traditional Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Simplified Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Chinese => Japanese Kanji"));
-	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(400, 400), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
+	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(400, 200), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
 	WxRadioBoxOption->SetSelection(0);
 	WxBoxSizer3->Add(WxRadioBoxOption,1,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
@@ -101,6 +101,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 
     ResizeItem(WxBoxSizer2, WxStaticText1, 2, 2);
 
+#if 0
     int strx=0, stry=0;
     wxString str=WxRadioBoxOption->GetLabel();
     WxRadioBoxOption->GetTextExtent(str, &strx, &stry);
@@ -114,6 +115,7 @@ void MadConvEncDialog::CreateGUIControls(void)
     stry = (stry *((int)WxRadioBoxOption->GetCount()+2))*4/3;
     WxRadioBoxOption->SetSize(strx+=35, stry);
     WxBoxSizer3->SetItemMinSize(WxRadioBoxOption, strx, stry);
+#endif
 
 	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer4, 0,wxALIGN_CENTER | wxALL, 5);
