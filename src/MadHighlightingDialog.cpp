@@ -204,6 +204,7 @@ void MadHighlightingDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	wxArrayString arrayStringFor_WxListBoxSyntax;
 	WxListBoxSyntax = new wxListBox(this, ID_WXLISTBOXSYNTAX, wxPoint(4, 32), wxSize(145, 380), arrayStringFor_WxListBoxSyntax, wxLB_SINGLE | wxLB_HSCROLL);

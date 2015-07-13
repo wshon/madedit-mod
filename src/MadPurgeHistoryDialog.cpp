@@ -59,6 +59,7 @@ void MadPurgeHistoryDialog::CreateGUIControls()
 	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
 	this->SetSizer(WxStaticBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	WxStaticBoxSizer1->Add(WxBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALL, 5);

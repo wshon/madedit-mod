@@ -107,6 +107,7 @@ void MadSearchDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	WxBoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 0);

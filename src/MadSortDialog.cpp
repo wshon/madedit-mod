@@ -62,6 +62,7 @@ void MadSortDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	wxArrayString arrayStringFor_WxRadioBoxOrder;
 	arrayStringFor_WxRadioBoxOrder.Add(_("&Ascending"));

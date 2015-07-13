@@ -266,6 +266,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	WxNotebook1 = new wxAuiNotebook(this, ID_WXNOTEBOOK1, wxPoint(0, 0), wxSize(683, 442), wxNB_DEFAULT);
 	WxNotebook1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));

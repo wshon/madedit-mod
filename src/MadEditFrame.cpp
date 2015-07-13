@@ -2158,6 +2158,7 @@ void MadEditFrame::CreateGUIControls(void)
     
     ////GUI Items Creation End
 #endif
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
     WxStatusBar1 = new wxStatusBar(this, ID_WXSTATUSBAR1);
     g_StatusBar = WxStatusBar1;

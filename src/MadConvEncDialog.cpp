@@ -65,6 +65,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	WxBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
@@ -88,7 +89,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Traditional Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Simplified Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Chinese => Japanese Kanji"));
-	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(500, 155), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
+	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(250, 155), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
 	WxRadioBoxOption->SetSelection(0);
 	WxRadioBoxOption->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);

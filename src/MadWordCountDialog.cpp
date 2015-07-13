@@ -71,6 +71,7 @@ void MadWordCountDialog::CreateGUIControls(void)
 	WxBoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
+    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
 	WxFlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 150);
 	WxBoxSizer1->Add(WxFlexGridSizer1, 0, wxALIGN_CENTER | wxALL, 4);
