@@ -264,10 +264,10 @@ void MadOptionsDialog::CreateGUIControls(void)
 	this->SetSizer(WxBoxSizer1);
 	this->SetAutoLayout(true);
 
-	WxNotebook1 = new wxAuiNotebook(this, ID_WXNOTEBOOK1, wxPoint(0, 0), wxSize(683, 442), wxNB_DEFAULT);
+	WxNotebook1 = new wxAuiNotebook(this, ID_WXNOTEBOOK1, wxPoint(0, 0), wxSize(700, 542), wxNB_DEFAULT);
 	WxBoxSizer1->Add(WxNotebook1, 1, wxEXPAND | wxALL, 0);
 
-	WxNoteBookPage1 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE1, wxPoint(4, 24), wxSize(675, 414));
+	WxNoteBookPage1 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE1, wxPoint(4, 24), wxSize(692, 514));
 	WxNotebook1->AddPage(WxNoteBookPage1, _("General"));
 
 	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -347,7 +347,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer7->Add(WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxPurgeHistory);
 
-	WxNoteBookPage2 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint(4, 24), wxSize(675, 414));
+	WxNoteBookPage2 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint(4, 24), wxSize(692, 514));
 	WxNotebook1->AddPage(WxNoteBookPage2, _("Edit"));
 
 	WxBoxSizer8 = new wxBoxSizer(wxVERTICAL);
@@ -446,7 +446,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer12->Add(WxCheckBoxAutoFillColumnPaste, 0, wxALIGN_LEFT | wxALL, 2);
     SET_CONTROLPARENT(WxCheckBoxAutoFillColumnPaste);
 
-	WxNoteBookPage3 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint(4, 24), wxSize(675, 414));
+	WxNoteBookPage3 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint(4, 24), wxSize(692, 514));
 	WxNotebook1->AddPage(WxNoteBookPage3, _("Print"));
 
 	WxBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
@@ -737,7 +737,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxStaticText21 = new wxStaticText(WxNoteBookPage5, ID_WXSTATICTEXT21, _("BitMap"), wxPoint(340, 9), wxDefaultSize, 0, wxT("WxStaticText21"));
 	WxBoxSizer32->Add(WxStaticText21, 0, wxALIGN_CENTER | wxALL, 5);
 #endif
-	WxNoteBookPage6 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE6, wxPoint(4, 24), wxSize(675, 414));
+	WxNoteBookPage6 = new wxPanel(WxNotebook1, ID_WXNOTEBOOKPAGE6, wxPoint(4, 24), wxSize(692, 514));
 	WxNotebook1->AddPage(WxNoteBookPage6, _("Source Formatter"));
 
 	WxBoxSizer34 = new wxBoxSizer(wxHORIZONTAL);
@@ -747,7 +747,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxAuiNotebook1 = new wxAuiNotebook(WxNoteBookPage6, ID_WXAUINOTEBOOK1, wxPoint(5, 5), wxSize(668, 398), wxNB_DEFAULT);
 	WxBoxSizer34->Add(WxAuiNotebook1, 0, wxEXPAND | wxALL, 5);
     
-	WxAuiNoteBookPage1 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE1, wxPoint(5, 5), wxSize(675, 414));
+	WxAuiNoteBookPage1 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE1, wxPoint(5, 5), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage1, _("Style"));
 
 
@@ -802,7 +802,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 
 	WxStaticBoxSizer7->Add(WxTextSample, 0, wxALIGN_LEFT | wxALL, 5);
 
-	WxAuiNoteBookPage2 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE2, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage2 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE2, wxPoint(4, 24), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage2, _("Brackets"));
 
 	WxBoxSizer35 = new wxBoxSizer(wxVERTICAL);
@@ -824,7 +824,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer35->Add(WxCheckAttachInlines, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckAttachInlines);
 
-	WxAuiNoteBookPage3 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE3, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage3 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE3, wxPoint(4, 24), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage3, _("Indentation"));
 
 	WxBoxSizer39 = new wxBoxSizer(wxVERTICAL);
@@ -844,50 +844,50 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer38 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer39->Add(WxBoxSizer38, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1);
 
-	WxCheckUseTab = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKUSETABOVERSPACES, _("Use TABs instead of spaces"), wxPoint(2, 2), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckUseTab"));
+	WxCheckUseTab = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKUSETABOVERSPACES, _("Use TABs instead of spaces"), wxPoint(2, 2), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckUseTab"));
 	WxBoxSizer38->Add(WxCheckUseTab, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckUseTab);
 
-	WxCheckForceUseTabs = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKFORCETABS, _("Force using TABs"), wxPoint(2, 23), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckForceUseTabs"));
+	WxCheckForceUseTabs = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKFORCETABS, _("Force using TABs"), wxPoint(2, 23), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckForceUseTabs"));
 	WxBoxSizer38->Add(WxCheckForceUseTabs, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckForceUseTabs);
 
-	WxCheckIndentCase = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTCASE, _("Indent case: statement in switches (commands under case:)"), wxPoint(7, 44), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentCase"));
+	WxCheckIndentCase = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTCASE, _("Indent case: statement in switches (commands under case:)"), wxPoint(7, 44), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentCase"));
 	WxBoxSizer38->Add(WxCheckIndentCase, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentCase);
 
-	WxCheckIndentClasses = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENETCLASSES, _("Indent classes (keywords public:, protected: and private:)"), wxPoint(7, 65), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentClasses"));
+	WxCheckIndentClasses = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENETCLASSES, _("Indent classes (keywords public:, protected: and private:)"), wxPoint(7, 65), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentClasses"));
 	WxBoxSizer38->Add(WxCheckIndentClasses, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentClasses);
 
-	WxCheckIndentLabels = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTLABELS, _("Indent labels"), wxPoint(7, 86), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentLabels"));
+	WxCheckIndentLabels = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTLABELS, _("Indent labels"), wxPoint(7, 86), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentLabels"));
 	WxBoxSizer38->Add(WxCheckIndentLabels, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentLabels);
 
-	WxCheckIndentModifiers = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTMODIFIERS, _("Indent modifiers"), wxPoint(7, 107), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentModifiers"));
+	WxCheckIndentModifiers = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTMODIFIERS, _("Indent modifiers"), wxPoint(7, 107), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentModifiers"));
 	WxBoxSizer38->Add(WxCheckIndentModifiers, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentModifiers);
 
-	WxCheckIndentNamespaces = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTNS, _("Indent namespaces"), wxPoint(7, 128), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentNamespaces"));
+	WxCheckIndentNamespaces = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTNS, _("Indent namespaces"), wxPoint(7, 128), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentNamespaces"));
 	WxBoxSizer38->Add(WxCheckIndentNamespaces, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentNamespaces);
 
-	WxCheckIndentSwitches = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTSWITCHS, _("Indent switches"), wxPoint(7, 149), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentSwitches"));
+	WxCheckIndentSwitches = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTSWITCHS, _("Indent switches"), wxPoint(7, 149), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentSwitches"));
 	WxBoxSizer38->Add(WxCheckIndentSwitches, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentSwitches);
 
-	WxCheckIndentPreprocBlock = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTPREP, _("Indent preprocessor blocks at bracket level zero, and within a namespace"), wxPoint(7, 170), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocBlock"));
+	WxCheckIndentPreprocBlock = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTPREP, _("Indent preprocessor blocks at bracket level zero, and within a namespace"), wxPoint(7, 170), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocBlock"));
 	WxBoxSizer38->Add(WxCheckIndentPreprocBlock, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentPreprocBlock);
 
-	WxCheckIndentPreprocDefine = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTMULTIPREP, _("Indent multi-line preprocessor definitions ending with a backslash"), wxPoint(7, 191), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocDefine"));
+	WxCheckIndentPreprocDefine = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTMULTIPREP, _("Indent multi-line preprocessor definitions ending with a backslash"), wxPoint(7, 191), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocDefine"));
 	WxBoxSizer38->Add(WxCheckIndentPreprocDefine, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentPreprocDefine);
 
-	WxCheckIndentPreprocCond = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTPREPCOND, _("Indent preprocessor conditionals"), wxPoint(7, 212), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocCond"));
+	WxCheckIndentPreprocCond = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENTPREPCOND, _("Indent preprocessor conditionals"), wxPoint(7, 212), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentPreprocCond"));
 	WxBoxSizer38->Add(WxCheckIndentPreprocCond, 0, wxALIGN_LEFT | wxALL, 2);
 
-	WxCheckIndentCol1Comments = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENETCPPCOMMENTS, _("Indent C++ comments beginning in column one"), wxPoint(7, 233), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckIndentCol1Comments"));
+	WxCheckIndentCol1Comments = new wxCheckBox(WxAuiNoteBookPage3, ID_WXCHECKINDENETCPPCOMMENTS, _("Indent C++ comments beginning in column one"), wxPoint(7, 233), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckIndentCol1Comments"));
 	WxBoxSizer38->Add(WxCheckIndentCol1Comments, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckIndentCol1Comments);
 
@@ -911,54 +911,54 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer41->Add(WxEditMaxInStatementIndent, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxEditMaxInStatementIndent);
 
-	WxAuiNoteBookPage4 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE4, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage4 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE4, wxPoint(4, 24), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage4, _("Formatting"));
 
 	WxBoxSizer42 = new wxBoxSizer(wxVERTICAL);
 	WxAuiNoteBookPage4->SetSizer(WxBoxSizer42);
 	WxAuiNoteBookPage4->SetAutoLayout(true);
 
-	WxCheckBreakClosing = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKCLOSING, _("Break closing headers from their immediately preceding closing brackets"), wxPoint(2, 2), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckBreakClosing"));
+	WxCheckBreakClosing = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKCLOSING, _("Break closing headers from their immediately preceding closing brackets"), wxPoint(2, 2), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakClosing"));
 	WxBoxSizer42->Add(WxCheckBreakClosing, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakClosing);
 
-	WxCheckBreakElseIfs = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKELSEIFS, _("Break 'else if()' header combinations into seperate lines"), wxPoint(2, 23), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckBreakElseIfs"));
+	WxCheckBreakElseIfs = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKELSEIFS, _("Break 'else if()' header combinations into seperate lines"), wxPoint(2, 23), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakElseIfs"));
 	WxBoxSizer42->Add(WxCheckBreakElseIfs, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakElseIfs);
 
-	WxCheckAddBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKADDBRACKETS, _("Add brackets to unbracketed one line conditional statements"), wxPoint(2, 44), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckAddBrackets"));
+	WxCheckAddBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKADDBRACKETS, _("Add brackets to unbracketed one line conditional statements"), wxPoint(2, 44), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckAddBrackets"));
 	WxBoxSizer42->Add(WxCheckAddBrackets, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckAddBrackets);
 
-	WxCheckAddOneLineBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKADDONELINEBRACKETS, _("Add one line brackets to unbracketed one line conditional statements"), wxPoint(2, 65), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckAddOneLineBrackets"));
+	WxCheckAddOneLineBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKADDONELINEBRACKETS, _("Add one line brackets to unbracketed one line conditional statements"), wxPoint(2, 65), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckAddOneLineBrackets"));
 	WxBoxSizer42->Add(WxCheckAddOneLineBrackets, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckAddOneLineBrackets);
 
-	WxCheckRemoveBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBOX17, _("Remove brackets from conditional statements (single statement on a single line)"), wxPoint(2, 86), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveBrackets"));
+	WxCheckRemoveBrackets = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBOX17, _("Remove brackets from conditional statements (single statement on a single line)"), wxPoint(2, 86), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveBrackets"));
 	WxBoxSizer42->Add(WxCheckRemoveBrackets, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckRemoveBrackets);
 
-	WxCheckKeepBlocks = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKKEEPBLOCKS, _("Don't break one-line blocks"), wxPoint(2, 107), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckKeepBlocks"));
+	WxCheckKeepBlocks = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKKEEPBLOCKS, _("Don't break one-line blocks"), wxPoint(2, 107), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckKeepBlocks"));
 	WxBoxSizer42->Add(WxCheckKeepBlocks, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckKeepBlocks);
 
-	WxCheckKeepComplex = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKKEEPCOMPLEX, _("Don't break complex statements and multiple statements residing in a single line"), wxPoint(2, 128), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckKeepComplex"));
+	WxCheckKeepComplex = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKKEEPCOMPLEX, _("Don't break complex statements and multiple statements residing in a single line"), wxPoint(2, 128), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckKeepComplex"));
 	WxBoxSizer42->Add(WxCheckKeepComplex, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckKeepComplex);
 
-	WxCheckConvertTabs = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKCONVERTTABS, _("Convert TABs to spaces"), wxPoint(2, 149), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckConvertTabs"));
+	WxCheckConvertTabs = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKCONVERTTABS, _("Convert TABs to spaces"), wxPoint(2, 149), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckConvertTabs"));
 	WxBoxSizer42->Add(WxCheckConvertTabs, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckConvertTabs);
 
-	WxCheckCloseTemplates = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKCLOSETEMPLATES, _("Closes whitespace in the angle brackets of template definitions"), wxPoint(2, 170), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckCloseTemplates"));
+	WxCheckCloseTemplates = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKCLOSETEMPLATES, _("Closes whitespace in the angle brackets of template definitions"), wxPoint(2, 170), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckCloseTemplates"));
 	WxBoxSizer42->Add(WxCheckCloseTemplates, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckCloseTemplates);
 
-	WxCheckRemoveCommentPrefix = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKREMOVECOMMENTPREFIX, _("Remove the preceding '*' in a multi-line comment that begins a line"), wxPoint(2, 191), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveCommentPrefix"));
+	WxCheckRemoveCommentPrefix = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKREMOVECOMMENTPREFIX, _("Remove the preceding '*' in a multi-line comment that begins a line"), wxPoint(2, 191), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckRemoveCommentPrefix"));
 	WxBoxSizer42->Add(WxCheckRemoveCommentPrefix, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckRemoveCommentPrefix);
 
-	WxCheckBreakLines = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKLINES, _("Enable line breaking"), wxPoint(2, 212), wxSize(457, 17), 0, wxDefaultValidator, wxT("WxCheckBreakLines"));
+	WxCheckBreakLines = new wxCheckBox(WxAuiNoteBookPage4, ID_WXCHECKBREAKLINES, _("Enable line breaking"), wxPoint(2, 212), wxSize(600, 17), 0, wxDefaultValidator, wxT("WxCheckBreakLines"));
 	WxBoxSizer42->Add(WxCheckBreakLines, 0, wxALIGN_LEFT | wxALL, 2);
 	SET_CONTROLPARENT(WxCheckBreakLines);
 
@@ -981,7 +981,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer44->Add(WxCheckBreakAfterLogical, 0, wxALIGN_LEFT | wxALL, 1);
 	SET_CONTROLPARENT(WxCheckBreakAfterLogical);
 
-	WxAuiNoteBookPage5 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE5, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage5 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE5, wxPoint(4, 24), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage5, _("Padding"));
 
 	WxBoxSizer45 = new wxBoxSizer(wxVERTICAL);
@@ -1103,7 +1103,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxPopupMenuPrintMark->Append(ID_MNU___D__DATE_1116, _("[%d] &Date"), wxT(""), wxITEM_NORMAL);
 	WxPopupMenuPrintMark->Append(ID_MNU___T__TIME_1117, _("[%t] &Time"), wxT(""), wxITEM_NORMAL);
 
-	WxAuiNoteBookPage6 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE6, wxPoint(4, 24), wxSize(675, 414));
+	WxAuiNoteBookPage6 = new wxPanel(WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE6, wxPoint(4, 24), wxSize(692, 514));
 	WxAuiNotebook1->AddPage(WxAuiNoteBookPage6, wxT("XML"));
 
 	WxBoxSizer48 = new wxBoxSizer(wxVERTICAL);

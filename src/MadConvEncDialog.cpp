@@ -73,7 +73,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	WxComboBoxEncoding = new wxComboBox(this, ID_WXCOMBOBOXENCODING, wxT("WxComboBoxEncoding"), wxPoint(92, 5), wxSize(200, 21), arrayStringFor_WxComboBoxEncoding, wxCB_DROPDOWN | wxCB_READONLY, wxDefaultValidator, wxT("WxComboBoxEncoding"));
 	WxBoxSizer2->Add(WxComboBoxEncoding,0,wxALIGN_CENTER | wxALL,5);
 
-	WxBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_CENTER | wxALL, 5);
 
 	wxArrayString arrayStringFor_WxRadioBoxOption;
