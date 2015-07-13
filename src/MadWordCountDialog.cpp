@@ -132,7 +132,8 @@ void MadWordCountDialog::CreateGUIControls(void)
 	WxBoxSizer1->Add(WxStaticText6,0,wxALIGN_CENTER | wxALL,2);
 
 	WxMemo1 = new wxTextCtrl(this, ID_WXMEMO1, wxT(""), wxPoint(4, 206), wxSize(440, 160), wxTE_DONTWRAP | wxTE_MULTILINE, wxDefaultValidator, wxT("WxMemo1"));
-	WxMemo1->SetMaxLength(0);
+    //Not sure if it's OK to remove the SetMaxLength which would introduce Assertion failure under Linux because of wxTE_MULTILINE
+	//WxMemo1->SetMaxLength(0);
 	WxMemo1->SetFocus();
 	WxMemo1->SetInsertionPointEnd();
 	WxMemo1->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
