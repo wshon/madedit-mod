@@ -83,28 +83,9 @@ void MadConvEncDialog::CreateGUIControls(void)
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Traditional Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Simplified Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Chinese => Japanese Kanji"));
-	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(300, 200), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
+	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(400, 400), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
 	WxRadioBoxOption->SetSelection(0);
-	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
-
-	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER_HORIZONTAL | wxBOTTOM | wxEXPAND | wxALL, 5);
-
-	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(11, 5), wxSize(91, 30), 0, wxDefaultValidator, wxT("WxButtonOK"));
-	WxBoxSizer4->Add(WxButtonOK,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
-
-	WxButtonCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(106, 5), wxSize(90, 30), 0, wxDefaultValidator, wxT("WxButtonCancel"));
-	WxBoxSizer4->Add(WxButtonCancel,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
-
-	SetTitle(_("Convert Encoding"));
-	SetIcon(wxNullIcon);
-	
-	GetSizer()->Layout();
-	GetSizer()->Fit(this);
-	GetSizer()->SetSizeHints(this);
-	Center();
-	
-	////GUI Items Creation End
+	WxBoxSizer3->Add(WxRadioBoxOption,1,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
     size_t cnt=MadEncoding::GetEncodingsCount();
     for(size_t i=0;i<cnt;++i)
@@ -133,6 +114,24 @@ void MadConvEncDialog::CreateGUIControls(void)
     stry = (stry *((int)WxRadioBoxOption->GetCount()+2))*4/3;
     WxRadioBoxOption->SetSize(strx+=35, stry);
     WxBoxSizer3->SetItemMinSize(WxRadioBoxOption, strx, stry);
+
+	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer1->Add(WxBoxSizer4, 0,wxALIGN_CENTER | wxALL, 5);
+
+	WxButtonOK = new wxButton(this, wxID_OK, _("&OK"), wxPoint(11, 5), wxSize(91, 30), 0, wxDefaultValidator, wxT("WxButtonOK"));
+	WxBoxSizer4->Add(WxButtonOK,0,wxALIGN_CENTER | wxALL,5);
+
+	WxButtonCancel = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxPoint(106, 5), wxSize(90, 30), 0, wxDefaultValidator, wxT("WxButtonCancel"));
+	WxBoxSizer4->Add(WxButtonCancel,0,wxALIGN_CENTER |wxALL,5);
+
+	SetTitle(_("Convert Encoding"));
+	SetIcon(wxNullIcon);
+	
+	GetSizer()->Layout();
+	GetSizer()->Fit(this);
+	GetSizer()->SetSizeHints(this);
+	Center();
+	////GUI Items Creation End
 
     WxButtonCancel->SetFocus();
     //wxSize dlgsize = GetSize();
