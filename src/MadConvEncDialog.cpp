@@ -74,7 +74,7 @@ void MadConvEncDialog::CreateGUIControls(void)
 	WxBoxSizer2->Add(WxStaticText1,0,wxALIGN_CENTER | wxALL,5);
 
 	wxArrayString arrayStringFor_WxComboBoxEncoding;
-	WxComboBoxEncoding = new wxComboBox(this, ID_WXCOMBOBOXENCODING, wxT("WxComboBoxEncoding"), wxPoint(92, 5), wxSize(150, 21), arrayStringFor_WxComboBoxEncoding, wxCB_DROPDOWN | wxCB_READONLY, wxDefaultValidator, wxT("WxComboBoxEncoding"));
+	WxComboBoxEncoding = new wxComboBox(this, ID_WXCOMBOBOXENCODING, wxT("WxComboBoxEncoding"), wxPoint(92, 5), wxSize(200, 21), arrayStringFor_WxComboBoxEncoding, wxCB_DROPDOWN | wxCB_READONLY, wxDefaultValidator, wxT("WxComboBoxEncoding"));
 	WxComboBoxEncoding->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
 	WxBoxSizer2->Add(WxComboBoxEncoding,0,wxALIGN_CENTER | wxALL,5);
 
@@ -88,10 +88,10 @@ void MadConvEncDialog::CreateGUIControls(void)
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Traditional Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Japanese Kanji => Simplified Chinese"));
 	arrayStringFor_WxRadioBoxOption.Add(_("Chinese => Japanese Kanji"));
-	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(250, 155), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
+	WxRadioBoxOption = new wxRadioBox(this, ID_WXRADIOBOXOPTION, _("Addtional Option"), wxPoint(5, 5), wxSize(500, 155), arrayStringFor_WxRadioBoxOption, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, wxT("WxRadioBoxOption"));
 	WxRadioBoxOption->SetSelection(0);
 	WxRadioBoxOption->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxNORMAL, false, wxT("MS Sans Serif")));
-	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxALL,5);
+	WxBoxSizer3->Add(WxRadioBoxOption,0,wxALIGN_CENTER | wxEXPAND | wxALL,5);
 
 	WxBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer4, 0, wxALIGN_CENTER | wxALL, 5);
@@ -146,8 +146,8 @@ void MadConvEncDialog::CreateGUIControls(void)
     WxBoxSizer3->SetItemMinSize(WxRadioBoxOption, strx, stry);
 
     WxButtonCancel->SetFocus();
-    wxSize dlgsize = GetSize();
-    SetMaxSize(dlgsize);
+    //wxSize dlgsize = GetSize();
+    //SetMaxSize(dlgsize);
 }
 
 void MadConvEncDialog::MadConvEncDialogClose(wxCloseEvent& event)
