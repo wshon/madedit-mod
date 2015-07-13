@@ -34,7 +34,6 @@ MadMacroDlg::MadMacroDlg(wxWindow* parent, bool debug, wxWindowID id, const wxSt
 	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
 	this->SetSizer(WxStaticBoxSizer1);
 	this->SetAutoLayout(true);
-    this->SetWindowVariant(wxWINDOW_VARIANT_SMALL);
 
     bSizer1 = new wxBoxSizer( wxVERTICAL );
 	WxStaticBoxSizer1->Add(bSizer1, 1, wxALIGN_CENTER | wxALIGN_TOP | wxEXPAND | wxALL, 5);
