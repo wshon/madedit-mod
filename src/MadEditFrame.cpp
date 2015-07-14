@@ -1690,7 +1690,7 @@ CommandData CommandTable[]=
     { 0,            1, menuFind,                   wxT("menuFind"),                   _("&Find..."),                                        wxT("Ctrl-F"),       wxITEM_NORMAL,    find_xpm_idx,     0, _("Find a string")},
     { 0,            1, menuFindNext,               wxT("menuFindNext"),               _("Find &Next"),                                      wxT("F3"),           wxITEM_NORMAL,    findnext_xpm_idx, 0, _("Find next occurrence")},
     { 0,            1, menuFindPrevious,           wxT("menuFindPrevious"),           _("Find &Previous"),                                  wxT("Ctrl-F3"),      wxITEM_NORMAL,    findprev_xpm_idx, 0, _("Find previous occurrence")},
-    { 0,            1, menuShowQuickFindBar,       wxT("menuShowQuickFindBar"),       _("&Quick Find"),                                     wxT("F8"),       wxITEM_NORMAL,    -1,               0, _("Find a string")},
+    { 0,            1, menuShowQuickFindBar,       wxT("menuShowQuickFindBar"),       _("&Quick Find"),                                     wxT("F8"),           wxITEM_NORMAL,    -1,               0, _("Find a string")},
     { 0,            1, 0,                          0,                                 0,                                                    0,                   wxITEM_SEPARATOR, -1,               0, 0},
     { 0,            1, menuReplace,                wxT("menuReplace"),                _("&Replace..."),                                     wxT("Ctrl-H"),       wxITEM_NORMAL,    replace_xpm_idx,  0, _("Replace a string")},
     { 0,            1, 0,                          0,                                 0,                                                    0,                   wxITEM_SEPARATOR, -1,               0, 0},
@@ -1716,12 +1716,12 @@ CommandData CommandTable[]=
     { 0,            1, menuSyntax,            wxT("menuSyntax"),            _("Syntax Type: "),        0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Syntax,       0},
     { 0,            1, 0,                     0,                            0,                         0,                   wxITEM_SEPARATOR, -1,                 0,                         0},
     { 0,            1, menuFontName,          wxT("menuFontName"),          _("Font Name: "),          0,                   wxITEM_NORMAL,    fontname_xpm_idx,   &g_Menu_View_FontName,     0},
-    { 0,            2, menuFont0,             wxT("menuFont0"),             wxT("[@]"),                  0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font0,        0},
-    { 0,            2, menuFont1,             wxT("menuFont1"),             wxT("[ABCDE]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font1,        0},
-    { 0,            2, menuFont2,             wxT("menuFont2"),             wxT("[FGHIJ]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font2,        0},
-    { 0,            2, menuFont3,             wxT("menuFont3"),             wxT("[KLMNO]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font3,        0},
-    { 0,            2, menuFont4,             wxT("menuFont4"),             wxT("[PQRST]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font4,        0},
-    { 0,            2, menuFont5,             wxT("menuFont5"),             wxT("[UVWXYZ]"),             0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font5,        0},
+    { 0,            2, menuFont0,             wxT("menuFont0"),             wxT("[@]"),                0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font0,        0},
+    { 0,            2, menuFont1,             wxT("menuFont1"),             wxT("[ABCDE]"),            0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font1,        0},
+    { 0,            2, menuFont2,             wxT("menuFont2"),             wxT("[FGHIJ]"),            0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font2,        0},
+    { 0,            2, menuFont3,             wxT("menuFont3"),             wxT("[KLMNO]"),            0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font3,        0},
+    { 0,            2, menuFont4,             wxT("menuFont4"),             wxT("[PQRST]"),            0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font4,        0},
+    { 0,            2, menuFont5,             wxT("menuFont5"),             wxT("[UVWXYZ]"),           0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font5,        0},
     { 0,            2, menuFont6,             wxT("menuFont6"),             _("[other]"),              0,                   wxITEM_NORMAL,    -1,                 &g_Menu_View_Font6,        0},
 
     { 0,            1, menuFontSize,          wxT("menuFontSize"),          _("Font Size: "),          0,                   wxITEM_NORMAL,    fontsize_xpm_idx,   &g_Menu_View_FontSize,     0},
@@ -1927,14 +1927,14 @@ CommandData CommandTable[]=
     { 0,               2, menuKanji2TradClipboard,    wxT("menuKanji2TradClipboard"),    _("Clipboard: Japanese Kanji to Tra&ditional Chinese"),     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to traditional Chinese chars in the clipboard")},
     { 0,               2, menuKanji2SimpClipboard,    wxT("menuKanji2SimpClipboard"),    _("Clipboard: Japanese Kanji to Sim&plified Chinese"),      0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Japanese Kanji to simplified Chinese chars in the clipboard")},
     { 0,               2, menuChinese2KanjiClipboard, wxT("menuChinese2KanjiClipboard"), _("Clipboard: Chinese to Japanese &Kanji"),                 0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Chinese chars to Japanese Kanji in the clipboard")},
-    { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               1, 0,                          0,                                 0,                                                          0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuTextConvFormatter,      wxT("menuTextConvFormatter"),      _("Text Converter/Formatter"),                              0,             wxITEM_NORMAL,    -1, &g_Menu_Tools_TextConvFormatter, 0},
     { 0,               2, menuMarkdown2Html,          wxT("menuMarkdown2Html"),          _("&Markdown to HTML"),                                     0,             wxITEM_NORMAL,    -1, 0,                                _("Convert Markdown to HTML")},
     { 0,               2, menuHtml2PlainText,         wxT("menuHtml2PlainText"),         _("&HTML to Plain Text"),                                   0,             wxITEM_NORMAL,    -1, 0,                                _("Convert HTML to Plain Text")},
     { 0,               2, 0,                          0,                                 0,                                                          0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               2, menuAstyleFormat,           wxT("menuAstyleFormat"),           _("&Astyle(C++/C#/Java/ObjC)"),             wxT("Ctrl-Shift-K"),           wxITEM_NORMAL,    -1, 0,                                _("Format selection or whole file(C++/C#/Java)")},
     { 0,               2, menuXMLFormat,              wxT("menuXMLFormat"),              _("&XML Formatter"),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Format XML(whole file)")},
-    { 0,               1, 0,                      0,                             0,                                                  0,             wxITEM_SEPARATOR, -1, 0,                                0},
+    { 0,               1, 0,                          0,                                 0,                                                          0,             wxITEM_SEPARATOR, -1, 0,                                0},
     { 0,               1, menuWordCount,              wxT("menuWordCount"),              _("&Word Count..."),                                        0,             wxITEM_NORMAL,    -1, 0,                                _("Count the words and chars of the file or selection")},
 
     // Window
@@ -2470,6 +2470,12 @@ void MadEditFrame::CreateGUIControls(void)
 #ifdef __WXMSW__
     bool bHasMenuIcon = (wxGetOsVersion()!=wxOS_WINDOWS_9X); // fixed win98 will crash if menuitem has icon
 #endif
+#define OUTPUT_MENU 0
+#if OUTPUT_MENU //Output all accel key to text file
+    wxTextFile MenuTable(g_MadEditHomeDir + wxT("MenuTable.txt"));
+	MenuTable.Create();
+	MenuTable.Open(wxConvFile);
+#endif
     do
     {
         if(cd->menu_level==0)
@@ -2505,6 +2511,19 @@ void MadEditFrame::CreateGUIControls(void)
             {
                 memLabel = cd->text;
             }
+#if OUTPUT_MENU //Output all accel key to text file
+			if (MenuTable.IsOpened())
+		    {
+		        wxString tSep=wxT("MenuId:");
+                tSep<<cd->menu_id;
+				tSep<<wxT(" ");
+				tSep<<wxT("Kind:");
+                tSep<<cd->kind;
+				tSep<<wxT(" ");
+				tSep+=memLabel;
+				MenuTable.AddLine(tSep);
+		    }
+#endif
             wxMenuItem *mit=new wxMenuItem(menu_stack.back(), cd->menu_id, memLabel + GetMenuKey(cd->menuid_name,cd->key), wxGetTranslation(cd->hint), cd->kind);
 
 #ifdef __WXMSW__
@@ -2521,6 +2540,17 @@ void MadEditFrame::CreateGUIControls(void)
         ++cd;
     }
     while(cd->menu_level>=0);
+#if OUTPUT_MENU //Output all accel key to text file
+	if (MenuTable.IsOpened())
+	{
+#ifdef __WXMAC__
+		MenuTable.Write(wxTextFileType_Mac);
+#else
+		MenuTable.Write(wxTextFileType_Unix);
+#endif  
+		MenuTable.Close();
+	}
+#endif
 
     // set FindNext/FindPrev keys for search/replace dialog
     g_AccelFindNext.Set(0, 0, 0, 0);
