@@ -1029,7 +1029,7 @@ void MadOptionsDialog::CreateGUIControls(void)
 	WxBoxSizer45->Add(WxBoxSizer46, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
 
 	WxStaticText25 = new wxStaticText(WxAuiNoteBookPage5, ID_WXSTATICTEXT25, _("Pointer alignment:"), wxPoint(5, 7), wxDefaultSize, 0, wxT("WxStaticText25"));
-	WxBoxSizer46->Add(WxStaticText25, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2);
+	WxBoxSizer46->Add(WxStaticText25, 0, wxALIGN_CENTER | wxALL, 2);
 
 	wxArrayString arrayStringFor_WxChoicePointerAlign;
 	arrayStringFor_WxChoicePointerAlign.Add(_("None"));

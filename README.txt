@@ -94,9 +94,6 @@ Syntax files, Locale files and Settings:
 
 Feature/issues to be released
 -----------------------------
-WARNING:
-GTK3 build has issues introduced by wxWidgets. It has some assertion failures although it might do no harm 
-to what you are working on. However, please don't try it on your important work.
 
 ChangeLog:
 ----------
