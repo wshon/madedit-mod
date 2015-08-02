@@ -5461,11 +5461,9 @@ void MadEditFrame::OnEditToHalfWidthByOptions( wxCommandEvent& event )
                                         _( "Choose the characters you want to convert:" ), _( "To Halfwidth by Options..." ),
                                         4, choices, this );
 #else
-    int rc = wxGetSelectedChoices( selections,
+	int sels = wxGetSelectedChoices(selections,
                                         _( "Choose the characters you want to convert:" ), _( "To Halfwidth by Options..." ),
                                         4, choices, this );
-    size_t sels = 0;
-    if(rc != -1) sels = rc;
 #endif
 
     if( sels > 0 )
@@ -5525,11 +5523,9 @@ void MadEditFrame::OnEditToFullWidthByOptions( wxCommandEvent& event )
 										_( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
 										4, choices, this );
 #else
-	int rc = wxGetSelectedChoices( selections,
+	int sels = wxGetSelectedChoices(selections,
 										_( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
 										4, choices, this );
-	size_t sels = 0;
-	if(rc != -1) sels = rc;
 #endif
 
     if( sels > 0 )
