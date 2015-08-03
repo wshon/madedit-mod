@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MadEdit-Mod 0.3.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-03 23:48+0800\n"
-"PO-Revision-Date: 2015-08-01 23:49+0800\n"
+"PO-Revision-Date: 2015-08-03 23:52+0800\n"
 "Last-Translator: Li Minggang <minggang.li@gmail.com>\n"
 "Language-Team: MadEdit <madedit-mod@gmail.com>\n"
 "Language: zh_CN\n"
@@ -1546,7 +1546,7 @@ msgstr "运行临时宏语句"
 
 #: ../src/MadEditFrame.cpp:1893
 msgid "Load Saved MacroScript..."
-msgstr "运行保存过的宏脚本..."
+msgstr "载入保存过的宏脚本..."
 
 #: ../src/MadEditFrame.cpp:1893
 msgid "Load saved macro script"
@@ -1577,14 +1577,12 @@ msgid "Local Script List"
 msgstr "本地脚本列表"
 
 #: ../src/MadEditFrame.cpp:1899
-#, fuzzy
 msgid "Edit Saved MacroScript..."
-msgstr "运行保存过的宏脚本..."
+msgstr "编辑保存过的宏脚本..."
 
 #: ../src/MadEditFrame.cpp:1899
-#, fuzzy
 msgid "Edit saved macro script"
-msgstr "载入已有的脚本"
+msgstr "编辑已有的脚本"
 
 #: ../src/MadEditFrame.cpp:1902
 msgid "Macro Debug Mode"
@@ -2508,9 +2506,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/MadEditFrame.cpp:7540
-#, fuzzy
 msgid "Edit Mad Macro File"
-msgstr "打开MadPython宏文件"
+msgstr "编辑MadPython宏文件"
 
 #: ../src/MadEditFrame.cpp:7582 ../src/MadMacroDlg.cpp:102
 msgid "Memory allocation failed"
