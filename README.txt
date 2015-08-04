@@ -104,6 +104,7 @@ Mod v0.3.5
 New: MadMacro local script list on Toolbar
 New: Open/edit Saved MadMacro script
 New: Build time shown on About Dialog
+New: Copy the first word instead of the whole selection for search/replace/spell check
 Update translation
 
 Fix: Enable line breaking to enable disable 2 belows
