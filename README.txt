@@ -101,7 +101,7 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.6
-Fix: Create scripts directory if not exists while saving recorded script
+New: Create scripts directory if not exists while saving recorded script
 
 Mod v0.3.5
 1.New: MadMacro local script list on Toolbar
