@@ -5822,6 +5822,10 @@ void MadEditFrame::OnSearchFind( wxCommandEvent& event )
     {
         g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(true);
     }
+    else
+    {
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(false);
+    }
 
     g_SearchDialog->m_FindText->SelectAll();
     g_SearchDialog->m_FindText->SetFocus();
@@ -5973,6 +5977,10 @@ void MadEditFrame::OnSearchReplace( wxCommandEvent& event )
     if( g_ActiveMadEdit->IsSelected() )
     {
         g_ReplaceDialog->WxCheckBoxSearchInSelection->SetValue(true);
+    }
+    else
+    {
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(false);
     }
 
     g_ReplaceDialog->m_FindText->SelectAll();
