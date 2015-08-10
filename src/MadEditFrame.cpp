@@ -196,12 +196,12 @@ MadRecentList  *g_RecentFindText = NULL;
 extern wxString g_MadEditAppDir, g_MadEditHomeDir;
 wxHtmlWindow * g_MadToolHtmlWin = NULL;
 
-
 MadEditFrame *g_MainFrame = NULL;
 MadEdit *g_ActiveMadEdit = NULL;
 int g_PrevPageID = -1;
 wxStatusBar *g_StatusBar = NULL;
 wxArrayString g_SpellSuggestions;
+astyle::ASFormatter * g_ASFormatter = NULL;
 
 bool g_CheckModTimeForReload = true;
 
@@ -3124,6 +3124,11 @@ void MadEditFrame::MadEditFrameClose( wxCloseEvent& event )
     extern void DeleteConfig();
     DeleteConfig();
     m_AuiManager.UnInit();
+
+    if(g_ASFormatter != NULL)
+    {
+        delete g_ASFormatter;
+    }
 
     if( g_MadToolHtmlWin ) { delete g_MadToolHtmlWin; }
 
@@ -7946,19 +7951,22 @@ void MadEditFrame::OnToolsAstyleFormat( wxCommandEvent& event )
     }
 
     wxString formattedText;
-    static astyle::ASFormatter formatter;
+    if(g_ASFormatter == NULL)
+    {
+        g_ASFormatter = new astyle::ASFormatter();
+    }
     // load settings
     FormatterSettings settings;
-    settings.ApplyTo( formatter );
+    settings.ApplyTo( *g_ASFormatter );
     ASStreamIterator *asi = new ASStreamIterator( g_ActiveMadEdit, text );
-    formatter.init( asi );
+    g_ASFormatter->init( asi );
     int lineCounter = 0;
 
-    while( formatter.hasMoreLines() )
+    while( g_ASFormatter->hasMoreLines() )
     {
-        formattedText << wxString( formatter.nextLine().c_str(), wxCSConv( g_ActiveMadEdit->GetEncodingName() ) );
+        formattedText << wxString( g_ASFormatter->nextLine().c_str(), wxCSConv( g_ActiveMadEdit->GetEncodingName() ) );
 
-        if( formatter.hasMoreLines() )
+        if( g_ASFormatter->hasMoreLines() )
         { formattedText << eolChars; }
 
         ++lineCounter;
