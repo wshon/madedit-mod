@@ -7946,7 +7946,7 @@ void MadEditFrame::OnToolsAstyleFormat( wxCommandEvent& event )
     }
 
     wxString formattedText;
-    astyle::ASFormatter formatter;
+    static astyle::ASFormatter formatter;
     // load settings
     FormatterSettings settings;
     settings.ApplyTo( formatter );
@@ -8009,6 +8009,7 @@ void MadEditFrame::OnToolsAstyleFormat( wxCommandEvent& event )
             g_ActiveMadEdit->SetText( formattedText );
         }
     }
+    delete asi;
 }
 
 void MadEditFrame::OnToolsXMLFormat( wxCommandEvent& event )
