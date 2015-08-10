@@ -5854,24 +5854,30 @@ void MadEditFrame::OnSearchFindNext( wxCommandEvent& event )
     g_SearchDialog->m_FindText->SetEncoding( g_ActiveMadEdit->GetEncodingName() );
     g_SearchDialog->UpdateCheckBoxByCBHex( g_SearchDialog->WxCheckBoxFindHex->GetValue() );
 
+    wxString ws;
+    if( g_SearchDialog->WxCheckBoxFindHex->GetValue() && ( g_ActiveMadEdit->GetSelectionSize() <= 10240 ))
+    {
+        g_ActiveMadEdit->GetSelHexString( ws, true );
+        g_SearchDialog->m_FindText->SetText( ws );
+    }
+    else
+    {
+        wxString ws;
+        g_ActiveMadEdit->GetWordFromCaretPos( ws );
+
+        if( !ws.IsEmpty() && ws[0] > wxChar( 0x20 ) )
+        {
+            g_SearchDialog->m_FindText->SetText( ws );
+        }
+    }
+
     if( g_ActiveMadEdit->IsSelected() )
     {
-        if( g_ActiveMadEdit->GetSelectionSize() <= 10240 )
-        {
-            if( g_SearchDialog->WxCheckBoxFindHex->GetValue() )
-            {
-                wxString ws;
-                g_ActiveMadEdit->GetSelHexString( ws, true );
-                g_SearchDialog->m_FindText->SetText( ws );
-            }
-            else
-                if( g_SearchDialog->WxCheckBoxRegex->GetValue() == false )
-                {
-                    wxString ws;
-                    g_ActiveMadEdit->GetSelText( ws );
-                    g_SearchDialog->m_FindText->SetText( ws );
-                }
-        }
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(true);
+    }
+    else
+    {
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(false);
     }
 
     wxCommandEvent e;
@@ -5901,24 +5907,30 @@ void MadEditFrame::OnSearchFindPrevious( wxCommandEvent& event )
     g_SearchDialog->m_FindText->SetEncoding( g_ActiveMadEdit->GetEncodingName() );
     g_SearchDialog->UpdateCheckBoxByCBHex( g_SearchDialog->WxCheckBoxFindHex->GetValue() );
 
+    wxString ws;
+    if( g_SearchDialog->WxCheckBoxFindHex->GetValue() && ( g_ActiveMadEdit->GetSelectionSize() <= 10240 ))
+    {
+        g_ActiveMadEdit->GetSelHexString( ws, true );
+        g_SearchDialog->m_FindText->SetText( ws );
+    }
+    else
+    {
+        wxString ws;
+        g_ActiveMadEdit->GetWordFromCaretPos( ws );
+
+        if( !ws.IsEmpty() && ws[0] > wxChar( 0x20 ) )
+        {
+            g_SearchDialog->m_FindText->SetText( ws );
+        }
+    }
+
     if( g_ActiveMadEdit->IsSelected() )
     {
-        if( g_ActiveMadEdit->GetSelectionSize() <= 10240 )
-        {
-            if( g_SearchDialog->WxCheckBoxFindHex->GetValue() )
-            {
-                wxString ws;
-                g_ActiveMadEdit->GetSelHexString( ws, true );
-                g_SearchDialog->m_FindText->SetText( ws );
-            }
-            else
-                if( g_SearchDialog->WxCheckBoxRegex->GetValue() == false )
-                {
-                    wxString ws;
-                    g_ActiveMadEdit->GetSelText( ws );
-                    g_SearchDialog->m_FindText->SetText( ws );
-                }
-        }
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(true);
+    }
+    else
+    {
+        g_SearchDialog->WxCheckBoxSearchInSelection->SetValue(false);
     }
 
     wxCommandEvent e;
@@ -6032,23 +6044,20 @@ void MadEditFrame::OnSearchFindInFiles( wxCommandEvent& event )
     g_FindInFilesDialog->m_FindText->SetFont( fname, 14 );
     g_FindInFilesDialog->m_ReplaceText->SetFont( fname, 14 );
 
-    if( g_ActiveMadEdit && g_ActiveMadEdit->IsSelected() )
+    wxString ws;
+    if( g_SearchDialog->WxCheckBoxFindHex->GetValue() && ( g_ActiveMadEdit->GetSelectionSize() <= 10240 ))
     {
-        if( g_ActiveMadEdit->GetSelectionSize() <= 10240 )
+        g_ActiveMadEdit->GetSelHexString( ws, true );
+        g_SearchDialog->m_FindText->SetText( ws );
+    }
+    else
+    {
+        wxString ws;
+        g_ActiveMadEdit->GetWordFromCaretPos( ws );
+
+        if( !ws.IsEmpty() && ws[0] > wxChar( 0x20 ) )
         {
-            if( g_FindInFilesDialog->WxCheckBoxFindHex->GetValue() )
-            {
-                wxString ws;
-                g_ActiveMadEdit->GetSelHexString( ws, true );
-                g_FindInFilesDialog->m_FindText->SetText( ws );
-            }
-            else
-                if( g_FindInFilesDialog->WxCheckBoxRegex->GetValue() == false )
-                {
-                    wxString ws;
-                    g_ActiveMadEdit->GetSelText( ws );
-                    g_FindInFilesDialog->m_FindText->SetText( ws );
-                }
+            g_SearchDialog->m_FindText->SetText( ws );
         }
     }
 
