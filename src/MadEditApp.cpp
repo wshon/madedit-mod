@@ -489,9 +489,9 @@ void MadStackWalker::OnStackFrame(const wxStackFrame & frame)
     {
         wxULongLong address((size_t)frame.GetAddress());
 #if defined(__x86_64__) || defined(__LP64__) || defined(_WIN64)
-        wxString fmt(wxT("[%02u]:[%08X%08X] %s(%i)\t%s\n"));
+        wxString fmt(wxT("[%02u]:[%08X%08X] %s(%i)\t%s%s\n"));
 #else
-        wxString fmt(wxT("[%02u]:[%08X] %s(%i)\t%s\n"));
+        wxString fmt(wxT("[%02u]:[%08X] %s(%i)\t%s%s\n"));
 #endif
 
         wxString paramInfo(wxT("("));
@@ -514,7 +514,8 @@ void MadStackWalker::OnStackFrame(const wxStackFrame & frame)
             address.GetLo(),
             frame.GetFileName().c_str(),
             (unsigned)frame.GetLine(),
-            frame.GetName().c_str())+paramInfo
+            frame.GetName().c_str(),
+            paramInfo.c_str())
             );
     }
 }
