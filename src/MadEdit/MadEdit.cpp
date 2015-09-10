@@ -4187,7 +4187,7 @@ void MadEdit::SelectWordFromCaretPos(wxString *ws, MadCaretPos * cpos/* = NULL*/
     }
 }
 
-void MadEdit::SelectLineFromCaretPos(wxString *ws)
+void MadEdit::SelectLineFromCaretPos(wxString *ws, bool caretToBegOfSel)
 {
     if(m_EditMode == emColumnMode && m_CaretPos.extraspaces)
         return;
@@ -4223,7 +4223,10 @@ void MadEdit::SelectLineFromCaretPos(wxString *ws)
 
     UpdateSelectionPos();
 
-    m_CaretPos = m_SelectionPos1;
+    if(caretToBegOfSel)
+        m_CaretPos = m_SelectionPos1;
+    else
+        m_CaretPos = m_SelectionPos2;
 
     m_SelectionBegin = &m_SelectionPos1;
     m_SelectionEnd = &m_SelectionPos2;
@@ -9929,7 +9932,7 @@ void MadEdit::OnMouseLeftDown(wxMouseEvent &evt)
         const long TRIPLECLICK_LEN = 200; // 0.2 sec after doubleclick
         if ( wxGetLocalTimeMillis() - m_lastDoubleClick <= TRIPLECLICK_LEN )
         {
-            SelectLineFromCaretPos();
+            SelectLineFromCaretPos(NULL, false);
             evt.Skip();
             return;
         }
