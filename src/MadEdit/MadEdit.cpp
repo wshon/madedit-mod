@@ -1463,6 +1463,7 @@ void MadEdit::UpdateCaret(MadCaretPos &caretPos,
             caretPos.pos-=rowpos;
             caretPos.linepos-=rowpos;
 
+			//((wxFrame*)wxTheApp->GetTopWindow())->SetTitle(wxString::Format(wxT("%s %s:%s"), wxLongLong(caretPos.linepos).ToString(), wxLongLong(caretPos.iter->m_NewLineSize).ToString(), wxLongLong(caretPos.iter->m_Size).ToString()));
             wxASSERT(caretPos.linepos+caretPos.iter->m_NewLineSize==caretPos.iter->m_Size);
         }
     }
