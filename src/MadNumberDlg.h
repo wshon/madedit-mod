@@ -55,9 +55,18 @@ class MadNumberDlg : public wxDialog
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
-		wxButton *WxButton2;
+		wxButton *WxCancelButton;
 		wxButton *WxOKButton;
 		wxBoxSizer *WxBoxSizer5;
+		wxTextCtrl *WxEditPreview;
+		wxBoxSizer *WxBoxSizer8;
+		wxTextCtrl *WxEditPostfix;
+		wxCheckBox *WxCheckPostfix;
+		wxBoxSizer *WxBoxSizer7;
+		wxTextCtrl *WxEditPrefix;
+		wxCheckBox *WxCheckPrefix;
+		wxBoxSizer *WxBoxSizer6;
+		wxBoxSizer *WxBoxSizer3;
 		wxChoice *WxChoiceAlign;
 		wxStaticText *WxStaticText4;
 		wxChoice *WxChoiceFormat;
@@ -76,6 +85,10 @@ class MadNumberDlg : public wxDialog
 		wxBoxSizer *WxBoxSizer2;
 		wxBoxSizer *WxBoxSizer1;
 		////GUI Control Declaration End
+		void WxEditPrefixUpdated(wxCommandEvent& event);
+		void WxEditPostfixUpdated(wxCommandEvent& event);
+		void WxCheckPrefixClick(wxCommandEvent& event);
+		void WxCheckPostfixClick(wxCommandEvent& event);
 		
 	private:
 		//Note: if you receive any error with these enum IDs, then you need to
@@ -85,6 +98,11 @@ class MadNumberDlg : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
+			ID_WXEDITPREVIEW = 1137,
+			ID_WXEDITPOSTFIX = 1137,
+			ID_WXCHECKPOSTFIX = 1136,
+			ID_WXEDITPREFIX = 1134,
+			ID_WXCHECKPREFIX = 1133,
 			ID_WXALIGN = 1119,
 			ID_WXSTATICTEXT4 = 1118,
 			ID_WXFORMAT = 1117,
