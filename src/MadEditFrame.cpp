@@ -3400,7 +3400,7 @@ void MadEditFrame::OnActivate( wxActivateEvent &evt )
 
     if( evt.GetActive() && g_ActiveMadEdit )
     {
-        g_ActiveMadEdit->SetFocus();
+        //g_ActiveMadEdit->SetFocus();
         g_ActiveMadEdit->ReloadByModificationTime( true );
     }
 
