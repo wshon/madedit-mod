@@ -55,10 +55,11 @@ class MadNumberDlg : public wxDialog
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxStaticText *WxStaticTextPreview;
+		wxStaticText *WxStaticText6;
 		wxButton *WxCancelButton;
 		wxButton *WxOKButton;
 		wxBoxSizer *WxBoxSizer5;
-		wxTextCtrl *WxEditPreview;
 		wxBoxSizer *WxBoxSizer8;
 		wxTextCtrl *WxEditPostfix;
 		wxCheckBox *WxCheckPostfix;
@@ -98,7 +99,8 @@ class MadNumberDlg : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
-			ID_WXEDITPREVIEW = 1137,
+			ID_WXSTATICTEXTPREVIEW = 1142,
+			ID_WXSTATICTEXT6 = 1141,
 			ID_WXEDITPOSTFIX = 1137,
 			ID_WXCHECKPOSTFIX = 1136,
 			ID_WXEDITPREFIX = 1134,

@@ -97,6 +97,9 @@ ChangeLog:
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.3.7
+New: Prefix, postfix and preview of numbering(enhanced)
+
 Mod v0.3.6
 New: Create scripts directory if not exists while saving recorded script
 New: Shortcut for Insert numbers(Ctrl-Shift-N)

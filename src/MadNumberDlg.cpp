@@ -129,7 +129,7 @@ void MadNumberDlg::CreateGUIControls()
 	WxBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer3->Add(WxBoxSizer6, 0, wxALIGN_CENTER | wxALL, 5);
 
-	WxCheckPrefix = new wxCheckBox(this, ID_WXCHECKPREFIX, _("Prefix"), wxPoint(5, 5), wxSize(132, 23), 0, wxDefaultValidator, _("WxCheckPrefix"));
+	WxCheckPrefix = new wxCheckBox(this, ID_WXCHECKPREFIX, _("Prefix"), wxPoint(5, 5), wxSize(132, 23), 0, wxDefaultValidator, wxT("WxCheckPrefix"));
 	WxBoxSizer6->Add(WxCheckPrefix, 0, wxALIGN_LEFT | wxALL, 5);
 
 	WxEditPrefix = new wxTextCtrl(this, ID_WXEDITPREFIX, _(""), wxPoint(147, 5), wxSize(124, 23), 0, wxDefaultValidator, wxT("WxEditPrefix"));
@@ -142,15 +142,12 @@ void MadNumberDlg::CreateGUIControls()
 	WxCheckPostfix = new wxCheckBox(this, ID_WXCHECKPOSTFIX, _("Postfix"), wxPoint(5, 5), wxSize(132, 23), 0, wxDefaultValidator, wxT("WxCheckPostfix"));
 	WxBoxSizer7->Add(WxCheckPostfix, 0, wxALIGN_LEFT | wxALL, 5);
 
-	WxEditPostfix = new wxTextCtrl(this, ID_WXEDITPOSTFIX, _("."), wxPoint(147, 5), wxSize(124, 23), 0, wxDefaultValidator, wxT("WxEditPostfix"));
+	WxEditPostfix = new wxTextCtrl(this, ID_WXEDITPOSTFIX, wxT("."), wxPoint(147, 5), wxSize(124, 23), 0, wxDefaultValidator, wxT("WxEditPostfix"));
 	WxBoxSizer7->Add(WxEditPostfix, 0, wxALIGN_LEFT | wxALL, 5);
     WxEditPostfix->Enable(false);
 
 	WxBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer3->Add(WxBoxSizer8, 0, wxALIGN_LEFT | wxALL, 5);
-
-	WxEditPreview = new wxTextCtrl(this, ID_WXEDITPREVIEW, _(""), wxPoint(5, 5), wxSize(256, 23), wxTE_READONLY, wxDefaultValidator, wxT("WxEditPreview"));
-	WxBoxSizer8->Add(WxEditPreview, 0, wxALIGN_LEFT | wxALL, 5);
 
 	WxBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	WxBoxSizer1->Add(WxBoxSizer5, 0, wxALIGN_CENTER | wxALL, 5);
@@ -161,7 +158,13 @@ void MadNumberDlg::CreateGUIControls()
 	WxCancelButton = new wxButton(this, wxID_CANCEL, _("Cancel"), wxPoint(90, 5), wxSize(75, 25), 0, wxDefaultValidator, wxT("WxCancelButton"));
 	WxBoxSizer5->Add(WxCancelButton, 0, wxALIGN_CENTER | wxALL, 5);
 
-	SetTitle(_("Numbering Configuration"));
+	WxStaticText6 = new wxStaticText(this, ID_WXSTATICTEXT6, _("Previw: "), wxPoint(5, 5), wxDefaultSize, 0, wxT("WxStaticText6"));
+	WxBoxSizer8->Add(WxStaticText6, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxStaticTextPreview = new wxStaticText(this, ID_WXSTATICTEXTPREVIEW, wxT(""), wxPoint(63, 5), wxDefaultSize, 0, wxT("WxStaticTextPreview"));
+	WxBoxSizer8->Add(WxStaticTextPreview, 0, wxALIGN_LEFT | wxALL, 5);
+
+	SetTitle(wxT("Numbering Configuration"));
 	SetIcon(wxNullIcon);
 	
 	Layout();
@@ -226,7 +229,7 @@ void MadNumberDlg::WxEditPrefixUpdated(wxCommandEvent& event)
     wxString preview((WxEditPrefix->GetLineLength(0)>0?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue());
     if(WxCheckPostfix->GetValue()&&(WxEditPostfix->GetLineLength(0)>0))
         preview += WxEditPostfix->GetValue();
-    WxEditPreview->SetValue(preview);
+    WxStaticTextPreview->SetLabel(preview);
 }
 
 /*
@@ -242,7 +245,7 @@ void MadNumberDlg::WxEditPostfixUpdated(wxCommandEvent& event)
     preview += WxEditInitialNumber->GetValue();
     if(WxEditPostfix->GetLineLength(0)>0)
         preview += WxEditPostfix->GetValue();
-    WxEditPreview->SetValue(preview);
+    WxStaticTextPreview->SetLabel(preview);
 }
 
 /*
@@ -266,7 +269,7 @@ void MadNumberDlg::WxCheckPrefixClick(wxCommandEvent& event)
         if(WxCheckPostfix->GetValue()&&(WxEditPostfix->GetLineLength(0)>0))
             preview += WxEditPostfix->GetValue();
     }
-    WxEditPreview->SetValue(preview);
+    WxStaticTextPreview->SetLabel(preview);
 }
 
 /*
@@ -294,5 +297,5 @@ void MadNumberDlg::WxCheckPostfixClick(wxCommandEvent& event)
         
         preview += WxEditInitialNumber->GetValue();
     }
-    WxEditPreview->SetValue(preview);
+    WxStaticTextPreview->SetLabel(preview);
 }
