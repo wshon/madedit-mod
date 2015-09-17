@@ -242,7 +242,7 @@ void MadNumberDlg::WxEditPostfixUpdated(wxCommandEvent& event)
     if(WxCheckPrefix->GetValue())
         preview += WxEditPrefix->GetValue();
     
-    preview += WxEditInitialNumber->GetValue()
+    preview += WxEditInitialNumber->GetValue();
     if(WxCheckPostfix->GetValue())
         preview += WxEditPostfix->GetValue();
     WxStaticTextPreview->SetLabel(preview);
