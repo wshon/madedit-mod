@@ -226,8 +226,8 @@ void MadNumberDlg::WxOKButtonClick(wxCommandEvent& event)
 void MadNumberDlg::WxEditPrefixUpdated(wxCommandEvent& event)
 {
 	// insert your code here
-    wxString preview((WxEditPrefix->GetLineLength(0)>0?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue());
-    if(WxCheckPostfix->GetValue()&&(WxEditPostfix->GetLineLength(0)>0))
+    wxString preview(WxEditPrefix->GetValue()+WxEditInitialNumber->GetValue());
+    if(WxCheckPostfix->GetValue())
         preview += WxEditPostfix->GetValue();
     WxStaticTextPreview->SetLabel(preview);
 }
@@ -239,12 +239,10 @@ void MadNumberDlg::WxEditPostfixUpdated(wxCommandEvent& event)
 {
 	// insert your code here
     wxString preview;
-    if(WxCheckPrefix->GetValue() && (WxEditPrefix->GetLineLength(0)>0))
+    if(WxCheckPrefix->GetValue())
         preview += WxEditPrefix->GetValue();
     
-    preview += WxEditInitialNumber->GetValue();
-    if(WxEditPostfix->GetLineLength(0)>0)
-        preview += WxEditPostfix->GetValue();
+    preview += WxEditInitialNumber->GetValue() + WxEditPostfix->GetValue();
     WxStaticTextPreview->SetLabel(preview);
 }
 
@@ -258,15 +256,15 @@ void MadNumberDlg::WxCheckPrefixClick(wxCommandEvent& event)
     if(WxCheckPrefix->GetValue())
     {
         WxEditPrefix->Enable(true);
-        preview += (WxEditPrefix->GetLineLength(0)>0?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue();
-        if(WxCheckPostfix->GetValue()&&(WxEditPostfix->GetLineLength(0)>0))
+        preview += WxEditPrefix->GetValue()+WxEditInitialNumber->GetValue();
+        if(WxCheckPostfix->GetValue())
             preview += WxEditPostfix->GetValue();
     }
     else
     {
         WxEditPrefix->Enable(false);
         preview += WxEditInitialNumber->GetValue();
-        if(WxCheckPostfix->GetValue()&&(WxEditPostfix->GetLineLength(0)>0))
+        if(WxCheckPostfix->GetValue())
             preview += WxEditPostfix->GetValue();
     }
     WxStaticTextPreview->SetLabel(preview);
@@ -282,17 +280,15 @@ void MadNumberDlg::WxCheckPostfixClick(wxCommandEvent& event)
     if(WxCheckPostfix->GetValue())
     {
         WxEditPostfix->Enable(true);
-        if(WxCheckPrefix->GetValue()&&WxEditPrefix->GetLineLength(0)>0)
+        if(WxCheckPrefix->GetValue())
             preview += WxEditPrefix->GetValue();
         
-        preview += WxEditInitialNumber->GetValue();
-        if(WxEditPostfix->GetLineLength(0)>0)
-            preview += WxEditPostfix->GetValue();
+        preview += WxEditInitialNumber->GetValue() + WxEditPostfix->GetValue();
     }
     else
     {
         WxEditPostfix->Enable(false);
-        if(WxCheckPrefix->GetValue()&&WxEditPrefix->GetLineLength(0)>0)
+        if(WxCheckPrefix->GetValue())
             preview += WxEditPrefix->GetValue();
         
         preview += WxEditInitialNumber->GetValue();
