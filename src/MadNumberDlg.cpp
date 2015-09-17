@@ -41,6 +41,7 @@ MadNumberDlg * g_MadNumberDlg = NULL;
 MadNumberDlg::MadNumberDlg(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxDialog(parent, id, title, position, size, style)
 {
+    WxStaticTextPreview = 0;
 	CreateGUIControls();
 }
 
@@ -226,10 +227,13 @@ void MadNumberDlg::WxOKButtonClick(wxCommandEvent& event)
 void MadNumberDlg::WxEditPrefixUpdated(wxCommandEvent& event)
 {
 	// insert your code here
-    wxString preview((WxCheckPrefix->GetValue()?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue());
-    if(WxCheckPostfix->GetValue())
-        preview += WxEditPostfix->GetValue();
-    WxStaticTextPreview->SetLabel(preview);
+	if(WxStaticTextPreview)
+    {   
+        wxString preview((WxCheckPrefix->GetValue()?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue());
+        if(WxCheckPostfix->GetValue())
+            preview += WxEditPostfix->GetValue();
+        WxStaticTextPreview->SetLabel(preview);
+    }
 }
 
 /*
@@ -238,14 +242,17 @@ void MadNumberDlg::WxEditPrefixUpdated(wxCommandEvent& event)
 void MadNumberDlg::WxEditPostfixUpdated(wxCommandEvent& event)
 {
 	// insert your code here
-    wxString preview;
-    if(WxCheckPrefix->GetValue())
-        preview += WxEditPrefix->GetValue();
-    
-    preview += WxEditInitialNumber->GetValue();
-    if(WxCheckPostfix->GetValue())
-        preview += WxEditPostfix->GetValue();
-    WxStaticTextPreview->SetLabel(preview);
+	if(WxStaticTextPreview)
+    {   
+        wxString preview;
+        if(WxCheckPrefix->GetValue())
+            preview += WxEditPrefix->GetValue();
+        
+        preview += WxEditInitialNumber->GetValue();
+        if(WxCheckPostfix->GetValue())
+            preview += WxEditPostfix->GetValue();
+        WxStaticTextPreview->SetLabel(preview);
+    }
 }
 
 /*
