@@ -3143,6 +3143,7 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
                 bool linear = (stepType==nstLinear);
                 const char * strbuff = 0;
                 char buffer[33];
+                postfix += wxT("\n");
                 do
                 {
                     tstr += prefix;
@@ -3185,7 +3186,7 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
                         }
                         
                     }
-                    tstr += postfix+wxT("\n");
+                    tstr += postfix;
 
                     if(linear) num += step;
                     else num *= step;
