@@ -164,7 +164,7 @@ void MadNumberDlg::CreateGUIControls()
 	WxStaticTextPreview = new wxStaticText(this, ID_WXSTATICTEXTPREVIEW, wxT(""), wxPoint(63, 5), wxDefaultSize, 0, wxT("WxStaticTextPreview"));
 	WxBoxSizer8->Add(WxStaticTextPreview, 0, wxALIGN_LEFT | wxALL, 5);
 
-	SetTitle(wxT("Numbering Configuration"));
+	SetTitle(_("Numbering Configuration"));
 	SetIcon(wxNullIcon);
 	
 	Layout();
@@ -226,7 +226,7 @@ void MadNumberDlg::WxOKButtonClick(wxCommandEvent& event)
 void MadNumberDlg::WxEditPrefixUpdated(wxCommandEvent& event)
 {
 	// insert your code here
-    wxString preview(WxEditPrefix->GetValue()+WxEditInitialNumber->GetValue());
+    wxString preview((WxCheckPrefix->GetValue()?WxEditPrefix->GetValue():wxT(""))+WxEditInitialNumber->GetValue());
     if(WxCheckPostfix->GetValue())
         preview += WxEditPostfix->GetValue();
     WxStaticTextPreview->SetLabel(preview);
@@ -242,7 +242,9 @@ void MadNumberDlg::WxEditPostfixUpdated(wxCommandEvent& event)
     if(WxCheckPrefix->GetValue())
         preview += WxEditPrefix->GetValue();
     
-    preview += WxEditInitialNumber->GetValue() + WxEditPostfix->GetValue();
+    preview += WxEditInitialNumber->GetValue()
+    if(WxCheckPostfix->GetValue())
+        preview += WxEditPostfix->GetValue();
     WxStaticTextPreview->SetLabel(preview);
 }
 
