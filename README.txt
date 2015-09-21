@@ -109,6 +109,7 @@ Fix: Assertion failure at MadEditFrame.cpp:5692 under x86_x64 linux
 Fix: Fix dictionary download link of OpenOffice on About Dialog
 Fix: Link warning of VS project
 Fix: Show search results by default
+Fix: Set default page of Option dialog to "General"
 
 Mod v0.3.6
 1.New: Create scripts directory if not exists while saving recorded script
