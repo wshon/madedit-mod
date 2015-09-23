@@ -89,6 +89,10 @@ Syntax files, Locale files and Settings:
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try
     'madedit %f*lineNum'
 
+Known issues:
+The Macro recording function will save all your commands to one document which
+means it will not record the "switching" between documents.
+
 Feature/issues to be released
 -----------------------------
 
