@@ -3105,7 +3105,7 @@ void MadEdit::ColumnAlignRight()
     bool oldModified=m_Modified;
     MadLineIterator lit;
 
-    if((m_Selection && m_SelectionBegin->xpos && m_SelectionBegin->lineid!=m_SelectionEnd->lineid))
+    if(m_Selection && m_SelectionBegin->xpos /*&& m_SelectionBegin->lineid!=m_SelectionEnd->lineid*/)
     {
         MadUndo *undo = NULL;
         MadLineIterator lit, lastlit, firstlit;
@@ -3113,11 +3113,11 @@ void MadEdit::ColumnAlignRight()
         bool SelEndAtBOL=false;
         wxFileOffset linestartpos;
         int columns = m_SelectionBegin->xpos/GetUCharWidth(0x20);
-        wxFileOffset delsize=0, pos = m_SelectionBegin->pos;
+        wxFileOffset delsize=0, pos = m_SelectionEnd->pos;
         //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
         {
-            lastlit=m_SelectionEnd->iter;
-            firstlit = lit= m_SelectionBegin->iter;
+            lastlit=lit= m_SelectionEnd->iter;
+            firstlit = m_SelectionBegin->iter;
             if(m_SelectionEnd->linepos == 0) // selend at begin of line
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid;
@@ -3215,31 +3215,17 @@ void MadEdit::ColumnAlignRight()
             }
 
             // replace all spaces at the begin
+            #if 1
             {
-                delsize=0;
+                delsize=rowpos;
                 ucs4_t uc=0x0D;
-                ucqueue.clear();
-
-                // get spaces at begin of line
-                while((m_Lines->*NextUChar)(ucqueue))
-                {
-                    uc=ucqueue.back().first;
-                    if(uc==0x20 || uc==0x09)
-                    {
-                        ++delsize;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
 
                 // writeback the indent-spaces and rest content of line
                 //if(delsize!=0) // this line is not a empty line
                 {
                     MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
                     MadBlock blk(md, -1, 0);
-                    oudata->m_Pos = rowpos;
+                    oudata->m_Pos = pos-delsize;
                     oudata->m_DelSize = delsize;
                     for(int i = 0; i < (columns-startpos+delsize); ++i)
                     {
@@ -3270,12 +3256,12 @@ void MadEdit::ColumnAlignRight()
                     undo->m_Undos.push_back(oudata);
                 }
             }
-
+#endif
             --count;
             if(count > 0)
             {
-                ++lit;
-                pos += lit->m_Size;
+                --lit;
+                pos -= lit->m_Size;
             }
         }
         while(count>0);
