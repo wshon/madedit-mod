@@ -3113,10 +3113,11 @@ void MadEdit::ColumnAlignRight()
         bool SelEndAtBOL=false;
         wxFileOffset linestartpos;
         int columns = m_SelectionBegin->xpos/GetUCharWidth(0x20);
+        wxFileOffset delsize=0, pos = m_SelectionBegin->pos;
         //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
         {
-            lastlit=lit=m_SelectionEnd->iter;
-            firstlit = m_SelectionBegin->iter;
+            lastlit=m_SelectionEnd->iter;
+            firstlit = lit= m_SelectionBegin->iter;
             if(m_SelectionEnd->linepos == 0) // selend at begin of line
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid;
@@ -3133,7 +3134,6 @@ void MadEdit::ColumnAlignRight()
         }
 
         MadUCQueue ucqueue;
-        wxFileOffset delsize=0, pos = m_SelectionBegin->pos;
         vector<ucs4_t> ucs;
         
         MadMemData *md=m_Lines->m_MemData;
@@ -3241,7 +3241,7 @@ void MadEdit::ColumnAlignRight()
                     MadBlock blk(md, -1, 0);
                     oudata->m_Pos = rowpos;
                     oudata->m_DelSize = delsize;
-                    for(int i = 0; i < (columns-lit->m_Size+delsize); ++i)
+                    for(int i = 0; i < (columns-startpos+delsize); ++i)
                     {
                         ucs.push_back(0x20);
                     }
@@ -3274,8 +3274,8 @@ void MadEdit::ColumnAlignRight()
             --count;
             if(count > 0)
             {
-                --lit;
-                pos -= lit->m_Size;
+                ++lit;
+                pos += lit->m_Size;
             }
         }
         while(count>0);
