@@ -3142,121 +3142,114 @@ void MadEdit::ColumnAlignRight()
         {
             ucs4_t tuc=0x0D;
             MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-            
+
             m_Lines->InitNextUChar(lit, 0);
-            wxFileOffset startpos = 0, rowpos = 0, lenend = 0, offset = 0;
-            bool lastspblk = false;
+            wxFileOffset startpos = 0, rowpos = 0, lenbeg = 0, offset = 0;
+            bool lastspblk = false, begofline = false;
+
             // delete all spaces to the end
+            delsize=0;
+            ucs4_t uc=0x0D;
+            ucqueue.clear();
+
+            // get spaces at begin of line
+            while((m_Lines->*NextUChar)(ucqueue))
             {
-                delsize=0;
-                ucs4_t uc=0x0D;
-                ucqueue.clear();
-
-                // get spaces at begin of line
-                while((m_Lines->*NextUChar)(ucqueue))
+                tuc = ucqueue.back().first;
+                if(tuc == 0x0D || tuc == 0x0A)
                 {
-                    tuc = ucqueue.back().first;
-                    if(tuc == 0x0D || tuc == 0x0A)
-                    {
-                        if(lastspblk == false)
-                            startpos = rowpos;
-                        break;
-                    }
-                    
-                    if(tuc == 0x09)
-                    {
-                        size_t mod = offset%m_TabColumns;
-                        offset += (m_TabColumns-mod);
-                    }
-                    else
-                        ++offset;
-
                     if(lastspblk == false)
-                    {
-                        if(tuc == 0x09 || tuc == 0x20)
-                        {
-                            startpos = rowpos;
-                            lastspblk = true;
-                        }
-                    }
-                    else if(tuc != 0x09 && tuc != 0x20)
-                    {
-                        lastspblk = false;
                         startpos = rowpos;
-                    }
-                    ++rowpos;
-
-					if(offset == columns)
-                    {
-                        if(lastspblk == false)
-                            startpos = rowpos;
-                        break;
-                    }
+                    break;
                 }
-            
-                // writeback the indent-spaces and rest content of line
-                delsize = rowpos - startpos;
-                if(delsize!=0) // this line is not a empty line
+                
+                if(tuc == 0x09)
                 {
-                    MadDeleteUndoData *dudata = new MadDeleteUndoData;
-                    dudata->m_Pos = pos-delsize;
-                    dudata->m_Size = delsize;
-                    
-                    lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
-
-                    if(undo == NULL)
-                    {
-                        undo = m_UndoBuffer->Add();
-                        SetNeedSync();
-                        undo->m_CaretPosBefore=m_CaretPos.pos;
-                    }
-                    undo->m_Undos.push_back(dudata);
+                    size_t mod = offset%m_TabColumns;
+                    offset += (m_TabColumns-mod);
                 }
+                else
+                    ++offset;
+
+				if(tuc != 0x09 && tuc != 0x20)
+				{
+					if(begofline == false)
+					{
+						begofline = true;
+						lenbeg = rowpos;
+					}
+					lastspblk = false;
+					startpos = rowpos;
+				}
+                else if(lastspblk == false)
+                {
+                    startpos = rowpos;
+                    lastspblk = true;
+                }
+
+                ++rowpos;
+
+				if(offset == columns)
+                {
+                    if(lastspblk == false)
+                        startpos = rowpos;
+                    break;
+                }
+            }
+        
+            // writeback the indent-spaces and rest content of line
+            delsize = rowpos - startpos;
+            if(delsize!=0) // this line is not a empty line
+            {
+                MadDeleteUndoData *dudata = new MadDeleteUndoData;
+                dudata->m_Pos = pos-delsize;
+                dudata->m_Size = delsize;
+                
+                lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
+
+                if(undo == NULL)
+                {
+                    undo = m_UndoBuffer->Add();
+                    SetNeedSync();
+                    undo->m_CaretPosBefore=m_CaretPos.pos;
+                }
+                undo->m_Undos.push_back(dudata);
             }
 
             // replace all spaces at the begin
-            #if 1
+			ucs.clear();
+            MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+            MadBlock blk(md, -1, 0);
+			oudata->m_Pos = pos - m_SelectionBegin->linepos;
+            oudata->m_DelSize = delsize;
+            for(int i = 0; i < (columns-startpos+delsize); ++i)
             {
-                delsize=rowpos;
-                ucs4_t uc=0x0D;
-
-                // writeback the indent-spaces and rest content of line
-                //if(delsize!=0) // this line is not a empty line
-                {
-                    MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-                    MadBlock blk(md, -1, 0);
-                    oudata->m_Pos = pos-delsize;
-                    oudata->m_DelSize = delsize;
-                    for(int i = 0; i < (columns-startpos+delsize); ++i)
-                    {
-                        ucs.push_back(0x20);
-                    }
-
-                    if(ucs.size())
-                    {
-                        UCStoBlock(&ucs[0], ucs.size(), blk);
-                        oudata->m_InsSize = blk.m_Size;
-                        oudata->m_InsData.push_back(blk);
-                    }
-                    else
-                    {
-                        oudata->m_InsSize = 0;
-                    }
-                    
-                    DeleteInsertData(oudata->m_Pos,
-                                        oudata->m_DelSize, &oudata->m_DelData,
-                                        oudata->m_InsSize, &oudata->m_InsData);
-
-                    if(undo == NULL)
-                    {
-                        undo = m_UndoBuffer->Add();
-                        SetNeedSync();
-                        undo->m_CaretPosBefore=m_CaretPos.pos;
-                    }
-                    undo->m_Undos.push_back(oudata);
-                }
+                ucs.push_back(0x20);
             }
-#endif
+
+            if(ucs.size())
+            {
+                UCStoBlock(&ucs[0], ucs.size(), blk);
+                oudata->m_InsSize = blk.m_Size;
+                oudata->m_InsData.push_back(blk);
+            }
+            else
+            {
+                oudata->m_InsSize = 0;
+            }
+            
+            DeleteInsertData(oudata->m_Pos,
+                                oudata->m_DelSize, &oudata->m_DelData,
+                                oudata->m_InsSize, &oudata->m_InsData);
+
+            if(undo == NULL)
+            {
+                undo = m_UndoBuffer->Add();
+                SetNeedSync();
+                undo->m_CaretPosBefore=m_CaretPos.pos;
+            }
+            undo->m_Undos.push_back(oudata);
+
             --count;
             if(count > 0)
             {
