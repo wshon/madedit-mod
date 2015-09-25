@@ -291,6 +291,7 @@ public:
     void OnEditJoinLines(wxCommandEvent& event);
     void OnEditInsertNumbers(wxCommandEvent& event);
     void OnEditColumnAlign(wxCommandEvent& event);
+    void OnEditColumnAlignRight(wxCommandEvent& event);
     void OnEditSpellCheck(wxCommandEvent& event);
     void OnEditBookmarkCopy(wxCommandEvent& event);
     void OnEditBookmarkCut(wxCommandEvent& event);
@@ -553,6 +554,7 @@ enum { // menu id
     menuJoinLines,
     menuInsertNumbers,
     menuColumnAlign,
+    menuColumnAlignRight,
 
     // search
     menuFindNext,

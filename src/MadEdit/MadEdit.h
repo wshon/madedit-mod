@@ -893,6 +893,7 @@ public: // basic functions
                         MadNumberFormat fmt, MadNumberAlign align, bool zeroPad, const wxString& prefix, const wxString& postfix);
 
     void ColumnAlign();
+    void ColumnAlignRight();
     void HighlightWords();
     void CopyBookmarkedLines();
     void CutDelBookmarkedLines(bool copyLines = false);

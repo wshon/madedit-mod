@@ -1264,6 +1264,7 @@ BEGIN_EVENT_TABLE( MadEditFrame, wxFrame )
     EVT_UPDATE_UI( menuJoinLines, MadEditFrame::OnUpdateUI_Menu_JoinLines )
     EVT_UPDATE_UI( menuInsertNumbers, MadEditFrame::OnUpdateUI_Menu_InsertNumbers )
     EVT_UPDATE_UI( menuColumnAlign, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
+    EVT_UPDATE_UI( menuColumnAlignRight, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
     EVT_UPDATE_UI( menuBookmark, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark )
     EVT_UPDATE_UI( menuBookmarkCopy, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark )
     EVT_UPDATE_UI( menuBookmarkCut, MadEditFrame::OnUpdateUI_MenuEditCheckBookmark )
@@ -1414,6 +1415,7 @@ BEGIN_EVENT_TABLE( MadEditFrame, wxFrame )
     EVT_MENU( menuJoinLines, MadEditFrame::OnEditJoinLines )
     EVT_MENU( menuInsertNumbers, MadEditFrame::OnEditInsertNumbers )
     EVT_MENU( menuColumnAlign, MadEditFrame::OnEditColumnAlign )
+    EVT_MENU( menuColumnAlignRight, MadEditFrame::OnEditColumnAlignRight )
     EVT_MENU_RANGE( menuSpellOption1, menuSpellOption99, MadEditFrame::OnEditSpellCheck )
     EVT_MENU( menuBookmarkCopy, MadEditFrame::OnEditBookmarkCopy )
     EVT_MENU( menuBookmarkCut, MadEditFrame::OnEditBookmarkCut )
@@ -1656,6 +1658,7 @@ CommandData CommandTable[] =
     { 0,                2, menuTrimTrailingSpaces,       wxT( "menuTrimTrailingSpaces" ),       _( "Tri&m Trailing Spaces" ),                   wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Trim trailing spaces at the end of lines" )},
     { 0,                2, menuInsertNumbers,            wxT( "menuInsertNumbers" ),            _( "Insert Incremental numbers..." ),           wxT( "Ctrl-Shift-N" ), wxITEM_NORMAL,    -1,                0,                     _( "Insert incremental numbers with step and padding at current caret" )},
     { 0,                2, menuColumnAlign,              wxT( "menuColumnAlign" ),              _( "Column Align" ),                            wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Column Align" )},
+    { 0,                2, menuColumnAlignRight,              wxT( "menuColumnAlignRight" ),         _( "Column Align Right" ),                      wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Column Align Right" )},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuSort,                     wxT( "menuSort" ),                     _( "&Sort" ),                                   0,                   wxITEM_NORMAL,    -1,                &g_Menu_Edit_Sort,     0},
     { 0,                2, menuSortAscending,            wxT( "menuSortAscending" ),            _( "Sort Lines (&Ascending)" ),                 wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Sort the selected or all lines in ascending order" )},
@@ -2332,6 +2335,7 @@ void MadEditFrame::CreateGUIControls( void )
     g_Menu_EditSubAdv->Append( menuTrimTrailingSpaces, _( "Tri&m Trailing Spaces" ) );
     g_Menu_EditSubAdv->Append( menuInsertNumbers, _( "Insert Incremental Numbers..." ) );
     g_Menu_EditSubAdv->Append( menuColumnAlign, _( "Column Align" ) );
+    g_Menu_EditSubAdv->Append( menuColumnAlignRight, _( "Column Align Right" ) );
     g_Menu_EditPop->AppendSubMenu( g_Menu_EditSubAdv, _( "Ad&vanced" ) );
     g_Menu_EditSubSort = new wxMenu( ( long )0 );
     g_Menu_EditSubSort->Append( menuSortAscending, _( "Sort Lines (&Ascending)" ) );
@@ -5701,6 +5705,15 @@ void MadEditFrame::OnEditColumnAlign( wxCommandEvent& event )
     {
         g_ActiveMadEdit->ColumnAlign();
         RecordAsMadMacro( g_ActiveMadEdit, wxString( wxT( "ColumnAlign()" ) ) );
+    }
+}
+
+void MadEditFrame::OnEditColumnAlignRight( wxCommandEvent& event )
+{
+    if( g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode() != emHexMode )
+    {
+        g_ActiveMadEdit->ColumnAlignRight();
+        RecordAsMadMacro( g_ActiveMadEdit, wxString( wxT( "ColumnAlignRight()" ) ) );
     }
 }
 
