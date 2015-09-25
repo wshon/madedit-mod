@@ -2942,6 +2942,7 @@ void MadEdit::ColumnAlign()
         bool SelEndAtBOL=false;
         wxFileOffset linestartpos;
         int columns = m_SelectionBegin->xpos/GetUCharWidth(0x20);
+        wxFileOffset delsize=0, pos = m_SelectionEnd->pos - m_SelectionEnd->linepos;
         //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
         {
             lastlit=lit=m_SelectionEnd->iter;
@@ -2962,7 +2963,6 @@ void MadEdit::ColumnAlign()
         }
 
         MadUCQueue ucqueue;
-        wxFileOffset delsize=0, pos = m_SelectionEnd->pos - m_SelectionEnd->linepos;
         do  // for each line
         {
             ucs4_t tuc=0x0D;
