@@ -3194,18 +3194,13 @@ void MadEdit::ColumnAlignRight()
                 if(tuc == 0x0D || tuc == 0x0A)
                 {
                     if(lastspblk == false)
+                	{
                         startpos = rowpos;
+						startoffset = offset;
+                	}
                     break;
                 }
                 
-                if(tuc == 0x09)
-                {
-                    mod = offset%m_TabColumns;
-                    offset += (m_TabColumns-mod);
-                }
-                else
-                    ++offset;
-
                 if(tuc != 0x09 && tuc != 0x20)
                 {
                     if (begflag == false)
@@ -3225,7 +3220,15 @@ void MadEdit::ColumnAlignRight()
                     startoffset = offset;
                 }
 
-                ++rowpos;
+				if (tuc == 0x09)
+				{
+					mod = offset%m_TabColumns;
+					offset += (m_TabColumns - mod);
+				}
+				else
+					++offset;
+
+				++rowpos;
 
                 if(offset == columns)
                 {

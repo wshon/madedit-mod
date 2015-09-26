@@ -103,7 +103,7 @@ FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.7
 New: Column Align Right(Selected text would be aligned according to right)
-New: Prefix, postfix and preview of numbering(enhanced)
+New: Prefix, postfix and preview of numbering(enhanced numbering)
 New: Search All in All Opened documents
 New: Replace All in All Opened documents
 New: Indicate "Empty expression" on status bar if user did not fill the search box and hit Search
@@ -123,6 +123,7 @@ Fix: Reverse order toolbars under linux
 Fix: Remove extra overflow icon from Toolbars
 Fix: Crash in ColumnAlign while reverse selection
 Fix: Column align will has issue if you select beyond the EOL
+Fix: File name was not marked as "modified*" in ColumnAlign
 
 Mod v0.3.6
 1.New: Create scripts directory if not exists while saving recorded script
