@@ -102,6 +102,7 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.7
+New: Column Align Right(Selected text would be aligned according to right)
 New: Prefix, postfix and preview of numbering(enhanced)
 New: Search All in All Opened documents
 New: Replace All in All Opened documents

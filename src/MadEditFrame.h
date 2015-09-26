@@ -152,7 +152,7 @@ public:
     void OnUpdateUI_MenuEditCheckBookmark(wxUpdateUIEvent& event);
 
     void OnUpdateUI_Menu_CheckTextFile(wxUpdateUIEvent& event);
-    void OnUpdateUI_Menu_InsertNumbers(wxUpdateUIEvent& event);
+    void OnUpdateUI_Menu_CheckColumnMode(wxUpdateUIEvent& event);
     void OnUpdateUI_Menu_JoinLines(wxUpdateUIEvent& event);
 
     void OnUpdateUI_MenuEditCopyAsHexString(wxUpdateUIEvent& event);
@@ -290,7 +290,7 @@ public:
     void OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event);
     void OnEditJoinLines(wxCommandEvent& event);
     void OnEditInsertNumbers(wxCommandEvent& event);
-    void OnEditColumnAlign(wxCommandEvent& event);
+    void OnEditColumnAlignLeft(wxCommandEvent& event);
     void OnEditColumnAlignRight(wxCommandEvent& event);
     void OnEditSpellCheck(wxCommandEvent& event);
     void OnEditBookmarkCopy(wxCommandEvent& event);
@@ -553,7 +553,7 @@ enum { // menu id
     menuDeleteEmptyLinesWithSpaces,
     menuJoinLines,
     menuInsertNumbers,
-    menuColumnAlign,
+    menuColumnAlignLeft,
     menuColumnAlignRight,
 
     // search
