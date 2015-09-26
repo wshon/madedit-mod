@@ -286,6 +286,7 @@ public:
     void OnEditTabToSpace(wxCommandEvent& event);
     void OnEditSpaceToTab(wxCommandEvent& event);
     void OnEditTrimTrailingSpaces(wxCommandEvent& event);
+    void OnEditTrimLeadingSpaces(wxCommandEvent& event);
     void OnEditDeleteEmptyLines(wxCommandEvent& event);
     void OnEditDeleteEmptyLinesWithSpaces(wxCommandEvent& event);
     void OnEditJoinLines(wxCommandEvent& event);
@@ -549,6 +550,7 @@ enum { // menu id
     menuTabToSpace,
     menuSpaceToTab,
     menuTrimTrailingSpaces,
+	menuTrimLeadingSpaces,
     menuDeleteEmptyLines,
     menuDeleteEmptyLinesWithSpaces,
     menuJoinLines,

@@ -344,7 +344,6 @@ InvertCase
 ToHalfWidth
 ToFullWidth
 InsertDateTime
-MouseNotify
 
 Note: Some of the command is meanless with scriptin, such like MouseNotify. And some of them
 have meanfull clone like ToUpperCase, Paste, etc

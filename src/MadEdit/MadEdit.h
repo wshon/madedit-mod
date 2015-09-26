@@ -1021,6 +1021,7 @@ public: // advanced functions
     void ToFullWidth(bool ascii=true, bool japanese=true, bool korean=true, bool other=true);
 
     void TrimTrailingSpaces();
+    void TrimLeadingSpaces();
     void DeleteEmptyLines();
     void DeleteEmptyLinesWithSpaces();
     void JoinLines();

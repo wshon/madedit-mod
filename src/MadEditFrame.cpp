@@ -1264,6 +1264,7 @@ BEGIN_EVENT_TABLE( MadEditFrame, wxFrame )
     EVT_UPDATE_UI( menuTabToSpace, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize )
     EVT_UPDATE_UI( menuSpaceToTab, MadEditFrame::OnUpdateUI_MenuEdit_CheckSelSize )
     EVT_UPDATE_UI( menuTrimTrailingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
+    EVT_UPDATE_UI( menuTrimLeadingSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
     EVT_UPDATE_UI( menuDeleteEmptyLines, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
     EVT_UPDATE_UI( menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnUpdateUI_Menu_CheckTextFile )
     EVT_UPDATE_UI( menuJoinLines, MadEditFrame::OnUpdateUI_Menu_JoinLines )
@@ -1415,6 +1416,7 @@ BEGIN_EVENT_TABLE( MadEditFrame, wxFrame )
     EVT_MENU( menuTabToSpace, MadEditFrame::OnEditTabToSpace )
     EVT_MENU( menuSpaceToTab, MadEditFrame::OnEditSpaceToTab )
     EVT_MENU( menuTrimTrailingSpaces, MadEditFrame::OnEditTrimTrailingSpaces )
+    EVT_MENU( menuTrimLeadingSpaces, MadEditFrame::OnEditTrimLeadingSpaces )
     EVT_MENU( menuDeleteEmptyLines, MadEditFrame::OnEditDeleteEmptyLines )
     EVT_MENU( menuDeleteEmptyLinesWithSpaces, MadEditFrame::OnEditDeleteEmptyLinesWithSpaces )
     EVT_MENU( menuJoinLines, MadEditFrame::OnEditJoinLines )
@@ -1661,9 +1663,10 @@ CommandData CommandTable[] =
     { 0,                2, menuSpaceToTab,               wxT( "menuSpaceToTab" ),               _( "Space Chars To Tab Chars" ),                wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Convert Space chars to Tab chars in the selection" )},
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT( "menuTrimTrailingSpaces" ),       _( "Tri&m Trailing Spaces" ),                   wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Trim trailing spaces at the end of lines" )},
+    { 0,                2, menuTrimLeadingSpaces,        wxT( "menuTrimLeadingSpaces" ),        _( "Tri&m Leading Spaces" ),                    wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Trim leading spaces at the beginning of lines" )},
     { 0,                2, menuInsertNumbers,            wxT( "menuInsertNumbers" ),            _( "Insert Incremental numbers..." ),           wxT( "Ctrl-Shift-N" ), wxITEM_NORMAL,    -1,                0,                     _( "Insert incremental numbers with step and padding at current caret" )},
-    { 0,                2, menuColumnAlignLeft,          wxT( "menuColumnAlignLeft" ),         _( "Column Align Left" ),                        wxT( "" ),             wxITEM_NORMAL,    alignleft_xpm_idx, 0,                     _( "Column Align Left" )},
-    { 0,                2, menuColumnAlignRight,         wxT( "menuColumnAlignRight" ),         _( "Column Align Right" ),                      wxT( "" ),             wxITEM_NORMAL,    alignright_xpm_idx,0,                     _( "Column Align Right" )},
+    { 0,                2, menuColumnAlignLeft,          wxT( "menuColumnAlignLeft" ),          _( "Column Align Left" ),                       wxT( "" ),             wxITEM_NORMAL,    alignleft_xpm_idx, 0,                     _( "Align selection to the left" )},
+    { 0,                2, menuColumnAlignRight,         wxT( "menuColumnAlignRight" ),         _( "Column Align Right" ),                      wxT( "" ),             wxITEM_NORMAL,    alignright_xpm_idx,0,                     _( "Align selection to the right" )},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                1, menuSort,                     wxT( "menuSort" ),                     _( "&Sort" ),                                   0,                     wxITEM_NORMAL,    -1,                &g_Menu_Edit_Sort,     0},
     { 0,                2, menuSortAscending,            wxT( "menuSortAscending" ),            _( "Sort Lines (&Ascending)" ),                 wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Sort the selected or all lines in ascending order" )},
@@ -2340,6 +2343,7 @@ void MadEditFrame::CreateGUIControls( void )
     g_Menu_EditSubAdv->Append( menuSpaceToTab, _( "Space Chars To Tab Chars" ) );
     g_Menu_EditSubAdv->AppendSeparator();
     g_Menu_EditSubAdv->Append( menuTrimTrailingSpaces, _( "Tri&m Trailing Spaces" ) );
+    g_Menu_EditSubAdv->Append( menuTrimLeadingSpaces, _( "Tri&m Leading Spaces" ) );
     g_Menu_EditSubAdv->Append( menuInsertNumbers, _( "Insert Incremental Numbers..." ) );
     g_Menu_EditSubAdv->Append( menuColumnAlignLeft, _( "Column Align Left" ) );
     g_Menu_EditSubAdv->Append( menuColumnAlignRight, _( "Column Align Right" ) );
@@ -5578,6 +5582,15 @@ void MadEditFrame::OnEditTrimTrailingSpaces( wxCommandEvent& event )
     }
 }
 
+void MadEditFrame::OnEditTrimLeadingSpaces( wxCommandEvent& event )
+{
+    if( g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode() != emHexMode )
+    {
+        g_ActiveMadEdit->TrimLeadingSpaces();
+        RecordAsMadMacro( g_ActiveMadEdit, wxString( wxT( "TrimLeadingSpaces()" ) ) );
+    }
+}
+
 void MadEditFrame::OnEditDeleteEmptyLines( wxCommandEvent& event )
 {
     if( g_ActiveMadEdit && g_ActiveMadEdit->GetEditMode() != emHexMode )
@@ -5810,24 +5823,32 @@ void MadEditFrame::OnSearchFind( wxCommandEvent& event )
     {
         if(g_ActiveMadEdit->GetSelectionSize()<=10240)
         {
+			wxString ws;
             if(g_SearchDialog->WxCheckBoxFindHex->GetValue())
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 g_SearchDialog->m_FindText->SetText(ws);
             }
-            else if(g_SearchDialog->WxCheckBoxRegex->GetValue()==false)
+            else
             {
-                wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
+                g_SearchDialog->m_FindText->SetText(ws);
+            }
+        }
+		else
+		{
+            wxString ws;
+            g_ActiveMadEdit->GetWordFromCaretPos(ws);
+            if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
+            {
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
     }
     else
     {
-        if(g_SearchDialog->WxCheckBoxRegex->GetValue()==false &&
-            !(g_SearchDialog->WxCheckBoxFindHex->GetValue()) )
+        if(!(g_SearchDialog->WxCheckBoxFindHex->GetValue()) )
         {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
@@ -5875,10 +5896,19 @@ void MadEditFrame::OnSearchFindNext( wxCommandEvent& event )
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 g_SearchDialog->m_FindText->SetText(ws);
             }
-            else if(g_SearchDialog->WxCheckBoxRegex->GetValue()==false)
+            else
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
+                g_SearchDialog->m_FindText->SetText(ws);
+            }
+        }
+		else
+		{
+            wxString ws;
+            g_ActiveMadEdit->GetWordFromCaretPos(ws);
+            if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
+            {
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
@@ -5921,10 +5951,19 @@ void MadEditFrame::OnSearchFindPrevious( wxCommandEvent& event )
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 g_SearchDialog->m_FindText->SetText(ws);
             }
-            else if(g_SearchDialog->WxCheckBoxRegex->GetValue()==false)
+            else
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
+                g_SearchDialog->m_FindText->SetText(ws);
+            }
+        }
+		else
+		{
+            wxString ws;
+            g_ActiveMadEdit->GetWordFromCaretPos(ws);
+            if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
+            {
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
@@ -5976,18 +6015,26 @@ void MadEditFrame::OnSearchReplace( wxCommandEvent& event )
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 g_ReplaceDialog->m_FindText->SetText(ws);
             }
-            else if(g_ReplaceDialog->WxCheckBoxRegex->GetValue()==false)
+            else
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
                 g_ReplaceDialog->m_FindText->SetText(ws);
             }
         }
+		else
+		{
+            wxString ws;
+            g_ActiveMadEdit->GetWordFromCaretPos(ws);
+            if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
+            {
+                g_ReplaceDialog->m_FindText->SetText(ws);
+            }
+        }
     }
     else
     {
-        if(g_ReplaceDialog->WxCheckBoxRegex->GetValue()==false &&
-            !(g_ReplaceDialog->WxCheckBoxFindHex->GetValue()) )
+        if(!(g_ReplaceDialog->WxCheckBoxFindHex->GetValue()) )
         {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
@@ -6057,10 +6104,19 @@ void MadEditFrame::OnSearchFindInFiles( wxCommandEvent& event )
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 g_FindInFilesDialog->m_FindText->SetText(ws);
             }
-            else if(g_FindInFilesDialog->WxCheckBoxRegex->GetValue()==false)
+            else
             {
                 wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
+                g_FindInFilesDialog->m_FindText->SetText(ws);
+            }
+        }
+		else
+		{
+            wxString ws;
+            g_ActiveMadEdit->GetWordFromCaretPos(ws);
+            if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
+            {
                 g_FindInFilesDialog->m_FindText->SetText(ws);
             }
         }

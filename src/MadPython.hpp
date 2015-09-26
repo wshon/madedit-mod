@@ -1191,6 +1191,11 @@ namespace mad_python
             g_ActiveMadEdit->TrimTrailingSpaces();
         }
 
+        void TrimLeadingSpaces()
+        {
+            g_ActiveMadEdit->TrimLeadingSpaces();
+        }
+
         void DeleteEmptyLines()
         {
             g_ActiveMadEdit->DeleteEmptyLines();
@@ -1436,6 +1441,7 @@ BOOST_PYTHON_MODULE(madpython)
         .def("InvertCase", &PyMadEdit::InvertCase, "")
         .def("Capitalize", &PyMadEdit::Capitalize, "")
         .def("TrimTrailingSpaces", &PyMadEdit::TrimTrailingSpaces, "")
+        .def("TrimLeadingSpaces", &PyMadEdit::TrimLeadingSpaces, "")
         .def("DeleteEmptyLinesWithSpaces", &PyMadEdit::DeleteEmptyLinesWithSpaces, "")
         .def("DeleteEmptyLines", &PyMadEdit::DeleteEmptyLines, "")
         .def("JoinLines", &PyMadEdit::JoinLines, "")

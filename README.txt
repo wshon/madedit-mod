@@ -107,6 +107,10 @@ New: Prefix, postfix and preview of numbering(enhanced)
 New: Search All in All Opened documents
 New: Replace All in All Opened documents
 New: Indicate "Empty expression" on status bar if user did not fill the search box and hit Search
+New: TrimLeadingSpaces----remove leading space and tab chars of lines
+New: Selection support in TrimTrailingSpaces, TrimLeadingSpaces, DeleteEmptyLines, DeleteEmptyLinesWithSpaces and JoinLines
+New: Selection copying to search text while searching with regex
+
 Fix: Assertion failure MadEditFrame.cpp:3403
 Fix: Rollback changes in Search/Replace(since 0.3.5)
 Fix: Assertion failure at MadEditFrame.cpp:5692 under x86_x64 linux
