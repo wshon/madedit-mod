@@ -109,7 +109,7 @@ New: Replace All in All Opened documents
 New: Indicate "Empty expression" on status bar if user did not fill the search box and hit Search
 New: TrimLeadingSpaces----remove leading space and tab chars of lines
 New: Selection support in TrimTrailingSpaces, TrimLeadingSpaces, DeleteEmptyLines, DeleteEmptyLinesWithSpaces and JoinLines
-New: Selection copying to search text while searching with regex
+New: Selected text copying to search text while searching with regex
 
 Fix: Assertion failure MadEditFrame.cpp:3403
 Fix: Rollback changes in Search/Replace(since 0.3.5)
@@ -122,6 +122,7 @@ Fix: Move encoding update and config update from MainFrame to search/replace dia
 Fix: Reverse order toolbars under linux
 Fix: Remove extra overflow icon from Toolbars
 Fix: Crash in ColumnAlign while reverse selection
+Fix: Column align will has issue if you select beyond the EOL
 
 Mod v0.3.6
 1.New: Create scripts directory if not exists while saving recorded script
