@@ -1842,7 +1842,7 @@ void MadEdit::TrimTrailingSpaces()
         return;
 
     // use Regular Expressions to trim all trailing spaces
-	ReplaceTextAll(wxT("[ \t]+(\r|\n|$)"), wxT("$1"), true, true, false);
+    ReplaceTextAll(wxT("[ \t]+(\r|\n|$)"), wxT("$1"), true, true, false);
 }
 
 void MadEdit::TrimLeadingSpaces()
@@ -1850,12 +1850,12 @@ void MadEdit::TrimLeadingSpaces()
     if(IsReadOnly() || m_EditMode==emHexMode)
         return;
 
-	wxFileOffset rangeFrom = -1, rangeTo=-1;
-	if(IsSelected())
-	{
-		rangeFrom = m_SelectionBegin->pos;
-		rangeTo= m_SelectionEnd->pos;
-	}
+    wxFileOffset rangeFrom = -1, rangeTo=-1;
+    if(IsSelected())
+    {
+        rangeFrom = m_SelectionBegin->pos;
+        rangeTo= m_SelectionEnd->pos;
+    }
 
     // use Regular Expressions to trim all trailing spaces
     ReplaceTextAll(wxT("^[ \t]+"), wxT(""), true, true, false, NULL, NULL, rangeFrom, rangeTo);
@@ -1866,12 +1866,12 @@ void MadEdit::DeleteEmptyLines()
     if(IsReadOnly() || m_EditMode==emHexMode)
         return;
     
-	wxFileOffset rangeFrom = -1, rangeTo=-1;
-	if(IsSelected())
-	{
-		rangeFrom = m_SelectionBegin->pos;
-		rangeTo= m_SelectionEnd->pos;
-	}
+    wxFileOffset rangeFrom = -1, rangeTo=-1;
+    if(IsSelected())
+    {
+        rangeFrom = m_SelectionBegin->pos;
+        rangeTo= m_SelectionEnd->pos;
+    }
     // use Regular Expressions to delete all empty lines
     ReplaceTextAll(wxT("^(\r\n|\r|\n|$)"), wxT(""), true, true, false, NULL, NULL, rangeFrom, rangeTo);
 }
@@ -1881,12 +1881,12 @@ void MadEdit::DeleteEmptyLinesWithSpaces()
     if(IsReadOnly() || m_EditMode==emHexMode)
         return;
 
-	wxFileOffset rangeFrom = -1, rangeTo=-1;
-	if(IsSelected())
-	{
-		rangeFrom = m_SelectionBegin->pos;
-		rangeTo= m_SelectionEnd->pos;
-	}
+    wxFileOffset rangeFrom = -1, rangeTo=-1;
+    if(IsSelected())
+    {
+        rangeFrom = m_SelectionBegin->pos;
+        rangeTo= m_SelectionEnd->pos;
+    }
     
     // use Regular Expressions to delete all empty lines(with spcaces)
     ReplaceTextAll(wxT("^[ \t]+(\r\n|\r|\n|$)"), wxT(""), true, true, false, NULL, NULL, rangeFrom, rangeTo);
@@ -1897,12 +1897,12 @@ void MadEdit::JoinLines()
     if(IsReadOnly() || m_EditMode==emHexMode || !m_Selection)
         return;
 
-	wxFileOffset rangeFrom = -1, rangeTo=-1;
-	if(IsSelected())
-	{
-		rangeFrom = m_SelectionBegin->pos;
-		rangeTo= m_SelectionEnd->pos;
-	}
+    wxFileOffset rangeFrom = -1, rangeTo=-1;
+    if(IsSelected())
+    {
+        rangeFrom = m_SelectionBegin->pos;
+        rangeTo= m_SelectionEnd->pos;
+    }
 
     // use Regular Expressions to join all selected lines
     ReplaceTextAll(wxT("(\r\n|\r|\n)"), wxT(" "), true, true, false, NULL, NULL, rangeFrom, rangeTo);
@@ -2992,7 +2992,7 @@ void MadEdit::ColumnAlignLeft()
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid +1;
             }
 
-			if (!lit->m_Size) ++count;
+            if (!lit->m_Size) ++count;
             // save first line pos
             linestartpos=lit->m_RowIndices.front().m_Start;
             m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
@@ -3115,7 +3115,7 @@ void MadEdit::ColumnAlignLeft()
         m_Selection = false;
         m_RepaintAll = true;
         Refresh(false);
-		DoStatusChanged();
+        DoStatusChanged();
     }
     else
     {
@@ -3149,7 +3149,7 @@ void MadEdit::ColumnAlignRight()
         MadLineIterator lit, lastlit, firstlit;
         size_t count;
         bool SelEndAtBOL=false;
-		wxFileOffset linestartpos;
+        wxFileOffset linestartpos;
         int columns = m_SelectionBegin->xpos/GetUCharWidth(0x20);
         wxFileOffset delsize=0, pos = m_SelectionEnd->pos, insize = 0;
         //if(m_Selection && m_SelectionBegin->lineid!=m_SelectionEnd->lineid)
@@ -3164,26 +3164,26 @@ void MadEdit::ColumnAlignRight()
             {
                 count = m_SelectionEnd->lineid - m_SelectionBegin->lineid +1;
             }
-			if (!lit->m_Size) ++count;
-			linestartpos=lit->m_RowIndices.front().m_Start;
+            if (!lit->m_Size) ++count;
+            linestartpos=lit->m_RowIndices.front().m_Start;
         }
 
         MadUCQueue ucqueue;
-		size_t mod;
+        size_t mod;
         MadMemData *md=m_Lines->m_MemData;
         vector<ucs4_t> ucs;
 
         ucs.reserve(m_MaxLineLength+1);
-		pos -= ((lit->m_Size - lit->m_NewLineSize) >= columns ? columns : (lit->m_Size - lit->m_NewLineSize));
+        pos -= ((lit->m_Size - lit->m_NewLineSize) >= columns ? columns : (lit->m_Size - lit->m_NewLineSize));
         do  // for each line
         {
             ucs4_t tuc=0x0D;
             MadLines::NextUCharFuncPtr NextUChar=m_Lines->NextUChar;
-            wxFileOffset startpos = 0, rowpos = 0, lenbeg = 0, offset = 0, totaldelsize = 0;
+            wxFileOffset startpos = 0, rowpos = 0, lenbeg = 0, begoffset = 0, offset = 0, startoffset = 0, totaldelsize = 0;
             bool lastspblk = false, begflag = false;
             // delete all spaces to the end
             delsize=0;
-			insize = 0;
+            insize = 0;
             ucqueue.clear();
             m_Lines->InitNextUChar(lit, 0);
 
@@ -3206,28 +3206,34 @@ void MadEdit::ColumnAlignRight()
                 else
                     ++offset;
 
-				if(tuc != 0x09 && tuc != 0x20)
-				{
-					if (begflag == false)
-					{
-						begflag = true;
-						lenbeg = rowpos;
-					}
-					lastspblk = false;
-					startpos = rowpos;
-				}
+                if(tuc != 0x09 && tuc != 0x20)
+                {
+                    if (begflag == false)
+                    {
+                        begflag = true;
+                        lenbeg = rowpos;
+                        begoffset = offset;
+                    }
+                    lastspblk = false;
+                    startpos = rowpos;
+                    startoffset = offset;
+                }
                 else if(lastspblk == false)
                 {
                     startpos = rowpos;
                     lastspblk = true;
+                    startoffset = offset;
                 }
 
                 ++rowpos;
 
-				if(offset == columns)
+                if(offset == columns)
                 {
                     if(lastspblk == false)
+                    {
                         startpos = rowpos;
+                        startoffset = offset;
+                    }
                     break;
                 }
             }
@@ -3237,7 +3243,7 @@ void MadEdit::ColumnAlignRight()
             if(delsize!=0) // this line is not a empty line
             {
                 MadDeleteUndoData *dudata = new MadDeleteUndoData;
-				dudata->m_Pos = pos + startpos;
+                dudata->m_Pos = pos + startpos;
                 dudata->m_Size = delsize;
                 
                 lit = DeleteInsertData(dudata->m_Pos, dudata->m_Size, &dudata->m_Data, 0, NULL);
@@ -3249,55 +3255,55 @@ void MadEdit::ColumnAlignRight()
                     undo->m_CaretPosBefore=m_CaretPos.pos;
                 }
                 undo->m_Undos.push_back(dudata);
-				totaldelsize = delsize;
+                totaldelsize = delsize;
             }
 
             // replace all spaces at the begin
-			delsize = lenbeg;
-			insize = columns - startpos + delsize;
+            delsize = lenbeg;
+            insize = columns - startoffset + begoffset;
 
-			if (delsize || insize)
-			{
-				// writeback the indent-spaces and rest content of line
-				ucs.clear();
-				MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
-				MadBlock blk(md, -1, 0);
-				oudata->m_Pos = pos;
-				oudata->m_DelSize = delsize;
-				for (int i = 0; i < insize; ++i)
-				{
-					ucs.push_back(0x20);
-				}
+            if (delsize || insize)
+            {
+                // writeback the indent-spaces and rest content of line
+                ucs.clear();
+                MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
+                MadBlock blk(md, -1, 0);
+                oudata->m_Pos = pos;
+                oudata->m_DelSize = delsize;
+                for (int i = 0; i < insize; ++i)
+                {
+                    ucs.push_back(0x20);
+                }
 
-				if (ucs.size())
-				{
-					UCStoBlock(&ucs[0], ucs.size(), blk);
-					oudata->m_InsSize = blk.m_Size;
-					oudata->m_InsData.push_back(blk);
-				}
-				else
-				{
-					oudata->m_InsSize = 0;
-				}
+                if (ucs.size())
+                {
+                    UCStoBlock(&ucs[0], ucs.size(), blk);
+                    oudata->m_InsSize = blk.m_Size;
+                    oudata->m_InsData.push_back(blk);
+                }
+                else
+                {
+                    oudata->m_InsSize = 0;
+                }
 
-				DeleteInsertData(oudata->m_Pos,
-					oudata->m_DelSize, &oudata->m_DelData,
-					oudata->m_InsSize, &oudata->m_InsData);
+                DeleteInsertData(oudata->m_Pos,
+                    oudata->m_DelSize, &oudata->m_DelData,
+                    oudata->m_InsSize, &oudata->m_InsData);
 
 
-				if (undo == NULL)
-				{
-					undo = m_UndoBuffer->Add();
-					SetNeedSync();
-					undo->m_CaretPosBefore = m_CaretPos.pos;
-				}
-				undo->m_Undos.push_back(oudata);
-			}
+                if (undo == NULL)
+                {
+                    undo = m_UndoBuffer->Add();
+                    SetNeedSync();
+                    undo->m_CaretPosBefore = m_CaretPos.pos;
+                }
+                undo->m_Undos.push_back(oudata);
+            }
             --count;
             if(count > 0)
             {
                 --lit;
-				pos -= lit->m_Size;
+                pos -= lit->m_Size;
             }
         }
         while(count>0);
@@ -3307,11 +3313,11 @@ void MadEdit::ColumnAlignRight()
         {
             m_Modified = true;
         }
-		//m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
-		m_Selection = false;
+        //m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
+        m_Selection = false;
         m_RepaintAll = true;
         Refresh(false);
-		DoStatusChanged();
+        DoStatusChanged();
     }
 }
 
@@ -3409,8 +3415,8 @@ void MadEdit::InsertIncrementalNumber(int initial, int step, int total, MadNumbe
                 }while(--cc > 0);
             }
         }
-		else
-			output = false;
+        else
+            output = false;
     }
 
     if(output)
