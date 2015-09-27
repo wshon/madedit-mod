@@ -184,6 +184,9 @@
 #define alignleft_xpm_idx (up_xpm_idx+1)
 #include "../images/alignright.xpm"
 #define alignright_xpm_idx (alignleft_xpm_idx+1)
+#include "../images/numbering.xpm"
+#define numbering_xpm_idx (alignright_xpm_idx+1)
+
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1664,7 +1667,7 @@ CommandData CommandTable[] =
     { 0,                2, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
     { 0,                2, menuTrimTrailingSpaces,       wxT( "menuTrimTrailingSpaces" ),       _( "Tri&m Trailing Spaces" ),                   wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Trim trailing spaces at the end of lines" )},
     { 0,                2, menuTrimLeadingSpaces,        wxT( "menuTrimLeadingSpaces" ),        _( "Tri&m Leading Spaces" ),                    wxT( "" ),             wxITEM_NORMAL,    -1,                0,                     _( "Trim leading spaces at the beginning of lines" )},
-    { 0,                2, menuInsertNumbers,            wxT( "menuInsertNumbers" ),            _( "Insert Incremental numbers..." ),           wxT( "Ctrl-Shift-N" ), wxITEM_NORMAL,    -1,                0,                     _( "Insert incremental numbers with step and padding at current caret" )},
+    { 0,                2, menuInsertNumbers,            wxT( "menuInsertNumbers" ),            _( "Insert Incremental numbers..." ),           wxT( "Ctrl-Shift-N" ), wxITEM_NORMAL,    numbering_xpm_idx, 0,                     _( "Insert incremental numbers with step and padding at current caret" )},
     { 0,                2, menuColumnAlignLeft,          wxT( "menuColumnAlignLeft" ),          _( "Column Align Left" ),                       wxT( "" ),             wxITEM_NORMAL,    alignleft_xpm_idx, 0,                     _( "Align selection to the left" )},
     { 0,                2, menuColumnAlignRight,         wxT( "menuColumnAlignRight" ),         _( "Column Align Right" ),                      wxT( "" ),             wxITEM_NORMAL,    alignright_xpm_idx,0,                     _( "Align selection to the right" )},
     { 0,                1, 0,                            0,                                   0,                                            0,                   wxITEM_SEPARATOR, -1,                0,                     0},
@@ -2276,6 +2279,7 @@ void MadEditFrame::CreateGUIControls( void )
     m_ImageList->Add( wxBitmap( up_xpm ) );
     m_ImageList->Add( wxBitmap( alignleft_xpm ) );
     m_ImageList->Add( wxBitmap( alignright_xpm ) );
+    m_ImageList->Add( wxBitmap( numbering_xpm ) );
     // add menuitems
     g_Menu_File = new wxMenu( ( long )0 );
     g_Menu_FilePop = new wxMenu( ( long )0 );
@@ -2775,6 +2779,7 @@ void MadEditFrame::CreateGUIControls( void )
     WxToolBar[tbEDITOR]->AddTool( menuComment, _T( "Comment" ), m_ImageList->GetBitmap( comment_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Comment" ), _( "Comment selection" ), NULL );
     WxToolBar[tbEDITOR]->AddTool( menuUncomment, _T( "Uncomment" ), m_ImageList->GetBitmap( uncomment_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Uncomment" ), _( "Uncomment selection" ), NULL );
     WxToolBar[tbEDITOR]->AddSeparator();
+    WxToolBar[tbEDITOR]->AddTool( menuInsertNumbers, _T( "Numbering" ), m_ImageList->GetBitmap( numbering_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Numbering" ), _( "Insert incremental numbers with step and padding" ), NULL );
     WxToolBar[tbEDITOR]->AddTool( menuColumnAlignLeft, _T( "ColumnAlignLeft" ), m_ImageList->GetBitmap( alignleft_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Align Left" ), _( "Align selection to left" ), NULL );
     WxToolBar[tbEDITOR]->AddTool( menuColumnAlignRight, _T( "ColumnAlignRight" ), m_ImageList->GetBitmap( alignright_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Align Right" ), _( "Align selection to right" ), NULL );
     WxToolBar[tbEDITOR]->AddSeparator();
