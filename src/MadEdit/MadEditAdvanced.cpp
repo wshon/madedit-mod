@@ -3273,10 +3273,20 @@ void MadEdit::ColumnAlignRight()
                 MadBlock blk(md, -1, 0);
                 oudata->m_Pos = pos;
                 oudata->m_DelSize = delsize;
-                for (int i = 0; i < insize; ++i)
-                {
-                    ucs.push_back(0x20);
-                }
+				if(m_InsertSpacesInsteadOfTab)
+				{
+				    ucs.insert(ucs.begin(), insize, 0x20);
+				}
+				else
+				{
+				    size_t tabs=insize/m_TabColumns;
+					ucs.insert(ucs.begin(), tabs, 0x09);
+				    size_t spas=insize-(tabs*m_TabColumns);
+				    if(spas>0)
+				    {
+				        ucs.insert(ucs.end(), spas, 0x20);
+				    }
+				}
 
                 if (ucs.size())
                 {
@@ -3315,12 +3325,12 @@ void MadEdit::ColumnAlignRight()
         if(undo)
         {
             m_Modified = true;
+			DoStatusChanged();
         }
         //m_SelectionPos1.pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + linestartpos;
         m_Selection = false;
         m_RepaintAll = true;
         Refresh(false);
-        DoStatusChanged();
     }
 }
 
