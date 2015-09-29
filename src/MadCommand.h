@@ -23,6 +23,7 @@ struct CommandData
     wxMenu         **menu_ptr;
     const wxChar   *hint;
     wxMenu         **popmenu_ptr;
+	wxMenu         **toolbar_ptr;
 };
 
 extern CommandData CommandTable[];
