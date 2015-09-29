@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>\wxWidgets\lib\vc_lib\mswu;\wxWidgets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN3)\lib\vc_lib\mswu;$(WXWIN3)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -140,12 +140,12 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>\wxWidgets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>wxmsw27u_core.lib;wxbase27u.lib;wxpng.lib;wxzlib.lib;wxjpeg.lib;wxtiff.lib;unicows.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw30u_core.lib;wxbase30u.lib;wxpng.lib;wxzlib.lib;wxjpeg.lib;wxtiff.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)image2xpm.exe</OutputFile>
-      <AdditionalLibraryDirectories>\wxWidgets\lib\vc_lib;..\libunicows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -188,6 +188,7 @@
   <ItemGroup>
     <ResourceCompile Include="image2xpmApp.rc">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(WXWIN3)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WXWIN3)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
