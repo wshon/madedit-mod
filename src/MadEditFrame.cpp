@@ -187,6 +187,17 @@
 #include "../images/numbering.xpm"
 #define numbering_xpm_idx (alignright_xpm_idx+1)
 
+char ** g_MadIcons[] = {
+	&null_xpm[0], &new_xpm[0], &fileopen_xpm[0], &filesave_xpm[0], &saveall_xpm[0], &fileclose_xpm[0],
+	&closeall_xpm[0], &preview_xpm[0], &print_xpm[0], &quit_xpm[0], &undo_xpm[0], &redo_xpm[0], &cut_xpm[0],
+	&copy_xpm[0], &paste_xpm[0], &indent_xpm[0], &unindent_xpm[0], &comment_xpm[0], &uncomment_xpm[0],
+	&find_xpm[0], &findnext_xpm[0], &findprev_xpm[0], &replace_xpm[0], &fontname_xpm[0], &fontsize_xpm[0],
+	&font_xpm[0], &nowrap_xpm[0], &wrapbywin_xpm[0], &wrapbycol_xpm[0], &textmode_xpm[0], &columnmode_xpm[0],
+	&hexmode_xpm[0], &Mad_16x15_xpm[0], &runscript_xpm[0], &record_xpm[0], &stop_xpm[0], &playback_xpm[0],
+	&saverec_xpm[0], &bookmark_toggle_xpm[0], &bookmark_next_xpm[0], &bookmark_prev_xpm[0],
+	&bookmark_clear_xpm[0], &spellchecker_xpm[0], &showsymbol_xpm[0], &down_xpm[0], &up_xpm[0],
+	&alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0]
+};
 
 #if wxCHECK_VERSION(2,7,0)
     #define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
@@ -1004,7 +1015,7 @@ void OnEditStatusChanged( MadEdit *madedit )
             { filename = title; }
 
             if(g_ActiveMadEdit->IsReadOnly())
-                filename += wxT("(R)");
+                filename += wxT(" (R)");
             g_MainFrame->SetTitle( wxString( wxT( "MadEdit-Mod - [" ) ) + filename + wxString( wxT( "] " ) ) );
             wxString enc = madedit->GetEncodingName();
 
@@ -2226,7 +2237,9 @@ void MadEditFrame::CreateGUIControls( void )
 
     //m_ImageList
     m_ImageList = new wxImageList( 16, 15 );
-    m_ImageList->Add( wxBitmap( null_xpm ) );
+	for (int i = 0; i < (sizeof(g_MadIcons) / sizeof(g_MadIcons[0])); ++i)
+		m_ImageList->Add(wxBitmap(g_MadIcons[i]));
+    /*m_ImageList->Add( wxBitmap( null_xpm ) );
     m_ImageList->Add( wxBitmap( new_xpm ) );
     m_ImageList->Add( wxBitmap( fileopen_xpm ) );
     m_ImageList->Add( wxBitmap( filesave_xpm ) );
@@ -2274,7 +2287,7 @@ void MadEditFrame::CreateGUIControls( void )
     m_ImageList->Add( wxBitmap( up_xpm ) );
     m_ImageList->Add( wxBitmap( alignleft_xpm ) );
     m_ImageList->Add( wxBitmap( alignright_xpm ) );
-    m_ImageList->Add( wxBitmap( numbering_xpm ) );
+    m_ImageList->Add( wxBitmap( numbering_xpm ) );*/
     // add menuitems
     g_Menu_File = new wxMenu( ( long )0 );
     g_Menu_FilePop = new wxMenu( ( long )0 );
@@ -3192,7 +3205,7 @@ void MadEditFrame::OnNotebookPageChanged( wxAuiNotebookEvent& event )
         if( g_ActiveMadEdit->IsModified() && title[title.Len() - 1] != wxT( '*' ) )
         { title += wxT( '*' ); }
         else if(g_ActiveMadEdit->IsReadOnly())
-                title += wxT("(R)");
+                title += wxT(" (R)");
 
         SetTitle( wxString( wxT( "MadEdit-Mod - [" ) ) + title + wxString( wxT( "] " ) ) );
         OnEditSelectionChanged( g_ActiveMadEdit );
@@ -3280,7 +3293,7 @@ void MadEditFrame::OnNotebookPageClosed( bool bZeroPage )
             if( g_ActiveMadEdit->IsModified() && title[title.Len() - 1] != wxT( '*' ) )
             { title += wxT( '*' ); }
             else if(g_ActiveMadEdit->IsReadOnly())
-                    title += wxT("(R)");
+                    title += wxT(" (R)");
 
             SetTitle( wxString( wxT( "MadEdit-Mod - [" ) ) + title + wxString( wxT( "] " ) ) );
         }
@@ -3872,11 +3885,8 @@ void MadEditFrame::OnUpdateUI_MenuEditRedo( wxUpdateUIEvent& event )
 void MadEditFrame::OnUpdateUI_MenuEditCopy( wxUpdateUIEvent& event )
 {
     bool enabled = ( g_ActiveMadEdit && g_ActiveMadEdit->IsSelected() );
-    if(enabled)
-    {
-        if(g_ActiveMadEdit->GetEditMode()==emColumnMode)
-            enabled = (g_ActiveMadEdit->GetSelectionSize()>0);
-    }
+    if((enabled) && g_ActiveMadEdit->GetEditMode()==emColumnMode)
+        enabled = (g_ActiveMadEdit->GetSelectionSize()>0);
     event.Enable( enabled );
 }
 
@@ -3888,11 +3898,8 @@ void MadEditFrame::OnUpdateUI_MenuEditDelete( wxUpdateUIEvent& event )
 void MadEditFrame::OnUpdateUI_MenuEditCut( wxUpdateUIEvent& event )
 {
     bool enabled = ( g_ActiveMadEdit && g_ActiveMadEdit->IsSelected() && !g_ActiveMadEdit->IsReadOnly());
-    if(enabled)
-    {
-        if(g_ActiveMadEdit->GetEditMode()==emColumnMode)
-            enabled = (g_ActiveMadEdit->GetSelectionSize()>0);
-    }
+    if((enabled) &&g_ActiveMadEdit->GetEditMode()==emColumnMode)
+        enabled = (g_ActiveMadEdit->GetSelectionSize()>0);
     event.Enable( enabled );
 }
 
@@ -3906,7 +3913,7 @@ void MadEditFrame::OnUpdateUI_MenuEditPaste( wxUpdateUIEvent& event )
 #ifdef __WXMSW__
     event.Enable( g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->CanPaste() );
 #else
-    event.Enable( g_ActiveMadEdit != NULL && !g_ActiveMadEdit->IsReadOnly() ); // workaround for high CPU loading in Linux
+    event.Enable( g_ActiveMadEdit && !g_ActiveMadEdit->IsReadOnly() ); // workaround for high CPU loading in Linux
 #endif
 }
 
@@ -3955,7 +3962,7 @@ void MadEditFrame::OnUpdateUI_Menu_CheckColumnMode( wxUpdateUIEvent& event )
 
 void MadEditFrame::OnUpdateUI_Menu_JoinLines( wxUpdateUIEvent& event )
 {
-    event.Enable( g_ActiveMadEdit != NULL && g_ActiveMadEdit->GetEditMode() != emHexMode && g_ActiveMadEdit->IsSelected() );
+    event.Enable( g_ActiveMadEdit != NULL && !g_ActiveMadEdit->IsReadOnly() && g_ActiveMadEdit->GetEditMode() != emHexMode && g_ActiveMadEdit->IsSelected() );
 }
 
 void MadEditFrame::OnUpdateUI_MenuEditCopyAsHexString( wxUpdateUIEvent& event )
@@ -5351,7 +5358,7 @@ void MadEditFrame::OnEditToHalfWidthByOptions( wxCommandEvent& event )
                                         _( "Choose the characters you want to convert:" ), _( "To Halfwidth by Options..." ),
                                         4, choices, this );
 #else
-	int sels = wxGetSelectedChoices(selections,
+    int sels = wxGetSelectedChoices(selections,
                                         _( "Choose the characters you want to convert:" ), _( "To Halfwidth by Options..." ),
                                         4, choices, this );
 #endif
@@ -5409,13 +5416,13 @@ void MadEditFrame::OnEditToFullWidthByOptions( wxCommandEvent& event )
                             _( "Korean characters" ), _( "other characters" )
                           };
 #if (wxMAJOR_VERSION == 2)
-	size_t sels = wxGetSelectedChoices( selections,
-										_( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
-										4, choices, this );
+    size_t sels = wxGetSelectedChoices( selections,
+                                        _( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
+                                        4, choices, this );
 #else
-	int sels = wxGetSelectedChoices(selections,
-										_( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
-										4, choices, this );
+    int sels = wxGetSelectedChoices(selections,
+                                        _( "Choose the characters you want to convert:" ), _( "To Fullwidth by Options..." ),
+                                        4, choices, this );
 #endif
 
     if( sels > 0 )
@@ -5709,7 +5716,7 @@ void MadEditFrame::OnSearchFind( wxCommandEvent& event )
     {
         if(g_ActiveMadEdit->GetSelectionSize()<=10240)
         {
-			wxString ws;
+            wxString ws;
             if(g_SearchDialog->WxCheckBoxFindHex->GetValue())
             {
                 wxString ws;
@@ -5722,8 +5729,8 @@ void MadEditFrame::OnSearchFind( wxCommandEvent& event )
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
-		else
-		{
+        else
+        {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
             if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
@@ -5789,8 +5796,8 @@ void MadEditFrame::OnSearchFindNext( wxCommandEvent& event )
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
-		else
-		{
+        else
+        {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
             if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
@@ -5844,8 +5851,8 @@ void MadEditFrame::OnSearchFindPrevious( wxCommandEvent& event )
                 g_SearchDialog->m_FindText->SetText(ws);
             }
         }
-		else
-		{
+        else
+        {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
             if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
@@ -5908,8 +5915,8 @@ void MadEditFrame::OnSearchReplace( wxCommandEvent& event )
                 g_ReplaceDialog->m_FindText->SetText(ws);
             }
         }
-		else
-		{
+        else
+        {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
             if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
@@ -5997,8 +6004,8 @@ void MadEditFrame::OnSearchFindInFiles( wxCommandEvent& event )
                 g_FindInFilesDialog->m_FindText->SetText(ws);
             }
         }
-		else
-		{
+        else
+        {
             wxString ws;
             g_ActiveMadEdit->GetWordFromCaretPos(ws);
             if(!ws.IsEmpty() && ws[0]>wxChar(0x20))
