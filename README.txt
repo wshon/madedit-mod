@@ -8,7 +8,6 @@ MadEdit supports many useful functions, e.g. SyntaxHighlightings, WordWraps,
 Encodings, Column/Hex Modes, and a Plugin system(not work yet).
 In HexMode, MadEdit can open large files which size is up to 32GB (INT_MAX*16).
 
-
 Supported Platforms:
 -------------------
 A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
@@ -114,7 +113,7 @@ Mod v0.3.7
 10.New: Update preview while editing initial number in Numbering dialog
 11.New: Config item for Quick Search bar in option dialog
 12.New: Refactor of popup memu/toolbar code
-13.New: ReadOnly flag on title
+13.New: ReadOnly flag on title and GUI update for ReadOnly mode(disable edit icon/menu in ReadOnly mode)
 14.Fix: Assertion failure MadEditFrame.cpp:3403
 15.Fix: Rollback changes in Search/Replace(since 0.3.5)
 16.Fix: Assertion failure at MadEditFrame.cpp:5692 under x86_x64 linux
