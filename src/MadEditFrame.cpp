@@ -186,6 +186,10 @@
 #define alignright_xpm_idx (alignleft_xpm_idx+1)
 #include "../images/numbering.xpm"
 #define numbering_xpm_idx (alignright_xpm_idx+1)
+#include "../images/refresh.xpm"
+#define refresh_xpm_idx (numbering_xpm_idx+1)
+#include "../images/closepreview.xpm"
+#define closepreview_xpm_idx (refresh_xpm_idx+1)
 
 char ** g_MadIcons[] = {
 	&null_xpm[0], &new_xpm[0], &fileopen_xpm[0], &filesave_xpm[0], &saveall_xpm[0], &fileclose_xpm[0],
@@ -196,7 +200,7 @@ char ** g_MadIcons[] = {
 	&hexmode_xpm[0], &Mad_16x15_xpm[0], &runscript_xpm[0], &record_xpm[0], &stop_xpm[0], &playback_xpm[0],
 	&saverec_xpm[0], &bookmark_toggle_xpm[0], &bookmark_next_xpm[0], &bookmark_prev_xpm[0],
 	&bookmark_clear_xpm[0], &spellchecker_xpm[0], &showsymbol_xpm[0], &down_xpm[0], &up_xpm[0],
-	&alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0]
+	&alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0], &refresh_xpm[0], &closepreview_xpm[0]
 };
 
 #if wxCHECK_VERSION(2,7,0)
@@ -278,57 +282,6 @@ int g_StatusWidths[7] = { 0, 220, 235, 135, 155, 65, ( 40 + 0 )};
 
 std::map<int, wxString>g_ToolbarNames;
 std::map<int, wxString>g_PreviewTypeNames;
-
-class MadHtmlPreview : public wxHtmlWindow
-{
-    int & m_PreviewType;
-public:
-    MadHtmlPreview( int &previewType, wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = wxHW_DEFAULT_STYLE, const wxString &name = "MadhtmlWindow" )
-        : wxHtmlWindow( parent, id, pos, size, style, name ), m_PreviewType( previewType )
-    {}
-    ~MadHtmlPreview() {}
-protected:
-    void OnPaint( wxPaintEvent& event );
-    DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE( MadHtmlPreview, wxHtmlWindow )
-    EVT_PAINT( MadHtmlPreview::OnPaint )
-END_EVENT_TABLE()
-
-void MadHtmlPreview::OnPaint( wxPaintEvent& event )
-{
-    if( g_ActiveMadEdit != NULL && m_PreviewType != ptPREVIEW_NONE )
-    {
-        if( g_ActiveMadEdit->NeedSync() )
-        {
-            wxString text;
-            g_ActiveMadEdit->GetText( text, false );
-
-            if( m_PreviewType == ptPREVIEW_MARKDOWN )
-            {
-                std::wstring src = text.ToStdWstring();
-                std::wostringstream out;
-                markdown::Document doc;
-                doc.read( src );
-                doc.write( out );
-                text = out.str();
-            }
-
-            SetPage( text );
-            g_ActiveMadEdit->Synced();
-        }
-    }
-    else
-    {
-        if( ( g_ActiveMadEdit == NULL && m_PreviewType != ptPREVIEW_NONE ) )
-        {
-            SetPage( wxT( "" ) );
-        }
-    }
-
-    wxHtmlWindow::OnPaint( event );
-}
 
 wxAcceleratorEntry g_AccelFindNext, g_AccelFindPrev;
 int MadMessageBox( const wxString& message,
@@ -1474,6 +1427,8 @@ BEGIN_EVENT_TABLE( MadEditFrame, wxFrame )
     EVT_MENU( menuFixedWidthMode, MadEditFrame::OnViewFixedWidthMode )
     EVT_MENU_RANGE( menuTabColumn1, menuTabColumn16, MadEditFrame::OnViewTabColumn )
     EVT_MENU_RANGE( menuPreview1, menuPreview16, MadEditFrame::OnViewPreview )
+    EVT_MENU( menuRefreshPreview, MadEditFrame::OnRefreshPreview )
+    EVT_MENU( menuClosePreview, MadEditFrame::OnClosePreview )
     EVT_MENU_RANGE( menuLineSpacing100, menuLineSpacing250, MadEditFrame::OnViewLineSpacing )
     EVT_MENU( menuNoWrap, MadEditFrame::OnViewNoWrap )
     EVT_MENU( menuWrapByWindow, MadEditFrame::OnViewWrapByWindow )
@@ -2239,55 +2194,7 @@ void MadEditFrame::CreateGUIControls( void )
     m_ImageList = new wxImageList( 16, 15 );
 	for (int i = 0; i < (sizeof(g_MadIcons) / sizeof(g_MadIcons[0])); ++i)
 		m_ImageList->Add(wxBitmap(g_MadIcons[i]));
-    /*m_ImageList->Add( wxBitmap( null_xpm ) );
-    m_ImageList->Add( wxBitmap( new_xpm ) );
-    m_ImageList->Add( wxBitmap( fileopen_xpm ) );
-    m_ImageList->Add( wxBitmap( filesave_xpm ) );
-    m_ImageList->Add( wxBitmap( saveall_xpm ) );
-    m_ImageList->Add( wxBitmap( fileclose_xpm ) );
-    m_ImageList->Add( wxBitmap( closeall_xpm ) );
-    m_ImageList->Add( wxBitmap( preview_xpm ) );
-    m_ImageList->Add( wxBitmap( print_xpm ) );
-    m_ImageList->Add( wxBitmap( quit_xpm ) );
-    m_ImageList->Add( wxBitmap( undo_xpm ) );
-    m_ImageList->Add( wxBitmap( redo_xpm ) );
-    m_ImageList->Add( wxBitmap( cut_xpm ) );
-    m_ImageList->Add( wxBitmap( copy_xpm ) );
-    m_ImageList->Add( wxBitmap( paste_xpm ) );
-    m_ImageList->Add( wxBitmap( indent_xpm ) );
-    m_ImageList->Add( wxBitmap( unindent_xpm ) );
-    m_ImageList->Add( wxBitmap( comment_xpm ) );
-    m_ImageList->Add( wxBitmap( uncomment_xpm ) );
-    m_ImageList->Add( wxBitmap( find_xpm ) );
-    m_ImageList->Add( wxBitmap( findnext_xpm ) );
-    m_ImageList->Add( wxBitmap( findprev_xpm ) );
-    m_ImageList->Add( wxBitmap( replace_xpm ) );
-    m_ImageList->Add( wxBitmap( fontname_xpm ) );
-    m_ImageList->Add( wxBitmap( fontsize_xpm ) );
-    m_ImageList->Add( wxBitmap( font_xpm ) );
-    m_ImageList->Add( wxBitmap( nowrap_xpm ) );
-    m_ImageList->Add( wxBitmap( wrapbywin_xpm ) );
-    m_ImageList->Add( wxBitmap( wrapbycol_xpm ) );
-    m_ImageList->Add( wxBitmap( textmode_xpm ) );
-    m_ImageList->Add( wxBitmap( columnmode_xpm ) );
-    m_ImageList->Add( wxBitmap( hexmode_xpm ) );
-    m_ImageList->Add( wxBitmap( Mad_16x15_xpm ) );
-    m_ImageList->Add( wxBitmap( runscript_xpm ) );
-    m_ImageList->Add( wxBitmap( record_xpm ) );
-    m_ImageList->Add( wxBitmap( stop_xpm ) );
-    m_ImageList->Add( wxBitmap( playback_xpm ) );
-    m_ImageList->Add( wxBitmap( saverec_xpm ) );
-    m_ImageList->Add( wxBitmap( bookmark_toggle_xpm ) );
-    m_ImageList->Add( wxBitmap( bookmark_next_xpm ) );
-    m_ImageList->Add( wxBitmap( bookmark_prev_xpm ) );
-    m_ImageList->Add( wxBitmap( bookmark_clear_xpm ) );
-    m_ImageList->Add( wxBitmap( spellchecker_xpm ) );
-    m_ImageList->Add( wxBitmap( showsymbol_xpm ) );
-    m_ImageList->Add( wxBitmap( down_xpm ) );
-    m_ImageList->Add( wxBitmap( up_xpm ) );
-    m_ImageList->Add( wxBitmap( alignleft_xpm ) );
-    m_ImageList->Add( wxBitmap( alignright_xpm ) );
-    m_ImageList->Add( wxBitmap( numbering_xpm ) );*/
+
     // add menuitems
     g_Menu_File = new wxMenu( ( long )0 );
     g_Menu_FilePop = new wxMenu( ( long )0 );
@@ -2699,12 +2606,12 @@ void MadEditFrame::CreateGUIControls( void )
     for(int tbId = tbSTANDARD; tbId <= tbMACRO; ++tbId)
         WxToolBar[tbId]->Realize();
 
-    m_AuiManager.AddPane( WxToolBar[tbSTANDARD],      wxAuiPaneInfo().Name( wxT( "WxToolBar1" ) ).Caption( wxT( "Starndard" ) ).Floatable().ToolbarPane().Top().Position(0) );
-    m_AuiManager.AddPane( WxToolBar[tbEDITOR],        wxAuiPaneInfo().Name( wxT( "WxToolBar2" ) ).Caption( wxT( "Editor" ) ).Floatable().ToolbarPane().Top().Position(1) );
-    m_AuiManager.AddPane( WxToolBar[tbSEARCHREPLACE], wxAuiPaneInfo().Name( wxT( "WxToolBar3" ) ).Caption( wxT( "Search/Replace" ) ).Floatable().ToolbarPane().Top().Position(2) );
-    m_AuiManager.AddPane( WxToolBar[tbTEXTVIEW],      wxAuiPaneInfo().Name( wxT( "WxToolBar4" ) ).Caption( wxT( "Text View" ) ).Floatable().ToolbarPane().Top().Position(3) );
-    m_AuiManager.AddPane( WxToolBar[tbEDITMODE],      wxAuiPaneInfo().Name( wxT( "WxToolBar5" ) ).Caption( wxT( "Edit Mode" ) ).Floatable().ToolbarPane().Top().Position(4) );
-    m_AuiManager.AddPane( WxToolBar[tbMACRO],         wxAuiPaneInfo().Name( wxT( "WxToolBar6" ) ).Caption( wxT( "Macro" ) ).Floatable().ToolbarPane().Top().Position(5) );
+    m_AuiManager.AddPane( WxToolBar[tbSTANDARD],      wxAuiPaneInfo().Name( wxT( "WxToolBar1" ) ).CloseButton (false).Caption( wxT( "Starndard" ) ).Floatable().ToolbarPane().Top().Position(0) );
+    m_AuiManager.AddPane( WxToolBar[tbEDITOR],        wxAuiPaneInfo().Name( wxT( "WxToolBar2" ) ).CloseButton (false).Caption( wxT( "Editor" ) ).Floatable().ToolbarPane().Top().Position(1) );
+    m_AuiManager.AddPane( WxToolBar[tbSEARCHREPLACE], wxAuiPaneInfo().Name( wxT( "WxToolBar3" ) ).CloseButton (false).Caption( wxT( "Search/Replace" ) ).Floatable().ToolbarPane().Top().Position(2) );
+    m_AuiManager.AddPane( WxToolBar[tbTEXTVIEW],      wxAuiPaneInfo().Name( wxT( "WxToolBar4" ) ).CloseButton (false).Caption( wxT( "Text View" ) ).Floatable().ToolbarPane().Top().Position(3) );
+    m_AuiManager.AddPane( WxToolBar[tbEDITMODE],      wxAuiPaneInfo().Name( wxT( "WxToolBar5" ) ).CloseButton (false).Caption( wxT( "Edit Mode" ) ).Floatable().ToolbarPane().Top().Position(4) );
+    m_AuiManager.AddPane( WxToolBar[tbMACRO],         wxAuiPaneInfo().Name( wxT( "WxToolBar6" ) ).CloseButton (false).Caption( wxT( "Macro" ) ).Floatable().ToolbarPane().Top().Position(5) );
     bool bb;
     m_ToolbarStatus[tbMAX] = false;
     m_Config->Read( wxT( "/MadEdit/ShowToolbarStandard" ), &bb, true );
@@ -2821,7 +2728,7 @@ void MadEditFrame::CreateGUIControls( void )
     m_CheckboxCaseSensitive->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( MadEditFrame::MadEditFrameKeyDown ) );
     m_QuickSeachBar->AddControl( m_CheckboxRegEx );
     m_QuickSeachBar->Realize();
-    m_AuiManager.AddPane( m_QuickSeachBar, wxAuiPaneInfo().Name( wxT( "QuickSeachBar" ) ).Caption( _( "Quick Search" ) ).Floatable( true ).ToolbarPane().Top().Row( 2 ) );
+    m_AuiManager.AddPane( m_QuickSeachBar, wxAuiPaneInfo().Name( wxT( "QuickSeachBar" ) ).CloseButton (false).Caption( _( "Quick Search" ) ).Floatable( true ).ToolbarPane().Top().Row( 2 ) );
     bool showQsBar = m_Config->ReadBool( wxT( "/MadEdit/ShowQSearchBarOnStart" ), true );
     if(!showQsBar)
         m_AuiManager.GetPane( m_QuickSeachBar ).Hide();
@@ -6327,10 +6234,17 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
         }
         else
         {
-            m_HtmlPreview = new MadHtmlPreview( this->m_PreviewType, this, wxID_ANY,
+            m_HtmlPreview = new wxHtmlWindow( this, wxID_ANY,
                                                 wxDefaultPosition,
                                                 wxSize( 400, 300 ) );
             m_AuiManager.AddPane( m_HtmlPreview, wxAuiPaneInfo().Name( wxT( "Markdown/HTML Preview" ) ).Caption( _( "Markdown/HTML Preview" ) ).Floatable( false ).Right().CloseButton( false ) );
+			
+			long style=wxAUI_TB_NO_TOOLTIPS;
+			m_RefreshView = new wxAuiToolBar( this, ID_WXTOOLBAR1 + tbMAX+1, wxPoint( 0, 0 ), wxSize( 392, 29 ), style	);
+			m_RefreshView->AddTool( menuRefreshPreview, wxT( "RefreshPreview" ), m_ImageList->GetBitmap( refresh_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Refresh" ), _( "Refresh prviewed text" ), NULL );
+			m_RefreshView->AddTool( menuClosePreview, wxT( "ClosePreview" ), m_ImageList->GetBitmap( closepreview_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Close Preveiw" ), _( "Close preveiw windows" ), NULL );
+			m_RefreshView->Realize();
+			m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CloseButton (false).CaptionVisible(false).Right().Float() );
         }
 
         wxString text;
@@ -6346,6 +6260,7 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
             text = out.str();
         }
 
+		m_AuiManager.GetPane( m_RefreshView ).Show();
         m_HtmlPreview->SetPage( text );
         g_ActiveMadEdit->Synced();
     }
@@ -6357,11 +6272,46 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
         {
             m_AuiManager.GetPane( m_HtmlPreview ).Hide();
         }
+		m_AuiManager.GetPane( m_RefreshView ).Hide();
     }
 
     m_AuiManager.Update();
 }
 
+void MadEditFrame::OnRefreshPreview(wxCommandEvent& event)
+{
+	if( m_HtmlPreview )
+	{
+		m_AuiManager.GetPane( m_HtmlPreview ).Show();
+		wxString text;
+		g_ActiveMadEdit->GetText( text, false );
+		
+		if( m_PreviewType == ptPREVIEW_MARKDOWN )
+		{
+			std::wstring src = text.ToStdWstring();
+			std::wostringstream out;
+			markdown::Document doc;
+			doc.read( src );
+			doc.write( out );
+			text = out.str();
+		}
+		
+		m_HtmlPreview->SetPage( text );
+	}
+}
+
+void MadEditFrame::OnClosePreview(wxCommandEvent& event)
+{
+    m_PreviewType = ptPREVIEW_NONE;
+
+    if( m_HtmlPreview )
+    {
+        m_AuiManager.GetPane( m_HtmlPreview ).Hide();
+    }
+	m_AuiManager.GetPane( m_RefreshView ).Hide();
+
+    m_AuiManager.Update();
+}
 
 void MadEditFrame::OnViewLineSpacing( wxCommandEvent& event )
 {
