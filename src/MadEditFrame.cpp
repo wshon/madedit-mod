@@ -6244,7 +6244,7 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
 			m_RefreshView->AddTool( menuRefreshPreview, wxT( "RefreshPreview" ), m_ImageList->GetBitmap( refresh_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Refresh" ), _( "Refresh prviewed text" ), NULL );
 			m_RefreshView->AddTool( menuClosePreview, wxT( "ClosePreview" ), m_ImageList->GetBitmap( closepreview_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Close Preveiw" ), _( "Close preveiw windows" ), NULL );
 			m_RefreshView->Realize();
-			m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CloseButton (false).CaptionVisible(false).Right().Float() );
+			m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CaptionVisible(false).CloseButton (false).Dockable(false).DockFixed().Resizable(false).Right().Float() );
         }
 
         wxString text;
