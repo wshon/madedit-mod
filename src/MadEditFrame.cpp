@@ -192,15 +192,15 @@
 #define closepreview_xpm_idx (refresh_xpm_idx+1)
 
 char ** g_MadIcons[] = {
-	&null_xpm[0], &new_xpm[0], &fileopen_xpm[0], &filesave_xpm[0], &saveall_xpm[0], &fileclose_xpm[0],
-	&closeall_xpm[0], &preview_xpm[0], &print_xpm[0], &quit_xpm[0], &undo_xpm[0], &redo_xpm[0], &cut_xpm[0],
-	&copy_xpm[0], &paste_xpm[0], &indent_xpm[0], &unindent_xpm[0], &comment_xpm[0], &uncomment_xpm[0],
-	&find_xpm[0], &findnext_xpm[0], &findprev_xpm[0], &replace_xpm[0], &fontname_xpm[0], &fontsize_xpm[0],
-	&font_xpm[0], &nowrap_xpm[0], &wrapbywin_xpm[0], &wrapbycol_xpm[0], &textmode_xpm[0], &columnmode_xpm[0],
-	&hexmode_xpm[0], &Mad_16x15_xpm[0], &runscript_xpm[0], &record_xpm[0], &stop_xpm[0], &playback_xpm[0],
-	&saverec_xpm[0], &bookmark_toggle_xpm[0], &bookmark_next_xpm[0], &bookmark_prev_xpm[0],
-	&bookmark_clear_xpm[0], &spellchecker_xpm[0], &showsymbol_xpm[0], &down_xpm[0], &up_xpm[0],
-	&alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0], &refresh_xpm[0], &closepreview_xpm[0]
+    &null_xpm[0], &new_xpm[0], &fileopen_xpm[0], &filesave_xpm[0], &saveall_xpm[0], &fileclose_xpm[0],
+    &closeall_xpm[0], &preview_xpm[0], &print_xpm[0], &quit_xpm[0], &undo_xpm[0], &redo_xpm[0], &cut_xpm[0],
+    &copy_xpm[0], &paste_xpm[0], &indent_xpm[0], &unindent_xpm[0], &comment_xpm[0], &uncomment_xpm[0],
+    &find_xpm[0], &findnext_xpm[0], &findprev_xpm[0], &replace_xpm[0], &fontname_xpm[0], &fontsize_xpm[0],
+    &font_xpm[0], &nowrap_xpm[0], &wrapbywin_xpm[0], &wrapbycol_xpm[0], &textmode_xpm[0], &columnmode_xpm[0],
+    &hexmode_xpm[0], &Mad_16x15_xpm[0], &runscript_xpm[0], &record_xpm[0], &stop_xpm[0], &playback_xpm[0],
+    &saverec_xpm[0], &bookmark_toggle_xpm[0], &bookmark_next_xpm[0], &bookmark_prev_xpm[0],
+    &bookmark_clear_xpm[0], &spellchecker_xpm[0], &showsymbol_xpm[0], &down_xpm[0], &up_xpm[0],
+    &alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0], &refresh_xpm[0], &closepreview_xpm[0]
 };
 
 #if wxCHECK_VERSION(2,7,0)
@@ -269,6 +269,20 @@ wxMenu *g_Menu_MadMacro = NULL;
 wxMenu *g_Menu_MadMacro_Scripts = NULL;
 wxMenu *g_Menu_Toolbars = NULL;
 wxMenu *g_Menu_FrameContext = NULL;
+
+wxMenu ** g_Menus[] = {
+    &g_Menu_File, &g_Menu_FilePop, &g_Menu_Edit, &g_Menu_EditPop, &g_Menu_EditSubAdv,
+    &g_Menu_EditSubSort, &g_Menu_Search, &g_Menu_View, &g_Menu_Tools, &g_Menu_Window,
+    &g_Menu_Help, &g_Menu_File_RecentFiles, &g_Menu_Edit_Bookmark, &g_Menu_Edit_Sort,
+    &g_Menu_Edit_Advanced, &g_Menu_View_Encoding, &g_Menu_View_AllEncodings,
+    &g_Menu_View_Syntax, &g_Menu_View_FontName, &g_Menu_View_Font0, &g_Menu_View_Font1,
+    &g_Menu_View_Font2, &g_Menu_View_Font3, &g_Menu_View_Font4, &g_Menu_View_Font5,
+    &g_Menu_View_Font6, &g_Menu_View_FontSize, &g_Menu_View_TabColumn, &g_Menu_View_Preview,
+    &g_Menu_View_LineSpacing, &g_Menu_Tools_BOM, &g_Menu_Tools_NewLineChar,
+    &g_Menu_Tools_InsertNewLineChar, &g_Menu_Tools_ConvertChineseChar,
+    &g_Menu_Tools_TextConvFormatter, &g_Menu_MadMacro, &g_Menu_MadMacro_Scripts,
+    &g_Menu_Toolbars
+};
 
 wxArrayString g_FontNames;
 
@@ -2192,48 +2206,13 @@ void MadEditFrame::CreateGUIControls( void )
 
     //m_ImageList
     m_ImageList = new wxImageList( 16, 15 );
-	for (int i = 0; i < (sizeof(g_MadIcons) / sizeof(g_MadIcons[0])); ++i)
-		m_ImageList->Add(wxBitmap(g_MadIcons[i]));
+    for (int i = 0; i < (sizeof(g_MadIcons) / sizeof(g_MadIcons[0])); ++i)
+        m_ImageList->Add(wxBitmap(g_MadIcons[i]));
 
     // add menuitems
-    g_Menu_File = new wxMenu( ( long )0 );
-    g_Menu_FilePop = new wxMenu( ( long )0 );
-    g_Menu_Edit = new wxMenu( ( long )0 );
-    g_Menu_EditPop = new wxMenu( ( long )0 );
-    g_Menu_EditSubAdv = new wxMenu( ( long )0 );
-    g_Menu_EditSubSort = new wxMenu( ( long )0 );
-    g_Menu_Search = new wxMenu( ( long )0 );
-    g_Menu_View = new wxMenu( ( long )0 );
-    g_Menu_Tools = new wxMenu( ( long )0 );
-    g_Menu_Window = new wxMenu( ( long )0 );
-    g_Menu_Help = new wxMenu( ( long )0 );
-    g_Menu_File_RecentFiles = new wxMenu( ( long )0 );
-    g_Menu_Edit_Sort = new wxMenu( ( long )0 );
-    g_Menu_Edit_Advanced = new wxMenu( ( long )0 );
-    g_Menu_Edit_Bookmark = new wxMenu( ( long )0 );
-    g_Menu_View_Encoding = new wxMenu( ( long )0 );
-    g_Menu_View_AllEncodings = new wxMenu( ( long )0 );
-    g_Menu_View_Syntax = new wxMenu( ( long )0 );
-    g_Menu_View_FontName = new wxMenu( ( long )0 );
-    g_Menu_View_FontSize = new wxMenu( ( long )0 );
-    g_Menu_View_LineSpacing = new wxMenu( ( long )0 );
-    g_Menu_View_TabColumn = new wxMenu( ( long )0 );
-    g_Menu_View_Preview = new wxMenu( ( long )0 );
-    g_Menu_Tools_BOM = new wxMenu( ( long )0 );
-    g_Menu_MadMacro = new wxMenu( ( long )0 );
-    g_Menu_Toolbars = new wxMenu( ( long )0 );
-    g_Menu_MadMacro_Scripts = new wxMenu( ( long )0 );
-    g_Menu_Tools_NewLineChar = new wxMenu( ( long )0 );
-    g_Menu_Tools_InsertNewLineChar = new wxMenu( ( long )0 );
-    g_Menu_Tools_ConvertChineseChar = new wxMenu( ( long )0 );
-    g_Menu_Tools_TextConvFormatter = new wxMenu( ( long )0 );
-    g_Menu_View_Font0 = new wxMenu( ( long )0 );
-    g_Menu_View_Font1 = new wxMenu( ( long )0 );
-    g_Menu_View_Font2 = new wxMenu( ( long )0 );
-    g_Menu_View_Font3 = new wxMenu( ( long )0 );
-    g_Menu_View_Font4 = new wxMenu( ( long )0 );
-    g_Menu_View_Font5 = new wxMenu( ( long )0 );
-    g_Menu_View_Font6 = new wxMenu( ( long )0 );
+    for(int i = 0; i <(sizeof(g_Menus) / sizeof(g_Menus[0])); ++i)
+		(*g_Menus[i]) = new wxMenu( ( long )0 );
+
     list<wxMenu*> menu_stack;
     CommandData *cd = &CommandTable[0];
 #define OUTPUT_MENU 0
@@ -4165,9 +4144,13 @@ void MadEditFrame::OnUpdateUI_MenuViewToolbarList( wxUpdateUIEvent& event )
         {
             g_Menu_Toolbars->Enable( menuItemId, true );
 
-            if( m_ToolbarStatus[toolbarId] )
+            if( m_ToolbarStatus[toolbarId])
             {
-                g_Menu_Toolbars->Check( menuItemId, true );
+                if(!m_AuiManager.GetPane( WxToolBar[toolbarId] ).IsShown())
+                {
+                    m_ToolbarStatus[toolbarId] = false;
+                }
+                g_Menu_Toolbars->Check( menuItemId, m_ToolbarStatus[toolbarId] );
             }
             else
             {
@@ -6238,13 +6221,13 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
                                                 wxDefaultPosition,
                                                 wxSize( 400, 300 ) );
             m_AuiManager.AddPane( m_HtmlPreview, wxAuiPaneInfo().Name( wxT( "Markdown/HTML Preview" ) ).Caption( _( "Markdown/HTML Preview" ) ).Floatable( false ).Right().CloseButton( false ) );
-			
-			long style=wxAUI_TB_NO_TOOLTIPS;
-			m_RefreshView = new wxAuiToolBar( this, ID_WXTOOLBAR1 + tbMAX+1, wxPoint( 0, 0 ), wxSize( 392, 29 ), style	);
-			m_RefreshView->AddTool( menuRefreshPreview, wxT( "RefreshPreview" ), m_ImageList->GetBitmap( refresh_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Refresh" ), _( "Refresh prviewed text" ), NULL );
-			m_RefreshView->AddTool( menuClosePreview, wxT( "ClosePreview" ), m_ImageList->GetBitmap( closepreview_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Close Preveiw" ), _( "Close preveiw windows" ), NULL );
-			m_RefreshView->Realize();
-			m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CaptionVisible(false).CloseButton (false).Dockable(false).DockFixed().Resizable(false).Right().Float() );
+            
+            long style=wxAUI_TB_NO_TOOLTIPS;
+            m_RefreshView = new wxAuiToolBar( this, ID_WXTOOLBAR1 + tbMAX+1, wxPoint( 0, 0 ), wxSize( 392, 29 ), style    );
+            m_RefreshView->AddTool( menuRefreshPreview, wxT( "RefreshPreview" ), m_ImageList->GetBitmap( refresh_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Refresh" ), _( "Refresh prviewed text" ), NULL );
+            m_RefreshView->AddTool( menuClosePreview, wxT( "ClosePreview" ), m_ImageList->GetBitmap( closepreview_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Close Preveiw" ), _( "Close preveiw windows" ), NULL );
+            m_RefreshView->Realize();
+            m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CaptionVisible(false).CloseButton (false).Dockable(false).DockFixed().Resizable(false).Right().Float() );
         }
 
         wxString text;
@@ -6260,7 +6243,7 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
             text = out.str();
         }
 
-		m_AuiManager.GetPane( m_RefreshView ).Show();
+        m_AuiManager.GetPane( m_RefreshView ).Show();
         m_HtmlPreview->SetPage( text );
         g_ActiveMadEdit->Synced();
     }
@@ -6272,7 +6255,7 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
         {
             m_AuiManager.GetPane( m_HtmlPreview ).Hide();
         }
-		m_AuiManager.GetPane( m_RefreshView ).Hide();
+        m_AuiManager.GetPane( m_RefreshView ).Hide();
     }
 
     m_AuiManager.Update();
@@ -6280,24 +6263,24 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
 
 void MadEditFrame::OnRefreshPreview(wxCommandEvent& event)
 {
-	if( m_HtmlPreview )
-	{
-		m_AuiManager.GetPane( m_HtmlPreview ).Show();
-		wxString text;
-		g_ActiveMadEdit->GetText( text, false );
-		
-		if( m_PreviewType == ptPREVIEW_MARKDOWN )
-		{
-			std::wstring src = text.ToStdWstring();
-			std::wostringstream out;
-			markdown::Document doc;
-			doc.read( src );
-			doc.write( out );
-			text = out.str();
-		}
-		
-		m_HtmlPreview->SetPage( text );
-	}
+    if( m_HtmlPreview )
+    {
+        m_AuiManager.GetPane( m_HtmlPreview ).Show();
+        wxString text;
+        g_ActiveMadEdit->GetText( text, false );
+        
+        if( m_PreviewType == ptPREVIEW_MARKDOWN )
+        {
+            std::wstring src = text.ToStdWstring();
+            std::wostringstream out;
+            markdown::Document doc;
+            doc.read( src );
+            doc.write( out );
+            text = out.str();
+        }
+        
+        m_HtmlPreview->SetPage( text );
+    }
 }
 
 void MadEditFrame::OnClosePreview(wxCommandEvent& event)
@@ -6308,7 +6291,7 @@ void MadEditFrame::OnClosePreview(wxCommandEvent& event)
     {
         m_AuiManager.GetPane( m_HtmlPreview ).Hide();
     }
-	m_AuiManager.GetPane( m_RefreshView ).Hide();
+    m_AuiManager.GetPane( m_RefreshView ).Hide();
 
     m_AuiManager.Update();
 }
@@ -8186,10 +8169,18 @@ void MadEditFrame::OnContextMenu( wxContextMenuEvent& event )
             if( !g_Menu_FrameContext->IsEnabled( menuId ) )
             { g_Menu_FrameContext->Enable( menuId, true ); }
 
-            if( m_ToolbarStatus[i] )
-            { g_Menu_FrameContext->Check( menuId, true ); }
+            if( m_ToolbarStatus[i])
+            {
+                if(!m_AuiManager.GetPane( WxToolBar[i] ).IsShown())
+                {
+                    m_ToolbarStatus[i] = false;
+                }
+                g_Menu_FrameContext->Check( menuId, m_ToolbarStatus[i] );
+            }
             else
-            { g_Menu_FrameContext->Check( menuId, false ); }
+            {
+                g_Menu_FrameContext->Check( menuId, false );
+            }
         }
         else
         {

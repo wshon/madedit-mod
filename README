@@ -131,6 +131,7 @@ Mod v0.3.7
 29.Fix: Improve simplified Chinese translation
 30.Fix: Wrong dnd cursor if no selection
 31:Improvement on GUI update for menu and toolbar
+32.Fix: UI update issue of toggle toolbars
 
 Mod v0.3.6
 New: Create scripts directory if not exists while saving recorded script
