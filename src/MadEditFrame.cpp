@@ -270,6 +270,7 @@ wxMenu *g_Menu_MadMacro_Scripts = NULL;
 wxMenu *g_Menu_Toolbars = NULL;
 wxMenu *g_Menu_FrameContext = NULL;
 
+// Add menus that needs initialized at startup in this array
 wxMenu ** g_Menus[] = {
     &g_Menu_File, &g_Menu_FilePop, &g_Menu_Edit, &g_Menu_EditPop, &g_Menu_EditSubAdv,
     &g_Menu_EditSubSort, &g_Menu_Search, &g_Menu_View, &g_Menu_Tools, &g_Menu_Window,
