@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE(MadSearchDialog,wxDialog)
 	
 	EVT_CLOSE(MadSearchDialog::MadSearchDialogClose)
 	EVT_KEY_DOWN(MadSearchDialog::MadSearchDialogKeyDown)
+	EVT_SET_FOCUS(MadSearchDialog::MadSearchDialogSetFocus)
 	EVT_ACTIVATE(MadSearchDialog::MadSearchDialogActivate)
 	EVT_BUTTON(ID_WXBUTTONCLOSE,MadSearchDialog::WxButtonCloseClick)
 	EVT_BUTTON(ID_WXBUTTONREPLACE,MadSearchDialog::WxButtonReplaceClick)
@@ -64,6 +65,10 @@ BEGIN_EVENT_TABLE(MadSearchDialog,wxDialog)
 	EVT_BUTTON(ID_WXBUTTONFINDALL,MadSearchDialog::WxButtonFindAllClick)
 	EVT_BUTTON(ID_WXBUTTONFINDPREV,MadSearchDialog::WxButtonFindPrevClick)
 	EVT_BUTTON(ID_WXBUTTONFINDNEXT,MadSearchDialog::WxButtonFindNextClick)
+	
+	EVT_COMMAND_SCROLL(ID_WXSLIDERTRANSDEGREE,MadSearchDialog::WxSliderTransDegreeScroll)
+	EVT_RADIOBUTTON(ID_WXRADIOALWAYS,MadSearchDialog::WxRadioAlwaysClick)
+	EVT_RADIOBUTTON(ID_WXRADIOLOSINGFOCUS,MadSearchDialog::WxRadioLosingFocusClick)
 	EVT_CHECKBOX(ID_WXCHECKBOXSEARCHINSELECTION,MadSearchDialog::WxCheckBoxSearchInSelectionClick)
 	EVT_CHECKBOX(ID_WXCHECKBOXFINDHEX,MadSearchDialog::WxCheckBoxFindHexClick)
 END_EVENT_TABLE()
@@ -72,8 +77,9 @@ END_EVENT_TABLE()
 
 
 MadSearchDialog::MadSearchDialog( wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style )
-    : wxDialog( parent, id, title, position, size, style), m_SearchFrom(0), m_SearchTo(0)
+    : wxDialog( parent, id, title, position, size, style), m_SearchFrom(-1), m_SearchTo(-1)
 {
+    m_EnableTransparency = CanSetTransparent();
     CreateGUIControls();
 }
 
@@ -136,17 +142,6 @@ void MadSearchDialog::CreateGUIControls(void)
 	WxCheckBoxSearchInSelection = new wxCheckBox(this, ID_WXCHECKBOXSEARCHINSELECTION, _("Search In &Selection"), wxPoint(12, 158), wxSize(300, 22), 0, wxDefaultValidator, wxT("WxCheckBoxSearchInSelection"));
 	WxBoxSizer5->Add(WxCheckBoxSearchInSelection, 0, wxALIGN_LEFT | wxALL, 2);
 
-	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Bookmark while Searching"));
-	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
-	WxBoxSizer5->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALIGN_CENTER | wxALL, 5);
-
-	WxCheckBoxBookmarkLine = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKLINE, _("Bookmark line"), wxPoint(7, 17), wxSize(300, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkLine"));
-	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkLine, 0, wxALIGN_LEFT | wxALL, 2);
-
-	WxCheckBoxBookmarkOnly = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKONLY, _("Bookmark only(Find All in Current)"), wxPoint(7, 43), wxSize(300, 17), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkOnly"));
-	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkOnly, 0, wxALIGN_CENTER | wxALL, 2);
-	WxCheckBoxPurgeBookmark = new wxCheckBox(this, ID_WXCHECKBOXPURGEBOOKMARK, _("Purge mark for each search session"), wxPoint(7, 64), wxSize(300, 17), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeBookmark"));
-	WxStaticBoxSizer1->Add(WxCheckBoxPurgeBookmark, 0, wxALIGN_CENTER | wxALL, 2);
 	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_TOP | wxALL, 0);
 
@@ -159,7 +154,6 @@ void MadSearchDialog::CreateGUIControls(void)
 	WxButtonFindAll = new wxButton(this, ID_WXBUTTONFINDALL, _("Find &All in\nCurrent"), wxPoint(2, 66), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonFindAll"));
 	WxBoxSizer3->Add(WxButtonFindAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxPopupMenuRecentFindText = new wxMenu(wxT(""));
 	WxButtonFindAllInAll = new wxButton(this, ID_WXBUTTONFINDALLINALL, _("Find All in All\nOpened"), wxPoint(2, 98), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonFindAllInAll"));
 	WxBoxSizer3->Add(WxButtonFindAllInAll, 0, wxALIGN_CENTER | wxALL, 2);
 	WxButtonCount = new wxButton(this, ID_WXBUTTONCOUNT, _("C&ount"), wxPoint(2, 98), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonCount"));
@@ -170,6 +164,38 @@ void MadSearchDialog::CreateGUIControls(void)
 
 	WxButtonClose = new wxButton(this, ID_WXBUTTONCLOSE, _("Close"), wxPoint(2, 162), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonClose"));
 	WxBoxSizer3->Add(WxButtonClose, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxPopupMenuRecentFindText = new wxMenu(wxT(""));
+	
+	WxBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer5->Add(WxBoxSizer6, 0, wxALIGN_CENTER | wxALL, 5);
+
+	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Bookmark in Searching"));
+	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
+	WxBoxSizer6->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALIGN_CENTER | wxALL, 5);
+	WxCheckBoxBookmarkLine = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKLINE, _("Bookmark line"), wxPoint(7, 17), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkLine"));
+	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkLine, 0, wxALIGN_LEFT | wxALL, 2);
+
+	WxCheckBoxBookmarkOnly = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKONLY, _("Bookmark only(Find All in Current)"), wxPoint(7, 43), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkOnly"));
+	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkOnly, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxCheckBoxPurgeBookmark = new wxCheckBox(this, ID_WXCHECKBOXPURGEBOOKMARK, _("Purge mark for each search session"), wxPoint(7, 64), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeBookmark"));
+	WxStaticBoxSizer1->Add(WxCheckBoxPurgeBookmark, 0, wxALIGN_CENTER | wxALL, 2);
+
+	wxStaticBox* WxStaticBoxSizer2_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Transparency"));
+	WxStaticBoxSizer2 = new wxStaticBoxSizer(WxStaticBoxSizer2_StaticBoxObj, wxVERTICAL);
+	WxBoxSizer6->Add(WxStaticBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
+
+	WxRadioLosingFocus = new wxRadioButton(this, ID_WXRADIOLOSINGFOCUS, _("On Losing Focus"), wxPoint(17, 18), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioLosingFocus"));
+	WxStaticBoxSizer2->Add(WxRadioLosingFocus, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxRadioAlways = new wxRadioButton(this, ID_WXRADIOALWAYS, _("Always"), wxPoint(19, 38), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioAlways"));
+	WxStaticBoxSizer2->Add(WxRadioAlways, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxSliderTransDegree = new wxSlider(this, ID_WXSLIDERTRANSDEGREE, 0, 0, 255, wxPoint(7, 59), wxSize(134, 22), wxSL_HORIZONTAL | wxSL_SELRANGE , wxDefaultValidator, wxT("WxSliderTransDegree"));
+	WxSliderTransDegree->SetRange(25,255);
+	WxSliderTransDegree->SetValue(25);
+	WxStaticBoxSizer2->Add(WxSliderTransDegree, 0, wxALIGN_CENTER | wxALL, 2);
 
 	SetTitle(_("Search"));
 	SetIcon(wxNullIcon);
@@ -239,7 +265,6 @@ void MadSearchDialog::CreateGUIControls(void)
     WxButtonCount->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadSearchDialog::MadSearchDialogKeyDown));
     WxButtonClose->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(MadSearchDialog::MadSearchDialogKeyDown));
 
-
     m_RecentFindText=g_RecentFindText;//new MadRecentList(20, ID_RECENTFINDTEXT1, true);
     m_RecentFindText->UseMenu(WxPopupMenuRecentFindText);
     m_RecentFindText->AddFilesToMenu();
@@ -258,6 +283,30 @@ void MadSearchDialog::CreateGUIControls(void)
     m_Config->Read(wxT("/MadEdit/SearchThrEndOfFile"), &bb, false);
     WxCheckBoxSearchThrEndOfFile->SetValue( bb );
     //--------
+
+    if(m_EnableTransparency)
+    {
+        long trans = 25;
+        if(g_ReplaceDialog)
+        {
+            bb = g_ReplaceDialog->WxRadioAlways->GetValue();
+            trans = g_ReplaceDialog->WxSliderTransDegree->GetValue();
+        }
+        else
+        {
+            m_Config->Read(wxT("/MadEdit/AlwaysTransparent"), &bb, false);
+            m_Config->Read( wxT("/MadEdit/Transparency"), &trans );
+        }
+        WxRadioAlways->SetValue(bb);
+        WxRadioLosingFocus->SetValue(!bb);
+        WxSliderTransDegree->SetValue(trans);
+    }
+    else
+    {
+        WxRadioLosingFocus->Enable(false);
+        WxRadioAlways->Enable(false);
+        WxSliderTransDegree->Enable(false);
+    }
 
     //m_Config->SetPath(wxT("/RecentFindText"));
     //m_RecentFindText->Load(*m_Config);
@@ -787,7 +836,7 @@ void MadSearchDialog::MadSearchDialogActivate(wxActivateEvent& event)
             g_ActiveMadEdit->GetFont( fname, fsize );
             m_FindText->SetFont( fname, 14 );
         }
-        UpdateCheckBoxByCBHex( WxCheckBoxFindHex->GetValue() );        
+        UpdateCheckBoxByCBHex( WxCheckBoxFindHex->GetValue() );      
     }
 }
 
@@ -1113,3 +1162,66 @@ void MadSearchDialog::SearchAll(MadEdit * madedit, bool needRec/*=true*/)
     }
 }
 
+
+/*
+ * WxRadioLosingFocusClick
+ */
+void MadSearchDialog::WxRadioLosingFocusClick(wxCommandEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency)
+    {
+        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+    }
+}
+
+/*
+ * WxRadioAlwaysClick
+ */
+void MadSearchDialog::WxRadioAlwaysClick(wxCommandEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency)
+    {
+        SetTransparent((wxByte)WxSliderTransDegree->GetValue());
+    }
+}
+
+/*
+ * MadSearchDialogKillFocus
+ */
+void MadSearchDialog::SetTransparency()
+{
+	// insert your code here
+	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+    {
+		SetTransparent((wxByte)WxSliderTransDegree->GetValue());
+    }
+}
+
+/*
+ * MadSearchDialogSetFocus
+ */
+void MadSearchDialog::MadSearchDialogSetFocus(wxFocusEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+    {
+        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+    }
+    this->SetFocus();
+}
+
+/*
+ * WxSliderTransDegreeScroll
+ */
+void MadSearchDialog::WxSliderTransDegreeScroll(wxScrollEvent& event)
+{
+	// insert your code here
+	wxByte trans = wxIMAGE_ALPHA_OPAQUE;
+	if(m_EnableTransparency && WxRadioAlways->GetValue())
+    {
+		trans = (wxByte)WxSliderTransDegree->GetValue();
+    }
+    SetTransparent(trans);
+}

@@ -19,6 +19,8 @@
 //Do not add custom headers.
 //wx-dvcpp designer will remove them
 ////Header Include Start
+#include <wx/slider.h>
+#include <wx/radiobut.h>
 #include <wx/menu.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -39,7 +41,7 @@
 
 ////Dialog Style Start
 #undef MadReplaceDialog_STYLE
-#define MadReplaceDialog_STYLE wxCAPTION | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxCLOSE_BOX
+#define MadReplaceDialog_STYLE wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX
 ////Dialog Style End
 
 class MadEdit;
@@ -60,15 +62,18 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+		wxSlider *WxSliderTransDegree;
+		wxRadioButton *WxRadioAlways;
+		wxRadioButton *WxRadioLosingFocus;
+		wxStaticBoxSizer *WxStaticBoxSizer1;
+		wxMenu *WxPopupMenuRecentReplaceText;
 		wxButton *WxButtonClose;
 		wxButton *WxButtonReplaceAllInAll;
-		wxMenu *WxPopupMenuRecentReplaceText;
 		wxButton *WxButtonReplaceAll;
 		wxButton *WxButtonReplace;
 		wxButton *WxButtonFindNext;
 		wxBoxSizer *WxBoxSizer3;
 		wxCheckBox *WxCheckBoxSearchInSelection;
-		wxBoxSizer *WxBoxSizer7;
 		wxCheckBox *WxCheckBoxFindHex;
 		wxCheckBox *WxCheckBoxRegex;
 		wxCheckBox *WxCheckBoxWholeWord;
@@ -82,7 +87,7 @@ public:
   ////GUI Control Declaration End
         wxInt64 m_SearchFrom;
         wxInt64 m_SearchTo;
-
+		bool m_EnableTransparency;
 private:
     DECLARE_EVENT_TABLE()
 
@@ -93,12 +98,15 @@ public:
     //Try copy pasting the below block in your old Form header Files.
 	enum {
 ////GUI Enum Control ID Start
+			ID_WXSLIDERTRANSDEGREE = 1047,
+			ID_WXRADIOALWAYS = 1046,
+			ID_WXRADIOLOSINGFOCUS = 1045,
 			ID_WXBUTTONCLOSE = 1032,
 			ID_WXBUTTONREPLACEALLINALL = 1031,
 			ID_WXBUTTONREPLACEALL = 1027,
 			ID_WXBUTTONREPLACE = 1026,
 			ID_WXBUTTONFINDNEXT = 1025,
-			ID_WXCHECKBOXSEARCHINSELECTION = 18,
+			ID_WXCHECKBOXSEARCHINSELECTION = 1033,
 			ID_WXCHECKBOXFINDHEX = 1024,
 			ID_WXCHECKBOXREGEX = 1023,
 			ID_WXCHECKBOXWHOLEWORD = 1022,
@@ -147,6 +155,11 @@ public:
 	void WxCheckBoxSearchInSelectionClick(wxCommandEvent& event);
     void PurgeRecentReplaceTexts();
     void ReplaceAll(MadEdit * madedit, bool needRec=true);
+	void WxRadioLosingFocusClick(wxCommandEvent& event);
+	void WxRadioAlwaysClick(wxCommandEvent& event);
+	void SetTransparency();
+	void MadReplaceDialogSetFocus(wxFocusEvent& event);
+	void WxSliderTransDegreeScroll(wxScrollEvent& event);
 };
 
 extern MadReplaceDialog *g_ReplaceDialog;

@@ -45,14 +45,22 @@ BEGIN_EVENT_TABLE(MadReplaceDialog,wxDialog)
 	
 	EVT_CLOSE(MadReplaceDialog::MadReplaceDialogClose)
 	EVT_KEY_DOWN(MadReplaceDialog::MadReplaceDialogKeyDown)
+	EVT_SET_FOCUS(MadReplaceDialog::MadReplaceDialogSetFocus)
 	EVT_ACTIVATE(MadReplaceDialog::MadReplaceDialogActivate)
+	
+	EVT_COMMAND_SCROLL(ID_WXSLIDERTRANSDEGREE,MadReplaceDialog::WxSliderTransDegreeScroll)
+	EVT_RADIOBUTTON(ID_WXRADIOALWAYS,MadReplaceDialog::WxRadioAlwaysClick)
+	EVT_RADIOBUTTON(ID_WXRADIOLOSINGFOCUS,MadReplaceDialog::WxRadioLosingFocusClick)
 	EVT_BUTTON(ID_WXBUTTONCLOSE,MadReplaceDialog::WxButtonCloseClick)
 	EVT_BUTTON(ID_WXBUTTONREPLACEALLINALL,MadReplaceDialog::WxButtonReplaceAllInAllClick)
 	EVT_BUTTON(ID_WXBUTTONREPLACEALL,MadReplaceDialog::WxButtonReplaceAllClick)
 	EVT_BUTTON(ID_WXBUTTONREPLACE,MadReplaceDialog::WxButtonReplaceClick)
 	EVT_BUTTON(ID_WXBUTTONFINDNEXT,MadReplaceDialog::WxButtonFindNextClick)
 	EVT_CHECKBOX(ID_WXCHECKBOXSEARCHINSELECTION,MadReplaceDialog::WxCheckBoxSearchInSelectionClick)
-	EVT_CHECKBOX(ID_WXCHECKBOXFINDHEX,MadReplaceDialog::WxCheckBoxFindHexClick)
+	EVT_CHECKBOX(ID_WXCHECKBOXFINDHEX,MadReplaceDialog::WxCheckBoxFindHexClick)	
+	EVT_COMMAND_SCROLL(ID_WXSLIDERTRANSDEGREE,MadReplaceDialog::WxSliderTransDegreeScroll)
+	EVT_RADIOBUTTON(ID_WXRADIOALWAYS,MadReplaceDialog::WxRadioAlwaysClick)
+	EVT_RADIOBUTTON(ID_WXRADIOLOSINGFOCUS,MadReplaceDialog::WxRadioLosingFocusClick)
 END_EVENT_TABLE()
     ////Event Table End
 
@@ -61,12 +69,11 @@ END_EVENT_TABLE()
 MadReplaceDialog::MadReplaceDialog( wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style )
     : wxDialog( parent, id, title, position, size, style)
 {
+    m_EnableTransparency = CanSetTransparent();
     CreateGUIControls();
 }
 
 MadReplaceDialog::~MadReplaceDialog() {}
-
-//static int gs_MinX=0;
 
 static void ResizeItem(wxBoxSizer* sizer, wxWindow *item, int ax, int ay)
 {
@@ -75,9 +82,6 @@ static void ResizeItem(wxBoxSizer* sizer, wxWindow *item, int ax, int ay)
     item->GetTextExtent(str, &x, &y);
     item->SetSize(x+=ax, y+=ay);
     sizer->SetItemMinSize(item, x, y);
-
-    //wxPoint pos=item->GetPosition();
-    //if(pos.x + x > gs_MinX) gs_MinX = pos.x + x;
 }
 
 void MadReplaceDialog::CreateGUIControls(void)
@@ -118,11 +122,8 @@ void MadReplaceDialog::CreateGUIControls(void)
 	WxCheckBoxFindHex = new wxCheckBox(this, ID_WXCHECKBOXFINDHEX, _("Find &Hex String (Example: BE 00 3A or BE003A)"), wxPoint(2, 106), wxSize(300, 22), 0, wxDefaultValidator, wxT("WxCheckBoxFindHex"));
 	WxBoxSizer6->Add(WxCheckBoxFindHex, 0, wxALIGN_LEFT | wxALL, 2);
 
-	WxBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer6->Add(WxBoxSizer7, 0, wxALIGN_LEFT | wxALL, 0);
-
 	WxCheckBoxSearchInSelection = new wxCheckBox(this, ID_WXCHECKBOXSEARCHINSELECTION, _("Search In &Selection"), wxPoint(2, 2), wxSize(300, 22), 0, wxDefaultValidator, wxT("WxCheckBoxSearchInSelection"));
-	WxBoxSizer7->Add(WxCheckBoxSearchInSelection, 0, wxALIGN_LEFT | wxALL, 2);
+	WxBoxSizer6->Add(WxCheckBoxSearchInSelection, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxBoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	WxBoxSizer1->Add(WxBoxSizer3, 0, wxALIGN_TOP | wxALL, 0);
@@ -136,11 +137,28 @@ void MadReplaceDialog::CreateGUIControls(void)
 	WxButtonReplaceAll = new wxButton(this, ID_WXBUTTONREPLACEALL, _("Replace &All in\nCurrent"), wxPoint(2, 66), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAll"));
 	WxBoxSizer3->Add(WxButtonReplaceAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxPopupMenuRecentReplaceText = new wxMenu(wxT(""));
 	WxButtonReplaceAllInAll = new wxButton(this, ID_WXBUTTONREPLACEALLINALL, _("Repl All in All\n&Opened"), wxPoint(2, 98), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAllInAll"));
 	WxBoxSizer3->Add(WxButtonReplaceAllInAll, 0, wxALIGN_CENTER | wxALL, 2);
 	WxButtonClose = new wxButton(this, ID_WXBUTTONCLOSE, _("Close"), wxPoint(17, 130), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonClose"));
 	WxBoxSizer3->Add(WxButtonClose, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxPopupMenuRecentReplaceText = new wxMenu(wxT(""));
+	
+
+	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Transparency"));
+	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
+	WxBoxSizer6->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALL, 5);
+
+	WxRadioLosingFocus = new wxRadioButton(this, ID_WXRADIOLOSINGFOCUS, _("On Losing Focus"), wxPoint(17, 17), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioLosingFocus"));
+	WxStaticBoxSizer1->Add(WxRadioLosingFocus, 0, wxALIGN_LEFT | wxALL, 2);
+
+	WxRadioAlways = new wxRadioButton(this, ID_WXRADIOALWAYS, _("Always"), wxPoint(16, 42), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioAlways"));
+	WxStaticBoxSizer1->Add(WxRadioAlways, 0, wxALIGN_LEFT | wxALL, 2);
+
+	WxSliderTransDegree = new wxSlider(this, ID_WXSLIDERTRANSDEGREE, 25, 25, 255, wxPoint(7, 69), wxSize(134, 22), wxSL_HORIZONTAL | wxSL_SELRANGE , wxDefaultValidator, wxT("WxSliderTransDegree"));
+	WxSliderTransDegree->SetRange(25,255);
+	WxSliderTransDegree->SetValue(25);
+	WxStaticBoxSizer1->Add(WxSliderTransDegree, 0, wxALIGN_LEFT | wxALL, 2);
 
 	SetTitle(_("Replace"));
 	SetIcon(wxNullIcon);
@@ -206,7 +224,7 @@ void MadReplaceDialog::CreateGUIControls(void)
     ResizeItem(WxBoxSizer6, WxCheckBoxWholeWord, 25, 4);
     ResizeItem(WxBoxSizer6, WxCheckBoxRegex, 25, 4);
     ResizeItem(WxBoxSizer6, WxCheckBoxFindHex, 25, 4);
-    ResizeItem(WxBoxSizer7, WxCheckBoxSearchInSelection, 25, 4);
+	ResizeItem(WxBoxSizer6, WxCheckBoxSearchInSelection, 25, 4);
 
     GetSizer()->Fit(this);
 
@@ -253,6 +271,31 @@ void MadReplaceDialog::CreateGUIControls(void)
         }
     }
 
+    if(m_EnableTransparency)
+    {
+        bool bb;
+        long trans = 25;
+        if(g_SearchDialog)
+        {
+            bb = g_SearchDialog->WxRadioAlways->GetValue();
+            trans = g_SearchDialog->WxSliderTransDegree->GetValue();
+        }
+        else
+        {
+            m_Config->Read(wxT("/MadEdit/AlwaysTransparent"), &bb, false);
+            m_Config->Read( wxT("/MadEdit/Transparency"), &trans );
+        }
+        WxRadioAlways->SetValue(bb);
+        WxRadioLosingFocus->SetValue(!bb);
+        WxSliderTransDegree->SetValue(trans);
+    }
+    else
+    {
+        WxRadioLosingFocus->Enable(false);
+        WxRadioAlways->Enable(false);
+        WxSliderTransDegree->Enable(false);
+    }
+
     SetDefaultItem(WxButtonReplace);
 }
 
@@ -292,14 +335,14 @@ void MadReplaceDialog::WxButtonCloseClick(wxCommandEvent& event)
  */
 void MadReplaceDialog::WxButtonFindNextClick(wxCommandEvent& event)
 {
+    wxString text;
+    wxCommandEvent e;
     this->ReadWriteSettings(false);
     g_SearchDialog->ReadWriteSettings(true);
 
-    wxString text;
     m_FindText->GetText(text, true);
     g_SearchDialog->m_FindText->SetText(text);
 
-    wxCommandEvent e;
     g_SearchDialog->WxButtonFindNextClick(e);
 }
 
@@ -376,22 +419,20 @@ void MadReplaceDialog::UpdateCheckBoxByCBHex(bool check)
 void MadReplaceDialog::WxCheckBoxFindHexClick(wxCommandEvent& event)
 {
     bool checked = event.IsChecked();
+    wxString text, ws;
     if(checked)
     {
-        wxString text;
         m_FindText->GetText(text, true);
         if(text.IsEmpty())
         {
             if(g_ActiveMadEdit!=NULL)
             {
-                wxString ws;
                 g_ActiveMadEdit->GetSelHexString(ws, true);
                 m_FindText->SetText(ws);
             }
         }
         else
         {
-            wxString ws;
             m_FindText->SelectAll();
             m_FindText->GetSelHexString(ws, true);
             m_FindText->SetText(ws);
@@ -399,13 +440,11 @@ void MadReplaceDialog::WxCheckBoxFindHexClick(wxCommandEvent& event)
     }
     else
     {
-        wxString text;
         m_FindText->GetText(text, true);
         if(text.IsEmpty())
         {
             if(g_ActiveMadEdit!=NULL)
             {
-                wxString ws;
                 g_ActiveMadEdit->GetSelText(ws);
                 m_FindText->SetText(ws);
             }
@@ -769,6 +808,67 @@ void MadReplaceDialog::ReplaceAll(MadEdit * madedit, bool needRec/*=true*/)
 
         m_FindText->SetFocus();
     }
-
 }
 
+/*
+ * WxRadioLosingFocusClick
+ */
+void MadReplaceDialog::WxRadioLosingFocusClick(wxCommandEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency)
+    {
+        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+    }
+}
+
+/*
+ * WxRadioAlwaysClick
+ */
+void MadReplaceDialog::WxRadioAlwaysClick(wxCommandEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency)
+    {
+        SetTransparent((wxByte)WxSliderTransDegree->GetValue());
+    }
+}
+
+/*
+ * MadSearchDialogKillFocus
+ */
+void MadReplaceDialog::SetTransparency()
+{
+	// insert your code here
+	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+    {
+		SetTransparent((wxByte)WxSliderTransDegree->GetValue());
+    }
+}
+
+/*
+ * MadReplaceDialogSetFocus
+ */
+void MadReplaceDialog::MadReplaceDialogSetFocus(wxFocusEvent& event)
+{
+	// insert your code here
+	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+    {
+        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+    }
+    this->SetFocus();
+}
+
+/*
+ * WxSliderTransDegreeScroll
+ */
+void MadReplaceDialog::WxSliderTransDegreeScroll(wxScrollEvent& event)
+{
+	// insert your code here
+	wxByte trans = wxIMAGE_ALPHA_OPAQUE;
+	if(m_EnableTransparency && WxRadioAlways->GetValue())
+    {
+		trans = (wxByte)WxSliderTransDegree->GetValue();
+    }
+    SetTransparent(trans);
+}

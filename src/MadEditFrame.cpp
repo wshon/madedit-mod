@@ -1060,6 +1060,26 @@ void OnEditStatusChanged( MadEdit *madedit )
     }
 }
 
+void OnEditActivate( MadEdit *madedit )
+{
+    if( g_SearchDialog && g_SearchDialog->IsShown() )
+    {
+        g_SearchDialog->SetTransparency();
+        return;
+    }
+    
+    if( g_ReplaceDialog && g_ReplaceDialog->IsShown() )
+    {
+        g_ReplaceDialog->SetTransparency();
+        return;
+    }
+
+    if( g_FindInFilesDialog && g_FindInFilesDialog->IsShown() )
+    {
+        return;
+    }
+}
+
 void OnEditToggleWindow( MadEdit *madedit )
 {
     wxCommandEvent e( 0, 0 );
@@ -2869,6 +2889,14 @@ void MadEditFrame::MadEditFrameClose( wxCloseEvent& event )
         m_Config->Write( wxT( "/MadEdit/SearchWinLeft" ), x );
         m_Config->Write( wxT( "/MadEdit/SearchWinTop" ), y );
         m_Config->Write( wxT( "/MadEdit/SearchThrEndOfFile" ), g_SearchDialog->WxCheckBoxSearchThrEndOfFile->GetValue() );
+
+        if(CanSetTransparent())
+        {
+            m_Config->Write(wxT("/MadEdit/AlwaysTransparent"), g_SearchDialog->WxRadioAlways->GetValue());
+
+            long trans = 25;
+            m_Config->Read( wxT("/MadEdit/Transparency"), &trans );
+        }
         //----------
     }
 
@@ -3571,6 +3599,7 @@ void MadEditFrame::OpenFile( const wxString &fname, bool mustExist )
         //madedit->SetDropTarget(new DnDFile());
         madedit->SetOnSelectionChanged( &OnEditSelectionChanged );
         madedit->SetOnStatusChanged( &OnEditStatusChanged );
+        madedit->SetOnActivate(&OnEditActivate);
         madedit->SetOnToggleWindow( &OnEditToggleWindow );
         madedit->SetOnMouseRightUp( &OnEditMouseRightUp );
         madedit->Connect( wxEVT_KEY_DOWN, wxKeyEventHandler( MadEditFrame::MadEditFrameKeyDown ) );
@@ -5586,6 +5615,14 @@ void MadEditFrame::OnSearchFind( wxCommandEvent& event )
     if( g_ReplaceDialog->IsShown() )
     {
         g_ReplaceDialog->Show( false );
+        
+        bool bb;
+        long trans = 25;
+        bb = g_ReplaceDialog->WxRadioAlways->GetValue();
+        trans = g_ReplaceDialog->WxSliderTransDegree->GetValue();
+        g_SearchDialog->WxRadioAlways->SetValue(bb);
+        g_SearchDialog->WxRadioLosingFocus->SetValue(!bb);
+        g_SearchDialog->WxSliderTransDegree->SetValue(trans);
     }
 
     if( g_FindInFilesDialog && g_FindInFilesDialog->IsShown() )
@@ -5662,7 +5699,16 @@ void MadEditFrame::OnSearchFindNext( wxCommandEvent& event )
     }
 
     if( g_ReplaceDialog->IsShown() )
-    { g_ReplaceDialog->Show( false ); }
+    {
+        g_ReplaceDialog->Show( false );
+        bool bb;
+        long trans = 25;
+        bb = g_ReplaceDialog->WxRadioAlways->GetValue();
+        trans = g_ReplaceDialog->WxSliderTransDegree->GetValue();
+        g_SearchDialog->WxRadioAlways->SetValue(bb);
+        g_SearchDialog->WxRadioLosingFocus->SetValue(!bb);
+        g_SearchDialog->WxSliderTransDegree->SetValue(trans);
+    }
 
     if( g_FindInFilesDialog != NULL && g_FindInFilesDialog->IsShown() )
     { g_FindInFilesDialog->Show( false ); }
@@ -5717,7 +5763,16 @@ void MadEditFrame::OnSearchFindPrevious( wxCommandEvent& event )
     }
 
     if( g_ReplaceDialog->IsShown() )
-    { g_ReplaceDialog->Show( false ); }
+    {
+        g_ReplaceDialog->Show( false );
+        bool bb;
+        long trans = 25;
+        bb = g_ReplaceDialog->WxRadioAlways->GetValue();
+        trans = g_ReplaceDialog->WxSliderTransDegree->GetValue();
+        g_SearchDialog->WxRadioAlways->SetValue(bb);
+        g_SearchDialog->WxRadioLosingFocus->SetValue(!bb);
+        g_SearchDialog->WxSliderTransDegree->SetValue(trans);
+    }
 
     if( g_FindInFilesDialog != NULL && g_FindInFilesDialog->IsShown() )
     { g_FindInFilesDialog->Show( false ); }
@@ -5775,7 +5830,16 @@ void MadEditFrame::OnSearchReplace( wxCommandEvent& event )
     { g_FindInFilesDialog->Show( false ); }
 
     if( g_SearchDialog->IsShown() )
-    { g_SearchDialog->Show( false ); }
+    {
+        g_SearchDialog->Show( false );
+        bool bb;
+        long trans = 25;
+        bb = g_SearchDialog->WxRadioAlways->GetValue();
+        trans = g_SearchDialog->WxSliderTransDegree->GetValue();
+        g_ReplaceDialog->WxRadioAlways->SetValue(bb);
+        g_ReplaceDialog->WxRadioLosingFocus->SetValue(!bb);
+        g_ReplaceDialog->WxSliderTransDegree->SetValue(trans);
+    }
 
     //g_ReplaceDialog->m_FindText->SetEncoding( g_ActiveMadEdit->GetEncodingName() );
     //g_ReplaceDialog->m_ReplaceText->SetEncoding( g_ActiveMadEdit->GetEncodingName() );

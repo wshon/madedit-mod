@@ -21,6 +21,8 @@
 ////Header Include Start
 #include <wx/menu.h>
 #include <wx/button.h>
+#include <wx/slider.h>
+#include <wx/radiobut.h>
 #include <wx/checkbox.h>
 #include <wx/sizer.h>
 ////Header Include End
@@ -53,19 +55,24 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+		wxMenu *WxPopupMenuRecentFindText;
 		wxButton *WxButtonClose;
 		wxButton *WxButtonReplace;
 		wxButton *WxButtonCount;
 		wxButton *WxButtonFindAllInAll;
-		wxMenu *WxPopupMenuRecentFindText;
 		wxButton *WxButtonFindAll;
 		wxButton *WxButtonFindPrev;
 		wxButton *WxButtonFindNext;
 		wxBoxSizer *WxBoxSizer3;
+		wxSlider *WxSliderTransDegree;
+		wxRadioButton *WxRadioAlways;
+		wxRadioButton *WxRadioLosingFocus;
+		wxStaticBoxSizer *WxStaticBoxSizer2;
 		wxCheckBox *WxCheckBoxPurgeBookmark;
 		wxCheckBox *WxCheckBoxBookmarkOnly;
 		wxCheckBox *WxCheckBoxBookmarkLine;
 		wxStaticBoxSizer *WxStaticBoxSizer1;
+		wxBoxSizer *WxBoxSizer6;
 		wxCheckBox *WxCheckBoxSearchInSelection;
 		wxCheckBox *WxCheckBoxSearchThrEndOfFile;
 		wxCheckBox *WxCheckBoxFindHex;
@@ -80,6 +87,7 @@ public:
   ////GUI Control Declaration End
         wxInt64 m_SearchFrom;
         wxInt64 m_SearchTo;
+		bool m_EnableTransparency;
 public:
     //Note: if you receive any error with these enums, then you need to
     //change your old form code that are based on the #define control ids.
@@ -94,6 +102,9 @@ public:
 			ID_WXBUTTONFINDALL = 24,
 			ID_WXBUTTONFINDPREV = 11,
 			ID_WXBUTTONFINDNEXT = 10,
+			ID_WXSLIDERTRANSDEGREE = 48,
+			ID_WXRADIOALWAYS = 47,
+			ID_WXRADIOLOSINGFOCUS = 46,
 			ID_WXCHECKBOXPURGEBOOKMARK = 35,
 			ID_WXCHECKBOXBOOKMARKONLY = 34,
 			ID_WXCHECKBOXBOOKMARKLINE = 32,
@@ -141,6 +152,11 @@ public:
     void WxButtonCountClick(wxCommandEvent& event);
     void PurgeRecentFindTexts();
     void SearchAll(MadEdit * madedit, bool needRec=true);
+	void WxRadioLosingFocusClick(wxCommandEvent& event);
+	void WxRadioAlwaysClick(wxCommandEvent& event);
+	void SetTransparency();
+	void MadSearchDialogSetFocus(wxFocusEvent& event);
+	void WxSliderTransDegreeScroll(wxScrollEvent& event);
 };
 
 extern MadSearchDialog *g_SearchDialog;

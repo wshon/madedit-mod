@@ -20,6 +20,7 @@ object frmNewForm: TfrmNewForm
   OnDestroy = FormDestroy
   OnResize = FormResize
   EVT_KEY_DOWN = 'MadSearchDialogKeyDown'
+  EVT_SET_FOCUS = 'MadSearchDialogSetFocus'
   EVT_CLOSE = 'MadSearchDialogClose'
   EVT_ACTIVATE = 'MadSearchDialogActivate'
   Wx_ICON.Data = {07544269746D617000000000}
@@ -51,8 +52,8 @@ object frmNewForm: TfrmNewForm
     object WxBoxSizer2: TWxBoxSizer
       Left = 0
       Top = 0
-      Width = 324
-      Height = 300
+      Width = 492
+      Height = 319
       TabOrder = 0
       Orientation = wxVertical
       Wx_Class = 'wxBoxSizer'
@@ -61,7 +62,7 @@ object frmNewForm: TfrmNewForm
       Wx_IDValue = 2
       Wx_Border = 0
       object WxBoxSizer4: TWxBoxSizer
-        Left = 152
+        Left = 236
         Top = 0
         Width = 20
         Height = 20
@@ -75,8 +76,8 @@ object frmNewForm: TfrmNewForm
       object WxBoxSizer5: TWxBoxSizer
         Left = 0
         Top = 20
-        Width = 324
-        Height = 280
+        Width = 492
+        Height = 299
         TabOrder = 0
         Orientation = wxVertical
         Wx_Class = 'wxBoxSizer'
@@ -86,7 +87,7 @@ object frmNewForm: TfrmNewForm
         Wx_Border = 0
         Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT]
         object WxCheckBoxMoveFocus: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 2
           Width = 300
           Height = 22
@@ -121,7 +122,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxCaseSensitive: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 28
           Width = 300
           Height = 22
@@ -156,7 +157,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxWholeWord: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 54
           Width = 300
           Height = 22
@@ -191,7 +192,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxRegex: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 80
           Width = 300
           Height = 22
@@ -226,7 +227,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxFindHex: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 106
           Width = 300
           Height = 22
@@ -262,7 +263,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxSearchThrEndOfFile: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 132
           Width = 300
           Height = 22
@@ -297,7 +298,7 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_Y_Pos = 0
         end
         object WxCheckBoxSearchInSelection: TWxCheckBox
-          Left = 12
+          Left = 96
           Top = 158
           Width = 300
           Height = 22
@@ -332,129 +333,265 @@ object frmNewForm: TfrmNewForm
           Wx_Floating_X_Pos = 0
           Wx_Floating_Y_Pos = 0
         end
-        object WxStaticBoxSizer1: TWxStaticBoxSizer
+        object WxBoxSizer6: TWxBoxSizer
           Left = 5
           Top = 187
-          Width = 314
-          Height = 88
+          Width = 482
+          Height = 107
           TabOrder = 7
-          Orientation = wxVertical
-          Wx_Caption = 'Bookmark in Searching'
-          Wx_Class = 'wxStaticBoxSizer'
+          Wx_Class = 'wxBoxSizer'
           Wx_ControlOrientation = wxControlVertical
-          Wx_IDName = 'ID_WXSTATICBOXSIZER1'
-          Wx_IDValue = 31
-          Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT, wxALIGN_CENTER]
-          object WxCheckBoxBookmarkLine: TWxCheckBox
-            Left = 7
-            Top = 17
-            Width = 300
-            Height = 22
-            Caption = 'Bookmark line'
+          Wx_IDName = 'ID_WXBOXSIZER6'
+          Wx_IDValue = 43
+          object WxStaticBoxSizer1: TWxStaticBoxSizer
+            Left = 5
+            Top = 9
+            Width = 314
+            Height = 98
+            TabOrder = 0
+            Orientation = wxVertical
+            Wx_Caption = 'Bookmark in Searching'
+            Wx_Class = 'wxStaticBoxSizer'
+            Wx_ControlOrientation = wxControlVertical
+            Wx_IDName = 'ID_WXSTATICBOXSIZER1'
+            Wx_IDValue = 44
+            Wx_Alignment = [wxALIGN_TOP, wxALIGN_LEFT, wxALIGN_CENTER]
+            object WxCheckBoxBookmarkLine: TWxCheckBox
+              Left = 7
+              Top = 17
+              Width = 300
+              Height = 22
+              Caption = 'Bookmark line'
+              TabOrder = 1
+              Wx_BGColor = clBlack
+              Wx_CheckBoxStyle = []
+              Wx_Class = 'wxCheckBox'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_Hidden = False
+              Wx_IDName = 'ID_WXCHECKBOXBOOKMARKLINE'
+              Wx_IDValue = 32
+              Wx_Border = 2
+              Wx_Alignment = [wxALIGN_LEFT]
+              Wx_PaneCaption = 'WxCheckBox1'
+              Wx_PaneName = 'WxCheckBox1_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
+            object WxCheckBoxBookmarkOnly: TWxCheckBox
+              Left = 7
+              Top = 43
+              Width = 300
+              Height = 22
+              Caption = 'Bookmark only(Find All in Current)'
+              TabOrder = 2
+              Wx_BGColor = clBlack
+              Wx_CheckBoxStyle = []
+              Wx_Class = 'wxCheckBox'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_Hidden = False
+              Wx_IDName = 'ID_WXCHECKBOXBOOKMARKONLY'
+              Wx_IDValue = 34
+              Wx_Border = 2
+              Wx_PaneCaption = 'WxCheckBox1'
+              Wx_PaneName = 'WxCheckBox1_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
+            object WxCheckBoxPurgeBookmark: TWxCheckBox
+              Left = 7
+              Top = 69
+              Width = 300
+              Height = 22
+              Caption = 'Purge mark for each search session'
+              TabOrder = 3
+              Wx_BGColor = clBlack
+              Wx_CheckBoxStyle = []
+              Wx_Class = 'wxCheckBox'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_Hidden = False
+              Wx_IDName = 'ID_WXCHECKBOXPURGEBOOKMARK'
+              Wx_IDValue = 35
+              Wx_Border = 2
+              Wx_PaneCaption = 'WxCheckBox2'
+              Wx_PaneName = 'WxCheckBox2_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
+          end
+          object WxStaticBoxSizer2: TWxStaticBoxSizer
+            Left = 329
+            Top = 5
+            Width = 148
+            Height = 97
             TabOrder = 1
-            Wx_BGColor = clBlack
-            Wx_CheckBoxStyle = []
-            Wx_Class = 'wxCheckBox'
+            Orientation = wxVertical
+            Wx_Caption = 'Transparency'
+            Wx_Class = 'wxStaticBoxSizer'
             Wx_ControlOrientation = wxControlVertical
-            Wx_FGColor = clBlack
-            Wx_GeneralStyle = []
-            Wx_Hidden = False
-            Wx_IDName = 'ID_WXCHECKBOXBOOKMARKLINE'
-            Wx_IDValue = 32
-            Wx_Border = 2
-            Wx_Alignment = [wxALIGN_LEFT]
-            Wx_PaneCaption = 'WxCheckBox1'
-            Wx_PaneName = 'WxCheckBox1_Pane'
-            Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-            Wx_Aui_Dockable_Direction = []
-            Wx_Aui_Pane_Style = []
-            Wx_Aui_Pane_Buttons = []
-            Wx_BestSize_Height = 0
-            Wx_BestSize_Width = 0
-            Wx_MinSize_Height = 0
-            Wx_MinSize_Width = 0
-            Wx_MaxSize_Height = 0
-            Wx_MaxSize_Width = 0
-            Wx_Floating_Height = 0
-            Wx_Floating_Width = 0
-            Wx_Floating_X_Pos = 0
-            Wx_Floating_Y_Pos = 0
-          end
-          object WxCheckBoxBookmarkOnly: TWxCheckBox
-            Left = 7
-            Top = 43
-            Width = 300
-            Height = 17
-            Caption = 'Bookmark only(Find All in Current)'
-            TabOrder = 2
-            Wx_BGColor = clBlack
-            Wx_CheckBoxStyle = []
-            Wx_Class = 'wxCheckBox'
-            Wx_ControlOrientation = wxControlVertical
-            Wx_FGColor = clBlack
-            Wx_GeneralStyle = []
-            Wx_Hidden = False
-            Wx_IDName = 'ID_WXCHECKBOXBOOKMARKONLY'
-            Wx_IDValue = 34
-            Wx_Border = 2
-            Wx_PaneCaption = 'WxCheckBox1'
-            Wx_PaneName = 'WxCheckBox1_Pane'
-            Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-            Wx_Aui_Dockable_Direction = []
-            Wx_Aui_Pane_Style = []
-            Wx_Aui_Pane_Buttons = []
-            Wx_BestSize_Height = 0
-            Wx_BestSize_Width = 0
-            Wx_MinSize_Height = 0
-            Wx_MinSize_Width = 0
-            Wx_MaxSize_Height = 0
-            Wx_MaxSize_Width = 0
-            Wx_Floating_Height = 0
-            Wx_Floating_Width = 0
-            Wx_Floating_X_Pos = 0
-            Wx_Floating_Y_Pos = 0
-          end
-          object WxCheckBoxPurgeBookmark: TWxCheckBox
-            Left = 7
-            Top = 64
-            Width = 300
-            Height = 17
-            Caption = 'Purge mark for each search session'
-            TabOrder = 3
-            Wx_BGColor = clBlack
-            Wx_CheckBoxStyle = []
-            Wx_Class = 'wxCheckBox'
-            Wx_ControlOrientation = wxControlVertical
-            Wx_FGColor = clBlack
-            Wx_GeneralStyle = []
-            Wx_Hidden = False
-            Wx_IDName = 'ID_WXCHECKBOXPURGEBOOKMARK'
-            Wx_IDValue = 35
-            Wx_Border = 2
-            Wx_PaneCaption = 'WxCheckBox2'
-            Wx_PaneName = 'WxCheckBox2_Pane'
-            Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
-            Wx_Aui_Dockable_Direction = []
-            Wx_Aui_Pane_Style = []
-            Wx_Aui_Pane_Buttons = []
-            Wx_BestSize_Height = 0
-            Wx_BestSize_Width = 0
-            Wx_MinSize_Height = 0
-            Wx_MinSize_Width = 0
-            Wx_MaxSize_Height = 0
-            Wx_MaxSize_Width = 0
-            Wx_Floating_Height = 0
-            Wx_Floating_Width = 0
-            Wx_Floating_X_Pos = 0
-            Wx_Floating_Y_Pos = 0
+            Wx_IDName = 'ID_WXSTATICBOXSIZER2'
+            Wx_IDValue = 45
+            object WxRadioLosingFocus: TWxRadioButton
+              Left = 14
+              Top = 21
+              Width = 113
+              Height = 22
+              Caption = 'On Losing Focus'
+              TabOrder = 1
+              EVT_RADIOBUTTON = 'WxRadioLosingFocusClick'
+              Wx_BGColor = clBlack
+              Wx_Class = 'wxRadioButton'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_IDName = 'ID_WXRADIOLOSINGFOCUS'
+              Wx_IDValue = 46
+              Wx_RadioButtonStyle = []
+              Wx_Border = 2
+              Wx_PaneCaption = 'WxRadioButton1'
+              Wx_PaneName = 'WxRadioButton1_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
+            object WxRadioAlways: TWxRadioButton
+              Left = 17
+              Top = 39
+              Width = 113
+              Height = 22
+              Caption = 'Always'
+              TabOrder = 2
+              EVT_RADIOBUTTON = 'WxRadioAlwaysClick'
+              Wx_BGColor = clBlack
+              Wx_Class = 'wxRadioButton'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_IDName = 'ID_WXRADIOALWAYS'
+              Wx_IDValue = 47
+              Wx_RadioButtonStyle = []
+              Wx_Border = 2
+              Wx_PaneCaption = 'WxRadioButton1'
+              Wx_PaneName = 'WxRadioButton1_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
+            object WxSliderTransDegree: TWxSlider
+              Left = 0
+              Top = 72
+              Width = 134
+              Height = 22
+              Max = 255
+              Min = 25
+              Orientation = trHorizontal
+              Frequency = 1
+              Position = 25
+              SelEnd = 0
+              SelStart = 0
+              TabOrder = 3
+              TickMarks = tmBottomRight
+              TickStyle = tsAuto
+              EVT_COMMAND_SCROLL = 'WxSliderTransDegreeScroll'
+              Wx_BGColor = clBlack
+              Wx_Class = 'wxSlider'
+              Wx_ControlOrientation = wxControlVertical
+              Wx_FGColor = clBlack
+              Wx_GeneralStyle = []
+              Wx_IDName = 'ID_WXSLIDERTRANSDEGREE'
+              Wx_IDValue = 48
+              Wx_SliderStyle = []
+              Wx_SliderOrientation = wxSL_HORIZONTAL
+              Wx_SliderRange = wxSL_SELRANGE
+              Wx_Border = 2
+              Wx_PaneCaption = 'WxSlider1'
+              Wx_PaneName = 'WxSlider1_Pane'
+              Wx_Aui_Dock_Direction = wxAUI_DOCK_NONE
+              Wx_Aui_Dockable_Direction = []
+              Wx_Aui_Pane_Style = []
+              Wx_Aui_Pane_Buttons = []
+              Wx_BestSize_Height = 0
+              Wx_BestSize_Width = 0
+              Wx_MinSize_Height = 0
+              Wx_MinSize_Width = 0
+              Wx_MaxSize_Height = 0
+              Wx_MaxSize_Width = 0
+              Wx_Floating_Height = 0
+              Wx_Floating_Width = 0
+              Wx_Floating_X_Pos = 0
+              Wx_Floating_Y_Pos = 0
+            end
           end
         end
       end
     end
     object WxBoxSizer3: TWxBoxSizer
-      Left = 324
-      Top = 38
-      Width = 124
+      Left = 492
+      Top = 47
+      Width = 134
       Height = 224
       TabOrder = 1
       Orientation = wxVertical
@@ -465,7 +602,7 @@ object frmNewForm: TfrmNewForm
       Wx_Border = 0
       Wx_Alignment = [wxALIGN_TOP]
       object WxButtonFindNext: TWxButton
-        Left = 2
+        Left = 7
         Top = 2
         Width = 120
         Height = 28
