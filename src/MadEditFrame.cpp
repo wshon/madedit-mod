@@ -6288,11 +6288,11 @@ void MadEditFrame::OnViewPreview( wxCommandEvent& event )
             m_AuiManager.AddPane( m_HtmlPreview, wxAuiPaneInfo().Name( wxT( "Markdown/HTML Preview" ) ).Caption( _( "Markdown/HTML Preview" ) ).Floatable( false ).Right().CloseButton( false ) );
             
             long style=wxAUI_TB_NO_TOOLTIPS;
-            m_RefreshView = new wxAuiToolBar( this, ID_WXTOOLBAR1 + tbMAX+1, wxPoint( 0, 0 ), wxSize( 392, 29 ), style    );
+            m_RefreshView = new wxAuiToolBar( this, ID_WXTOOLBAR1 + tbMAX+1, wxPoint( 0, 0 ), wxSize( 392, 29 ), style );
             m_RefreshView->AddTool( menuRefreshPreview, wxT( "RefreshPreview" ), m_ImageList->GetBitmap( refresh_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Refresh" ), _( "Refresh prviewed text" ), NULL );
             m_RefreshView->AddTool( menuClosePreview, wxT( "ClosePreview" ), m_ImageList->GetBitmap( closepreview_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, _( "Close Preveiw" ), _( "Close preveiw windows" ), NULL );
             m_RefreshView->Realize();
-            m_AuiManager.AddPane( m_RefreshView, wxAuiPaneInfo().Name( wxT( "RefreshBar" ) ).CaptionVisible(false).CloseButton (false).Dockable(false).DockFixed().Resizable(false).Right().Float() );
+			m_AuiManager.AddPane(m_RefreshView, wxAuiPaneInfo().Name(wxT("RefreshBar")).CaptionVisible(false).CloseButton(false).Dockable(false).DockFixed().Resizable(false).Top().Position(6).Float());
         }
 
         wxString text;
