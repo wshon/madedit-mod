@@ -20,7 +20,6 @@ object frmNewForm: TfrmNewForm
   OnDestroy = FormDestroy
   OnResize = FormResize
   EVT_KEY_DOWN = 'MadSearchDialogKeyDown'
-  EVT_SET_FOCUS = 'MadSearchDialogSetFocus'
   EVT_CLOSE = 'MadSearchDialogClose'
   EVT_ACTIVATE = 'MadSearchDialogActivate'
   Wx_ICON.Data = {07544269746D617000000000}
