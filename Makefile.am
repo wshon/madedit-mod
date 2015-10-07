@@ -27,10 +27,8 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	src/MadPlugin.cpp \
 	src/MadPrintout.cpp \
 	src/MadPrintout.h \
-	src/MadReplaceDialog.cpp \
-	src/MadReplaceDialog.h \
-	src/MadSearchDialog.cpp \
-	src/MadSearchDialog.h \
+	src/MadSearchReplaceDialog.cpp \
+	src/MadSearchReplaceDialog.h \
 	src/MadSortDialog.cpp \
 	src/MadSortDialog.h \
 	src/MadUtils.cpp \
