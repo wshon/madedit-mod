@@ -45,7 +45,6 @@ BEGIN_EVENT_TABLE(MadReplaceDialog,wxDialog)
 	
 	EVT_CLOSE(MadReplaceDialog::MadReplaceDialogClose)
 	EVT_KEY_DOWN(MadReplaceDialog::MadReplaceDialogKeyDown)
-	EVT_SET_FOCUS(MadReplaceDialog::MadReplaceDialogSetFocus)
 	EVT_ACTIVATE(MadReplaceDialog::MadReplaceDialogActivate)
 	
 	EVT_COMMAND_SCROLL(ID_WXSLIDERTRANSDEGREE,MadReplaceDialog::WxSliderTransDegreeScroll)
@@ -714,6 +713,11 @@ void MadReplaceDialog::MadReplaceDialogActivate(wxActivateEvent& event)
             m_ReplaceText->SetFont( fname, 14 );
         }
         UpdateCheckBoxByCBHex( WxCheckBoxFindHex->GetValue() );
+
+        if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+        {
+            SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+        }
     }
 }
 

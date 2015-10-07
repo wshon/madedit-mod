@@ -155,7 +155,6 @@ public:
 	void WxRadioLosingFocusClick(wxCommandEvent& event);
 	void WxRadioAlwaysClick(wxCommandEvent& event);
 	void SetTransparency();
-	void MadSearchDialogSetFocus(wxFocusEvent& event);
 	void WxSliderTransDegreeScroll(wxScrollEvent& event);
 };
 

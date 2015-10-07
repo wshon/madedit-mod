@@ -56,7 +56,6 @@ BEGIN_EVENT_TABLE(MadSearchDialog,wxDialog)
 	
 	EVT_CLOSE(MadSearchDialog::MadSearchDialogClose)
 	EVT_KEY_DOWN(MadSearchDialog::MadSearchDialogKeyDown)
-	EVT_SET_FOCUS(MadSearchDialog::MadSearchDialogSetFocus)
 	EVT_ACTIVATE(MadSearchDialog::MadSearchDialogActivate)
 	EVT_BUTTON(ID_WXBUTTONCLOSE,MadSearchDialog::WxButtonCloseClick)
 	EVT_BUTTON(ID_WXBUTTONREPLACE,MadSearchDialog::WxButtonReplaceClick)
@@ -836,7 +835,12 @@ void MadSearchDialog::MadSearchDialogActivate(wxActivateEvent& event)
             g_ActiveMadEdit->GetFont( fname, fsize );
             m_FindText->SetFont( fname, 14 );
         }
-        UpdateCheckBoxByCBHex( WxCheckBoxFindHex->GetValue() );      
+        UpdateCheckBoxByCBHex( WxCheckBoxFindHex->GetValue() );
+
+        if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
+        {
+            SetTransparent(wxIMAGE_ALPHA_OPAQUE);
+        }
     }
 }
 
@@ -1197,19 +1201,6 @@ void MadSearchDialog::SetTransparency()
     {
 		SetTransparent((wxByte)WxSliderTransDegree->GetValue());
     }
-}
-
-/*
- * MadSearchDialogSetFocus
- */
-void MadSearchDialog::MadSearchDialogSetFocus(wxFocusEvent& event)
-{
-	// insert your code here
-	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
-    {
-        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
-    }
-    this->SetFocus();
 }
 
 /*
