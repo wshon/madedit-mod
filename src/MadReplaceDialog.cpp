@@ -851,19 +851,6 @@ void MadReplaceDialog::SetTransparency()
 }
 
 /*
- * MadReplaceDialogSetFocus
- */
-void MadReplaceDialog::MadReplaceDialogSetFocus(wxFocusEvent& event)
-{
-	// insert your code here
-	if(m_EnableTransparency && WxRadioLosingFocus->GetValue())
-    {
-        SetTransparent(wxIMAGE_ALPHA_OPAQUE);
-    }
-    this->SetFocus();
-}
-
-/*
  * WxSliderTransDegreeScroll
  */
 void MadReplaceDialog::WxSliderTransDegreeScroll(wxScrollEvent& event)
