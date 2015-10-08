@@ -293,7 +293,6 @@
     <ClInclude Include="..\..\src\MadPrintout.h" />
     <ClInclude Include="..\..\src\MadPurgeHistoryDialog.h" />
     <ClInclude Include="..\..\src\MadRecentList.h" />
-    <ClInclude Include="..\..\src\MadSearchDialog.h" />
     <ClInclude Include="..\..\src\MadSearchReplaceDialog.h" />
     <ClInclude Include="..\..\src\MadSortDialog.h" />
     <ClInclude Include="..\..\src\MadUtils.h" />
