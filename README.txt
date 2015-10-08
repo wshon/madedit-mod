@@ -136,6 +136,8 @@ Mod v0.3.7
 33.Improvement on GUI update for menu and toolbar
 34.Fix: UI update issue of toggle toolbars
 35.Fix: Remove no parent from the style of Replace dialog
+36.Fix: Remove duplicated code lines
+37.Fix: Bookmark would be toggled if there were multiple instance found in one line
 
 Mod v0.3.6
 1.New: Create scripts directory if not exists while saving recorded script
