@@ -150,24 +150,24 @@ void MadSearchReplaceDialog::CreateGUIControls(void)
 	WxBoxSizer5->Add(WxCheckBoxSearchInSelection, 0, wxALIGN_LEFT | wxALL, 2);
 
 	WxBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
-	WxBoxSizer5->Add(WxBoxSizer6, 0, wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer5->Add(WxBoxSizer6, 0, wxALIGN_CENTER | wxALL, 2);
 
 	wxStaticBox* WxStaticBoxSizer1_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Bookmark in Searching"));
 	WxStaticBoxSizer1 = new wxStaticBoxSizer(WxStaticBoxSizer1_StaticBoxObj, wxVERTICAL);
-	WxBoxSizer6->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer6->Add(WxStaticBoxSizer1, 0, wxALIGN_LEFT | wxALIGN_TOP | wxALIGN_CENTER | wxALL, 2);
 
-	WxCheckBoxBookmarkLine = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKLINE, _("Bookmark line"), wxPoint(7, 17), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkLine"));
+	WxCheckBoxBookmarkLine = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKLINE, _("Bookmark line"), wxPoint(7, 17), wxSize(270, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkLine"));
 	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkLine, 0, wxALIGN_LEFT | wxALL, 2);
 
-	WxCheckBoxBookmarkOnly = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKONLY, _("Bookmark only(Find All in Current)"), wxPoint(7, 43), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkOnly"));
+	WxCheckBoxBookmarkOnly = new wxCheckBox(this, ID_WXCHECKBOXBOOKMARKONLY, _("Bookmark only(Find All in Current)"), wxPoint(7, 43), wxSize(270, 22), 0, wxDefaultValidator, wxT("WxCheckBoxBookmarkOnly"));
 	WxStaticBoxSizer1->Add(WxCheckBoxBookmarkOnly, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxCheckBoxPurgeBookmark = new wxCheckBox(this, ID_WXCHECKBOXPURGEBOOKMARK, _("Purge mark for each search session"), wxPoint(7, 69), wxSize(250, 22), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeBookmark"));
+	WxCheckBoxPurgeBookmark = new wxCheckBox(this, ID_WXCHECKBOXPURGEBOOKMARK, _("Purge mark for each search session"), wxPoint(7, 69), wxSize(270, 22), 0, wxDefaultValidator, wxT("WxCheckBoxPurgeBookmark"));
 	WxStaticBoxSizer1->Add(WxCheckBoxPurgeBookmark, 0, wxALIGN_CENTER | wxALL, 2);
 
 	wxStaticBox* WxStaticBoxSizer2_StaticBoxObj = new wxStaticBox(this, wxID_ANY, _("Transparency"));
 	WxStaticBoxSizer2 = new wxStaticBoxSizer(WxStaticBoxSizer2_StaticBoxObj, wxVERTICAL);
-	WxBoxSizer6->Add(WxStaticBoxSizer2, 0, wxALIGN_CENTER | wxALL, 5);
+	WxBoxSizer6->Add(WxStaticBoxSizer2, 0, wxALIGN_CENTER | wxALL, 2);
 
 	WxRadioLosingFocus = new wxRadioButton(this, ID_WXRADIOLOSINGFOCUS, _("On Losing Focus"), wxPoint(17, 17), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioLosingFocus"));
 	WxStaticBoxSizer2->Add(WxRadioLosingFocus, 0, wxALIGN_CENTER | wxALL, 2);
@@ -175,7 +175,7 @@ void MadSearchReplaceDialog::CreateGUIControls(void)
 	WxRadioAlways = new wxRadioButton(this, ID_WXRADIOALWAYS, _("Always"), wxPoint(17, 43), wxSize(113, 22), 0, wxDefaultValidator, wxT("WxRadioAlways"));
 	WxStaticBoxSizer2->Add(WxRadioAlways, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxSliderTransDegree = new wxSlider(this, ID_WXSLIDERTRANSDEGREE, 25, 25, 255, wxPoint(7, 69), wxSize(134, 22), wxSL_HORIZONTAL | wxSL_SELRANGE , wxDefaultValidator, wxT("WxSliderTransDegree"));
+	WxSliderTransDegree = new wxSlider(this, ID_WXSLIDERTRANSDEGREE, 25, 25, 255, wxPoint(7, 69), wxSize(113, 22), wxSL_HORIZONTAL | wxSL_SELRANGE , wxDefaultValidator, wxT("WxSliderTransDegree"));
 	WxSliderTransDegree->SetRange(25,255);
 	WxSliderTransDegree->SetValue(25);
 	WxStaticBoxSizer2->Add(WxSliderTransDegree, 0, wxALIGN_CENTER | wxALL, 2);
@@ -192,25 +192,26 @@ void MadSearchReplaceDialog::CreateGUIControls(void)
 	WxButtonFindAll = new wxButton(this, ID_WXBUTTONFINDALL, _("Find &All in\nCurrent"), wxPoint(2, 66), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonFindAll"));
 	WxBoxSizer3->Add(WxButtonFindAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxButtonFindAllInAll = new wxButton(this, ID_WXBUTTONFINDALLINALL, _("Find All in All\nOpened"), wxPoint(2, 98), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonFindAllInAll"));
+	WxButtonFindAllInAll = new wxButton(this, ID_WXBUTTONFINDALLINALL, _("Find All in All\nOpened"), wxPoint(2, 112), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonFindAllInAll"));
 	WxBoxSizer3->Add(WxButtonFindAllInAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxButtonCount = new wxButton(this, ID_WXBUTTONCOUNT, _("C&ount"), wxPoint(2, 100), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonCount"));
-	WxBoxSizer3->Add(WxButtonCount, 0, wxALIGN_CENTER | wxALL, 2);
-
-	WxButtonReplaceExpand = new wxButton(this, ID_WXBUTTONREPLACEEXPAND, _("R&eplace >>"), wxPoint(2, 162), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonReplaceExpand"));
-	WxBoxSizer3->Add(WxButtonReplaceExpand, 0, wxALIGN_CENTER | wxALL, 2);
-
-	WxButtonReplace = new wxButton(this, ID_WXBUTTONREPLACE, _("&Replace"), wxPoint(2, 162), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonReplace"));
+	WxButtonReplace = new wxButton(this, ID_WXBUTTONREPLACE, _("&Replace"), wxPoint(2, 158), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonReplace"));
 	WxBoxSizer3->Add(WxButtonReplace, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxButtonReplaceAll = new wxButton(this, ID_WXBUTTONREPLACEALL, _("Replace A&ll in\nCurrent"), wxPoint(2, 226), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAll"));
+	WxButtonReplaceAll = new wxButton(this, ID_WXBUTTONREPLACEALL, _("Replace A&ll in\nCurrent"), wxPoint(2, 190), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAll"));
 	WxBoxSizer3->Add(WxButtonReplaceAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxButtonReplaceAllInAll = new wxButton(this, ID_WXBUTTONREPLACEALLINALL, _("Repl All in All\nOpened"), wxPoint(4, 258), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAllInAll"));
+	WxButtonReplaceAllInAll = new wxButton(this, ID_WXBUTTONREPLACEALLINALL, _("Repl All in All\nOpened"), wxPoint(4, 236), wxSize(100, 42), 0, wxDefaultValidator, wxT("WxButtonReplaceAllInAll"));
 	WxBoxSizer3->Add(WxButtonReplaceAllInAll, 0, wxALIGN_CENTER | wxALL, 2);
 
-	WxButtonClose = new wxButton(this, ID_WXBUTTONCLOSE, _("&Close"), wxPoint(2, 290), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonClose"));
+	WxButtonCount = new wxButton(this, ID_WXBUTTONCOUNT, _("C&ount"), wxPoint(2, 282), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonCount"));
+	WxBoxSizer3->Add(WxButtonCount, 0, wxALIGN_CENTER | wxALL, 2);
+
+	WxButtonReplaceExpand = new wxButton(this, ID_WXBUTTONREPLACEEXPAND, _("R&eplace >>"), wxPoint(2, 314), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonReplaceExpand"));
+	WxBoxSizer3->Add(WxButtonReplaceExpand, 0, wxALIGN_CENTER | wxALL, 2);
+
+
+	WxButtonClose = new wxButton(this, ID_WXBUTTONCLOSE, _("&Close"), wxPoint(2, 346), wxSize(100, 28), 0, wxDefaultValidator, wxT("WxButtonClose"));
 	WxBoxSizer3->Add(WxButtonClose, 0, wxALIGN_CENTER | wxALL, 2);
 
 	WxPopupMenuRecentFindText = new wxMenu(wxT(""));
@@ -348,6 +349,10 @@ void MadSearchReplaceDialog::CreateGUIControls(void)
         WxRadioAlways->SetValue(bb);
         WxRadioLosingFocus->SetValue(!bb);
         WxSliderTransDegree->SetValue(trans);
+        if(bb)
+        {
+            SetTransparent(trans);
+        }
     }
     else
     {
@@ -1107,7 +1112,6 @@ void MadSearchReplaceDialog::WxButtonReplaceExpandClick(wxCommandEvent& event)
 
 void MadSearchReplaceDialog::ShowReplaceUI()
 {
-
 	WxButtonReplaceExpand->Show(false);
     WxButtonFindAllInAll->Show(false);
     WxButtonFindAll->Show(false);
