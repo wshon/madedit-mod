@@ -452,8 +452,7 @@ noinst_HEADERS =	description-pak \
 	src/MadFindInFilesDialog.wxform \
 	src/MadHighlightingDialog.wxform \
 	src/MadOptionsDialog.wxform \
-	src/MadReplaceDialog.wxform \
-	src/MadSearchDialog.wxform \
+	src/MadSearchReplaceDialog.wxform \
 	src/MadSortDialog.wxform \
 	src/MadWordCountDialog.wxform \
 	src/plugin_example/makefile.linux \
