@@ -8641,7 +8641,6 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                     --lit;
                                 }
                                 GetIndentSpaces(lineid, lit, ucs, true, unindentChar);
-                                //m_Syntax->InitNextWord2(lit, 0);
                             }
 
                             InsertString(&ucs[0], ucs.size(), false, true, false);
