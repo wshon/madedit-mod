@@ -8626,7 +8626,7 @@ void MadEdit::ProcessCommand(MadEditCommand command)
                                     UpdateSelectionPos();
                                 }
 
-                                MadLineIterator lit(m_CaretPos.iter);
+                                MadLineIterator &lit = m_CaretPos.iter;
                                 int lineid = m_CaretPos.lineid;
                                 wxFileOffset linepos = m_CaretPos.linepos;
                                 if(m_Selection)

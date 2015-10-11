@@ -91,6 +91,7 @@ Syntax files, Locale files and Settings:
 Known issues:
 The Macro recording function will save all your commands to one document which
 means it will not record the "switching" between documents.
+Search in selection in column mode is not exact the selection highlighted.
 
 Feature/issues to be released
 -----------------------------
