@@ -101,6 +101,13 @@ ChangeLog:
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.3.8
+New: Automatically advance number for new file in NoNameXX
+New: Change insert mode to insertion while changing from hex to text mode
+Fix: Match brace pair has bug if it was in comment or string(From MadEdit)
+Fix: Select contents between a brace pair has bug
+Fix: Size of the dictionary selection and path is too small under Ubuntu
+
 Mod v0.3.7
 1.New: Column Align Right(Selected text would be aligned according to right)
 2.New: Prefix, postfix and preview of numbering(enhanced numbering)

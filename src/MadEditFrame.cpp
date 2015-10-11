@@ -3473,7 +3473,26 @@ void MadEditFrame::OpenFile( const wxString &fname, bool mustExist )
 
     if( filename.IsEmpty() )
     {
-        title.Printf( _( "NoName%d" ), ++m_NewFileCount );
+        int count = int( m_Notebook->GetPageCount() );
+        wxArrayString fnames;
+        wxString fname;
+
+        for( int id = 0; id < count; ++id )
+        {
+            fname = m_Notebook->GetPageText( id );
+            if( fname[fname.Len() - 1] == wxT( '*' ) )
+            { fname.Truncate( fname.Len() - 1 ); }
+            fnames.Add(fname);
+        }
+
+        bool nameNotOk = true;
+        do
+        {
+            title.Printf( _( "NoName%d" ), ++m_NewFileCount );
+            if(wxNOT_FOUND == fnames.Index(title))
+                nameNotOk = false;
+        }
+        while(nameNotOk);
     }
     else
     {
