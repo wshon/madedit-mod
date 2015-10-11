@@ -710,6 +710,7 @@ void MadEdit::SetEditMode(MadEditMode mode)
             }
             else                      //HexMode
             {
+                SetInsertMode(true);
                 HexModeToTextMode(mode);
             }
 
@@ -755,6 +756,7 @@ void MadEdit::SetEditMode(MadEditMode mode)
             }
             else                      //HexMode
             {
+                SetInsertMode(true);
                 HexModeToTextMode(mode);
             }
 
