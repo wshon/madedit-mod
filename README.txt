@@ -85,6 +85,8 @@ Syntax files, Locale files and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
   * Download dictionary at http://extensions.openoffice.org
+    oxt is actually a zip file. So, download it and open it with 7-zip. Then extract
+    the .dic and .aff to ./Dictionaries. Re-start MadEdit-Mod to load the dictionary.
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try
     'madedit %f*lineNum'
 
