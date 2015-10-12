@@ -2669,7 +2669,7 @@ void MadEditFrame::CreateGUIControls( void )
             if(cont)
             {
                 g_Menu_MadMacro_Scripts->AppendSeparator();
-                WxToolBar[tbMACRO]->AddSeparator();
+                g_tbMACRO_ptr->AddSeparator();
             }
 
             while( cont )
@@ -2689,7 +2689,7 @@ void MadEditFrame::CreateGUIControls( void )
                         help.Empty();
                     }
                     g_Menu_MadMacro_Scripts->Append( menuMadScrip1 + int( i ), fn.GetName(), help );
-                    WxToolBar[tbMACRO]->AddTool( menuMadScrip1 + int( i ), _T( "Macro" ), m_ImageList->GetBitmap( saverec_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, fn.GetName(), help, NULL );
+                    g_tbMACRO_ptr->AddTool( menuMadScrip1 + int( i ), _T( "Macro" ), m_ImageList->GetBitmap( saverec_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, fn.GetName(), help, NULL );
                     ++i;
                 }
 
@@ -2755,6 +2755,11 @@ void MadEditFrame::CreateGUIControls( void )
     m_AuiManager.AddPane( m_InfoNotebook, wxBOTTOM, _( "Information Window" ) );
     m_AuiManager.GetPane( m_InfoNotebook ).Show( false ).FloatingSize( nbsize );
     m_AuiManager.Update();
+	if (g_tbMACRO_ptr->GetToolCount() <= 5)
+	{
+		g_tbMACRO_ptr->SetOverflowVisible(false);
+		g_tbMACRO_ptr->Realize();
+	}
     // fixed for using wxAUI
     WxStatusBar1->Connect( wxEVT_SIZE, wxSizeEventHandler( MadEditFrame::OnSize ) );
 }
@@ -7167,8 +7172,14 @@ void MadEditFrame::OnToolsSaveRecMacro( wxCommandEvent& event )
                 {
                     help.Empty();
                 }
+				if (!g_tbMACRO_ptr->GetOverflowVisible())
+				{
+					g_tbMACRO_ptr->SetOverflowVisible(true);
+					g_tbMACRO_ptr->Realize();
+                    m_AuiManager.Update();
+				}
                 g_Menu_MadMacro_Scripts->Append( menuMadScrip1 + int( g_Menu_MadMacro_Scripts->GetMenuItemCount() ), fn.GetName(), help );
-                WxToolBar[tbMACRO]->AddTool( menuMadScrip1 + int( g_Menu_MadMacro_Scripts->GetMenuItemCount() ), _T( "Macro" ), m_ImageList->GetBitmap( saverec_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, fn.GetName(), help, NULL );
+                g_tbMACRO_ptr->AddTool( menuMadScrip1 + int( g_Menu_MadMacro_Scripts->GetMenuItemCount() ), _T( "Macro" ), m_ImageList->GetBitmap( saverec_xpm_idx ), wxNullBitmap, wxITEM_NORMAL, fn.GetName(), help, NULL );
             }
             scriptfile.Close();
         }
