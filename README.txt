@@ -89,6 +89,12 @@ Syntax files, Locale files and Settings:
     the .dic and .aff to ./Dictionaries. Re-start MadEdit-Mod to load the dictionary.
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try
     'madedit %f*lineNum'
+  * Silent mode which can be used in scripting, no GUI will be shown
+    [-h], help, Displays help on the command line parameters
+    [-s], silent, Disables the GUI
+    [-m], madpython, Specify MadPython file to be run on the file
+    [files], File(s) to be opened
+    Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
 
 Known issues:
 The Macro recording function will save all your commands to one document which
