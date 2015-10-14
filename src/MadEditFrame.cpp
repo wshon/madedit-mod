@@ -2392,6 +2392,14 @@ void MadEditFrame::CreateGUIControls( void )
                     }
                     
                     (*(cd->popmenu_ptr))->Append( mit );
+                    if(cd->menu_id == menuToggleReadOnly)
+                    {
+                        (*(cd->popmenu_ptr))->AppendSeparator();
+                        (*(cd->popmenu_ptr))->Append(menuCopyFilePath,       _("Copy full path name"));
+                        (*(cd->popmenu_ptr))->Append(menuCopyFileName,       _("Copy full file name"));
+                        (*(cd->popmenu_ptr))->Append(menuCopyFileDir,        _("Copy directory name"));
+                        
+                    }
                 }
                 if(cd->toolbar_ptr && *(cd->toolbar_ptr))
                 {
@@ -3672,6 +3680,76 @@ void MadEditFrame::OpenFile( const wxString &fname, bool mustExist )
 
     if( linenum != -1 )
     { g_ActiveMadEdit->GoToLine( linenum ); }
+}
+
+void MadEditFrame::RunScriptWithFile(const wxString &filename, const wxString &scriptname, bool mustExist, bool closeafterdone)
+{
+    if(!filename.IsEmpty())
+    {
+
+        wxTextFile scriptfile( scriptname );
+        scriptfile.Open( wxConvFile );
+
+        if( scriptfile.IsOpened() )
+        {
+            int utf8test = MadFileNameIsUTF8( filename );
+            bool exists = ( wxFileExists( filename ) || ( utf8test != 0 ) );
+            if( mustExist && !exists )
+            {
+                scriptfile.Close();
+                return;
+            }
+            OpenFile( filename, mustExist );
+            if( g_ActiveMadEdit != NULL)
+            {
+				int idx = m_Notebook->GetSelection();
+                if((!g_ActiveMadEdit->IsReadOnly()) && ((!mustExist)||(filename == g_ActiveMadEdit->GetFileName())))
+                {
+                    if( !g_EmbeddedPython )
+                    {
+                        try
+                        {
+                            g_EmbeddedPython = new EmbeddedPython();
+                        }
+                        catch( std::bad_alloc & )
+                        {
+                            MadMessageBox( _( "Memory allocation failed" ), wxT( "Error" ),  wxOK | wxICON_ERROR );
+                        }
+                    }
+
+                    if( g_EmbeddedPython )
+                    {
+                        wxString str = scriptfile.GetFirstLine() + wxT( "\n" );
+
+                        for( ; !scriptfile.Eof(); )
+                        {
+                            str << scriptfile.GetNextLine() << wxT( "\n" );
+                        }
+
+                        if( str.IsNull() == false )
+                        {
+                            g_EmbeddedPython->exec( std::string( str.mb_str() ) );
+                        }
+                    }
+
+                    wxString name = m_Notebook->GetPageText( idx );
+
+                    if( name[name.Len() - 1] == wxT( '*' ) )
+                    { name.Truncate( name.Len() - 1 ); }
+
+                    if( g_ActiveMadEdit->Save( false, name, false ) == wxID_YES )
+                    {
+                        m_RecentFiles->AddFileToHistory( g_ActiveMadEdit->GetFileName() );
+                    }
+                }
+                if(closeafterdone)
+                {
+                    CloseFile( idx );
+                }
+            }            
+            scriptfile.Close();
+        }
+    }
 }
 
 void MadEditFrame::CloseFile( int pageId )
