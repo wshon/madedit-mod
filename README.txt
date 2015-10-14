@@ -115,6 +115,7 @@ New: Silent mode which can be used in scripting
      [-s], silent, Disables the GUI
      [-m], madpython, Specify MadPython file to be run on the file
      [files], File(s) to be opened
+     Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
 New: Automatically advance number for new file in NoNameXX
 New: Change insert mode to insertion while changing from hex to text mode
 New: Use indent size of current line instead of tha last line that has non-space/tab char
