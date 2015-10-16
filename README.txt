@@ -133,6 +133,7 @@ Fix: Select contents between a brace pair has bug
 Fix: Size of the dictionary selection and path is too small under Ubuntu
 Fix: Remove some of the code for compatible with wxWidgets 2.8.x
 Fix: Missing menu items for Copy file path/name/directory after refactor
+Fix: Fix Mouse event(LDown LDClick) handle issue(Since the beginning of MadEdit)
 
 Mod v0.3.7
 1.New: Column Align Right(Selected text would be aligned according to right)

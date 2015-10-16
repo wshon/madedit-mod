@@ -10061,7 +10061,8 @@ void MadEdit::OnMouseLeftUp(wxMouseEvent &evt)
 	{
 		m_MouseLeftDoubleClick=false;
 		m_MouseLeftDown=false;
-		ReleaseMouse();
+		if(GetCapture() == this)
+			ReleaseMouse();
 	}
 	else if(m_MouseLeftDown)
 	{
