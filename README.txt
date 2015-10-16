@@ -112,13 +112,14 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.8
-New: Silent mode which can be used in scripting
+New: Silent mode which can be used in scripting(Only file names would be passed to
+     running instance in single instance mode)
      Run MadEdit-Mod without show GUI and use a MadPython to handle the files to
      be opened. So, you can use the Astyle/XML formatter/HTML tools the same as 
      the original ones, eg, call it in a script to handle a lot of files.
      Furthermore, you can use MadPython to do more!!!
      [-h], help, Displays help on the command line parameters
-     [-f], force, Edit and save file ignoring the ReadOnly flag
+     [-f], force, Edit and save file ignoring the ReadOnly flag(For the files in command line)
      [-s], silent, Disables the GUI
      [-m], madpython, Specify MadPython file to be run on the file
      [files], File(s) to be opened
