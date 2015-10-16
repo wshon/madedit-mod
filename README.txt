@@ -118,6 +118,7 @@ New: Silent mode which can be used in scripting
      the original ones, eg, call it in a script to handle a lot of files.
      Furthermore, you can use MadPython to do more!!!
      [-h], help, Displays help on the command line parameters
+     [-f], force, Edit and save file ignoring the ReadOnly flag
      [-s], silent, Disables the GUI
      [-m], madpython, Specify MadPython file to be run on the file
      [files], File(s) to be opened
@@ -134,6 +135,7 @@ Fix: Size of the dictionary selection and path is too small under Ubuntu
 Fix: Remove some of the code for compatible with wxWidgets 2.8.x
 Fix: Missing menu items for Copy file path/name/directory after refactor
 Fix: Fix Mouse event(LDown LDClick) handle issue(Since the beginning of MadEdit)
+Fix: Don't need "(R)" on windows title to mark read only file
 
 Mod v0.3.7
 1.New: Column Align Right(Selected text would be aligned according to right)
