@@ -4120,8 +4120,6 @@ void MadEdit::SelectWordFromCaretPos(wxString *ws, MadCaretPos * cpos/* = NULL*/
 				(*ws)<<ucqueue[i].first;
 #endif
 			}
-
-			return;
 		}
 
 		if(cpos) return;
@@ -4597,7 +4595,10 @@ void MadEdit::ReplaceWordFromCaretPos(wxString &ws)
 		out += ucs[i] ;
 	}
 	if(!m_Selection)
-		SelectWordFromCaretPos(NULL);
+	{
+		wxString ws;
+		GetWordFromCaretPos(ws);
+	}
 	InsertString(out.c_str(), out.length(), false, true, false);
 }
 
