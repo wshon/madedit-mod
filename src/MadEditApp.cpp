@@ -520,7 +520,9 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 {
 	wxFileName filename;
 	m_SilentMode = cmdParser.Found(wxT("s"));
-	m_ForceEdit = cmdParser.Found(wxT("f"));
+	m_ForceEdit  = cmdParser.Found(wxT("f"));
+	cmdParser.Found(wxT("m"), &m_MadPythonScript);
+
 	// parse commandline to filenames, every file is with a trailing char '|', ex: filename1|filename2|
 	m_FileNames.Empty();
 	// to get at your unnamed parameters use GetParam
@@ -532,7 +534,6 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 	}
 
 	// and other command line parameters
-	cmdParser.Found(wxT("m"), &m_MadPythonScript);
 	// then do what you need with them.
  
 	return true;
