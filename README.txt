@@ -93,6 +93,8 @@ Syntax files, Locale files and Settings:
     [-h], help, Displays help on the command line parameters
     [-s], silent, Disables the GUI
     [-m], madpython, Specify MadPython file to be run on the file
+    [-r], recursive, Recursively run on files of subdirectories
+    [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled because it used '*')
     [files], File(s) to be opened
     Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
 
@@ -106,7 +108,7 @@ Feature/issues to be released
 
 ChangeLog:
 ----------
-Note: Not support wxWidgets 2.8 anymore since 0.3.8
+Note: Not support wxWidgets 2.X anymore since 0.3.X
 
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
@@ -123,7 +125,7 @@ New: Silent mode which can be used in scripting(Only file names would be passed 
      [-s], silent, Disables the GUI
      [-m], madpython, Specify MadPython file to be run on the file
      [-r], recursive, Recursively run on files of subdirectories
-     [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled becasue it used '*')
+     [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled because it used '*')
      [files], File(s) to be opened
      Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
 New: Automatically advance number for new file in NoNameXX
