@@ -114,6 +114,7 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.8
+New: Upgrade boost to 1.59
 New: Silent mode which can be used in scripting(Only file names would be passed to
      running instance in single instance mode)
      Run MadEdit-Mod without show GUI and use a MadPython to handle the files to
