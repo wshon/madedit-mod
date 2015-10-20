@@ -135,6 +135,7 @@ New: Add Spanish dictionary in release since a lot of downloads from Spanish
 New: Improve UI for Mad-Macro list
 New: Auto indent support for Python
 New: Purge Caret position history
+New: Add brief help documents(Basic introduction, Key mapping and help for Regex)
 Fix: Match brace pair has bug if it was in comment or string(From MadEdit)
 Fix: Select contents between a brace pair has bug
 Fix: Size of the dictionary selection and path is too small under Ubuntu
