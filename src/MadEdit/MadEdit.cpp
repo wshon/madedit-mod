@@ -2528,16 +2528,19 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 		if(!InPrinting() && m_Display80ColHint)
 		{
 			int width = 80 * wspace;
-			if(*wxLIGHT_GREY!= bgcolor)
-			{
-				dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
-			}
-			else
-			{
-				dc->SetPen(*wxThePenList->FindOrCreatePen(wxColour(128, 128, 128), 1, wxSOLID));
-			}
 			x1 += width + m_LeftMarginWidth - m_DrawingXPos;
-			dc->DrawLine(x1, y, x1, y+rect.GetHeight());
+            if(x1>minleft)
+            {
+    			if(*wxLIGHT_GREY!= bgcolor)
+    			{
+    				dc->SetPen(*wxThePenList->FindOrCreatePen(*wxLIGHT_GREY, 1, wxSOLID));
+    			}
+    			else
+    			{
+    				dc->SetPen(*wxThePenList->FindOrCreatePen(wxColour(128, 128, 128), 1, wxSOLID));
+    			}
+    			dc->DrawLine(x1, y, x1, y+rect.GetHeight());
+            }
 		}
 	}
 }
