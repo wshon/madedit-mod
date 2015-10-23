@@ -2087,6 +2087,7 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 	}
 
 	const int wspace = GetUCharWidth(0x20);
+	bool reverseLineNum = (GetLayoutDirection() == wxLayout_RightToLeft);
 
 	// Begin Paint Lines
 	for(;;)                         // every line
@@ -2436,12 +2437,30 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 
 							dc->SetTextForeground(m_Syntax->nw_Color);
 							dc->SetFont(*(m_Syntax->nw_Font));
-
-							for(int i = 0; i < ncount; ++i, l+=m_TextFontMaxDigitWidth)
+							if(reverseLineNum)
 							{
-								if(wcstr[i] != 0x20)
+								for(int i = 0; i < ncount; ++i, l+=m_TextFontMaxDigitWidth)
 								{
-									dc->DrawText(wcstr[i], l, text_top);
+									if(wcstr[i] != 0x20) break;
+								}
+								for(int i = ncount; i > 0; --i, l+=m_TextFontMaxDigitWidth)
+								{
+									if(wcstr[i-1] != 0x20)
+									{
+										dc->DrawText(wcstr[i-1], l, text_top);
+									}
+									else
+										break;
+								}
+							}
+							else
+							{
+								for(int i = 0; i < ncount; ++i, l+=m_TextFontMaxDigitWidth)
+								{
+									if(wcstr[i] != 0x20)
+									{
+										dc->DrawText(wcstr[i], l, text_top);
+									}
 								}
 							}
 						}
