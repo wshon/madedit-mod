@@ -2073,6 +2073,8 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 
 	int SelLeft, SelRight;
 	int xpos1=0, xpos2=0;
+	bool reverseLineNum = false;
+	const int wspace = GetUCharWidth(0x20);
 
 	if(m_DisplayLineNumber)
 	{
@@ -2084,10 +2086,8 @@ void MadEdit::PaintTextLines(wxDC *dc, const wxRect &rect, int toprow, int rowco
 			dc->SetBrush(*wxTheBrushList->FindOrCreateBrush(m_Syntax->nw_BgColor));
 			dc->DrawRectangle(rect.GetLeft(), rect.GetTop(), m_LineNumberAreaWidth, rect.GetHeight());
 		}
+		reverseLineNum = (GetLayoutDirection() == wxLayout_RightToLeft);
 	}
-
-	const int wspace = GetUCharWidth(0x20);
-	bool reverseLineNum = (GetLayoutDirection() == wxLayout_RightToLeft);
 
 	// Begin Paint Lines
 	for(;;)                         // every line
