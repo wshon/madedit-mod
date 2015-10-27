@@ -55,9 +55,8 @@ rm -rf $RPM_BUILD_DIR/%{name}-%{version}
 %doc README.txt
 %doc help/MadPython.txt
 %doc help/Help.txt
-%doc help/Key
-%doc Mapping.html
-%doc help/Regex reference.html
+%doc help/KeyMapping.html
+%doc help/RegexReference.html
 %{_bindir}/*
 %{_datadir}/applications/*
 %{_datadir}/pixmaps/*
