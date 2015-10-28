@@ -62,10 +62,11 @@ wxWidgets(3.0.2)
 MadEdit-Mod
 ./configure --with-boost=${HOME}/boost_1_56_0 --with-wxdir=${HOME}/wxWidgets-3.0.2
 
-Syntax files, Locale files and Settings:
+Syntax files, Locale files, Dictionaries and Settings:
 ---------------------------------------
   Syntax files: in the path $(MadEditConfigPath)/syntax/
   Locale files: in the path $(MadEditConfigPath)/locale/
+  Dictionaries: in the path $(MadEditConfigPath)/Dictionaries/
 
   $(MadEditConfigPath) are the one of below paths:
     1. MadEdit execution file directory : Windows and Linux
