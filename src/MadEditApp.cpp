@@ -468,6 +468,13 @@ bool MadEditApp::OnInit()
 		wxString files;
 		cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);
 		
+		if(!files.IsEmpty())
+		{
+			// use OnReceiveMessage() to open the files
+			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
+		}
+
+		files.Empty();
 		for(size_t i=0; i<m_FileNames.GetCount(); ++i)
 		{
 			//The name is what follows the last \ or /
@@ -476,6 +483,12 @@ bool MadEditApp::OnInit()
 
 		if(!files.IsEmpty())
 		{
+			if(!m_MadPythonScript.IsEmpty())
+			{
+				if(m_ForceEdit)
+					files += wxT(" *f");
+				files += wxT(" *m ")+m_MadPythonScript;
+			}
 			// use OnReceiveMessage() to open the files
 			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
 		}
