@@ -355,7 +355,7 @@ namespace mad_python {
 				}
 				if( g_ActiveMadEdit->IsReadOnly() )
 				{
-					std::cout << "WARNING: Current file is ReadOnly!!!"<<endl;
+					std::cout << "WARNING: Current file is ReadOnly!!!" << std::endl;
 				}
 			}
 			else
