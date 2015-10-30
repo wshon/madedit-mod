@@ -2438,7 +2438,7 @@ void MadEditFrame::CreateGUIControls( void )
 					{
 						mit->SetBitmap( m_ImageList->GetBitmap( cd->image_idx ) );
 					}
-					
+
 					(*(cd->popmenu_ptr))->Append( mit );
 					if(cd->menu_id == menuToggleReadOnly)
 					{
@@ -6851,11 +6851,11 @@ void MadEditFrame::OnToolsOptions( wxCommandEvent& event )
 		bb = g_OptionsDialog->WxCheckAttachInlines->GetValue();
 		m_Config->Write( wxT( "attach_inlines" ), bb );
 		bb = g_OptionsDialog->WxCheckForceUseTabs->GetValue();
-		m_Config->Write( wxT( "forcewxTabs" ), bb );
+		m_Config->Write( wxT( "force_tabs" ), bb );
 		ll = g_OptionsDialog->WxSpinIndentation->GetValue();
 		m_Config->Write( wxT( "indentation" ), ll );
 		bb = g_OptionsDialog->WxCheckUseTab->GetValue();
-		m_Config->Write( wxT( "usewxTabs" ), bb );
+		m_Config->Write( wxT( "use_tabs" ), bb );
 		bb = g_OptionsDialog->WxCheckIndentCase->GetValue();
 		m_Config->Write( wxT( "indent_case" ), bb );
 		bb = g_OptionsDialog->WxCheckIndentClasses->GetValue();
@@ -6895,7 +6895,7 @@ void MadEditFrame::OnToolsOptions( wxCommandEvent& event )
 		bb = g_OptionsDialog->WxCheckKeepBlocks->GetValue();
 		m_Config->Write( wxT( "keep_blocks" ), bb );
 		bb = g_OptionsDialog->WxCheckConvertTabs->GetValue();
-		m_Config->Write( wxT( "convertwxTabs" ), bb );
+		m_Config->Write( wxT( "convert_tabs" ), bb );
 		bb = g_OptionsDialog->WxCheckCloseTemplates->GetValue();
 		m_Config->Write( wxT( "closewxTemplates" ), bb );
 		bb = g_OptionsDialog->WxCheckRemoveCommentPrefix->GetValue();

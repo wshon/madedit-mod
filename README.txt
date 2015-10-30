@@ -93,6 +93,7 @@ Syntax files, Locale files, Dictionaries and Settings:
   * Silent mode which can be used in scripting, no GUI will be shown
     [-h], help, Displays help on the command line parameters
     [-s], silent, Disables the GUI
+    [-f], force, Edit and save file ignoring the ReadOnly flag
     [-m], madpython, Specify MadPython file to be run on the file
     [-r], recursive, Recursively run on files of subdirectories
     [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled because it used '*')
@@ -124,13 +125,13 @@ Mod v0.3.8
      Furthermore, you can use MadPython to do more!!!
      [-h], help, Displays help on the command line parameters
      [-f], force, Edit and save file ignoring the ReadOnly flag(For the files in command line)
-     [-s], silent, Disables the GUI
+     [-s], silent, Disables the GUI(would close the file automatically after done if another instance is running)
      [-m], madpython, Specify MadPython file to be run on the file
      [-r], recursive, Recursively run on files of subdirectories
      [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled because it used '*')
      [files], File(s) to be opened
      Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
-3.New: Automatically advance number for new file in NoNameXX
+3.New: Automatically advance number for new file in NoNameXX if already opened a file with the same name
 4.New: Change insert mode to insertion while changing from hex to text mode
 5.New: Use indent size of current line instead of the last line that has non-space/tab char
 6.New: Add Spanish dictionary in release since a lot of downloads from Spanish
@@ -154,7 +155,9 @@ Mod v0.3.8
 24.Fix: OnPaint issue in RTL
 25.Fix: The last char was not displayed while scrolling to the right most
 26.Fix: Line number would be reversed in printing while enable RTL
-27.Other minor improvements
+27.Fix: Fix Astyle config could not be saved
+28.Fix: Add Readonly check in MadPython before actually run
+29.Other minor improvements
 
 Mod v0.3.7
 1.New: Column Align Right(Selected text would be aligned according to right)
