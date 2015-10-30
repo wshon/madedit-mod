@@ -1,8 +1,8 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Name:        MadEditApp.cpp
+// Name:		MadEditApp.cpp
 // Description:
-// Author:      madedit@gmail.com
-// Licence:     GPL
+// Author:		madedit@gmail.com
+// Licence: 	GPL
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "MadEditApp.h"
@@ -76,7 +76,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 		  wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 	 { wxCMD_LINE_SWITCH, "f", "force", "Edit and save file ignoring the ReadOnly flag" },
 	 { wxCMD_LINE_SWITCH, "r", "recursive", "Recursively run on files of subdirectories" },
-     { wxCMD_LINE_SWITCH, "s", "silent", "Disables the GUI" },
+	 { wxCMD_LINE_SWITCH, "s", "silent", "Disables the GUI" },
 	 { wxCMD_LINE_SWITCH, "w", "wildcard", "Enable wildcard support in file name\n(line number would be disabled becasue it used '*')" },
 	 { wxCMD_LINE_OPTION, "m", "madpython", "Specify MadPython file to be run on the file" },
 	 { wxCMD_LINE_PARAM, NULL, NULL, "File(s) to be opened", wxCMD_LINE_VAL_STRING,  wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE }, 
@@ -145,7 +145,7 @@ static GdkFilterReturn my_gdk_filter(GdkXEvent *xevent,
 	}
 
 	//if (XFilterEvent(xeve, None) == True)
-	//    return GDK_FILTER_REMOVE;
+	//	  return GDK_FILTER_REMOVE;
 
 	return GDK_FILTER_CONTINUE;
 }
@@ -245,7 +245,7 @@ bool MadAppConn::OnExecute(const wxString& topic,
 		// Just raise the main window
 		if (frame)
 		{
-			frame->Restore();    // for minimized frame
+			frame->Restore();	 // for minimized frame
 			frame->Raise();
 		}
 	}
@@ -337,10 +337,11 @@ bool MadEditApp::OnInit()
 				
 				if(!m_MadPythonScript.IsEmpty())
 				{
-					fnames += wxT(" *s");
+					if(m_SilentMode)
+						fnames += wxT("*s");
 					if(m_ForceEdit)
-						fnames += wxT(" *f");
-					fnames += wxT(" *m ")+m_MadPythonScript;
+						fnames += wxT("*f");
+					fnames += wxT("*m")+m_MadPythonScript;
 				}
 
 				connection->Execute(fnames);
@@ -457,7 +458,7 @@ bool MadEditApp::OnInit()
 		SetTopWindow(myFrame);
 
 #ifdef __WXMSW__
-		//if(maximize)    // removed: gogo, 30.08.2009
+		//if(maximize)	  // removed: gogo, 30.08.2009
 		{
 			WINDOWPLACEMENT wp;
 			wp.length=sizeof(WINDOWPLACEMENT);
@@ -494,10 +495,10 @@ bool MadEditApp::OnInit()
 		{
 			if(!m_MadPythonScript.IsEmpty())
 			{
-				files += wxT(" *s");
+				files += wxT("*s");
 				if(m_ForceEdit)
-					files += wxT(" *f");
-				files += wxT(" *m ")+m_MadPythonScript;
+					files += wxT("*f");
+				files += wxT("*m")+m_MadPythonScript;
 			}
 			// use OnReceiveMessage() to open the files
 			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
@@ -553,27 +554,27 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 	m_FileNames.Empty();
 	// to get at your unnamed parameters use GetParam
 	int flags=wxDIR_FILES|wxDIR_HIDDEN;
-    wxString fname;
+	wxString fname;
 	for (int i = 0; i < cmdParser.GetParamCount(); i++)
 	{
 		filename = cmdParser.GetParam(i);
 		filename.MakeAbsolute();
 
-        fname = filename.GetFullName();
-        if(cmdParser.Found(wxT("w")))
-        {
-        	//WildCard
-            if(cmdParser.Found(wxT("r"))) flags|=wxDIR_DIRS;
+		fname = filename.GetFullName();
+		if(cmdParser.Found(wxT("w")))
+		{
+			//WildCard
+			if(cmdParser.Found(wxT("r"))) flags|=wxDIR_DIRS;
 			wxArrayString files;
 			size_t nums = wxDir::GetAllFiles ( filename.GetPath(), &files, fname, flags );
-            for(size_t i=0; i<nums; ++i)
-        	{
-        		m_FileNames.Add(files[i]);
-        	}
-        }
+			for(size_t i=0; i<nums; ++i)
+			{
+				m_FileNames.Add(files[i]);
+			}
+		}
 		else
-        {
-        	// Support for name*linenum
+		{
+			// Support for name*linenum
 			m_FileNames.Add(filename.GetFullPath());
 		}
 	}
@@ -605,7 +606,7 @@ void MadStackWalker::OnStackFrame(const wxStackFrame & frame)
 		while(i < count)
 		{
 			frame.GetParam(i, &type, &name, &value);
-			paramInfo += type + wxT(" ") + name + wxT(" = ") + value;    
+			paramInfo += type + wxT(" ") + name + wxT(" = ") + value;	 
 			if(++i < count) paramInfo += wxT(", ");
 		}
 #endif

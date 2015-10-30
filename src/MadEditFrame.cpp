@@ -832,29 +832,36 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 	bool use_script = false, forceEdit = false, silent = false;
 
 	/* filename1|filename2| *s *f *m mpython.mpy */
-    files = args.BeforeLast ('|', &arg);
-    args = arg;
+	files = args.BeforeLast ('|', &arg);
+	args = arg;
 	if(!args.IsEmpty())
 	{
 		mpScript.Empty();
-		wxString strDel = wxT(" ");
+		wxString strDel = wxT("*");
 		wxStringTokenizer tkz1(args, strDel);
 
 		while ( tkz1.HasMoreTokens() )
 		{
 			arg = tkz1.GetNextToken();
-		
+
 			// process token here
-			if(arg == wxT("*s"))
-				silent = true;
-			else if(arg == wxT("*f"))
-				forceEdit = true;
-			else if(arg == wxT("*m")) /*Must be the last one*/
-				use_script = true;
-			else if(use_script)
-			{
-				mpScript = arg;
-				break;
+			if(!arg.IsEmpty())
+			{		  
+				if(arg == wxT("s"))
+					silent = true;
+				else if(arg == wxT("f"))
+					forceEdit = true;
+				else if(arg[0] == 'm')
+				{		  
+					use_script = true;
+					mpScript = arg.AfterFirst('m');
+					
+					if(!mpScript.IsEmpty())
+					{
+						mpScript.Trim(false);
+						mpScript.Trim();
+					}
+				}
 			}
 		}
 	}
