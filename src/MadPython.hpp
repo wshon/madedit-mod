@@ -353,6 +353,10 @@ namespace mad_python {
 					g_MainFrame->OpenFile( wxEmptyString, false );
 					return;
 				}
+				if( g_ActiveMadEdit->IsReadOnly() )
+				{
+					std::cout << "WARNING: Current file is ReadOnly!!!"<<endl;
+				}
 			}
 			else
 			{ throw std::runtime_error( "No active main frame!" ); }
