@@ -816,7 +816,6 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 
 		SetWindowPlacement( ( HWND )g_MainFrame->GetHWND(), &wp );
 	}
-
 #else
 	//g_MainFrame->Show(true);
 	g_MainFrame->Raise();
@@ -829,19 +828,18 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 	if( g_ActiveMadEdit ) { g_ActiveMadEdit->SetFocus(); }
 
 	// open the files
-	wxString file, args(msg), arg, mpScript;
+	wxString files, file, args(msg), arg, mpScript;
 	bool use_script = false, forceEdit = false, silent = false;
 
-	/* filename1|filename2| -f -m mpython.mpy */
-	if(wxNOT_FOUND != args.Find(wxT(" ")))
+	/* filename1|filename2| *s *f *m mpython.mpy */
+    files = args.BeforeLast ('|', &arg);
+    args = arg;
+	if(!args.IsEmpty())
 	{
 		mpScript.Empty();
 		wxString strDel = wxT(" ");
 		wxStringTokenizer tkz1(args, strDel);
-		if ( tkz1.HasMoreTokens() )
-		{
-			args = tkz1.GetNextToken();
-		}
+
 		while ( tkz1.HasMoreTokens() )
 		{
 			arg = tkz1.GetNextToken();
@@ -851,7 +849,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 				silent = true;
 			else if(arg == wxT("*f"))
 				forceEdit = true;
-			else if(arg == wxT("*m"))
+			else if(arg == wxT("*m")) /*Must be the last one*/
 				use_script = true;
 			else if(use_script)
 			{
@@ -864,7 +862,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 	if(mpScript.IsEmpty()) use_script = false;
 
 	wxString strDelimiters = wxT("|");
-	wxStringTokenizer tkz2(args, strDelimiters);
+	wxStringTokenizer tkz2(files, strDelimiters);
 	while ( tkz2.HasMoreTokens() )
 	{
 		file = tkz2.GetNextToken();
