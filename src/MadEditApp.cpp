@@ -334,6 +334,15 @@ bool MadEditApp::OnInit()
 					//The name is what follows the last \ or /
 					fnames +=  m_FileNames[i] + wxT('|');
 				}
+				
+				if(!m_MadPythonScript.IsEmpty())
+				{
+					fnames += wxT(" *s");
+					if(m_ForceEdit)
+						fnames += wxT(" *f");
+					fnames += wxT(" *m ")+m_MadPythonScript;
+				}
+
 				connection->Execute(fnames);
 				connection->Disconnect();
 				delete connection;
@@ -485,6 +494,7 @@ bool MadEditApp::OnInit()
 		{
 			if(!m_MadPythonScript.IsEmpty())
 			{
+				files += wxT(" *s");
 				if(m_ForceEdit)
 					files += wxT(" *f");
 				files += wxT(" *m ")+m_MadPythonScript;

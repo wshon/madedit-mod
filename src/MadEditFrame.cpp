@@ -830,7 +830,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 
 	// open the files
 	wxString file, args(msg), arg, mpScript;
-	bool use_script = false, forceEdit = false;
+	bool use_script = false, forceEdit = false, silent = false;
 
 	/* filename1|filename2| -f -m mpython.mpy */
 	if(wxNOT_FOUND != args.Find(wxT(" ")))
@@ -847,7 +847,9 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 			arg = tkz1.GetNextToken();
 		
 			// process token here
-			if(arg == wxT("*f"))
+			if(arg == wxT("*s"))
+				silent = true;
+			else if(arg == wxT("*f"))
 				forceEdit = true;
 			else if(arg == wxT("*m"))
 				use_script = true;
@@ -871,7 +873,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 		if(!use_script)
 			g_MainFrame->OpenFile( file, false );
 		else
-			g_MainFrame->RunScriptWithFile(file, mpScript, false, false, forceEdit);
+			g_MainFrame->RunScriptWithFile(file, mpScript, false, silent, forceEdit);
 	}
 }
 
