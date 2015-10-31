@@ -514,9 +514,27 @@ bool MadEditApp::OnInit()
 		if(!m_FileNames.IsEmpty() && !m_MadPythonScript.IsEmpty())
 		{
 			// open the files
-			for( size_t i = 0; i < m_FileNames.GetCount(); ++i )
+			wxTextFile scriptfile( m_MadPythonScript );
+			scriptfile.Open( wxConvFile );
+
+			if( scriptfile.IsOpened() )
 			{
-				myFrame->RunScriptWithFile(m_FileNames[i], m_MadPythonScript, false, true, m_ForceEdit);
+				
+				wxString str = scriptfile.GetFirstLine() + wxT( "\n" );
+				
+				for( ; !scriptfile.Eof(); )
+				{
+					str << scriptfile.GetNextLine() << wxT( "\n" );
+				}
+				
+				if( str.IsNull() == false )
+				{
+					for( size_t i = 0; i < m_FileNames.GetCount(); ++i )
+					{
+						myFrame->RunScriptWithFile(m_FileNames[i], str, false, true, m_ForceEdit);
+					}
+				}
+				scriptfile.Close();
 			}
 		}
 		return false;//exit
