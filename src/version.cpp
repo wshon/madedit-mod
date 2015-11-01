@@ -55,5 +55,5 @@ wxString g_MadEdit_Version( wxString( wxT( "MadEdit-Mod 0.3.8 " ) )
 		+ wxT( " Unknown Compiler" )
 	#endif
 #endif
-                            + wxT( " build " ) + wxT( __TIME__ ) + wxT( " " ) + wxT( __DATE__ ) );
+ + wxT( " build " ) + wxT( __TIME__ ) + wxT( " " ) + wxT( __DATE__ ) );
 
