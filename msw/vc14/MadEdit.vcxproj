@@ -331,9 +331,6 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">$(WXWIN)\include</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="libhunspell.vcxproj" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

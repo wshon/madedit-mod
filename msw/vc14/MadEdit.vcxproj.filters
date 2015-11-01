@@ -443,7 +443,4 @@
       <Filter>Resource files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="libhunspell.vcxproj" />
-  </ItemGroup>
 </Project>
