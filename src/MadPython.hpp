@@ -353,8 +353,8 @@ namespace mad_python {
 					g_MainFrame->OpenFile( wxEmptyString, false );
 					return;
 				}
-				if( g_ActiveMadEdit->IsReadOnly() )
-				{
+
+				if( g_ActiveMadEdit->IsReadOnly() ) {
 					std::cout << "WARNING: Current file is ReadOnly!!!" << std::endl;
 				}
 			}
@@ -1005,15 +1005,13 @@ namespace mad_python {
 		// list the matched data to pbegpos & pendpos
 		// return the found count or SR_EXPR_ERROR
 		int FindTextAll( const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool showresults = true ) {
-			int ResultCount = 0;
-
 			if( expr.empty() )
 			{ return -2; }
 
 			wxString wxExpr( expr.c_str(), wxConvLocal ), fmt;
 			vector<wxFileOffset> begpos, endpos;
 			MadEdit *madedit = g_ActiveMadEdit;
-			wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
+			//wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
 			int ok = madedit->FindTextAll( wxExpr, bRegex, bCaseSensitive, bWholeWord, false, &begpos, &endpos );
 
 			if( ok >= 0 && showresults ) {
@@ -1026,15 +1024,13 @@ namespace mad_python {
 			return ok;
 		}
 		int FindHexAll( const std::string &expr, bool showresults = true ) {
-			int ResultCount = 0;
-
 			if( expr.empty() )
 			{ return -2; }
 
 			wxString wxExpr( expr.c_str(), wxConvLocal ), fmt;
 			vector<wxFileOffset> begpos, endpos;
 			MadEdit *madedit = g_ActiveMadEdit;
-			wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
+			//wxTreeCtrl * results = g_MainFrame->m_FindInFilesResults;
 			int ok = madedit->FindHexAll( wxExpr, false, &begpos, &endpos );
 
 			if( ok >= 0 && showresults ) {

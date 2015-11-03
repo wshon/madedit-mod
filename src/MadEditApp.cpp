@@ -77,6 +77,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 	 { wxCMD_LINE_SWITCH, "f", "force", "Edit and save file ignoring the ReadOnly flag" },
 	 { wxCMD_LINE_SWITCH, "r", "recursive", "Recursively run on files of subdirectories" },
 	 { wxCMD_LINE_SWITCH, "s", "silent", "Disables the GUI" },
+	 { wxCMD_LINE_SWITCH, "x", "eXit", "Exit GUI if it was in silent mode" },
 	 { wxCMD_LINE_SWITCH, "w", "wildcard", "Enable wildcard support in file name\n(line number would be disabled becasue it used '*')" },
 	 { wxCMD_LINE_OPTION, "m", "madpython", "Specify MadPython file to be run on the file" },
 	 { wxCMD_LINE_PARAM, NULL, NULL, "File(s) to be opened", wxCMD_LINE_VAL_STRING,  wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE }, 
@@ -408,7 +409,7 @@ bool MadEditApp::OnInit()
 	// set colors
 	SetHtmlColors();
 
-	 bool maximize=false;
+	bool maximize=false;
 #ifdef __WXMSW__
 	cfg->Read(wxT("/MadEdit/WindowMaximize"), &maximize, false);
 #endif
