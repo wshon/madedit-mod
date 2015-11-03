@@ -818,7 +818,6 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 
 		SetWindowPlacement( ( HWND )g_MainFrame->GetHWND(), &wp );
 	}
-
 #else
 	//g_MainFrame->Show(true);
 	g_MainFrame->Raise();
@@ -832,7 +831,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 
 	// open the files
 	wxString files, file, args( msg ), arg, mpScript;
-	bool use_script = false, forceEdit = false, silent = false;
+	bool use_script = false, forceEdit = false, silent = false, exitS = false;;
 	/* filename1|filename2| *s *f *m mpython.mpy */
 	files = args.BeforeLast( '|', &arg );
 	args = arg;
@@ -856,17 +855,20 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 					if( arg == wxT( "f" ) )
 					{ forceEdit = true; }
 					else
-						if( arg[0] == 'm' )
-						{
-							use_script = true;
-							mpScript = arg.AfterFirst( 'm' );
-
-							if( !mpScript.IsEmpty() )
+						if( arg == wxT( "x" ) )
+						{ exitS = true; }
+						else
+							if( arg[0] == 'm' )
 							{
-								mpScript.Trim( false );
-								mpScript.Trim();
+								use_script = true;
+								mpScript = arg.AfterFirst( 'm' );
+
+								if( !mpScript.IsEmpty() )
+								{
+									mpScript.Trim( false );
+									mpScript.Trim();
+								}
 							}
-						}
 			}
 		}
 	}
@@ -887,7 +889,7 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 				arg << scriptfile.GetNextLine() << wxT( "\n" );
 			}
 
-			if( arg.IsNull() != false )
+			if( arg.IsNull() == false )
 			{ use_script = true;}
 
 			scriptfile.Close();
@@ -909,7 +911,10 @@ void OnReceiveMessage( const wchar_t *msg, size_t size )
 			else
 			{ g_MainFrame->RunScriptWithFile( file, arg, false, silent, forceEdit ); }
 		}
+
 	}
+	if(exitS)
+	{ g_MainFrame->Close( false ); }
 }
 
 

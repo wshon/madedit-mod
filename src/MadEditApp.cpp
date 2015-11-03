@@ -263,6 +263,7 @@ bool MadEditApp::OnInit()
 {
 	// call default behaviour (mandatory)
 	m_SilentMode = false;
+	m_Exit = false;
 	m_ForceEdit = false;
 	if (!wxApp::OnInit())
 		return false;
@@ -340,6 +341,8 @@ bool MadEditApp::OnInit()
 				{
 					if(m_SilentMode)
 						fnames += wxT("*s");
+					if(m_Exit)
+						fnames += wxT("*x");
 					if(m_ForceEdit)
 						fnames += wxT("*f");
 					fnames += wxT("*m")+m_MadPythonScript;
@@ -538,7 +541,7 @@ bool MadEditApp::OnInit()
 				scriptfile.Close();
 			}
 		}
-		return false;//exit
+		// Waiting for -x to close
 	}
 
 	return true;
@@ -566,6 +569,7 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 {
 	wxFileName filename;
 	m_SilentMode = cmdParser.Found(wxT("s"));
+	m_Exit = cmdParser.Found(wxT("x"));
 	m_ForceEdit  = cmdParser.Found(wxT("f"));
 	cmdParser.Found(wxT("m"), &m_MadPythonScript);
 
