@@ -3535,6 +3535,7 @@ bool MadLines::SaveToFile(const wxString &filename, const wxString &tempdir)
         wxFont *font=m_MadEdit->m_TextFont;
         tmp_Syntax->InitNextWord1(m_MadEdit->m_Lines, m_MadEdit->m_WordBuffer, m_MadEdit->m_WidthBuffer, font->GetFaceName(), font->GetPointSize(), font->GetFamily());
         m_MadEdit->m_Syntax = tmp_Syntax;
+		m_MadEdit->ReformatAll();
     }
     else
     {

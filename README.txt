@@ -15,25 +15,20 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
       Required Libraries to compile:
       1. wxWidgets-3.0.2 or higher with Unicode and IPC enabled
       2. Boost-1.56.0 or higher(build Boost-Python)
-      3. Boost.Xpressive latest version
 
-      (gtk2-devel gtext-devel automake rpm-build)
+      (install gtk2-devel gtext-devel automake rpm-build)
       copy wxwin.m4 to usr/share/acloXXX/ or install wxGTK-devel
-
 
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
       1. wxWidgets-3.0.2 or higher with Unicode enabled
       2. Boost-1.56.0 or higher(build Boost-Python)
-      3. Boost.Xpressive latest version
-      4. libunicows: it's optional under WinNT/XP, but required under Win98
    b. Visual C++ 7.1 (VS.Net 2005) or higher:
       Required Libraries to compile:
       1. wxWidgets-3.0.2 or higher with Unicode enabled
       2. Boost-1.56.0 or higher(build Boost-Python)
-      3. Boost.Xpressive latest version
-      4. Set WXWIN and BOOST to the root directory of your local ones
+      3. Set WXWIN and BOOST to the root directory of your local ones
 
 P.S.: Please put the debug info(.pdb) under the App directory in case there was a 
       crash happened. Paste the call stack and open a ticket
@@ -107,7 +102,9 @@ Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.9
-1.Fix mark brace issue introduced by #15 in 0.3.8
+1.Improve on change syntax on save as
+2. Fix: Improve mark brace issue(#15 in 0.3.8)
+
 
 Mod v0.3.8
 1.New: Upgrade boost to 1.59
