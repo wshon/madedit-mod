@@ -141,7 +141,8 @@ Mod v0.3.8
 26.Fix: Line number would be reversed in printing while enable RTL
 27.Fix: Fix Astyle config could not be saved
 28.Fix: Add Readonly check in MadPython before actually run
-29.Other minor improvements
+29.Fix: Assertion failure at MadLines.cpp:2829
+30.Other minor improvements
 
 Mod v0.3.7
 1.New: Column Align Right(Selected text would be aligned according to right)

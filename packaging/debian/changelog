@@ -41,7 +41,8 @@ madedit-mod (0.3.8-1) stable; urgency=low
   26.Fix: Line number would be reversed in printing while enable RTL
   27.Fix: Fix Astyle config could not be saved
   28.Fix: Add Readonly check in MadPython before actually run
-  29.Other minor improvements
+  29.Fix: Assertion failure at MadLines.cpp:2829
+  30.Other minor improvements
 
  -- Minggang Li <liminggang@gmail.com>  Tues, 28 October 2015 11:30:40 +0800
 
