@@ -106,6 +106,9 @@ Note: Not support wxWidgets 2.X anymore since 0.3.X
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.3.9
+1.Fix mark brace issue introduced by #15 in 0.3.8
+
 Mod v0.3.8
 1.New: Upgrade boost to 1.59
 2.New: Silent mode which can be used in scripting(Only file names would be passed to

@@ -1792,6 +1792,7 @@ MadLineState MadLines::Reformat(MadLineIterator iter)
                 {
                     ++eatUCharCount; // = 1;
 
+RUN_AGAIN:
                     if(CheckState)
                     {
                         if(firstuc < 0x100 && firstuc != 0x20 && firstuc != 0x09)
@@ -1935,9 +1936,11 @@ MadLineState MadLines::Reformat(MadLineIterator iter)
                                     if(index != 0)
                                     {
                                         state.CommentId = 0;
-                                        eatUCharCount = length;
+										//Fixme: hacking
+                                        //eatUCharCount = length;
 
                                         iter->m_State.CommentOff = true;
+										goto RUN_AGAIN;
                                     }
                                     goto _NOCHECK_;
                                 }
