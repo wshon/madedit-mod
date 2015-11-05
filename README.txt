@@ -85,6 +85,7 @@ Syntax files, Locale files, Dictionaries and Settings:
     [-w], wildcard, Enable wildcard support in file name\n(line number would be disabled because it used '*')
     [files], File(s) to be opened
     Eg: madedit -s -m madpytho.mpy ./1.txt /tmp/2.txt
+    Make sure you use Single Instance with -s, -x!!
 
 Known issues:
 The Macro recording function will save all your commands to one document which
