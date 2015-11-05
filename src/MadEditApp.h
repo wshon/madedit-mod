@@ -83,8 +83,9 @@ public:
 #if (wxUSE_ON_FATAL_EXCEPTION == 1) && (wxUSE_STACKWALKER == 1)
     void OnFatalException();
 #endif
+	void ScanForLocales();
+	void InitLocale();
 	void RecreateGUI();
 };
-
  
 #endif

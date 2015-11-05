@@ -34,7 +34,7 @@ extern int MadMessageBox(const wxString& message,
 #define new new(_NORMAL_BLOCK ,__FILE__, __LINE__)
 #endif
 
-wxLocale g_Locale;
+wxLocale * g_Locale = 0;
 
 wxString g_MadEditAppDir;
 wxString g_MadEditHomeDir;
@@ -47,8 +47,9 @@ bool g_DoNotSaveSettings=false;
 bool g_ResetAllKeys=false;
 bool g_ForcePurgeThisTime = false;
 
+wxArrayString g_LanguageString;
 
-wxChar *g_LanguageString[]=
+wxChar *g_LanguageStr[]=
 {
 	wxT("System Default"),
 	wxT("\u7B80\u4F53\u4E2D\u6587(Chinese Simplified)"),
@@ -381,33 +382,7 @@ bool MadEditApp::OnInit()
 #endif
 
 	// init locale
-	wxString strlang;
-	cfg->Read(wxT("/MadEdit/Language"), &strlang);
-	int lang=g_LanguageValue[0];
-	if(!strlang.IsEmpty())
-	{
-		strlang.MakeLower();
-		for(size_t idx=1; idx<g_LanguageCount; ++idx)
-		{
-			if(strlang == wxString(g_LanguageString[idx]).Lower())
-			{
-				lang=g_LanguageValue[idx];
-				break;
-			}
-		}
-	}
-
-	g_Locale.Init(lang);
-	g_Locale.AddCatalogLookupPathPrefix(wxT("./locale/"));
-	g_Locale.AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale/"));
-#ifndef __WXMSW__
-	g_Locale.AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale/"));
-#if defined (DATA_DIR)
-	g_Locale.AddCatalogLookupPathPrefix(wxT(DATA_DIR"/locale/"));
-#endif
-
-#endif
-	g_Locale.AddCatalog(wxT("madedit-mod"));
+	InitLocale();
 
 	// set colors
 	SetHtmlColors();
@@ -489,7 +464,11 @@ bool MadEditApp::OnInit()
 				scriptfile.Close();
 			}
 		}
-		if(!bSingleInstance) return false;
+		if(!bSingleInstance)
+		{
+			OnExit(); // Clean up
+			return false;
+		}
 		// Waiting for -x to close
 	}
 
@@ -503,6 +482,8 @@ int MadEditApp::OnExit()
 		delete m_SigleAppChecker;
 	if(m_AppServer)
 		delete m_AppServer;
+	if(g_Locale)
+		delete g_Locale;
 
 	return 0;
 }
@@ -622,7 +603,6 @@ void MadEditApp::OnFatalException()
 
 void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
 {
-
     if(mainFrame)
     {
 		SetTopWindow(mainFrame);
@@ -646,7 +626,7 @@ void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
 
 		// reload files previously opened
 		wxString files;
-		wxConfigBase    *cfg=wxConfigBase::Get(false);
+		wxConfigBase *cfg=wxConfigBase::Get(false);
 		cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);
 		
 		if(!files.IsEmpty())
@@ -700,5 +680,52 @@ void MadEditApp::RecreateGUI()
 	MadEditFrame *myFrame = new MadEditFrame(NULL, 1 , wxEmptyString, pos, size);
 
 	ShowMainFrame(myFrame, maximize);
+}
+
+void ScanForLocales()
+{
+	g_LanguageString.Empty();
+	g_LanguageString.Add(g_LanguageStr[0]);
+	for(size_t i = 1; i < g_LanguageCount; ++i)
+	{
+		g_LanguageString.Add(g_LanguageStr[i]);
+	}	
+}
+
+void MadEditApp::InitLocale()
+{
+	wxString strlang;
+	wxConfigBase *cfg=wxConfigBase::Get(false);
+	cfg->Read(wxT("/MadEdit/Language"), &strlang);
+	int lang=g_LanguageValue[0];
+	if(!strlang.IsEmpty())
+	{
+		strlang.MakeLower();
+		for(size_t idx=1; idx<g_LanguageString.GetCount(); ++idx)
+		{
+			if(strlang == g_LanguageString[idx].Lower())
+			{
+				lang=g_LanguageValue[idx];
+				break;
+			}
+		}
+	}
+
+	if(g_Locale)
+	{
+		delete g_Locale;
+		g_Locale = 0;
+	}
+	g_Locale = new wxLocale(lang);
+	// g_Locale.Init(lang);
+	g_Locale->AddCatalogLookupPathPrefix(wxT("./locale/"));
+	g_Locale->AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale/"));
+#ifndef __WXMSW__
+	g_Locale->AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale/"));
+#if defined (DATA_DIR)
+	g_Locale->AddCatalogLookupPathPrefix(wxT(DATA_DIR"/locale/"));
+#endif
+#endif
+	g_Locale->AddCatalog(wxT("madedit-mod"));
 }
 
