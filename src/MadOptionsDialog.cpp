@@ -10,7 +10,7 @@
 #include <wx/fileconf.h>
 #include <wx/config.h>
 #include <wx/dir.h>
-#include "wx/aui/auibook.h"
+#include <wx/aui/auibook.h>
 #include "MadEdit/MadEncoding.h"
 #include "MadEdit/MadEditCommand.h"
 #include "MadEdit/MadEdit.h"
