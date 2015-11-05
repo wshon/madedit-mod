@@ -21,6 +21,7 @@
 
 class wxFile;
 class wxSingleInstanceChecker;
+class MadEditFrame;
 
 class MadAppConn : public wxConnection
 {
@@ -72,6 +73,7 @@ class MadEditApp:public wxApp
     bool m_ForceEdit;
     wxArrayString m_FileNames;
     wxString m_MadPythonScript;
+    void ShowMainFrame(MadEditFrame *mainFrame, bool maximize);
 
 public:
     virtual bool OnInit();
@@ -81,6 +83,7 @@ public:
 #if (wxUSE_ON_FATAL_EXCEPTION == 1) && (wxUSE_STACKWALKER == 1)
     void OnFatalException();
 #endif
+	void RecreateGUI();
 };
 
  

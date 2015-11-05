@@ -458,60 +458,8 @@ bool MadEditApp::OnInit()
 	MadEditFrame *myFrame = new MadEditFrame(NULL, 1 , wxEmptyString, pos, size);
 
 	if(!m_SilentMode)
-	{
-		SetTopWindow(myFrame);
-
-#ifdef __WXMSW__
-		//if(maximize)	  // removed: gogo, 30.08.2009
-		{
-			WINDOWPLACEMENT wp;
-			wp.length=sizeof(WINDOWPLACEMENT);
-			GetWindowPlacement((HWND)myFrame->GetHWND(), &wp);
-
-		   // changed: gogo, 30.08.2009
-		   //wp.showCmd=SW_SHOWMAXIMIZED;
-		   wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-
-		   SetWindowPlacement((HWND)myFrame->GetHWND(), &wp);
-		}
-#endif
-
-		myFrame->Show(true);
-
-		// reload files previously opened
-		wxString files;
-		cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);
-		
-		if(!files.IsEmpty())
-		{
-			// use OnReceiveMessage() to open the files
-			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
-		}
-
-		files.Empty();
-		for(size_t i=0; i<m_FileNames.GetCount(); ++i)
-		{
-			//The name is what follows the last \ or /
-			files +=  m_FileNames[i] + wxT('|');
-		}
-
-		if(!files.IsEmpty())
-		{
-			if(!m_MadPythonScript.IsEmpty())
-			{
-				files += wxT("*s");
-				if(m_ForceEdit)
-					files += wxT("*f");
-				files += wxT("*m")+m_MadPythonScript;
-			}
-			// use OnReceiveMessage() to open the files
-			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
-		}
-
-		if(myFrame->OpenedFileCount()==0)
-		{
-			myFrame->OpenFile(wxEmptyString, false);
-		}
+	{   
+		ShowMainFrame(myFrame, maximize);
 	}
 	else
 	{
@@ -541,6 +489,7 @@ bool MadEditApp::OnInit()
 				scriptfile.Close();
 			}
 		}
+		if(!bSingleInstance) return false;
 		// Waiting for -x to close
 	}
 
@@ -671,4 +620,85 @@ void MadEditApp::OnFatalException()
 }
 #endif
 
+void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
+{
+
+    if(mainFrame)
+    {
+		SetTopWindow(mainFrame);
+
+#ifdef __WXMSW__
+		//if(maximize)	  // removed: gogo, 30.08.2009
+		{
+			WINDOWPLACEMENT wp;
+			wp.length=sizeof(WINDOWPLACEMENT);
+			GetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
+
+		   // changed: gogo, 30.08.2009
+		   //wp.showCmd=SW_SHOWMAXIMIZED;
+		   wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
+
+		   SetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
+		}
+#endif
+
+		mainFrame->Show(true);
+
+		// reload files previously opened
+		wxString files;
+		wxConfigBase    *cfg=wxConfigBase::Get(false);
+		cfg->Read(wxT("/MadEdit/ReloadFilesList"), &files);
+		
+		if(!files.IsEmpty())
+		{
+			// use OnReceiveMessage() to open the files
+			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
+		}
+
+		files.Empty();
+		for(size_t i=0; i<m_FileNames.GetCount(); ++i)
+		{
+			//The name is what follows the last \ or /
+			files +=  m_FileNames[i] + wxT('|');
+		}
+
+		if(!files.IsEmpty())
+		{
+			if(!m_MadPythonScript.IsEmpty())
+			{
+				files += wxT("*s");
+				if(m_ForceEdit)
+					files += wxT("*f");
+				files += wxT("*m")+m_MadPythonScript;
+			}
+			// use OnReceiveMessage() to open the files
+			OnReceiveMessage(files.c_str(), (files.size()+1)*sizeof(wxChar));
+		}
+
+		if(mainFrame->OpenedFileCount()==0)
+		{
+			mainFrame->OpenFile(wxEmptyString, false);
+		}
+	}
+}
+
+void MadEditApp::RecreateGUI()
+{
+	wxTopLevelWindow * topwindow = reinterpret_cast<wxTopLevelWindow *>( GetTopWindow());
+	wxPoint pos=wxDefaultPosition;
+	wxSize size(1024, 768);
+	bool maximize = false;
+	if(topwindow)
+	{
+		pos  = topwindow->GetPosition();
+		size = topwindow->GetSize();
+		maximize = topwindow->IsMaximized();
+		SetTopWindow(NULL);
+		topwindow->Destroy();
+	}
+
+	MadEditFrame *myFrame = new MadEditFrame(NULL, 1 , wxEmptyString, pos, size);
+
+	ShowMainFrame(myFrame, maximize);
+}
 
