@@ -567,12 +567,11 @@ public:
 	void Clear( wxConfigBase *cfg ) {
 		int idx = 1;
 		wxString entry( wxT( "file" ) ), text;
-		bool res = false;
 		while( idx <= max_count) {
-			res = cfg->DeleteEntry(entry + ( wxString() << idx ), false);
+			cfg->DeleteEntry(entry + ( wxString() << idx ), false);
 			++idx;
 		}
-		Save( cfg );
+		files.clear();
 	}
 };
 
