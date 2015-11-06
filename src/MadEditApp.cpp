@@ -382,6 +382,7 @@ bool MadEditApp::OnInit()
 #endif
 
 	// init locale
+	ScanForLocales();
 	InitLocale();
 
 	// set colors
@@ -662,27 +663,7 @@ void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
 	}
 }
 
-void MadEditApp::RecreateGUI()
-{
-	wxTopLevelWindow * topwindow = reinterpret_cast<wxTopLevelWindow *>( GetTopWindow());
-	wxPoint pos=wxDefaultPosition;
-	wxSize size(1024, 768);
-	bool maximize = false;
-	if(topwindow)
-	{
-		pos  = topwindow->GetPosition();
-		size = topwindow->GetSize();
-		maximize = topwindow->IsMaximized();
-		SetTopWindow(NULL);
-		topwindow->Destroy();
-	}
-
-	MadEditFrame *myFrame = new MadEditFrame(NULL, 1 , wxEmptyString, pos, size);
-
-	ShowMainFrame(myFrame, maximize);
-}
-
-void ScanForLocales()
+void MadEditApp::ScanForLocales()
 {
 	g_LanguageString.Empty();
 	g_LanguageString.Add(g_LanguageStr[0]);

@@ -73,7 +73,6 @@ class MadEditApp:public wxApp
     bool m_ForceEdit;
     wxArrayString m_FileNames;
     wxString m_MadPythonScript;
-    void ShowMainFrame(MadEditFrame *mainFrame, bool maximize);
 
 public:
     virtual bool OnInit();
@@ -85,7 +84,7 @@ public:
 #endif
 	void ScanForLocales();
 	void InitLocale();
-	void RecreateGUI();
+    void ShowMainFrame(MadEditFrame *mainFrame, bool maximize);
 };
  
 #endif
