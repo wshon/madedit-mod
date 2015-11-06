@@ -203,6 +203,9 @@ char ** g_MadIcons[] =
 	&alignleft_xpm[0], &alignright_xpm[0], &numbering_xpm[0], &refresh_xpm[0], &closepreview_xpm[0]
 };
 
+extern void ScanForLocales();
+extern wxArrayString g_LanguageString;
+
 #if wxCHECK_VERSION(2,7,0)
 	#define GetAccelFromString(x) wxAcceleratorEntry::Create(x)
 #else
@@ -6608,7 +6611,19 @@ void MadEditFrame::OnViewToolBarsToggleAll( wxCommandEvent& event )
 
 void MadEditFrame::OnToolsOptions( wxCommandEvent& event )
 {
+	size_t lang_count = g_LanguageString.GetCount();
+	ScanForLocales();
+
 	if( g_OptionsDialog == NULL ) { g_OptionsDialog = new MadOptionsDialog( this ); }
+	else
+	{
+		// update languages
+		wxString lang = g_OptionsDialog->WxComboBoxLanguage->GetValue();
+		g_OptionsDialog->WxComboBoxLanguage->Clear();
+		g_OptionsDialog->WxComboBoxLanguage->Append(g_LanguageString);
+		if(wxNOT_FOUND == g_LanguageString.Index(lang)) g_OptionsDialog->WxComboBoxLanguage->SetValue(g_LanguageString[0]);
+		else g_OptionsDialog->WxComboBoxLanguage->SetValue(lang);
+	}
 
 	// Hide Modaless Dialog
 	HideModalessDialogs();
