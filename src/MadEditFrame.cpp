@@ -565,18 +565,14 @@ public:
 		return pos;
 	}
 	void Clear( wxConfigBase *cfg ) {
-		cfg->Write( wxT( "MaxCount" ), max_count );
-		std::list<FilePosData>::iterator it = files.begin();
+		int idx = 1;
 		wxString entry( wxT( "file" ) ), text;
-		int idx = 0, count = int( files.size() );
-
-		while( idx < count ) {
-			cfg->Write( entry + ( wxString() << ( idx + 1 ) ), text );
+		bool res = false;
+		while( idx <= max_count) {
+			res = cfg->DeleteEntry(entry + ( wxString() << idx ), false);
 			++idx;
-			++it;
 		}
-
-		files.clear();
+		Save( cfg );
 	}
 };
 

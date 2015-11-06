@@ -104,7 +104,7 @@ FreeBSD packaging (with FreeBSD 10.01)
 
 Mod v0.3.9
 1.Improve on change syntax on save as
-2.New: Check available translation at start time and refresh on opening Option dialog
+2.New: Check available translation at start time and refresh on opening Option dialog(You can add new translation now!!)
 Fix: Improve mark brace issue(#15 in 0.3.8)
 
 
