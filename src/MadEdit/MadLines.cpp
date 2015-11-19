@@ -2003,7 +2003,7 @@ _RUNAGAIN_:
 									{
 										state.CommentId = 0;
 										//Fixme: hacking
-										//eatUCharCount = length;
+										eatUCharCount = length;
 										iter->m_State.CommentOff = true;
 										// Back off
 										--notSpaceCount;

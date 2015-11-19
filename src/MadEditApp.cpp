@@ -317,7 +317,7 @@ bool MadEditApp::OnInit()
 #ifdef __WXMSW__
 	g_MadEditHomeDir=g_MadEditAppDir;
 #else //linux: ~/.madedit
-	g_MadEditHomeDir=wxStandardPaths::Get().GetUserDataDir() +wxFILE_SEP_PATH;
+	g_MadEditHomeDir=wxStandardPaths::Get().GetUserDataDir() + wxFILE_SEP_PATH;
 	if(!wxDirExists(g_MadEditHomeDir))
 	{
 		wxLogNull nolog; // no error message
@@ -547,6 +547,12 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 	m_Exit = cmdParser.Found(wxT("x"));
 	m_ForceEdit  = cmdParser.Found(wxT("f"));
 	cmdParser.Found(wxT("m"), &m_MadPythonScript);
+	if(!m_MadPythonScript.IsEmpty())
+	{
+		filename = m_MadPythonScript;
+		if((filename.GetPath()).IsEmpty())
+			m_MadPythonScript = g_MadEditHomeDir + wxT( "scripts" ) + wxFileName::GetPathSeparator() +  m_MadPythonScript;
+	}
 
 	// parse commandline to filenames, every file is with a trailing char '|', ex: filename1|filename2|
 	m_FileNames.Empty();
@@ -791,10 +797,10 @@ void MadEditApp::InitLocale()
 	}
 	g_Locale = new wxLocale(lang);
 	// g_Locale.Init(lang);
-	g_Locale->AddCatalogLookupPathPrefix(wxT("./locale/"));
-	g_Locale->AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale/"));
+	g_Locale->AddCatalogLookupPathPrefix(wxT(".")+wxFILE_SEP_PATH+wxT("locale")+wxFILE_SEP_PATH);
+	g_Locale->AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale")+wxFILE_SEP_PATH);
 #ifndef __WXMSW__
-	g_Locale->AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale/"));
+	g_Locale->AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale")+wxFILE_SEP_PATH);
 #if defined (DATA_DIR)
 	g_Locale->AddCatalogLookupPathPrefix(wxT(DATA_DIR"/locale/"));
 #endif
