@@ -126,7 +126,8 @@ public:
 				wxString(dirName+wxFileName::GetPathSeparator()+
 				m_TransName+wxT(".mo")).GetData());
 			if(wxFileExists(dirName+wxFileName::GetPathSeparator()+
-				m_TransName+wxT(".mo")))
+				m_TransName+wxT(".mo")) || (wxFileExists(dirName+wxFileName::GetPathSeparator()+ wxT("LC_MESSAGES") +wxFileName::GetPathSeparator()
+				m_TransName+wxT(".mo"))))
 			{
 				if(langinfo->Language != wxLANGUAGE_CHINESE)
 					m_LanguageIdNameMap[langinfo->Language] = langinfo->Description;
