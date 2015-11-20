@@ -749,6 +749,7 @@ void ScanForLocales()
 		dir.Traverse(langScaner, wxEmptyString, flags);
 	}
 #if defined (DATA_DIR)
+    searchPath = wxT(DATA_DIR"/locale/");
 	if(wxDir::Exists(searchPath))
 	{
 		wxDir dir(searchPath);
