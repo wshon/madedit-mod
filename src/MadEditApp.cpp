@@ -126,7 +126,7 @@ public:
 				wxString(dirName+wxFileName::GetPathSeparator()+
 				m_TransName+wxT(".mo")).GetData());
 			if(wxFileExists(dirName+wxFileName::GetPathSeparator()+
-				m_TransName+wxT(".mo")) || (wxFileExists(dirName+wxFileName::GetPathSeparator()+ wxT("LC_MESSAGES") +wxFileName::GetPathSeparator()
+				m_TransName+wxT(".mo")) || (wxFileExists(dirName+wxFileName::GetPathSeparator()+ wxT("LC_MESSAGES") +wxFileName::GetPathSeparator() +
 				m_TransName+wxT(".mo"))))
 			{
 				if(langinfo->Language != wxLANGUAGE_CHINESE)
@@ -733,36 +733,28 @@ void ScanForLocales()
 
 	wxASSERT(!g_MadEditAppDir.IsEmpty());
 	wxString searchPath(g_MadEditAppDir + wxT("locale") + wxFILE_SEP_PATH);
-	if(!wxDir::Exists(searchPath))
+	if(wxDir::Exists(searchPath))
 	{
-		wxLogTrace(wxTraceMask(), _("Directory %s DOES NOT EXIST !!!"),
-			searchPath.GetData());
-		return;
+		wxDir dir(searchPath);
+		int flags=wxDIR_DIRS;
+		dir.Traverse(langScaner, wxEmptyString, flags);
 	}
-	wxDir dir1(searchPath);
-	int flags=wxDIR_DIRS;
-	dir1.Traverse(langScaner, wxEmptyString, flags);
 #ifndef __WXMSW__
 	wxASSERT(!g_MadEditHomeDir.IsEmpty());
 	searchPath = g_MadEditHomeDir + wxT("locale") + wxFILE_SEP_PATH;
-	if(!wxDir::Exists(searchPath))
+	if(wxDir::Exists(searchPath))
 	{
-		wxLogTrace(wxTraceMask(), _("Directory %s DOES NOT EXIST !!!"),
-			searchPath.GetData());
-		return;
+		wxDir dir(searchPath);
+		int flags=wxDIR_DIRS;
+		dir.Traverse(langScaner, wxEmptyString, flags);
 	}
-	wxDir dir2(searchPath);
-	dir2.Traverse(langScaner, wxEmptyString, flags);
 #if defined (DATA_DIR)
-	searchPath = (wxT(DATA_DIR"/locale/"));
-	if(!wxDir::Exists(searchPath))
+	if(wxDir::Exists(searchPath))
 	{
-		wxLogTrace(wxTraceMask(), _("Directory %s DOES NOT EXIST !!!"),
-			searchPath.GetData());
-		return;
+		wxDir dir(searchPath);
+		int flags=wxDIR_DIRS;
+		dir.Traverse(langScaner, wxEmptyString, flags);
 	}
-	wxDir dir3(searchPath);
-	dir3.Traverse(langScaner, wxEmptyString, flags);
 #endif
 #endif
 	std::map<long, wxString>::iterator it = languageIdNameMap.begin();
