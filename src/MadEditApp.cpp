@@ -13,6 +13,7 @@
 
 #include <algorithm>
 #include <map>
+//#include <boost/bimap.hpp>
 
 #include <wx/display.h>
 #include <wx/dir.h>
@@ -50,6 +51,10 @@ bool g_ForcePurgeThisTime = false;
 
 wxArrayString g_LanguageString;
 wxArrayLong g_LanguageId;
+//typedef boost::bimap<long, wxString> bm_type;
+//typedef bm_type::value_type mad_lang;
+//bm_type g_EnhancedLangNameBMap;
+
 std::map<long, wxString> g_EnhancedLangNameMap;
 wxString g_MadLanguageFileName = wxT("madedit-mod");
 void ScanForLocales();
@@ -64,6 +69,7 @@ wxChar *g_LanguageStr[]=
 	wxT("\u65E5\u6587(Japanese)"),
 	wxT("Espa\u00F1ol(Spanish)"),
 	wxT("\u0440\u0443\u0441\u0441\u043a\u0438\u0439(Russian)"),
+	wxT("\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC(Greek)"),
 };
 int g_LanguageValue[]=
 {
@@ -75,6 +81,7 @@ int g_LanguageValue[]=
 	wxLANGUAGE_JAPANESE,
 	wxLANGUAGE_SPANISH,
 	wxLANGUAGE_RUSSIAN,
+	wxLANGUAGE_GREEK,
 };
 static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 {
@@ -305,8 +312,6 @@ bool MadEditApp::OnInit()
 	m_SilentMode = false;
 	m_Exit = false;
 	m_ForceEdit = false;
-	if (!wxApp::OnInit())
-		return false;
 
 	wxFileName filename(GetExecutablePath());
 	filename.MakeAbsolute();
@@ -330,6 +335,9 @@ bool MadEditApp::OnInit()
 
 	// init wxConfig
 	g_MadEditConfigName=g_MadEditHomeDir+ GetAppName()+ wxT(".cfg");
+
+	if (!wxApp::OnInit())
+		return false;
 
 	wxFileConfig *cfg=new wxFileConfig(wxEmptyString, wxEmptyString, g_MadEditConfigName, wxEmptyString, wxCONFIG_USE_RELATIVE_PATH|wxCONFIG_USE_NO_ESCAPE_CHARACTERS);
 	cfg->SetExpandEnvVars(false);
@@ -424,6 +432,7 @@ bool MadEditApp::OnInit()
 	for(long i = 0; i < g_LanguageCount; ++i)
 	{
 		g_EnhancedLangNameMap[g_LanguageValue[i]] = wxString(g_LanguageStr[i]);
+		//g_EnhancedLangNameBMap.insert(mad_lang(g_LanguageValue[i], wxString(g_LanguageStr[i])));
 	}
 
 	ScanForLocales();
@@ -551,7 +560,7 @@ bool MadEditApp::OnCmdLineParsed(wxCmdLineParser& cmdParser)
 	{
 		filename = m_MadPythonScript;
 		if((filename.GetPath()).IsEmpty())
-			m_MadPythonScript = g_MadEditHomeDir + wxT( "scripts" ) + wxFileName::GetPathSeparator() +  m_MadPythonScript;
+			m_MadPythonScript = g_MadEditHomeDir + wxT( "scripts" ) + wxFILE_SEP_PATH +  m_MadPythonScript;
 	}
 
 	// parse commandline to filenames, every file is with a trailing char '|', ex: filename1|filename2|
@@ -722,7 +731,7 @@ void ScanForLocales()
 	MadTranslationHelper langScaner(g_MadLanguageFileName, languageIdNameMap);
 
 	wxASSERT(!g_MadEditAppDir.IsEmpty());
-	wxString searchPath(g_MadEditAppDir+wxT("locale/"));
+	wxString searchPath(g_MadEditAppDir + wxT("locale") + wxFILE_SEP_PATH);
 	if(!wxDir::Exists(searchPath))
 	{
 		wxLogTrace(wxTraceMask(), _("Directory %s DOES NOT EXIST !!!"),
@@ -734,7 +743,7 @@ void ScanForLocales()
 	dir.Traverse(langScaner, wxEmptyString, flags);
 #ifndef __WXMSW__
 	wxASSERT(!g_MadEditHomeDir.IsEmpty());
-	searchPath = g_MadEditHomeDir+wxT("locale/");
+	searchPath = g_MadEditHomeDir + wxT("locale") + wxFILE_SEP_PATH;
 	if(!wxDir::Exists(searchPath))
 	{
 		wxLogTrace(wxTraceMask(), _("Directory %s DOES NOT EXIST !!!"),
@@ -762,10 +771,12 @@ void ScanForLocales()
 		if(it_tmp != g_EnhancedLangNameMap.end())
 		{
 			g_LanguageString.Add(it_tmp->second);
+			g_LanguageId.Add(it_tmp->first);
 		}
 		else
 		{
 			g_LanguageString.Add(it->second);
+			g_LanguageId.Add(it->first);
 		}
 		++it;
 	}
@@ -784,7 +795,7 @@ void MadEditApp::InitLocale()
 		{
 			if(strlang == g_LanguageString[idx].Lower())
 			{
-				lang=g_LanguageValue[idx];
+				lang=g_LanguageId[idx];
 				break;
 			}
 		}
@@ -792,12 +803,13 @@ void MadEditApp::InitLocale()
 
 	if(g_Locale)
 	{
-		delete g_Locale;
+		wxDELETE( g_Locale );
 		g_Locale = 0;
 	}
-	g_Locale = new wxLocale(lang);
+	g_Locale = new wxLocale;
 	// g_Locale.Init(lang);
-	g_Locale->AddCatalogLookupPathPrefix(wxT(".")+wxFILE_SEP_PATH+wxT("locale")+wxFILE_SEP_PATH);
+	g_Locale->Init(lang);
+	g_Locale->AddCatalogLookupPathPrefix(wxString(wxT("."))+wxFILE_SEP_PATH+wxT("locale")+wxFILE_SEP_PATH);
 	g_Locale->AddCatalogLookupPathPrefix(g_MadEditAppDir+wxT("locale")+wxFILE_SEP_PATH);
 #ifndef __WXMSW__
 	g_Locale->AddCatalogLookupPathPrefix(g_MadEditHomeDir+wxT("locale")+wxFILE_SEP_PATH);
