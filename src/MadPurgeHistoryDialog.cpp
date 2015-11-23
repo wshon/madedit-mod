@@ -1,12 +1,9 @@
-///-----------------------------------------------------------------
-///
-/// @file      MadPurgeHistoryDialog.cpp
-/// @author    GLi
-/// Created:   2014/6/27 13:25:39
-/// @section   DESCRIPTION
-///            MadPurgeHistoryDialog class implementation
-///
-///------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////
+// Name:		MadPurgeHistoryDialog.cpp
+// Description:	MadPurgeHistoryDialog class implementation
+// Author:		minggang.li@gmail.com
+// Licence: 	GPL
+///////////////////////////////////////////////////////////////////////////////
 
 #include "MadEditFrame.h"
 #include "MadSearchReplaceDialog.h"

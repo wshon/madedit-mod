@@ -1,9 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 // vim:         ts=4 sw=4
-// Name:        MadRecentlist.cpp
+// Name:		MadRecentList.cpp
 // Description: Porting Recent List from wxMEdit
-// Author:      
-// Licence:     GPL
+// Author:		madedit@gmail.com
+// Maintainer:	minggang.li@gmail.com
+// Licence: 	GPL
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "MadRecentList.h"
