@@ -214,7 +214,7 @@ extern wxArrayString g_LanguageString;
 #endif
 extern wxString MadStrLower( const wxString & );
 
-extern wxString g_MadEdit_Version;
+extern wxString g_MadEdit_Version, g_MadEditModLicense, g_MadEditModCredits;
 extern wxString g_MadEdit_URL;
 extern wxString g_MadEditMod_URL;
 extern wxString MadEncodingGrpName[];
@@ -7956,25 +7956,33 @@ void MadEditFrame::OnWindowNextWindow( wxCommandEvent& event )
 void MadEditFrame::OnHelpAbout( wxCommandEvent& event )
 {
 	MadAboutDialog dlg( this );
-	dlg.WxMemo1->AppendText( g_MadEdit_Version + wxT( "\n" ) +
+	dlg.WxMemoAbout->AppendText( g_MadEdit_Version + wxT( "\n" ) +
 							 g_MadEditMod_URL + wxT( "\n\n" ) +
 							 _( "Download dictionary at\nhttp://extensions.openoffice.org/" ) + wxT( "\n\n" ) +
 							 _( "Press OK to visit our HomePage." ) );
+	dlg.WxMemoLicense->AppendText( g_MadEditModLicense );
+	dlg.WxMemoCredits->AppendText( g_MadEditModCredits );
 	// Hide Modaless Dialog
 	HideModalessDialogs();
 
 	if( dlg.ShowModal() == wxID_OK )
 	{
 #ifdef __WXGTK__
-		const wxChar *browsers[] =
-		{
-			wxT( "/usr/bin/firefox" ),
-			wxT( "/usr/bin/mozilla" ),
-			wxT( "/usr/kde/3.5/bin/konqueror" ),
-			wxT( "/usr/kde/3.4/bin/konqueror" ),
-			wxT( "/usr/kde/3.3/bin/konqueror" ),
-			wxT( "/usr/kde/3.2/bin/konqueror" ),
-		};
+			const wxChar *browsers[]=
+			{
+				wxT("/usr/bin/firefox"),
+				wxT("/usr/bin/mozilla"),
+				wxT("/usr/bin/chromium"),
+				wxT("/usr/bin/konqueror"),
+# if defined(__APPLE__) && defined(__MACH__)
+				wxT("/usr/bin/open"),
+# endif
+				wxT("/usr/kde/3.5/bin/konqueror"),
+				wxT("/usr/kde/3.4/bin/konqueror"),
+				wxT("/usr/kde/3.3/bin/konqueror"),
+				wxT("/usr/kde/3.2/bin/konqueror"),
+			};
+
 		int idx = 0;
 		int count = sizeof( browsers ) / sizeof( browsers[0] );
 

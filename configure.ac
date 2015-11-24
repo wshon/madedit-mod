@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([madedit-mod], [0.3.3], [liminggang@gmail.com])
+AC_INIT([madedit-mod], [0.3.9], [minggang.li@gmail.com])
 AC_CONFIG_SRCDIR([src/MadEditApp.cpp])
 AC_CONFIG_HEADER([config.h])
 AC_PREFIX_DEFAULT([/usr])
@@ -10,7 +10,7 @@ AC_PREFIX_DEFAULT([/usr])
 AM_INIT_AUTOMAKE([subdir-objects])
 
 AC_USE_SYSTEM_EXTENSIONS
-ALL_LINGUAS="it_IT ja_JP zh_CN zh_TW ru_RU es el_GR"
+ALL_LINGUAS="it_IT ja_JP zh_CN zh_TW ru_RU es el de_DE pl_PL"
 AM_GNU_GETTEXT
 AC_SUBST(ALL_LINGUAS)
 
