@@ -71,6 +71,18 @@ Syntax files, Locale files, Dictionaries and Settings:
 
   If MadEdit does not find any files in those paths,
   MadEdit can also execute standalone by using default settings.
+
+  Currently supported Languages:
+  	English
+  	Chinese Simplified (zh_CN)
+  	Chinese Traditional(zh_TW) (Not done)
+  	German(de_DE)              (Not done)
+  	Greek(el)                  (Not done)
+  	Italian(it_IT)             (Not done)
+  	Japanese(ja_JP)            (Not done)
+	Polish(pl_PL)              (Not done)
+	Russian(ru_RU)             (Not done)
+	Spanish(es)                (Not done)
  ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 Reference
 ====
