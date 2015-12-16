@@ -92,10 +92,10 @@ public:
 	//Note: if you receive any error with these enums, then you need to
 	//change your old form code that are based on the #define control ids.
 	//It may replace a numeric value in the enums names.
+	static const long ID_RECENTFINDTEXT1;	 // must be the same with MadSearchDialog
+	static const long ID_RECENTFINDTEXT20;
 	enum
 	{
-		ID_RECENTFINDTEXT1 = 1501,  // must be the same with MadSearchDialog
-		ID_RECENTFINDTEXT20 = 1520,
 		////GUI Enum Control ID Start
 		ID_WXSTATUSBAR1 = 3003,
 		ID_WXTOOLBAR1 = 3005, //NextValue should be (ID_WXTOOLBAR1+tbTOOLBAR_MAX)
@@ -109,6 +109,7 @@ public:
 		ID_QUICKSEARCHWHOLEWORD,
 		ID_QUICKSEARCHREGEX,
 		ID_QUICKSEARCHCASESENSITIVE,
+		ID_QUICKSEARCHDOTMATCHNEWLINE,
 
 		ID_DUMMY_VALUE_ //Dont Delete this DummyValue
 	}; //End of Enum
@@ -131,6 +132,7 @@ public:
 	wxComboBox    *m_QuickSearch;
 	wxCheckBox    *m_CheckboxWholeWord;
 	wxCheckBox    *m_CheckboxRegEx;
+	wxCheckBox    *m_CheckboxDotMatchNewline;
 	wxCheckBox    *m_CheckboxCaseSensitive;
 	bool           m_ReloadFiles;
 	bool           m_PurgeHistory;

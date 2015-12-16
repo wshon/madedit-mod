@@ -47,21 +47,21 @@ TreeItemData *g_CommandItemOfNewKey = NULL;
 #define ENABLE_BITMAP_THUARI 0
 static wxString bracket_style[aspsCustom + 1] =
 {
-	wxT( "int Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{\n     if (isBar) {\n          bar();\n          return 1;\n     } else\n          return 0;\n}" ),
-	wxT( "int Foo(bool isBar)\n    {\n    if (isBar)\n        {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n" ),
-	wxT( "int Foo(bool isBar)\n    {\n        if (isBar)\n            {\n            bar();\n            return 1;\n            }\n        else\n            return 0;\n    }\n" ),
-	wxT( "int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n" ),
-	wxT( "int Foo(bool isBar)\n{\n  if (isBar)\n    {\n      bar();\n      return 1;\n    }\n  else\n    return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{\n        if (isBar) {\n                bar();\n                return 1;\n        } else\n                return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1;\n   }\n   else\n      return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{\n    if (isFoo) {\n        bar();\n        return 1;\n    } else {\n        return 0;\n    }\n}\n" ),
-	wxT( "int Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n" ),
-	wxT( "int Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1; }\n    else\n      return 0; }\n" ),
-	wxT( "int Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n" ),
-	wxT( "int Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n    if (isBar)\n    {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n    if (isBar) {\n        bar();\n        return 1;\n    } else\n        return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n     if (isBar) {\n          bar();\n          return 1;\n     } else\n          return 0;\n}" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n    {\n    if (isBar)\n        {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n    {\n        if (isBar)\n            {\n            bar();\n            return 1;\n            }\n        else\n            return 0;\n    }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n        }\n    else\n        return 0;\n    }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n  if (isBar)\n    {\n      bar();\n      return 1;\n    }\n  else\n    return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n        if (isBar) {\n                bar();\n                return 1;\n        } else\n                return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1;\n   }\n   else\n      return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{\n    if (isFoo) {\n        bar();\n        return 1;\n    } else {\n        return 0;\n    }\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar) {\n    if (isBar) {\n        bar();\n        return 1;\n    }\n    else\n        return 0;\n}\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar)\n{  if (isBar)\n   {  bar();\n      return 1; }\n    else\n      return 0; }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n" ),
+	wxT( "#include <iostream>\n\nint Foo(bool isBar) {\n    if (isBar) {\n        bar()\n        return 1; }\n    else\n        return 0; }\n" ),
 };
 class KeyTextCtrl : public wxTextCtrl
 {
@@ -629,7 +629,7 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxNoteBookPage6->SetAutoLayout( true );
 	WxAuiNotebook1 = new wxAuiNotebook( WxNoteBookPage6, ID_WXAUINOTEBOOK1, wxPoint( 5, 5 ), wxSize( 668, 398 ), wxNB_DEFAULT );
 	WxBoxSizer34->Add( WxAuiNotebook1, 0, wxEXPAND | wxALL, 5 );
-	WxAuiNoteBookPage1 = new wxPanel( WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE1, wxPoint( 5, 5 ), wxSize( 692, 464 ) );
+	WxAuiNoteBookPage1 = new wxPanel( WxAuiNotebook1, ID_WXAUINOTEBOOKPAGE1, wxPoint( 4, 24 ), wxSize( 692, 464 ) );
 	WxAuiNotebook1->AddPage( WxAuiNoteBookPage1, _( "Style" ) );
 	WxBoxSizer47 = new wxBoxSizer( wxHORIZONTAL );
 	WxAuiNoteBookPage1->SetSizer( WxBoxSizer47 );
@@ -868,6 +868,7 @@ void MadOptionsDialog::CreateGUIControls( void )
 	SET_CONTROLPARENT( WxCheckBreakLines );
 	WxBoxSizer43 = new wxBoxSizer( wxHORIZONTAL );
 	WxBoxSizer42->Add( WxBoxSizer43, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
+	WxBoxSizer43->Add(10,0,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 	WxStaticText24 = new wxStaticText( WxAuiNoteBookPage4, ID_WXSTATICTEXT24, _( "Break lines after amount of chars (range: 50-200)" ), wxPoint( 15, 2 ), wxDefaultSize, 0, wxT( "WxStaticText24" ) );
 	WxBoxSizer43->Add( WxStaticText24, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
 	WxEditSFMaxLineLength = new wxTextCtrl( WxAuiNoteBookPage4, ID_WXEDITSFMAXLINELENGTH, wxT( "200" ), wxPoint( 247, 1 ), wxSize( 60, 19 ), 0, wxTextValidator( wxFILTER_NUMERIC, NULL ), wxT( "WxEditSFMaxLineLength" ) );
@@ -876,6 +877,7 @@ void MadOptionsDialog::CreateGUIControls( void )
 	SET_CONTROLPARENT( WxEditSFMaxLineLength );
 	WxBoxSizer44 = new wxBoxSizer( wxHORIZONTAL );
 	WxBoxSizer42->Add( WxBoxSizer44, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
+	WxBoxSizer44->Add(10,0,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 	WxCheckBreakAfterLogical = new wxCheckBox( WxAuiNoteBookPage4, ID_WXCHECKBREAKAFTERLOGICAL, _( "Break logical conditionals to be placed last on the previous line" ), wxPoint( 15, 1 ), wxSize( 600, 17 ), 0, wxDefaultValidator, wxT( "WxCheckBreakAfterLogical" ) );
 	WxCheckBreakAfterLogical->Enable( false );
 	WxBoxSizer44->Add( WxCheckBreakAfterLogical, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
@@ -888,9 +890,12 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxCheckBreakBlocks = new wxCheckBox( WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKS, _( "Pad empty lines around header blocks (e.g. 'if', 'while'...)" ), wxPoint( 167, 2 ), wxSize( 600, 17 ), 0, wxDefaultValidator, wxT( "WxCheckBreakBlocks" ) );
 	WxBoxSizer45->Add( WxCheckBreakBlocks, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
 	SET_CONTROLPARENT( WxCheckBreakBlocks );
+	wxBoxSizer *BoxSizer01 = new wxBoxSizer( wxHORIZONTAL );
+	WxBoxSizer45->Add( BoxSizer01, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
+	BoxSizer01->Add(10,0,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
 	WxCheckBreakBlocksAll = new wxCheckBox( WxAuiNoteBookPage5, ID_WXCHECKBREAKBLOCKSALL, _( "Treat closing header blocks (e.g. 'else', 'catch') as stand-alone blocks" ), wxPoint( 177, 23 ), wxSize( 600, 17 ), 0, wxDefaultValidator, wxT( "WxCheckBreakBlocksAll" ) );
 	WxCheckBreakBlocksAll->Enable( false );
-	WxBoxSizer45->Add( WxCheckBreakBlocksAll, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	BoxSizer01->Add( WxCheckBreakBlocksAll, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
 	SET_CONTROLPARENT( WxCheckBreakBlocksAll );
 	WxCheckPadOperators = new wxCheckBox( WxAuiNoteBookPage5, ID_WXCHECKPADOPERATORS, _( "Insert space padding around operators" ), wxPoint( 167, 44 ), wxSize( 600, 17 ), 0, wxDefaultValidator, wxT( "WxCheckPadOperators" ) );
 	WxBoxSizer45->Add( WxCheckPadOperators, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
@@ -1162,6 +1167,9 @@ void MadOptionsDialog::CreateGUIControls( void )
 		cd++;
 	}
 	while( cd->command > 0 );
+
+	WxTreeCtrl1->Expand(root);
+	WxTreeCtrl1->Expand(menuRoot);
 
 	WxNotebook1->SetWindowStyleFlag( wxAUI_NB_TOP | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS );
 	WxNotebook1->SetSelection( 0 );

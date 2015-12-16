@@ -114,26 +114,44 @@ Note: Not support wxWidgets 2.X anymore since 0.3.X
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
 
+Mod v0.4.0
+1.New: No scroll bar for HTML/Markdown preview window #95
+2.New: Support "Dot(".") match new line", default behavior is changed to NOT match new line #98
+3.New: Dot match newline for Quick Search bar #103
+4.New: Show main frame after everything was done #107
+Fix: Find Hex should be gray out if Regular expression was enabled(SearchReplaceDialog) #97
+Fix: Find Hex should be gray out if Regular expression was enabled(SearchReplaceInFilesDialog) #99
+Fix: Match whole words should be gray out if Regular expression was enabled(SearchReplaceDialog/SearchReplaceInFilesDialog) #100
+Fix: Match whole word and dot match newline should be overridden according to Search RegEx #101
+Fix: Extra '\' was added to recorded MadPython while searching with RegEx #102
+Fix: Caret pos should be at the last while opening the Macro dialog #94 #104
+Fix: English was missing in the language list #105
+Fix: Should not call Reload on exiting #109
+Improve performance of script recording
+Update Astyle to latest code
+Update translations
+
 Mod v0.3.9
 1.Improve on change syntax on save as
 2.New: Check available translation at start time and refresh on opening Option dialog(New translation will automatically listed at runtime)
 3.New: Add API SetColumnSelection
 4.New: Use default script directory if not specified
 5.New: Greek translation(Thanks nikoss(https://github.com/nikoss))
-6.New: Add Credits and License to About Dialog
+6.New: Add Credits and License information to About Dialog
 7.New: Toggle hide/show replace UI items by checkbox for FindReplaceInFilesDialog
-8.New: Add Credits and License information on About dialog
-9.New: Add German and Polish translations(based on wxMedit)
-10.New: Syntax highlight support in Source formatter tab
-Fix: Improve mark brace issue(#15 in 0.3.8)
-Fix: Purge recent caret position history
-Fix: Typo on Option dialog(Dictionary settings) #82
-Fix: Not enough space for translated string(Greek) #83
-Fix: Can't convert Chinese(simplified) to Japanese #88
-Fix: Incorrect behavior of MadEdit when Ctrl-Backspace pressed at beginning of a text file OR at zero-width selection in column mode #89
-Fix: Update MadPython Syntax
-Fix: Update Translations
-Other minor improvments
+8.New: Add German and Polish translations(based on wxMedit)
+9.New: Syntax highlight support in Source formatter tab
+10.New: Debian 8.2 X64 build
+11.Fix: Improve mark brace issue(#15 in 0.3.8)
+12.Fix: Purge recent caret position history
+13.Fix: Typo on Option dialog(Dictionary settings) #82
+14.Fix: Not enough space for translated string(Greek) #83
+15.Fix: Can't convert Chinese(simplified) to Japanese #88
+16.Fix: Incorrect behavior of MadEdit when Ctrl-Backspace pressed at beginning of a text file OR at zero-width selection in column mode #89
+17.Fix: Update MadPython Syntax
+18.Fix: Update Translations
+19.Fix: Update Documents
+20.Other minor improvements
 
 Mod v0.3.8
 1.New: Upgrade boost to 1.59

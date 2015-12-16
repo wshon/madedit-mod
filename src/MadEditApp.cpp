@@ -671,25 +671,6 @@ void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
 {
 	if(mainFrame)
 	{
-		SetTopWindow(mainFrame);
-
-#ifdef __WXMSW__
-		//if(maximize)	  // removed: gogo, 30.08.2009
-		{
-			WINDOWPLACEMENT wp;
-			wp.length=sizeof(WINDOWPLACEMENT);
-			GetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
-
-		   // changed: gogo, 30.08.2009
-		   //wp.showCmd=SW_SHOWMAXIMIZED;
-		   wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-
-		   SetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
-		}
-#endif
-
-		mainFrame->Show(true);
-
 		// reload files previously opened
 		wxString files;
 		wxConfigBase *cfg=wxConfigBase::Get(false);
@@ -725,6 +706,25 @@ void MadEditApp::ShowMainFrame(MadEditFrame *mainFrame, bool maximize)
 		{
 			mainFrame->OpenFile(wxEmptyString, false);
 		}
+
+		SetTopWindow(mainFrame);
+
+#ifdef __WXMSW__
+		//if(maximize)	  // removed: gogo, 30.08.2009
+		{
+			WINDOWPLACEMENT wp;
+			wp.length=sizeof(WINDOWPLACEMENT);
+			GetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
+
+		   // changed: gogo, 30.08.2009
+		   //wp.showCmd=SW_SHOWMAXIMIZED;
+		   wp.showCmd = maximize ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
+
+		   SetWindowPlacement((HWND)mainFrame->GetHWND(), &wp);
+		}
+#endif
+
+		mainFrame->Show(true);
 	}
 }
 
@@ -732,8 +732,12 @@ void ScanForLocales()
 {
 	g_LanguageString.Empty();
 	g_LocaleDirPrefix.Empty();
+	// System Default
 	g_LanguageString.Add(g_LanguageStr[0]);
-	g_LanguageId.Add(wxLANGUAGE_DEFAULT);
+	g_LanguageId.Add(g_LanguageValue[0]);
+	// English
+	g_LanguageString.Add(g_LanguageStr[3]);
+	g_LanguageId.Add(g_LanguageValue[3]);
 	std::map<long, wxString> languageIdNameMap;
 	MadTranslationHelper langScaner(g_MadLanguageFileName, languageIdNameMap);
 
