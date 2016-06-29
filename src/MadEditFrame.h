@@ -47,6 +47,8 @@
 #define MadEditFrame_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxCLOSE_BOX
 ////Frame Style End
 
+#define MAX_MADSCRIPT_LOAD 200
+
 class wxMadAuiNotebook;
 class wxAuiNotebookEvent;
 class MadEdit;
@@ -84,7 +86,7 @@ public:
 	////GUI Control Declaration Start
 	wxMenuBar *WxMenuBar1;
 	wxAuiToolBar *WxToolBar[tbMAX];
-	wxAuiToolBar *m_QuickSeachBar;
+	wxAuiToolBar *m_QuickSearchBar;
 	wxAuiToolBar *m_RefreshView;
 	wxStatusBar *WxStatusBar1;
 	////GUI Control Declaration End
@@ -116,6 +118,8 @@ public:
 
 public:
 	wxMadAuiNotebook *m_Notebook;
+	long           m_FullScreenStyle;
+	int            m_NoteBookTabHeight;
 	int            m_NewFileCount;
 	wxConfigBase  *m_Config;
 	wxImageList   *m_ImageList;
@@ -123,21 +127,19 @@ public:
 	MadRecentList *m_RecentEncodings;
 	MadRecentList *m_RecentFonts;
 
-	wxAuiManager   m_AuiManager; // wxAUI
+	wxAuiManager  m_AuiManager; // wxAUI
 	wxAuiNotebook *m_InfoNotebook; //
 	//wxTreeCtrl *m_FindInFilesResults;
 	MadTreeCtrl   *m_FindInFilesResults;
-	wxHtmlWindow *m_HtmlPreview;
+	wxHtmlWindow  *m_HtmlPreview;
 	int            m_PreviewType;
 	wxComboBox    *m_QuickSearch;
-	wxCheckBox    *m_CheckboxWholeWord;
-	wxCheckBox    *m_CheckboxRegEx;
-	wxCheckBox    *m_CheckboxDotMatchNewline;
-	wxCheckBox    *m_CheckboxCaseSensitive;
 	bool           m_ReloadFiles;
 	bool           m_PurgeHistory;
+	bool           m_ResetToolBars;
 	bool           m_SearchDirectionNext;
-	bool           m_ToolbarStatus[tbMAX + 1];
+    wxFileOffset   m_QSearchBegPos, m_QSearchEndPos;
+	void OnUpdateUI_CheckFrameStyle( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuFile_CheckCount( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuFileReload( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuFileRecentFiles( wxUpdateUIEvent& event );
@@ -152,6 +154,7 @@ public:
 	void OnUpdateUI_Menu_CheckSize( wxUpdateUIEvent& event );
 	void OnUpdateUI_Menu_CheckTextFileSize( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuEditStartEndSelction( wxUpdateUIEvent& event );
+	void OnUpdateUI_MenuFile_Readonly( wxUpdateUIEvent& event );
 
 	// add: gogo, 21.09.2009
 	void OnUpdateUI_MenuEditToggleBookmark( wxUpdateUIEvent& event );
@@ -198,29 +201,36 @@ public:
 	void OnUpdateUI_MenuSpellIgnore( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuSpellAdd2Dict( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuSpellRemoveFromDict( wxUpdateUIEvent& event );
-	void OnUpdateUI_MenuViewToolbars( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuViewToolbarsToggleAll( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuViewToolbarList( wxUpdateUIEvent& event );
+	void OnUpdateUI_MenuViewTypewriterMode( wxUpdateUIEvent& event );
 
 	void OnUpdateUI_MenuToolsByteOrderMark( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsNewLineChar( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsInsertNewLineChar( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuCheckWritable( wxUpdateUIEvent& event );
+	void OnUpdateUI_MenuCheckIsThisModified( wxUpdateUIEvent& event );
+	void OnUpdateUI_MenuCheckIsAnyoneModified( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsConvertEncoding( wxUpdateUIEvent& event );
 
 	void OnUpdateUI_MenuWindow_CheckCount( wxUpdateUIEvent& event );
+	void OnUpdateUI_MenuWindow_Window( wxUpdateUIEvent& event );
 
 	void OnUpdateUI_MenuToolsStartRecMacro( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsStopRecMacro( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsPlayRecMacro( wxUpdateUIEvent& event );
 	void OnUpdateUI_MenuToolsSaveRecMacro( wxUpdateUIEvent& event );
+	
+	void OnUpdateUI_MenuSearch_QuickBar( wxUpdateUIEvent& event );
 
 	void OnFileNew( wxCommandEvent& event );
 	void OnFileOpen( wxCommandEvent& event );
 	void OnFileSave( wxCommandEvent& event );
 	void OnFileSaveAs( wxCommandEvent& event );
 	void OnFileSaveAll( wxCommandEvent& event );
+	void OnFileSaveACopy( wxCommandEvent& event );
 	void OnFileReload( wxCommandEvent& event );
+	void OnRecentFilesPop( wxCommandEvent& event );
 	void OnFileClose( wxCommandEvent& event );
 	void OnFileCloseAll( wxCommandEvent& event );
 	void OnFileCloseAllButThis( wxCommandEvent& event );
@@ -310,8 +320,11 @@ public:
 	void OnSearchQuickFind( wxCommandEvent& event );
 	void OnSearchQuickFindNext( wxCommandEvent& event );
 	void OnSearchQuickFindPrevious( wxCommandEvent& event );
-	void OnShowSearchQuickFindBar( wxCommandEvent& event );
+	void OnShowQuickSearchBar( wxCommandEvent& event );
 
+    void OnViewAlwaysOnTop( wxCommandEvent& event );
+    void OnViewFullScreen( wxCommandEvent& event );
+	void OnViewPostIt( wxCommandEvent& event );
 	void OnViewEncoding( wxCommandEvent& event );
 	void OnViewRecentEncoding( wxCommandEvent& event );
 	void OnViewSyntax( wxCommandEvent& event );
@@ -347,6 +360,7 @@ public:
 	void OnSpellCheckRemoveFromDict( wxCommandEvent& event );
 	void OnViewToolBarsToggleAll( wxCommandEvent& event );
 	void OnViewToolbars( wxCommandEvent& event );
+	void OnViewTypewriterMode( wxCommandEvent& event );
 
 	void OnToolsOptions( wxCommandEvent& event );
 	void OnToolsHighlighting( wxCommandEvent& event );
@@ -390,27 +404,36 @@ public:
 	void OnWindowToggleWindow( wxCommandEvent& event );
 	void OnWindowPreviousWindow( wxCommandEvent& event );
 	void OnWindowNextWindow( wxCommandEvent& event );
+	void OnWindowWindowList( wxCommandEvent& event );
+	void OnWindowWindowActivate( wxCommandEvent& event );
 
 	void OnHelpAbout( wxCommandEvent& event );
 
+    void CollapseAllResults( wxCommandEvent& event );
 	void OnCopyCurrResult( wxCommandEvent& event );
 	void OnCopyAllResults( wxCommandEvent& event );
-	void OnResetCurrResult( wxCommandEvent& event );
-	void OnRightClickToolBar( wxAuiToolBarEvent& event );
+	void OnResetResult( wxCommandEvent& event );
+	void OnDeleteCurrResult( wxCommandEvent& event );
+	void OnCollapseCurrResult( wxCommandEvent& event );
+    void OnRightClickToolBar( wxAuiToolBarEvent& event );
+    void OnQuickSearchSetFocus( wxFocusEvent& event );
 	void OnContextMenu( wxContextMenuEvent& event );
+	void OnScrollBarMenu( wxCommandEvent& event );
 private:
 	bool m_PageClosing; // prevent from reentry of CloseFile(), OnNotebookPageClosing()
 public:
 	int OpenedFileCount();
-	void OpenFile( const wxString &filename, bool mustExist ); // if filename is empty, open a new file
-	void RunScriptWithFile( const wxString &filename, const wxString &script, bool mustExist, bool closeafterdone, bool ignorereadonly );
-	void CloseFile( int pageId );
+	bool OpenFile( const wxString &filename, bool mustExist, bool changeSelection = true ); // if filename is empty, open a new file
+	void RunScriptWithFile( const wxString &filename, const wxString &script, bool mustExist, bool closeafterdone, bool ignorereadonly, bool activeFile );
+	void CloseFile( long pageId );
 	void CloseAllFiles( bool force );
 	void MadEditFrameKeyDown( wxKeyEvent& event );
 	void SetPageFocus( int pageId );
+	int GetPageFocus( );
 	MadEdit *GetEditByFileName( const wxString &filename, int &id );
 	void ResetAcceleratorTable();
 	void HideQuickFindBar();
+    void SaveFile(long pageId, bool saveas = false, bool hideDlg = true);
 
 protected:
 	void MadEditFrameClose( wxCloseEvent& event );
@@ -432,26 +455,38 @@ protected:
 	void LoadMenuKeys( wxConfigBase *config );
 	wxString GetMenuKey( const wxString &menu, const wxString &defaultkey );
 
-	void OnInfoNotebookSize( wxSizeEvent &evt );
+	//void OnInfoNotebookSize( wxSizeEvent &evt );
 	void OnFindInFilesResultsDClick( wxMouseEvent& event );
+    void HideAllToolBars();
+    void ShowAllToolBars();
+    void ToggleFullScreen(long style, bool maxmize);
+    bool ResetNormalToolBarPos(wxWindow * toolbar, const wxChar * toolname, const wxChar * caption, int row, int xpos = 0);
+    bool ResetQuickSearchBarPos();
+    bool ResetInformationWinPos();    
+    bool RestoreAuiPanel(wxWindow * toolbar, wxString& toobar_status, bool gripper = false);
 
 #ifdef __WXMSW__
 	WXLRESULT MSWWindowProc( WXUINT message, WXWPARAM wParam, WXLPARAM lParam );
 #endif
-
+	static const long ID_WXTIMER;
 public:
 	void ResetFindInFilesResults();
-	void AddItemToFindInFilesResults( const wxString &text, size_t index, const wxString &filename, int pageid, const wxFileOffset &begpos, wxFileOffset &endpos );
+	wxTreeItemId & NewSearchSession( const wxString &sessionLabel );
+	void AddItemToFindInFilesResults( wxTreeItemId & myroot, const wxString &distext, const wxString &acttext, size_t index, const wxString &filename, int pageid, const wxFileOffset &begpos, wxFileOffset &endpos );
 
 	void PurgeRecentFiles();
 	void PurgeRecentFonts();
 	void PurgeRecentEncodings();
+	void OnTimer(wxTimerEvent& event);
 private:
 	enum MadMacroMode
 	{ emMacroStopped = 0, emMacroRecoding, emMacroRunning };
 	MadMacroMode m_MadMacroStatus;
 	wxArrayString m_MadMacroScripts;
-	int m_LastSelBeg, m_LastSelEnd;
+	wxFileOffset m_LastSelBeg, m_LastSelEnd;
+	wxTimer m_AutoSaveTimer;
+	long m_AutoSaveTimout;
+    wxMenuItem * m_ToggleReadOnly;
 public:
 	MadMacroMode GetMadMacroStatus() {return m_MadMacroStatus;}
 	bool IsMacroRunning() {return ( m_MadMacroStatus == emMacroRunning );}
@@ -464,12 +499,12 @@ public:
 		if( ( ( selBeg != -1 ) && ( selEnd != -1 ) ) && ( selBeg != m_LastSelBeg || selEnd != m_LastSelEnd ) ) {
 			m_LastSelBeg = selBeg;
 			m_LastSelEnd = selEnd;
-			m_MadMacroScripts.Add( wxString::Format( wxT( "SetSelection(%d, %d, True)" ), m_LastSelBeg, m_LastSelEnd ) );
+			m_MadMacroScripts.Add( wxString::Format( wxT( "SetSelection(%s, %s, True)" ), ( wxLongLong( m_LastSelBeg ).ToString() ).c_str(), ( wxLongLong( m_LastSelEnd ).ToString() ).c_str() ) );
 		}
 
 		m_MadMacroScripts.Add( script );
 	}
-	bool HasRecordedScript() {return ( m_MadMacroScripts.GetCount() > 2 );}
+	bool HasRecordedScript() {return ( m_MadMacroScripts.GetCount() > 0 );}
 	wxArrayString& GetRecordedScripts() {return m_MadMacroScripts;}
 };
 
@@ -498,8 +533,10 @@ enum   // menu id
 
 	// file
 	menuSaveAll = 1100,
+    menuSaveACopy,
 	menuReload,
 	menuRecentFiles,
+	menuRecentFilesToolbar,
 	menuCopyFilePath,
 	menuCopyFileName,
 	menuCopyFileDir,
@@ -561,11 +598,9 @@ enum   // menu id
 	menuFindNext,
 	menuFindPrevious,
 	menuFindInFiles,
-	menuShowQuickFindBar,
-	menuQuickFindNext,
-	menuQuickFindPrevious,
 	menuShowFindInFilesResults,
-	menuGoToLine,
+    menuCollapseAllResults,
+    menuGoToLine,
 	menuGoToPosition,
 	menuLeftBrace,
 	menuRightBrace,
@@ -575,6 +610,9 @@ enum   // menu id
 	menuClearAllBookmarks,
 
 	// view
+	menuAlwaysOnTop,
+	menuFullScreen,
+    menuPostIt,
 	menuEncoding,
 	menuAllEncodings,
 	menuEncodingGroup1,
@@ -671,7 +709,7 @@ enum   // menu id
 	menuMadScriptList,
 	menuEditMacroFile,
 	menuMadScrip1,
-	menuMadScrip1000 = menuMadScrip1 + 999, //1000 scripts, enough?
+	menuMadScrip200 = menuMadScrip1 + (MAX_MADSCRIPT_LOAD -1), //200 scripts, enough?
 	menuPlugins,
 	menuByteOrderMark,
 	menuToggleBOM,
@@ -706,11 +744,41 @@ enum   // menu id
 	menuToggleWindow,
 	menuPreviousWindow,
 	menuNextWindow,
+	menuWindowList,
+	menuWindow1,
+	menuWindow100 = menuWindow1 + 99,
 
 	// results
 	menuCopyCurResult,
 	menuCopyAllResults,
-	menuResetCurResult,
+	menuResetResult,
+	menuDeleteCurResult,
+    menuCollapseCurResult,
+
+	menuTypewriterMode,
+	menuShowQuickSearchBar,
+	menuQuickFindNext,
+	menuQuickFindPrevious,
+    menuQuickFindWholeWord,
+    menuQuickFindRegex,
+    menuQuickFindCase,
+    menuQuickFindDotMatchNewLine,
+
+    menuVScrollHere,
+    menuVScrollTop,
+    menuVScrollBottom,
+    menuVScrollPageUp,
+    menuVScrollPageDown,
+    menuVScrollUp,
+    menuVScrollDown,
+    menuHScrollHere,
+    menuHScrollLeftEdge,
+    menuHScrollRightEdge,
+    menuHScrollPageLeft,
+    menuHScrollPageRight,
+    menuHScrollLeft,
+    menuHScrollRight,
+	menuMAXMENUITEMID,
 };
 
 enum MadPreviewType
@@ -722,9 +790,18 @@ enum MadPreviewType
 	//MAX::menuPreview16
 };
 extern MadEditFrame *g_MainFrame;
-extern void OnReceiveMessage( const wchar_t *msg, size_t size );
+extern void OnReceiveMessage( const wchar_t *msg, size_t size, bool activeFile = true );
 
+#define USE_GENERIC_TREECTRL 1
+#if USE_GENERIC_TREECTRL
+#include "wx/generic/treectlg.h"
+//#ifndef wxTreeCtrl
+//#define wxTreeCtrl wxGenericTreeCtrl
+class MadTreeCtrl : public wxGenericTreeCtrl
+//#endif
+#else
 class MadTreeCtrl : public wxTreeCtrl
+#endif
 {
 public:
 	MadTreeCtrl() {}
@@ -733,6 +810,7 @@ public:
 	             long style );
 	virtual ~MadTreeCtrl() {};
 	void OnItemMenu( wxTreeEvent& event );
+	void OnMouseWheel( wxMouseEvent &evt );
 protected:
 	void ShowMenu( wxTreeItemId id, const wxPoint& pt );
 private:

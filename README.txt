@@ -13,8 +13,8 @@ Supported Developing Platforms:
 A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
    a. GNU C++ 3.x/4.x:
       Required Libraries to compile:
-      1. wxWidgets-3.0.2 or higher with Unicode and IPC enabled
-      2. Boost-1.56.0 or higher(build Boost-Python)(1.59 is recommended)
+      1. wxWidgets-3.1.0 or higher with Unicode and IPC enabled
+      2. Boost-1.56.0 or higher(build Boost-Python)(1.61 is recommended)
 
       (install gtk2-devel gtext-devel automake rpm-build)
       copy wxwin.m4 to usr/share/acloXXX/ or install wxGTK-devel
@@ -22,12 +22,12 @@ A. Linux, FreeBSD, and Unix-like OS (__WXGTK__):
 B. MS Windows (__WXMSW__):
    a. MinGW32/GNU C++ 3.x (wxDevCpp):
       Required Libraries to compile:
-      1. wxWidgets-3.0.2 or higher with Unicode and IPC enabled
-      2. Boost-1.56.0 or higher(build Boost-Python)(1.59 is recommended)
+      1. wxWidgets-3.1.0 or higher with Unicode and IPC enabled
+      2. Boost-1.56.0 or higher(build Boost-Python)(1.61 is recommended)
    b. Visual C++ 7.1 (VS.Net 2005) or higher:
       Required Libraries to compile:
-      1. wxWidgets-3.0.2 or higher with Unicode and IPC enabled
-      2. Boost-1.56.0 or higher(build Boost-Python)(1.59 is recommended)
+      1. wxWidgets-3.1.0 or higher with Unicode and IPC enabled
+      2. Boost-1.56.0 or higher(build Boost-Python)(1.61 is recommended)
       3. Set WXWIN and BOOST to the root directory of your local ones
 
 P.S.: Please put the debug info(.pdb) under the App directory in case there was a 
@@ -37,18 +37,18 @@ P.S.: Don't forget to Copy wxwin.m4 to /usr/share/aclocal folder if you use your
 P.S.: Install gettext-devel if you got AM_GNU_GETTEXT error under Linux
 P.S.: madedit.pot/po has been uploaded to the top directory. Any translation for
       MadEdit-Mod is welcome.
-P.S.: Please open a ticket for bug of MadEdit-Mod at 
+P.S.: Please open a ticket for bug of MadEdit-Mod at
       https://github.com/LiMinggang/madedit-mod/issues/
 
 MadEdit_Win2K is a build by VC++ 2005 express for Windows 2000.
 
 Example build under Linux
-Boost Python(1.59)
+Boost Python(1.61) add 'address-model=64' if build for 64 bit
 ./bjam --with-python include="${HOME}/madedit-mod/minipython/Include" python-debugging=off threading=multi variant=release link=static runtime-link=static stage
-wxWidgets(3.0.2)
-./configure --enable-unicode --disable-shared --with-libpng=builtin --with-zlib=builtin --with-expat=builtin  --with-gtk3=yes --with-libiconv=no
+wxWidgets(3.1.0)
+./configure --enable-unicode --disable-shared --with-libpng=builtin --with-zlib=builtin --with-expat=builtin --with-gtk3=yes --with-libiconv=no
 MadEdit-Mod
-./configure --with-boost=${HOME}/boost_1_59_0 --with-wxdir=${HOME}/wxWidgets-3.0.2
+./configure --with-boost=${HOME}/boost_1_61_0 --with-wxdir=${HOME}/wxWidgets-3.1.0
 
 Syntax files, Locale files, Dictionaries and Settings:
 ---------------------------------------
@@ -71,22 +71,22 @@ Syntax files, Locale files, Dictionaries and Settings:
   FontWidth.dat is Cache of Font-Width-Data, it can speed-up MadEdit a lot.
 
   Currently supported Languages:
-  	English
-  	Chinese Simplified (zh_CN)
-  	Chinese Traditional(zh_TW) (Not done)
-  	German(de_DE)              (Not done)
-  	Greek(el)                  (Not done)
-  	Italian(it_IT)             (Not done)
-  	Japanese(ja_JP)            (Not done)
-	Polish(pl_PL)              (Not done)
-	Russian(ru_RU)             (Not done)
-	Spanish(es)                (Not done)
+    English
+    Chinese Simplified (zh_CN)
+    Chinese Traditional(zh_TW) (Not done)
+    German(de_DE)              (Not done)
+    Greek(el)                  (Not done)
+    Italian(it_IT)             (Not done)
+    Japanese(ja_JP)            (Not done)
+    Polish(pl_PL)              (Not done)
+    Russian(ru_RU)             (Not done)
+    Spanish(es)                (Not done)
 
   * Download dictionary at http://extensions.openoffice.org
     oxt is actually a zip file. So, download it and open it with 7-zip. Then extract
     the .dic and .aff to ./Dictionaries. Re-start MadEdit-Mod to load the dictionary.
   * Use MadEdit-Mod with other applications like CPPCheck, Visual Studio, try
-    'madedit %f*lineNum'
+    'madedit filename*lineNum'
   * Silent mode which can be used in scripting, no GUI will be shown
     [-h], help, Displays help on the command line parameters
     [-s], silent, Disables the GUI
@@ -100,9 +100,13 @@ Syntax files, Locale files, Dictionaries and Settings:
     Make sure you use Single Instance with -s, -x!!
 
 Known issues:
-The Macro recording function will save all your commands to one document which
-means it will not record the "switching" between documents.
-Search in selection in column mode is not exact the selection highlighted.
+1. The Macro recording function will save all your commands to one document which
+    means it will not record the "switching" between documents.
+2. Search in selection in column mode is not exact the selection highlighted.
+3. Regular expression which relies on characters before/after the matched string, 
+    Eg. (?<=.)\s(?=.), will has issue to be replaced one by one. It's tricky and
+    NP++ has the same issue too.
+4. HighlightWord would not work if the caret is at the end of the line
 
 Feature/issues to be released
 -----------------------------
@@ -113,6 +117,127 @@ Note: Not support wxWidgets 2.X anymore since 0.3.X
 
 Todo:
 FreeBSD packaging (with FreeBSD 10.01)
+
+Mod v0.4.4
+New: Set toolbar to 3 columns to let user who has a small display have a chance to re-org the toolbars
+New: Use icon to mark readonly flag
+New: Replace toolbar icons with Silk icon set from Mark James(www.famfamfam.com) and Fugue(http://p.yusukekamiyamane.com/)
+Fix: Move recent files tool bar item from Quick search to Standard
+Fix: Apply AuiNoteBook fix from wxWidgets dev(http://trac.wxwidgets.org/ticket/17551)
+Fix: Display replace all result on Status bar instead of an annoying dialog
+Fix: Add default pos to tool bars in order that tool bar would be in the pos expected
+Add more Icons
+Note: The Quick search bar would be larger than expected because of removing the recent file list button. Please reset the
+toolbar (and re-arrange it---it would be saved) by Tools->Purge History->Reset Toolbar position
+
+Mod v0.4.3
+1.New: Use dialog to let user choose one for all instead of annoying one by one dialogs
+2.New: Let the user to do the backup selfly #198
+3.New: Use Icon to replace the checkbox on QuickSearch Bar #181
+4.New: Remember pos of all tool Bars
+5.New: Reset tool bars position
+6.New: Insert to the top instead of append to the bottom of search results, expand the last automatically and collapse the last
+7.New: Add InputBox, MsgBox to MadPython so that user can get input or output some message
+8.New: Confirm Undo at the first time if the changes had been saved to disk
+9.New: Add Scripts list to right click menu
+10.New: Remove file from recentlist if could not be opened
+11.New: An Enhanced "Auto-complete" for selection(Option->Edit) #176
+12.New: Scroll function on Righ click menu of scroll bars #157
+13.New: Support selection replace in Typewriter mode
+14.New: Hope typewrite mode could work when use "Backspace" or "Delete" #203
+15.New: Double click to highlight word
+16.New: Enlarge input area of single mode
+17.New: Enhancement for Post-It mode #182
+18.Fix: 0.4.2.1 can not remember the word wrap setting #201
+19.Fix: The fix width in the Option menu can't Open #199
+20.Fix: Improve windows list code, fix a bug of inner-tab drag/reposition(wxAuiNoteBook, http://trac.wxwidgets.org/ticket/17551)
+21.Fix: Assertion failure of FindInFilesDialog
+22.Fix: Assertion failure of MadMacroDlg
+23.Fix: Improve 80 column indicator
+24.Other code improvement
+25.Upgrade boost to 1.61
+26.Update hunspell to 1.41
+27.Update Chinese translation
+
+Mod v0.4.2.1
+1.New: Ctrl-A to select all items in the Window List dialog
+2.New: Code performance improvement for Window list(Performance, menu blink and other issues)
+3.New: Tip information about the file while mouse hovering over the file tab
+4.Fix: Multiple selection does not work with Save/SaveAs(Windows List dialog) #193
+5.Fix: Extra scroll issue while pressing enter key in Typewriter mode introduced by 0.4.2
+6.Fix: Can't disable Autosave once enabled
+7.Increase input area by decreasing right margin of the single line edit
+
+Mod v0.4.2
+1.New: Hope MadEdit-Mod could load more open files history than 9 #179
+2.New: Redesign of Search Results view----Hope to add search key words or expression on the result tree title on the left of the file path #137
+3.New: Save LineSpacing, Line Wrap Mode and Edit Mode for opened files #186
+4.New: Enable config fix width mode in global config #184
+5.New: Wordwrap of input of search/replace dialog #175
+6.New: Use icons or symbols replace the words in the quicksearch bar #181
+7.New: Hope MadEdit-Mod could Autosave, Backup files, and have Autolink funciton #135
+8.New: Window list function(Activate, Save, Save As and Close)
+9.Fix: Recorded script(caret pos for inputting) would be wrong if user moved the caret #183
+10.Fix: The caret can't lock the y position when use word wrap function #178
+11.Fix: Change Mpython API WholeLineSelection to SelectWholeLine
+12.Fix: "New File" & "Open File" button in toolbar got unclickable when all editor tabs closed #190
+13.Fix: Not respond to wxSlider event(bug of CodeBlocks https://sourceforge.net/p/codeblocks/tickets/350/)
+14.Fix: Bug of wxGenericTreeCtrl(Fixed in wxWidgets 3.1) #136
+15.Fix: Initial size of the input box(SearchReplace dialog) is not updated #191
+16.Fix: File name in history list would be empty if you save a newly created file #192
+17.Fix various minor issues
+18.Update wxWidgets to 3.1.0
+19.Update translation
+
+Mod v0.4.1
+1.New: Enhancement on Results(Delete items, collapse items) #138
+2.New: Improve syntax highlight function for non-English language Text file #142
+3.New: Create a new file by double click on the blank area of the Tab bar #144
+4.New: Full screen/Post-It Mode support #147
+5.New: Always on the top #146
+6.New: Use mouse wheel to scroll and activate the tabs on the tab bar. Click on any of the File name Tab to set the focus to the tab bar. Then use mouse wheel to scroll.The file would not be activated automatically #148
+7.New: History files bar, open recent file list from tool bar #144
+8.New: Save user config of "quick search bar" #149
+9.New: New MadPython API WholeLineSelection and GetIndentCountByPos
+10.New: Support JSON highlighting by using JavaScript syntax
+11.New: Set Plain Text(*.txt) as default file extension while saving
+12.New: Add the keywords in the syntax file to personal dictionary in runtime
+13.New: AutoScroll or lock the cursor in a fixed line range in the window which user defined #170
+14.Fix: A bug in the "quick search bar" #143
+15.Fix: A bug in replace all introduced by code change for #119
+16.Fix: An issue of wxWidgets while scroll result window by mouse wheel
+17.Fix: Not allow to change the size of SearchReplace dialog
+18.Fix: Syntax highlight of Keyword should override special word prefix #164
+19.Fix: A multi-line search result bug(MadEdit can not display/copy multi-line result) #173
+20.Fix: Need to toggle the QuickSearch Bar more simply #172
+21.Fix: Macro recording should set position before recording the command #174
+22.Fix: Several issues of Macro Recording related to string input
+23.Update translation
+
+Mod v0.4.0
+1.Improve performance of script recording
+2.Improve text processing performance(almost doubled)
+3.Improve syntax highlighting performance
+4.Improve ReloadByModificationTime event handling
+5.Improve performance of ReplaceTextAll(non-regex)
+6.New: Add new MadPython API Goto(pos)
+7.New: New short cut(Alt--) to collapse all results in Results window #131
+8.New: Restore the last position of the Search result window #132
+9.Fix: The tab of the selected page could not be seen if a lot of files were opened #115
+10.Fix: Can't select the whole line by Triple click or click on Line number area if the line was wrapped #116
+11.Fix: Negative match was not supported in Regex with case insensitive(Issue 2) #117
+12.Fix: Number was not highlighted correctly in Text file(Issue 1) #117
+13.Fix: Caret and selection would have issue while '\W' matching \r or \n #121
+14.Fix: To use shift + middle mouse wheel to horizontal scrolling #123
+15.Fix: Regular expression (?<=.)\s(?=.) replacement issue(Case 1: ReplaceAll) #119
+16.Fix: Restore the transparence configuration of the search window #129
+17.Fix: Another bug about number highlight in 0.4.0 preview #127
+18.Fix: Enhanced ctrl+g & ctrl+shift+g and more #128 Support '+/-' as relative offset to current caret position/line
+19.Fix: Can't work with CPPCheck 1.72 #134
+20.Add documents(CN) for Python simplification
+21.Update boost to 1.60
+22.Update Python to 2.7.11
+23.Other minor improvements
 
 Mod v0.3.10
 1.New: Support "Dot(".") match new line", default behavior is changed to NOT match new line #98
@@ -887,4 +1012,5 @@ wxWidgets: http://www.wxwidgets.org
 wxDevCpp: http://wxdsgn.sourceforge.net
 Boost: http://www.boost.org
 Open Clip Art Library: http://www.openclipart.org
-
+Silk Icon set: http://www.famfamfam.com/
+Fugue Icons: http://p.yusukekamiyamane.com/

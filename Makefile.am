@@ -41,6 +41,12 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	src/MadPurgeHistoryDialog.h \
 	src/MadNumberDlg.cpp \
 	src/MadNumberDlg.h \
+	src/MadWinListDialog.cpp \
+	src/MadWinListDialog.h \
+	src/MadSaveQueryDialog.h \
+	src/MadSaveQueryDialog.cpp \
+	src/checkedlistctrl.cpp \
+	src/checkedlistctrl.h \
 	src/MadMacroDlg.cpp \
 	src/MadMacroDlg.h \
 	src/MadRecentList.cpp \
@@ -151,6 +157,7 @@ madedit_SOURCES =	src/MadAboutDialog.cpp \
 	spellchecker/hunspell/src/hunspell/atypes.hxx \
 	spellchecker/hunspell/src/hunspell/baseaffix.hxx \
 	spellchecker/hunspell/src/hunspell/csutil.hxx \
+	spellchecker/hunspell/src/hunspell/dictmgr.hxx \
 	spellchecker/hunspell/src/hunspell/filemgr.hxx \
 	spellchecker/hunspell/src/hunspell/hashmgr.hxx \
 	spellchecker/hunspell/src/hunspell/htypes.hxx \

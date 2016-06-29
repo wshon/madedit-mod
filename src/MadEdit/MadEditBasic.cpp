@@ -6,6 +6,8 @@
 // Licence:     GPL
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <boost/scoped_ptr.hpp>
+#include <wx/filefn.h>
 #include "MadEdit.h"
 #include "MadEditPv.h"
 
@@ -18,6 +20,7 @@
 #include <wx/filename.h>
 #ifndef PYMADEDIT_DLL
 	#include "SpellCheckerManager.h"
+	#include "HunspellInterface.h"
 #endif
 
 #ifdef _DEBUG
@@ -74,65 +77,65 @@ const int CRLF_Points[CRLF_Points_Count + 1][2] =
 const int CR_Points2_Count = 14;
 const int CR_Points2[CR_Points2_Count+1][2]=
 {
-    {   0,  0 },
-    {   0, 601 },
-    { 255, 348 },
-    { 255, 850 },
-    {  79, 644 },
-    {  56, 667 },
-    { 278, 999 },
-    { 502, 664 },
-    { 479, 641 },
-    { 304, 850 },
-    { 304, 270 },
-    { 281, 247 },
-    {  70, 457 },
-    {  70,  0 },
-    { 600, 999 }     // max value
+	{   0,  0 },
+	{   0, 601 },
+	{ 255, 348 },
+	{ 255, 850 },
+	{  79, 644 },
+	{  56, 667 },
+	{ 278, 999 },
+	{ 502, 664 },
+	{ 479, 641 },
+	{ 304, 850 },
+	{ 304, 270 },
+	{ 281, 247 },
+	{  70, 457 },
+	{  70,  0 },
+	{ 600, 999 }     // max value
 };
 
 const int LF_Points2_Count = 14;
 const int LF_Points2[LF_Points2_Count+1][2]=
 {
-    { 255, 273 },
-    { 255, 850 },
-    {  79, 644 },
-    {  56, 667 },
-    { 278, 999 },
-    { 502, 664 },
-    { 479, 641 },
-    { 304, 850 },
-    { 304, 345 },
-    { 558, 559 },
-    { 558,  0 },
-    { 488,  0 },
-    { 488, 454 },
-    { 281, 247 },
-    { 600, 999 } // max value
+	{ 255, 273 },
+	{ 255, 850 },
+	{  79, 644 },
+	{  56, 667 },
+	{ 278, 999 },
+	{ 502, 664 },
+	{ 479, 641 },
+	{ 304, 850 },
+	{ 304, 345 },
+	{ 558, 559 },
+	{ 558,  0 },
+	{ 488,  0 },
+	{ 488, 454 },
+	{ 281, 247 },
+	{ 600, 999 } // max value
 };
 
 const int CRLF_Points2_Count = 18;
 const int CRLF_Points2[CRLF_Points2_Count+1][2]=
 {
-    {   0,  0 },
-    {   0, 601 },
-    { 255, 348 },
-    { 255, 850 },
-    {  79, 644 },
-    {  56, 667 },
-    { 278, 999 },
-    { 502, 664 },
-    { 479, 641 },
-    { 304, 850 },
-    { 304, 345 },
-    { 558, 559 },
-    { 558,  0 },
-    { 488,  0 },
-    { 488, 454 },
-    { 281, 247 },
-    {  70, 457 },
-    {  70,  0 },
-    { 600, 999 } // max value
+	{   0,  0 },
+	{   0, 601 },
+	{ 255, 348 },
+	{ 255, 850 },
+	{  79, 644 },
+	{  56, 667 },
+	{ 278, 999 },
+	{ 502, 664 },
+	{ 479, 641 },
+	{ 304, 850 },
+	{ 304, 345 },
+	{ 558, 559 },
+	{ 558,  0 },
+	{ 488,  0 },
+	{ 488, 454 },
+	{ 281, 247 },
+	{  70, 457 },
+	{  70,  0 },
+	{ 600, 999 } // max value
 };
 */
 
@@ -142,9 +145,11 @@ void MadEdit::SetSyntax( const wxString &title )
 	{
 		delete m_Syntax;
 		m_Syntax = MadSyntax::GetSyntaxByTitle( title );
+		wxASSERT( m_Syntax != 0 );
 		m_Syntax->SetEncoding( m_Encoding );
 		m_Syntax->InitNextWord1( m_Lines, m_WordBuffer, m_WidthBuffer,
 								 m_TextFont->GetFaceName(), m_TextFont->GetPointSize(), m_TextFont->GetFamily() );
+		UpdateSyntaxDictionary();
 		m_Lines->m_Syntax = m_Syntax;
 
 		if( !m_LoadingFile )
@@ -159,6 +164,12 @@ void MadEdit::SetSyntax( const wxString &title )
 			}
 		}
 	}
+}
+
+void MadEdit::UpdateSyntaxDictionary()
+{
+	if(m_SpellCheckerPtr)
+		m_SpellCheckerPtr->SetSyntaxDictionary(m_Syntax->GetSyntaxDictionary());
 }
 
 void MadEdit::ApplySyntaxAttributes( MadSyntax *syn, bool matchTitle )
@@ -270,7 +281,7 @@ void MadEdit::SetTextFont( const wxString &name, int size, bool forceReset )
 
 			bool ofwm = m_FixedWidthMode;
 			m_FixedWidthMode = false; // avoid effecting on GetUCharWidth();
-			m_TextFontAveCharWidth = GetUCharWidth( 0x20 ); //GetCharWidth();
+			m_TextFontAveCharWidth = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/; //GetCharWidth();
 			int w;
 			m_TextFontMaxDigitWidth = GetUCharWidth( '0' );
 
@@ -315,12 +326,20 @@ void MadEdit::SetTextFont( const wxString &name, int size, bool forceReset )
 			}
 
 			m_FixedWidthMode = ofwm;
-			m_LeftMarginWidth = ( m_TextFontAveCharWidth >> 1 ) - 1;
-			m_RightMarginWidth = m_TextFontAveCharWidth << 1;
+			if(m_SingleLineMode)
+			{
+				m_LeftMarginWidth = ( m_TextFontAveCharWidth >> 1 ) - 1;
+				m_RightMarginWidth = 0;
+			}
+			else
+			{
+				m_LeftMarginWidth = ( m_TextFontAveCharWidth >> 1 ) - 1;
+				m_RightMarginWidth = m_TextFontAveCharWidth << 1;
+			}
 			m_Syntax->InitNextWord1( m_Lines, m_WordBuffer, m_WidthBuffer,
 									 name, size, m_TextFont->GetFamily() );
 			// prepare m_Space_Points, m_EOF_Points
-			const int cw = GetUCharWidth( 0x20 ); //FFontAveCharWidth;
+			const int cw = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/; //FFontAveCharWidth;
 			{
 				const int t1 = m_TextFontHeight / 5;
 				const int y = 1 + m_TextFontHeight - t1;
@@ -448,6 +467,8 @@ void MadEdit::SetTextFont( const wxString &name, int size, bool forceReset )
 			}
 		}
 	}
+
+	m_TextFontSpaceWidth = GetUCharWidth( 0x20 );
 }
 
 void MadEdit::SetHexFont( const wxString &name, int size, bool forceReset )
@@ -662,7 +683,7 @@ void MadEdit::SetEditMode( MadEditMode mode )
 			{
 				if( m_CaretPos.extraspaces )
 				{
-					m_CaretPos.xpos -= int( m_CaretPos.extraspaces * GetUCharWidth( 0x20 ) );
+					m_CaretPos.xpos -= int( m_CaretPos.extraspaces * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/ );
 					m_CaretPos.extraspaces = 0;
 					m_LastCaretXPos = m_CaretPos.xpos;
 					AppearCaret();
@@ -674,13 +695,13 @@ void MadEdit::SetEditMode( MadEditMode mode )
 				{
 					if( m_SelectionPos1.extraspaces )
 					{
-						m_SelectionPos1.xpos -= int( m_SelectionPos1.extraspaces * GetUCharWidth( 0x20 ) );
+						m_SelectionPos1.xpos -= int( m_SelectionPos1.extraspaces * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/ );
 						m_SelectionPos1.extraspaces = 0;
 					}
 
 					if( m_SelectionPos2.extraspaces )
 					{
-						m_SelectionPos2.xpos -= int( m_SelectionPos2.extraspaces * GetUCharWidth( 0x20 ) );
+						m_SelectionPos2.xpos -= int( m_SelectionPos2.extraspaces * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/ );
 						m_SelectionPos2.extraspaces = 0;
 					}
 
@@ -825,6 +846,7 @@ void MadEdit::SetSingleLineMode( bool mode )
 			m_HScrollBar->Show( false );
 			SetDisplayBookmark( false );
 			SetDisplay80ColHint( false );
+			m_RightMarginWidth = 0;
 		}
 
 		m_SingleLineMode = mode;
@@ -874,11 +896,11 @@ void MadEdit::SetInsertSpacesInsteadOfTab( bool value )
 
 void MadEdit::SetWordWrapMode( MadWordWrapMode mode )
 {
-	if( m_WordWrapMode != mode && !m_SingleLineMode )
+	if( m_WordWrapMode != mode )
 	{
 		m_WordWrapMode = mode;
 
-		if( m_StorePropertiesToGlobalConfig )
+		if( m_StorePropertiesToGlobalConfig && !m_SingleLineMode )
 		{
 			wxString oldpath = m_Config->GetPath();
 			m_Config->Write( wxT( "/MadEdit/WordWrapMode" ), ( long )mode );
@@ -1139,6 +1161,12 @@ void MadEdit::GetCaretPosition( int &line, int &subrow, wxFileOffset &column )
 		}
 }
 
+wxFileOffset MadEdit::GetLastSavePointCaretPosition()
+{
+	if(m_SavePoint == NULL) return wxFileOffset(-1);
+
+	return m_SavePoint->m_CaretPosAfter;
+}
 wxFileOffset MadEdit::GetSelectionSize()
 {
 	if( !m_Selection ) return 0;
@@ -2035,6 +2063,13 @@ void MadEdit::Undo()
 		return;
 	}
 
+	if( undo == m_SavePoint )
+	{
+		wxString msg( _( "You are about to undo changes that have already been saved to disk.\n\nDo you want to continue?" ) );
+		if( wxCANCEL == MadMessageBox( msg, wxT( "MadEdit-Mod" ), wxOK | wxCANCEL | wxICON_QUESTION ) )
+			return;
+	}
+
 	SetNeedSync();
 	size_t oldrows = m_Lines->m_RowCount;
 	size_t oldlines = m_Lines->m_LineCount;
@@ -2410,6 +2445,7 @@ bool MadEdit::LoadFromFile( const wxString &filename, const wxString &encoding )
 	m_CaretPos.Reset( m_ValidPos_iter );
 	m_LastCaretXPos = 0;
 	m_DoRecountLineWidth = false;
+	m_HasBackup = false;
 
 	if( m_EditMode == emHexMode )
 	{
@@ -2479,6 +2515,9 @@ int MadEdit::Save( bool ask, const wxString &title, bool saveas ) // return YES,
 	int ret = wxID_YES;
 	bool refresh = false;
 	wxString filename = m_Lines->m_Name;
+	wxString oldfilename(filename);
+
+	DBOUT( "MadEdit::Save("<<ask<<", " <<title.wc_str()<<", "<< saveas <<")" );
 
 	if( filename.IsEmpty() )
 	{
@@ -2509,8 +2548,9 @@ int MadEdit::Save( bool ask, const wxString &title, bool saveas ) // return YES,
 
 		if( saveas || m_Lines->m_Name.IsEmpty() ) // choose a file to save
 		{
+			DBOUT( "choose a file to save" );
 			static int filterIndex = 0;
-			wxString fileFilter = wxString( wxT( "All files (*;*.*)|" ) ) + wxFileSelectorDefaultWildcardStr + wxT( "|68k Assembly (*.68k)|*.68k|ActionScript (*.as;*.asc;*.mx)|*.as;*.asc;*.mx|Ada (*.a;*.ada;*.adb;*.ads)|*.a;*.ada;*.adb;*.ads|Apache Conf (*.conf;*.htaccess)|*.conf;*.htaccess|Bash Shell Script (*.bsh;*.configure;*.sh)|*.bsh;*.configure;*.sh|Boo (*.boo)|*.boo|C (*.c;*.h)|*.c;*.h|C# (*.cs)|*.cs|C-Shell Script (*.csh)|*.csh|Caml (*.ml;*.mli)|*.ml;*.mli|Cascading Style Sheet (*.css)|*.css|Cilk (*.cilk;*.cilkh)|*.cilk;*.cilkh|Cobra (*.cobra)|*.cobra|ColdFusion (*.cfc;*.cfm;*.cfml;*.dbm)|*.cfc;*.cfm;*.cfml;*.dbm|CPP (*.c++;*.cc;*.cpp;*.cxx;*.h++;*.hh;*.hpp;*.hxx)|*.c++;*.cc;*.cpp;*.cxx;*.h++;*.hh;*.hpp;*.hxx|D (*.d)|*.d|Diff File (*.diff;*.patch)|*.diff;*.patch|Django (*.django)|*.django|DOS Batch Script (*.bat;*.cmd)|*.bat;*.cmd|DOT (*.dot)|*.dot|DSP56K Assembly (*.56k)|*.56k|Editra Style Sheet (*.ess)|*.ess|Edje (*.edc)|*.edc|Eiffel (*.e)|*.e|Erlang (*.erl)|*.erl|Ferite (*.fe)|*.fe|FlagShip (*.prg)|*.prg|Forth (*.4th;*.fs;*.fth;*.seq)|*.4th;*.fs;*.fth;*.seq|Fortran 77 (*.f;*.for)|*.f;*.for|Fortran 95 (*.f2k;*.f90;*.f95;*.fpp)|*.f2k;*.f90;*.f95;*.fpp|GLSL (*.frag;*.glsl;*.vert)|*.frag;*.glsl;*.vert|GNU Assembly (*.gasm)|*.gasm|Groovy (*.groovy)|*.groovy|Gui4Cli (*.gc;*.gui)|*.gc;*.gui|Haskell (*.hs)|*.hs|HaXe (*.hx;*.hxml)|*.hx;*.hxml|HTML (*.htm;*.html;*.shtm;*.shtml;*.xhtml)|*.htm;*.html;*.shtm;*.shtml;*.xhtml|Inno Setup Script (*.iss)|*.iss|IssueList (*.isl)|*.isl|Java (*.java)|*.java|JavaScript (*.js)|*.js|Kix (*.kix)|*.kix|Korn Shell Script (*.ksh)|*.ksh|LaTeX (*.aux;*.sty;*.tex)|*.aux;*.sty;*.tex|Lisp (*.cl;*.lisp)|*.cl;*.lisp|Lout (*.lt)|*.lt|Lua (*.lua)|*.lua|Mako (*.mako;*.mao)|*.mako;*.mao|MASM (*.asm;*.masm)|*.asm;*.masm|Matlab (*.matlab)|*.matlab|Microsoft SQL (*.mssql)|*.mssql|Netwide Assembler (*.nasm)|*.nasm|newLISP (*.lsp)|*.lsp|NONMEM Control Stream (*.ctl)|*.ctl|Nullsoft Installer Script (*.nsh;*.nsi)|*.nsh;*.nsi|Objective C (*.m;*.mm)|*.m;*.mm|Octave (*.oct;*.octave)|*.oct;*.octave|OOC (*.ooc)|*.ooc|Pascal (*.dfm;*.dpk;*.dpr;*.inc;*.p;*.pas;*.pp)|*.dfm;*.dpk;*.dpr;*.inc;*.p;*.pas;*.pp|Perl (*.cgi;*.pl;*.pm;*.pod)|*.cgi;*.pl;*.pm;*.pod|PHP (*.php;*.php3;*.phtm;*.phtml)|*.php;*.php3;*.phtm;*.phtml|Pike (*.pike)|*.pike|PL/SQL (*.plsql)|*.plsql|Plain Text (*.txt)|*.txt|Postscript (*.ai;*.ps)|*.ai;*.ps|Progress 4GL (*.4gl)|*.4gl|Properties (*.cfg;*.cnf;*.inf;*.ini;*.reg;*.url)|*.cfg;*.cnf;*.inf;*.ini;*.reg;*.url|Python (*.py;*.python;*.pyw)|*.py;*.python;*.pyw|R (*.r)|*.r|Ruby (*.gemspec;*.rake;*.rb;*.rbw;*.rbx)|*.gemspec;*.rake;*.rb;*.rbw;*.rbx|S (*.s)|*.s|Scheme (*.scm;*.smd;*.ss)|*.scm;*.smd;*.ss|Smalltalk (*.st)|*.st|SQL (*.sql)|*.sql|Squirrel (*.nut)|*.nut|Stata (*.ado;*.do)|*.ado;*.do|System Verilog (*.sv;*.svh)|*.sv;*.svh|Tcl/Tk (*.itcl;*.tcl;*.tk)|*.itcl;*.tcl;*.tk|Vala (*.vala)|*.vala|VBScript (*.dsm;*.vbs)|*.dsm;*.vbs|Verilog (*.v)|*.v|VHDL (*.vh;*.vhd;*.vhdl)|*.vh;*.vhd;*.vhdl|Visual Basic (*.bas;*.cls;*.frm;*.vb)|*.bas;*.cls;*.frm;*.vb|XML (*.axl;*.dtd;*.plist;*.rdf;*.svg;*.xml;*.xrc;*.xsd;*.xsl;*.xslt;*.xul)|*.axl;*.dtd;*.plist;*.rdf;*.svg;*.xml;*.xrc;*.xsd;*.xsl;*.xslt;*.xul|Xtext (*.xtext)|*.xtext|YAML (*.yaml;*.yml)|*.yaml;*.yml" );
+			wxString fileFilter = wxString( wxT( "Plain Text (*.txt)|*.txt|All files (*;*.*)|*;*.*" ) ) + wxFileSelectorDefaultWildcardStr + wxT( "|68k Assembly (*.68k)|*.68k|ActionScript (*.as;*.asc;*.mx)|*.as;*.asc;*.mx|Ada (*.a;*.ada;*.adb;*.ads)|*.a;*.ada;*.adb;*.ads|Apache Conf (*.conf;*.htaccess)|*.conf;*.htaccess|Bash Shell Script (*.bsh;*.configure;*.sh)|*.bsh;*.configure;*.sh|Boo (*.boo)|*.boo|C (*.c;*.h)|*.c;*.h|C# (*.cs)|*.cs|C-Shell Script (*.csh)|*.csh|Caml (*.ml;*.mli)|*.ml;*.mli|Cascading Style Sheet (*.css)|*.css|Cilk (*.cilk;*.cilkh)|*.cilk;*.cilkh|Cobra (*.cobra)|*.cobra|ColdFusion (*.cfc;*.cfm;*.cfml;*.dbm)|*.cfc;*.cfm;*.cfml;*.dbm|CPP (*.c++;*.cc;*.cpp;*.cxx;*.h++;*.hh;*.hpp;*.hxx)|*.c++;*.cc;*.cpp;*.cxx;*.h++;*.hh;*.hpp;*.hxx|D (*.d)|*.d|Diff File (*.diff;*.patch)|*.diff;*.patch|Django (*.django)|*.django|DOS Batch Script (*.bat;*.cmd)|*.bat;*.cmd|DOT (*.dot)|*.dot|DSP56K Assembly (*.56k)|*.56k|Editra Style Sheet (*.ess)|*.ess|Edje (*.edc)|*.edc|Eiffel (*.e)|*.e|Erlang (*.erl)|*.erl|Ferite (*.fe)|*.fe|FlagShip (*.prg)|*.prg|Forth (*.4th;*.fs;*.fth;*.seq)|*.4th;*.fs;*.fth;*.seq|Fortran 77 (*.f;*.for)|*.f;*.for|Fortran 95 (*.f2k;*.f90;*.f95;*.fpp)|*.f2k;*.f90;*.f95;*.fpp|GLSL (*.frag;*.glsl;*.vert)|*.frag;*.glsl;*.vert|GNU Assembly (*.gasm)|*.gasm|Groovy (*.groovy)|*.groovy|Gui4Cli (*.gc;*.gui)|*.gc;*.gui|Haskell (*.hs)|*.hs|HaXe (*.hx;*.hxml)|*.hx;*.hxml|HTML (*.htm;*.html;*.shtm;*.shtml;*.xhtml)|*.htm;*.html;*.shtm;*.shtml;*.xhtml|Inno Setup Script (*.iss)|*.iss|IssueList (*.isl)|*.isl|Java (*.java)|*.java|JavaScript (*.js)|*.js|Kix (*.kix)|*.kix|Korn Shell Script (*.ksh)|*.ksh|LaTeX (*.aux;*.sty;*.tex)|*.aux;*.sty;*.tex|Lisp (*.cl;*.lisp)|*.cl;*.lisp|Lout (*.lt)|*.lt|Lua (*.lua)|*.lua|Mako (*.mako;*.mao)|*.mako;*.mao|MASM (*.asm;*.masm)|*.asm;*.masm|Matlab (*.matlab)|*.matlab|Microsoft SQL (*.mssql)|*.mssql|Netwide Assembler (*.nasm)|*.nasm|newLISP (*.lsp)|*.lsp|NONMEM Control Stream (*.ctl)|*.ctl|Nullsoft Installer Script (*.nsh;*.nsi)|*.nsh;*.nsi|Objective C (*.m;*.mm)|*.m;*.mm|Octave (*.oct;*.octave)|*.oct;*.octave|OOC (*.ooc)|*.ooc|Pascal (*.dfm;*.dpk;*.dpr;*.inc;*.p;*.pas;*.pp)|*.dfm;*.dpk;*.dpr;*.inc;*.p;*.pas;*.pp|Perl (*.cgi;*.pl;*.pm;*.pod)|*.cgi;*.pl;*.pm;*.pod|PHP (*.php;*.php3;*.phtm;*.phtml)|*.php;*.php3;*.phtm;*.phtml|Pike (*.pike)|*.pike|PL/SQL (*.plsql)|*.plsql;|Postscript (*.ai;*.ps)|*.ai;*.ps|Progress 4GL (*.4gl)|*.4gl|Properties (*.cfg;*.cnf;*.inf;*.ini;*.reg;*.url)|*.cfg;*.cnf;*.inf;*.ini;*.reg;*.url|Python (*.py;*.python;*.pyw)|*.py;*.python;*.pyw|R (*.r)|*.r|Ruby (*.gemspec;*.rake;*.rb;*.rbw;*.rbx)|*.gemspec;*.rake;*.rb;*.rbw;*.rbx|S (*.s)|*.s|Scheme (*.scm;*.smd;*.ss)|*.scm;*.smd;*.ss|Smalltalk (*.st)|*.st|SQL (*.sql)|*.sql|Squirrel (*.nut)|*.nut|Stata (*.ado;*.do)|*.ado;*.do|System Verilog (*.sv;*.svh)|*.sv;*.svh|Tcl/Tk (*.itcl;*.tcl;*.tk)|*.itcl;*.tcl;*.tk|Vala (*.vala)|*.vala|VBScript (*.dsm;*.vbs)|*.dsm;*.vbs|Verilog (*.v)|*.v|VHDL (*.vh;*.vhd;*.vhdl)|*.vh;*.vhd;*.vhdl|Visual Basic (*.bas;*.cls;*.frm;*.vb)|*.bas;*.cls;*.frm;*.vb|XML (*.axl;*.dtd;*.plist;*.rdf;*.svg;*.xml;*.xrc;*.xsd;*.xsl;*.xslt;*.xul)|*.axl;*.dtd;*.plist;*.rdf;*.svg;*.xml;*.xrc;*.xsd;*.xsl;*.xslt;*.xul|Xtext (*.xtext)|*.xtext|YAML (*.yaml;*.yml)|*.yaml;*.yml" );
 			wxFileDialog dlg( this, dlgtitle, wxEmptyString, filename, fileFilter,
 #if wxCHECK_VERSION(2,8,0)
 							  wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
@@ -2534,6 +2574,18 @@ int MadEdit::Save( bool ask, const wxString &title, bool saveas ) // return YES,
 
 		if( ret == wxID_YES )
 		{
+			if(!m_HasBackup)
+			{
+				bool bb = true;
+				m_Config->Read( wxT( "AutoBackup" ), &bb, false );
+				if(bb && (oldfilename == filename))
+				{
+					oldfilename += wxT(".bak");
+					wxRenameFile (filename, oldfilename);
+				}
+				m_HasBackup = true;
+			}
+
 			SaveToFile( filename );
 
 			if( refresh )
@@ -2542,6 +2594,7 @@ int MadEdit::Save( bool ask, const wxString &title, bool saveas ) // return YES,
 				Refresh( false );
 			}
 		}
+
 	}
 
 	return ret;
@@ -2580,6 +2633,7 @@ bool MadEdit::ReloadByModificationTime( bool LostCapture/* = false*/ )
 		wxCommandEvent event( CHECK_MODIFICATION_TIME );
 		event.SetEventObject( this );
 		AddPendingEvent( event );
+		m_ModReloaded = false;
 		return false;
 	}
 
@@ -2628,6 +2682,7 @@ bool MadEdit::ReloadByModificationTime( bool LostCapture/* = false*/ )
 	//if(LostCapture)
 	//AddPendingEvent( mevt );
 	// YES, reload it.
+	m_ModReloaded = true;
 	return Reload();
 }
 
@@ -2707,9 +2762,16 @@ MadSearchResult MadEdit::FindTextNext( const wxString &text,
 
 	if( state == SR_YES )
 	{
-		SetSelection( bpos.pos, epos.pos );
+		wxFileOffset beginpos = bpos.pos, endpos = epos.pos;
+		if ((bpos.linepos > (bpos.iter->m_Size - bpos.iter->m_NewLineSize)) && (bpos.linepos < bpos.iter->m_Size))
+			beginpos -= (bpos.linepos + bpos.iter->m_NewLineSize - bpos.iter->m_Size);
+		if ((epos.linepos > (epos.iter->m_Size - epos.iter->m_NewLineSize)) && (epos.linepos < epos.iter->m_Size))
+			endpos += (epos.linepos + epos.iter->m_NewLineSize - epos.iter->m_Size);
+		SetSelection(beginpos, endpos);
+		if (endpos != epos.pos)
+			m_CaretPos = epos;
 
-		if( IsTextFile() && m_BookmarkInSearch && !( m_Lines->m_LineList.IsBookmarked( bpos.iter ) ) ) m_Lines->m_LineList.SetBookmark( bpos.iter );
+		if (IsTextFile() && m_BookmarkInSearch && !(m_Lines->m_LineList.IsBookmarked(bpos.iter))) m_Lines->m_LineList.SetBookmark(bpos.iter);
 	}
 
 	return state;
@@ -3110,10 +3172,11 @@ MadReplaceResult MadEdit::ReplaceText( const wxString &expr, const wxString &fmt
 	bool selok = false;
 	MadCaretPos bpos = *m_SelectionBegin;
 	MadCaretPos epos = *m_SelectionEnd;
+	int state = SR_EXPR_ERROR;
 
 	if( m_Selection ) // test the selection is wanted text
 	{
-		int state = Search( bpos, epos, expr, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
+		state = Search( bpos, epos, expr, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
 
 		if( state == SR_EXPR_ERROR )
 		{
@@ -3143,7 +3206,7 @@ MadReplaceResult MadEdit::ReplaceText( const wxString &expr, const wxString &fmt
 
 	ucs4string out;
 	// replace the selected text
-	int state = Replace( out, bpos, epos, expr, fmt, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
+	state = Replace( out, bpos, epos, expr, fmt, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
 
 	if( state == SR_EXPR_ERROR )
 	{
@@ -3242,7 +3305,8 @@ int MadEdit::ReplaceTextAll( const wxString &expr, const wxString &fmt,
 	vector<const ucs4_t*> ins_ucs;
 	vector<wxFileOffset> ins_len;
 	list<ucs4string> outs;
-	MadCaretPos bpos, epos, endpos;
+	MadCaretPos bpos, epos, endpos, obpos, oepos;
+	boost::scoped_ptr< ucs4string > fmtstr;
 
 	if( rangeFrom <= 0 )
 	{
@@ -3289,19 +3353,59 @@ int MadEdit::ReplaceTextAll( const wxString &expr, const wxString &fmt,
 
 	if( bpos.pos >= epos.pos ) return 0;
 
-	endpos = epos;
+	endpos=epos;
 	int multi = 0;
 	int state;
+	ucs4string out;
 
-	while( ( state = Search( bpos, epos, expr, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline ) ) == SR_YES )
+	vector<ucs4_t> ucs;
+
+	if(!bRegex)
 	{
-		ucs4string out;
-		int state = Replace( out, bpos, epos, expr, fmt, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
+		// fmt is the wanted string
+		TranslateText( fmt.c_str(), fmt.Len(), &ucs, true );
 
-		if( state == SR_EXPR_ERROR )
+		for( size_t i = 0, size = ucs.size(); i < size; ++i )
 		{
-			return SR_EXPR_ERROR;
+			out += ucs[i] ;
 		}
+	}
+	else
+	{
+#ifdef __WXMSW__
+#if PATCH_RPLACE_REGEXP == 1
+		ucs4_t *puc = 0;
+		if( !fmt.IsEmpty() )
+		{
+#endif
+			TranslateText( fmt.c_str(), fmt.Len(), &ucs, true );
+			puc = &ucs[0];
+#if PATCH_RPLACE_REGEXP == 1
+		}
+#endif
+		fmtstr.reset(new ucs4string( puc, puc + ucs.size() ));
+#else
+		const ucs4_t *puc = 0;
+		if( !fmt.IsEmpty() )
+		{
+			puc = fmt.c_str();
+		}
+
+		fmtstr.reset(new ucs4string( puc, puc + fmt.Len() ));
+#endif
+	}
+
+	while( ( state = Search( bpos, epos, expr, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline, fmtstr.get(), &out) ) == SR_YES )
+	{
+		/*if(bRegex)
+		{
+			out.clear();
+			state = Replace( out, bpos, epos, expr, fmt, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline );
+			if( state == SR_EXPR_ERROR )
+			{
+				return SR_EXPR_ERROR;
+			}
+		}*/
 
 		del_bpos.push_back( bpos.pos );
 		del_epos.push_back( epos.pos );
@@ -3316,8 +3420,10 @@ int MadEdit::ReplaceTextAll( const wxString &expr, const wxString &fmt,
 		if( bpos.pos == epos.pos && !NextRegexSearchingPos( epos, expr ) )
 			break;
 
-		bpos = epos;
-		epos = endpos;
+		bpos=epos;
+		epos=endpos;
+		if(bRegex)
+			out.clear();
 	}
 
 	if( state == SR_EXPR_ERROR ) return SR_EXPR_ERROR;

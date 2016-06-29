@@ -96,7 +96,7 @@
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;$(BOOST)\stage\lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27_d.lib;libboost_python-vc140-mt-sgyd-1_59.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27_d.lib;libboost_python-vc140-mt-sgyd-1_61.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4217 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
       <Profile>true</Profile>
     </Link>
@@ -117,7 +117,7 @@
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib\;$(BOOST)\stage\lib;$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;libboost_python-vc140-mt-sgyd-1_59.lib;python27_d.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;libboost_python-vc140-mt-sgyd-1_61.lib;python27_d.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4217 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
       <Profile>true</Profile>
     </Link>
@@ -140,7 +140,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib\;$(BOOST)\stage\lib;$(SolutionDir)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27.lib;libboost_python-vc140-mt-s-1_59.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27.lib;libboost_python-vc140-mt-s-1_61.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4049 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ResourceCompile>
@@ -154,7 +154,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MinSpace</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -168,7 +168,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_x64_lib\;$(BOOST)\stage\lib;$(SolutionDir)$(Platform)\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27.lib;libboost_python-vc140-mt-s-1_59.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;rpcrt4.lib;python27.lib;libboost_python-vc140-mt-s-1_61.lib;libhunspell.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4049 /ignore:4217 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ResourceCompile>
@@ -212,6 +212,7 @@
     <ClInclude Include="..\..\spellchecker\SpellCheckEngineOption.h" />
     <ClInclude Include="..\..\spellchecker\SpellCheckerManager.h" />
     <ClInclude Include="..\..\spellchecker\SpellCheckUserInterface.h" />
+    <ClInclude Include="..\..\src\checkedlistctrl.h" />
     <ClInclude Include="..\..\src\MadAboutDialog.h" />
     <ClInclude Include="..\..\src\MadCommand.h" />
     <ClInclude Include="..\..\src\MadConvEncDialog.h" />
@@ -239,9 +240,11 @@
     <ClInclude Include="..\..\src\MadPurgeHistoryDialog.h" />
     <ClInclude Include="..\..\src\MadPython.hpp" />
     <ClInclude Include="..\..\src\MadRecentList.h" />
+    <ClInclude Include="..\..\src\MadSaveQueryDialog.h" />
     <ClInclude Include="..\..\src\MadSearchReplaceDialog.h" />
     <ClInclude Include="..\..\src\MadSortDialog.h" />
     <ClInclude Include="..\..\src\MadUtils.h" />
+    <ClInclude Include="..\..\src\MadWinListDialog.h" />
     <ClInclude Include="..\..\src\MadWordCountDialog.h" />
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +294,7 @@
     <ClCompile Include="..\..\spellchecker\SpellCheckEngineOption.cpp" />
     <ClCompile Include="..\..\spellchecker\SpellCheckerManager.cpp" />
     <ClCompile Include="..\..\spellchecker\SpellCheckUserInterface.cpp" />
+    <ClCompile Include="..\..\src\checkedlistctrl.cpp" />
     <ClCompile Include="..\..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\..\src\MadAboutDialog.cpp" />
     <ClCompile Include="..\..\src\MadConvEncDialog.cpp" />
@@ -320,9 +324,11 @@
     <ClCompile Include="..\..\src\MadPrintout.cpp" />
     <ClCompile Include="..\..\src\MadPurgeHistoryDialog.cpp" />
     <ClCompile Include="..\..\src\MadRecentList.cpp" />
+    <ClCompile Include="..\..\src\MadSaveQueryDialog.cpp" />
     <ClCompile Include="..\..\src\MadSearchReplaceDialog.cpp" />
     <ClCompile Include="..\..\src\MadSortDialog.cpp" />
     <ClCompile Include="..\..\src\MadUtils.cpp" />
+    <ClCompile Include="..\..\src\MadWinListDialog.cpp" />
     <ClCompile Include="..\..\src\MadWordCountDialog.cpp" />
     <ClCompile Include="..\..\src\version.cpp" />
   </ItemGroup>

@@ -98,7 +98,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4217 /ignore:4049 /ignore:4204 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>wxmsw30ud_core.lib;wxbase30ud.lib;wxmsw30ud_aui.lib;wxbase30ud_xml.lib;wxexpatd.lib;wxmsw30ud_html.lib;wxpngd.lib;wxzlibd.lib;libboost_python-vc100-mt-sgyd-1_59.lib;python27_d.lib;libhunspell.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxmsw31ud_aui.lib;wxbase31ud_xml.lib;wxexpatd.lib;wxmsw31ud_html.lib;wxpngd.lib;wxzlibd.lib;libboost_python-vc100-mt-sgyd-1_61.lib;python27_d.lib;libhunspell.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)MadEdit.exe</OutputFile>
       <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_lib;$(TargetDir);$(BOOST)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -126,7 +126,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4217 /ignore:4049 /ignore:4204 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>wxmsw30ud_core.lib;wxbase30ud.lib;wxmsw30ud_aui.lib;wxbase30ud_xml.lib;wxexpatd.lib;wxmsw30ud_html.lib;wxpngd.lib;wxzlibd.lib;python27_d.lib;libboost_python-vc100-mt-sgyd-1_59.lib;libhunspell.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxmsw31ud_aui.lib;wxbase31ud_xml.lib;wxexpatd.lib;wxmsw31ud_html.lib;wxpngd.lib;wxzlibd.lib;python27_d.lib;libboost_python-vc100-mt-sgyd-1_61.lib;libhunspell.lib;comctl32.lib;uuid.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)MadEdit.exe</OutputFile>
       <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_x64_lib;$(TargetDir);$(BOOST)\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -155,7 +155,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4217 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_aui.lib;wxbase30u_xml.lib;wxexpat.lib;wxmsw30u_html.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_59.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31u_core.lib;wxbase31u.lib;wxmsw31u_aui.lib;wxbase31u_xml.lib;wxexpat.lib;wxmsw31u_html.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_61.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)MadEdit.exe</OutputFile>
       <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_lib;$(TargetDir);$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
@@ -184,7 +184,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/ignore:4217 /ignore:4049 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_aui.lib;wxbase30u_xml.lib;wxexpat.lib;wxmsw30u_html.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_59.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wxmsw31u_core.lib;wxbase31u.lib;wxmsw31u_aui.lib;wxbase31u_xml.lib;wxexpat.lib;wxmsw31u_html.lib;wxpng.lib;wxzlib.lib;python27.lib;libboost_python-vc100-mt-s-1_61.lib;libhunspell.lib;comctl32.lib;rpcrt4.lib;User32.Lib;Gdi32.Lib;Shell32.Lib;AdvAPI32.Lib;Ole32.Lib;OleAut32.Lib;ComDlg32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)MadEdit.exe</OutputFile>
       <AdditionalLibraryDirectories>$(WXWIN3)\lib\vc_x64_lib;$(TargetDir);$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
@@ -205,6 +205,7 @@
     <ClCompile Include="..\..\astyle\formattersettings.cpp" />
     <ClCompile Include="..\..\markdown\markdown-tokens.cpp" />
     <ClCompile Include="..\..\markdown\markdown.cpp" />
+    <ClCompile Include="..\..\src\checkedlistctrl.cpp" />
     <ClCompile Include="..\..\src\EmbeddedPython.cpp" />
     <ClCompile Include="..\..\src\MadAboutDialog.cpp" />
     <ClCompile Include="..\..\src\MadConvEncDialog.cpp" />
@@ -220,9 +221,11 @@
     <ClCompile Include="..\..\src\MadPrintout.cpp" />
     <ClCompile Include="..\..\src\MadPurgeHistoryDialog.cpp" />
     <ClCompile Include="..\..\src\MadRecentList.cpp" />
+    <ClCompile Include="..\..\src\MadSaveQueryDialog.cpp" />
     <ClCompile Include="..\..\src\MadSearchReplaceDialog.cpp" />
     <ClCompile Include="..\..\src\MadSortDialog.cpp" />
     <ClCompile Include="..\..\src\MadUtils.cpp" />
+    <ClCompile Include="..\..\src\MadWinListDialog.cpp" />
     <ClCompile Include="..\..\src\MadWordCountDialog.cpp" />
     <ClCompile Include="..\..\src\MadEdit\MadEdit.cpp" />
     <ClCompile Include="..\..\src\MadEdit\MadEditAdvanced.cpp" />
@@ -281,6 +284,7 @@
     <ClInclude Include="..\..\spellchecker\SpellCheckEngineOption.h" />
     <ClInclude Include="..\..\spellchecker\SpellCheckerManager.h" />
     <ClInclude Include="..\..\spellchecker\SpellCheckUserInterface.h" />
+    <ClInclude Include="..\..\src\checkedlistctrl.h" />
     <ClInclude Include="..\..\src\MadAboutDialog.h" />
     <ClInclude Include="..\..\src\MadConvEncDialog.h" />
     <ClInclude Include="..\..\src\MadEditApp.h" />
@@ -293,9 +297,11 @@
     <ClInclude Include="..\..\src\MadPrintout.h" />
     <ClInclude Include="..\..\src\MadPurgeHistoryDialog.h" />
     <ClInclude Include="..\..\src\MadRecentList.h" />
+    <ClInclude Include="..\..\src\MadSaveQueryDialog.h" />
     <ClInclude Include="..\..\src\MadSearchReplaceDialog.h" />
     <ClInclude Include="..\..\src\MadSortDialog.h" />
     <ClInclude Include="..\..\src\MadUtils.h" />
+    <ClInclude Include="..\..\src\MadWinListDialog.h" />
     <ClInclude Include="..\..\src\MadWordCountDialog.h" />
     <ClInclude Include="..\..\src\MadEdit\MadEdit.h" />
     <ClInclude Include="..\..\src\MadEdit\MadEditCommand.h" />

@@ -39,6 +39,7 @@ const long MadPurgeHistoryDialog::ID_WXCHECKBOXRECENTSEARCHEDDIRECTORIES = wxNew
 const long MadPurgeHistoryDialog::ID_WXRECENTSEARCHEDFILEFILTERS = wxNewId();
 const long MadPurgeHistoryDialog::ID_WXCHECKBOXRECENTSEARCHEDEXCLUDEFILTERS = wxNewId();
 const long MadPurgeHistoryDialog::ID_WXCHECKBOXCARETPOS = wxNewId();
+const long MadPurgeHistoryDialog::ID_CHECKBOXRESETTOOLBARSINFOWIN = wxNewId();
 const long MadPurgeHistoryDialog::ID_WXCHECKBOXALLABOVE = wxNewId();
 //*)
 
@@ -84,6 +85,9 @@ MadPurgeHistoryDialog::MadPurgeHistoryDialog(wxWindow* parent,wxWindowID id,cons
 	wxCheckBoxCaretPos = new wxCheckBox(this, ID_WXCHECKBOXCARETPOS, _("Recent Caret Position"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_WXCHECKBOXCARETPOS"));
 	wxCheckBoxCaretPos->SetValue(false);
 	StaticBoxSizer1->Add(wxCheckBoxCaretPos, 0, wxALL|wxEXPAND, 5);
+	wxCheckBoxResetToolBarsInfoWin = new wxCheckBox(this, ID_CHECKBOXRESETTOOLBARSINFOWIN, _("Reset Tool Bars and Information Window Pos"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOXRESETTOOLBARSINFOWIN"));
+	wxCheckBoxResetToolBarsInfoWin->SetValue(false);
+	StaticBoxSizer1->Add(wxCheckBoxResetToolBarsInfoWin, 0, wxALL|wxEXPAND, 5);
 	wxCheckBoxAllAbove = new wxCheckBox(this, ID_WXCHECKBOXALLABOVE, _("All Above"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_WXCHECKBOXALLABOVE"));
 	wxCheckBoxAllAbove->SetValue(false);
 	StaticBoxSizer1->Add(wxCheckBoxAllAbove, 0, wxALL|wxEXPAND, 5);
@@ -100,11 +104,11 @@ MadPurgeHistoryDialog::MadPurgeHistoryDialog(wxWindow* parent,wxWindowID id,cons
 	BoxSizer1->SetSizeHints(this);
 	Center();
 
-	Connect(ID_WXCHECKBOXALLABOVE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&MadPurgeHistoryDialog::wxCheckBoxAllAboveClick);
-	Connect(wxID_OK,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MadPurgeHistoryDialog::WxButtonOKClick);
-	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&MadPurgeHistoryDialog::WxButtonCancelClick);
-	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&MadPurgeHistoryDialog::MadPurgeHistoryDialogClose);
-	Connect(wxEVT_KEY_DOWN,(wxObjectEventFunction)&MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown);
+	Bind( wxEVT_COMMAND_CHECKBOX_CLICKED, &MadPurgeHistoryDialog::wxCheckBoxAllAboveClick, this, ID_WXCHECKBOXALLABOVE );
+	Bind( wxEVT_COMMAND_BUTTON_CLICKED, &MadPurgeHistoryDialog::WxButtonOKClick, this, wxID_OK );
+	Bind( wxEVT_COMMAND_BUTTON_CLICKED, &MadPurgeHistoryDialog::WxButtonCancelClick, this, wxID_CANCEL );
+	Bind( wxEVT_CLOSE_WINDOW, &MadPurgeHistoryDialog::MadPurgeHistoryDialogClose, this, wxID_ANY );
+	Bind(wxEVT_KEY_DOWN, &MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown, this, wxID_ANY );
 	//*)
 }
 
@@ -147,24 +151,9 @@ void MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown(wxKeyEvent& event)
     case WXK_ESCAPE:
         {
             wxCommandEvent e;
-            this->WxButtonCancelClick(e);
+            WxButtonCancelClick(e);
             return;
         }
-    case WXK_RETURN:
-    case WXK_NUMPAD_ENTER:
-        if ((wxButton*)this != this->WxButtonCancel)
-        {
-            wxCommandEvent e;
-            this->WxButtonOKClick(e);
-            return; // no skip
-        }
-        else
-        {
-            wxCommandEvent e;
-            this->WxButtonCancelClick(e);
-            return; // no skip
-        }
-        break;
     default:
         break;
     }
@@ -174,17 +163,17 @@ void MadPurgeHistoryDialog::MadPurgeHistoryDialogKeyDown(wxKeyEvent& event)
     if(event.m_shiftDown) flags|=wxACCEL_SHIFT;
     if(event.m_controlDown) flags|=wxACCEL_CTRL;
 
-    if('o' == key && wxACCEL_ALT == flags)
+    if('O' == key && wxACCEL_ALT == flags)
     {
         wxCommandEvent e;
-        this->WxButtonOKClick(e);
+        WxButtonOKClick(e);
         return; // no skip
     }
 
-    if('c' == key && wxACCEL_ALT == flags)
+    if('C' == key && wxACCEL_ALT == flags)
     {
         wxCommandEvent e;
-        this->WxButtonCancelClick(e);
+        WxButtonCancelClick(e);
         return; // no skip
     }
 

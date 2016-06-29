@@ -128,7 +128,7 @@ public:
 		langinfo = wxLocale::FindLanguageInfo( dirName.AfterLast( wxFileName::GetPathSeparator() ) );
 
 		if( langinfo != NULL ) {
-			wxLogTrace( wxTraceMask(), _( "SEARCHING FOR %s" ),
+			wxLogTrace( wxT("MadTranslationHelper"), _( "SEARCHING FOR %s" ),
 						wxString( dirName + wxFileName::GetPathSeparator() +
 								  m_TransName + wxT( ".mo" ) ).GetData() );
 
@@ -362,7 +362,7 @@ bool MadEditApp::OnInit()
 
 			if( !m_AppServer->Create( g_MadServerStr ) )
 			{
-				wxLogDebug( _( "Failed to create an IPC service." ) );
+				wxLogDebug( wxGetTranslation(wxT( "Failed to create an IPC service." ) ));
 			}
 		}
 		else
@@ -408,7 +408,7 @@ bool MadEditApp::OnInit()
 			}
 			else
 			{
-				MadMessageBox( _( "Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry." ),
+				MadMessageBox( wxGetTranslation(wxT( "Sorry, the existing instance may be too busy too respond.\nPlease close any open dialogs and retry." )),
 							   wxT( "MadEdit-Mod" ), wxICON_INFORMATION | wxOK );
 			}
 
@@ -521,7 +521,7 @@ bool MadEditApp::OnInit()
 				{
 					for( size_t i = 0; i < m_FileNames.GetCount(); ++i )
 					{
-						myFrame->RunScriptWithFile( m_FileNames[i], str, false, true, m_ForceEdit );
+						myFrame->RunScriptWithFile( m_FileNames[i], str, false, true, m_ForceEdit, true );
 					}
 				}
 
@@ -587,7 +587,10 @@ bool MadEditApp::OnCmdLineParsed( wxCmdLineParser& cmdParser )
 
 	for( size_t i = 0; i < cmdParser.GetParamCount(); i++ )
 	{
-		filename = cmdParser.GetParam( i );
+		fname = cmdParser.GetParam( i );
+		fname.Replace(wxT("\\\\"), wxT("\\"));
+		filename = fname;
+
 		filename.MakeAbsolute();
 		fname = filename.GetFullName();
 
@@ -694,7 +697,7 @@ void MadEditApp::ShowMainFrame( MadEditFrame *mainFrame, bool maximize )
 		if( !files.IsEmpty() )
 		{
 			// use OnReceiveMessage() to open the files
-			OnReceiveMessage( files.c_str(), ( files.size() + 1 )*sizeof( wxChar ) );
+			OnReceiveMessage( files.c_str(), ( files.size() + 1 )*sizeof( wxChar ), false );
 		}
 
 		files.Empty();
@@ -718,14 +721,15 @@ void MadEditApp::ShowMainFrame( MadEditFrame *mainFrame, bool maximize )
 			}
 
 			// use OnReceiveMessage() to open the files
-			OnReceiveMessage( files.c_str(), ( files.size() + 1 )*sizeof( wxChar ) );
+			OnReceiveMessage( files.c_str(), ( files.size() + 1 )*sizeof( wxChar ), false );
 		}
 
-		if( mainFrame->OpenedFileCount() == 0 )
+		int pages = mainFrame->OpenedFileCount();
+		
+		if( pages == 0 )
 		{
 			mainFrame->OpenFile( wxEmptyString, false );
 		}
-
 		SetTopWindow( mainFrame );
 #ifdef __WXMSW__
 		//if(maximize)    // removed: gogo, 30.08.2009
@@ -739,7 +743,20 @@ void MadEditApp::ShowMainFrame( MadEditFrame *mainFrame, bool maximize )
 			SetWindowPlacement( ( HWND )mainFrame->GetHWND(), &wp );
 		}
 #endif
+		int selId = mainFrame->GetPageFocus( );
+
+		bool changeFocus = (pages > 5);
+		//Forcely flash pages
+		if(changeFocus)
+		{
+			if(selId == (pages - 2)) ++pages;
+			mainFrame->SetPageFocus( pages - 2 );
+		}
 		mainFrame->Show( true );
+		if(changeFocus)
+		{
+			mainFrame->SetPageFocus( selId );
+		}
 	}
 }
 

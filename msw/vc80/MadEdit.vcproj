@@ -147,10 +147,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/ignore:4217 /ignore:4049"
-				AdditionalDependencies="wxmsw30u_core.lib wxbase30u.lib wxmsw30u_aui.lib wxbase30u_xml.lib wxmsw30u_html.lib wxexpat.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_59.lib libhunspell.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib Winspool.lib"
+				AdditionalDependencies="wxmsw31u_core.lib wxbase31u.lib wxmsw31u_aui.lib wxbase31u_xml.lib wxmsw31u_html.lib wxexpat.lib wxpng.lib wxzlib.lib python27.lib libboost_python-vc80-mt-s-1_61.lib libhunspell.lib comctl32.lib rpcrt4.lib User32.Lib Gdi32.Lib Shell32.Lib AdvAPI32.Lib Ole32.Lib OleAut32.Lib ComDlg32.Lib Winspool.lib"
 				OutputFile="$(OutDir)/MadEdit.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(WXWIN3)\lib\vc_lib&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)\stage\lib&quot;;$(NOINHERIT)"
+				AdditionalLibraryDirectories="&quot;$(WXWIN3)\lib\vc_lib\&quot;;&quot;$(TargetDir)&quot;;&quot;$(BOOST)\stage\lib&quot;;$(NOINHERIT)"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -191,6 +191,10 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\..\src\checkedlistctrl.cpp"
+				>
+			</File>
 			<File
 				RelativePath="..\..\src\EmbeddedPython.cpp"
 				>
@@ -252,6 +256,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\MadSaveQueryDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MadSearchReplaceDialog.cpp"
 				>
 			</File>
@@ -261,6 +269,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\MadUtils.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\MadWinListDialog.cpp"
 				>
 			</File>
 			<File
@@ -546,6 +558,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\src\checkedlistctrl.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MadAboutDialog.h"
 				>
 			</File>
@@ -594,6 +610,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\MadSaveQueryDialog.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\MadSearchReplaceDialog.h"
 				>
 			</File>
@@ -603,6 +623,10 @@
 			</File>
 			<File
 				RelativePath="..\..\src\MadUtils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\MadWinListDialog.h"
 				>
 			</File>
 			<File

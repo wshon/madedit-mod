@@ -92,6 +92,13 @@ public:
   //wx-devcpp will remove them. Try adding the custom code 
   //after the block.
   ////GUI Control Declaration Start
+  		wxCheckBox *WxCheckBoxInsertPairForSelection;
+		wxBoxSizer *WxBoxSizer52;
+        wxCheckBox *WxCheckBoxEnableAutoBackup;
+  		wxCheckBox *WxCheckBoxEnableAutoSave;
+		wxTextCtrl *WxEditAutoSaveTimeout;
+		wxStaticText *WxStaticText30;
+		wxBoxSizer *WxBoxSizer51;
 		wxCheckBox *WxCheckBoxShowQSearchBar;
 		wxTextCtrl *WxEditXmlIndentSize;
 		wxStaticText *WxStaticText29;
@@ -264,6 +271,7 @@ public:
 		wxBoxSizer *WxBoxSizer14;
 		wxPanel *WxNoteBookPage3;
 		wxCheckBox *WxCheckBoxAutoFillColumnPaste;
+		wxCheckBox *WxCheckBoxTypewriterMode;
 		wxCheckBox *WxCheckBoxMiddleMouseToPaste;
 		wxCheckBox *WxCheckBoxCtrlWithMouseToSelect;
 		wxCheckBox *WxCheckBoxMouseSelectToCopy;
@@ -295,6 +303,8 @@ public:
 		wxCheckBox *WxCheckBoxDoNotSaveSettings;
 		wxCheckBox *WxCheckBoxRestoreCaretPos;
 		wxCheckBox *WxCheckBoxReloadFiles;
+		wxCheckBox* WxCheckBoxFixWidthMode;
+		wxCheckBox* WxCheckBoxLDClickHighlight; 
 		wxBoxSizer *WxBoxSizer7;
 		wxStaticText *WxStaticText13;
 		wxComboBox *WxComboBoxEncoding;
@@ -327,6 +337,14 @@ public:
     //Try copy pasting the below block in your old Form header Files.
 	enum {
 ////GUI Enum Control ID Start
+            ID_WXCHECKBOXDCLICKHIGHLIGHT = 1396,
+			ID_WXCHECKBOXINSERTPAIRFORSELECTION = 1395,
+			ID_WXSTATICTEXT31 = 1394,
+			ID_WXCHECKBOXENABLEAUTOBACKUP = 1393,
+			ID_WXEDITAUTOSAVETIMEOUT = 1392,
+			ID_WXSTATICTEXT30 = 1391,
+			ID_WXCHECKBOXENABLEAUTOSAVE = 1390,
+            ID_WXCHECKBOXFIXWIDTHMODE = 1389,
 			ID_WXCHECKBOXSHOWQSEARCHBAR = 1388,
 			ID_WXEDITXMLINDENTSIZE = 1387,
 			ID_WXSTATICTEXT29 = 1386,
@@ -478,6 +496,7 @@ public:
 			ID_WXCHECKBOXPRINTSYNTAX = 1084,
 			ID_WXNOTEBOOKPAGE3 = 1062,
 			ID_WXCHECKBOXAUTOFILLCOLUMN = 1236,
+            ID_WXCHECKBOXTYPEWRITERMODE = 1228,
 			ID_WXCHECKBOXMIDDLEMOUSETOPASTE = 1127,
 			ID_WXCHECKBOXCTRLWITHMOUSE = 1237,
 			ID_WXCHECKBOXMOUSESELECTTOCOPY = 1159,
@@ -550,9 +569,11 @@ public:
 	void OnDictionaryDirChange(wxCommandEvent& event);
 	void OnSelectDictionary(wxCommandEvent& event);
 	void OnMouseAutoCopyClicked(wxCommandEvent& event);
+    void OnAutoCompletePairClicked( wxCommandEvent& event );
     void OnRadioBoxBracketStyleClick(wxCommandEvent& event);
 	void OnFormattingBreakLinesClick(wxCommandEvent& event);
 	void OnPaddingBreakBlocksClick(wxCommandEvent& event);
+	void OnEnableAutoSaveClick(wxCommandEvent& event);
 #ifdef MADEDIT_ENABLE_STC
 	void OnMarginClick(wxStyledTextEvent &event);
 #endif

@@ -31,10 +31,16 @@
 	MadEdit *g_ActiveMadEdit = NULL;
 	wxFrame g_DummyWin;
 #endif
-extern void DisplayFindAllResult( vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL );
+extern void DisplayFindAllResult( wxTreeItemId &myroot, vector<wxFileOffset> &begpos, vector<wxFileOffset> &endpos, MadEdit *madedit, bool expandresults = true, OnProgressUpdatePtr updater = NULL );
+extern int MadMessageBox( const wxString& message,
+						  const wxString& caption = wxMessageBoxCaptionStr,
+						  long style = wxOK | wxCENTRE,
+						  wxWindow *parent = NULL,
+						  int x = wxDefaultCoord, int y = wxDefaultCoord );
+
 
 // Ugly bigger switch than bigger map
-bool FromCmdToString( wxString &cmdStr, int madCmd ) {
+bool FromCmdToString( wxString &cmdStr, long madCmd ) {
 	switch( madCmd ) {
 	case ecCharFirst:
 		cmdStr << ( wxT( "MadEditCommand.CharFirst" ) );
@@ -345,6 +351,31 @@ bool FromCmdToString( wxString &cmdStr, int madCmd ) {
 	return true;
 }
 
+enum MadMsgBoxStyle {
+	MAD_YES 					 = wxYES,
+	MAD_OK						 = wxOK,
+	MAD_NO						 = wxNO,
+	MAD_CANCEL					 = wxCANCEL,
+	MAD_APPLY					 = wxAPPLY,
+	MAD_CLOSE					 = wxCLOSE,
+	MAD_NO_DEFAULT				 = wxNO_DEFAULT,
+	MAD_CANCEL_DEFAULT			 = wxCANCEL_DEFAULT,
+	MAD_ICON_WARNING_EXCLAMATION = wxICON_WARNING,
+	MAD_ICON_ERROR_HAND_STOP	 = wxICON_ERROR,
+	MAD_ICON_QUESTION			 = wxICON_QUESTION,
+	MAD_ICON_INFORMATION		 = wxICON_INFORMATION,
+	MAD_ICON_NONE				 = wxICON_NONE,
+	MAD_CENTRE                   = wxCENTRE,
+};
+
+enum MadMsgBoxRet {
+	MADRET_OK  = wxID_OK,
+	MADRET_CANCEL = wxID_CANCEL,
+	MADRET_APPLY = wxID_APPLY,
+	MADRET_YES  = wxID_YES,
+	MADRET_NO = wxID_NO,
+};
+
 namespace mad_py = ::boost::python;
 namespace mad_python {
 	class PyMadEdit {
@@ -373,7 +404,7 @@ namespace mad_python {
 #endif
 		}
 
-		void ProcessCommand( int command ) {
+		void ProcessCommand( long command ) {
 			if( g_ActiveMadEdit ) {
 				if( g_ActiveMadEdit->IsReadOnly() ) {
 					if( ( command >= ecCharFirst && command <= ecCharLast )
@@ -387,7 +418,7 @@ namespace mad_python {
 			}
 		}
 
-		void InsertWChar( int key ) {
+		void InsertWChar( long key ) {
 			if( ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) )
 			{ g_ActiveMadEdit->ProcessCommand( key ); }
 		}
@@ -407,8 +438,8 @@ namespace mad_python {
 			}
 		}
 
-		void InsertIncrementalNumber( int initial, int step, int total, int stepType,
-									  int fmt, int align, bool zeroPad, const std::string & pref, const std::string & post ) {
+		void InsertIncrementalNumber( long initial, long step, long total, long stepType,
+									  long fmt, long align, bool zeroPad, const std::string & pref, const std::string & post ) {
 			if( ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) ) {
 				wxString wxPrefix( pref.c_str(), *wxConvCurrent ), wxPostfix( post.c_str(), *wxConvCurrent );
 				g_ActiveMadEdit->InsertIncrementalNumber( initial, step, total,
@@ -446,18 +477,18 @@ namespace mad_python {
 			{ g_ActiveMadEdit->ProcessCommand( ecScrollRight ); }
 		}
 
-		void GoToLine( int line ) {
+		void GoToLine( long line ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->GoToLine( line ); }
 		}
 
-		void GoToLineColumn( int line, int column ) {
+		void GoToLineColumn( long line, long column ) {
 			if( g_ActiveMadEdit ) {
 				if(column < 0) column = 0;
 				if(line < 0) line = 0;
 				g_ActiveMadEdit->GoToLine( line );
 
-				for( int col = 0; col < ( column - 1 ); ++col ) // no validate for input
+				for( long col = 0; col < ( column - 1 ); ++col ) // no validate for input
 				{ g_ActiveMadEdit->ProcessCommand( ecRight ); }
 			}
 		}
@@ -511,9 +542,9 @@ namespace mad_python {
 			}
 		}
 
-		int GetEncodingType() {
+		long GetEncodingType() {
 			if( g_ActiveMadEdit )
-			{ return ( int )g_ActiveMadEdit->GetEncodingType(); }
+			{ return ( long )g_ActiveMadEdit->GetEncodingType(); }
 			else { return 0; }
 		}
 
@@ -529,14 +560,14 @@ namespace mad_python {
 			g_ActiveMadEdit->SetRecordCaretMovements( value );
 		}
 
-		void SetTextFont( const std::string &name, int size, bool forceReset ) {
+		void SetTextFont( const std::string &name, long size, bool forceReset ) {
 			if( ( ! name.empty()) && (size > 0) && ( g_ActiveMadEdit ) ) {
 				wxString wxName( name.c_str(), *wxConvCurrent );
 				g_ActiveMadEdit->SetTextFont( wxName, size, forceReset );
 			}
 		}
 
-		void SetHexFont( const std::string &name, int size, bool forceReset ) {
+		void SetHexFont( const std::string &name, long size, bool forceReset ) {
 			if( ( ! name.empty()) && (size > 0) && ( g_ActiveMadEdit ) ) {
 				wxString wxName( name.c_str(), *wxConvCurrent );
 				g_ActiveMadEdit->SetHexFont( wxName, size, forceReset );
@@ -578,7 +609,7 @@ namespace mad_python {
 			return mad_py::make_tuple( std::string( name.mb_str() ), size );
 		}
 
-		void SetFontA( const std::string &name, int size ) {
+		void SetFontA( const std::string &name, long size ) {
 			if( ( g_ActiveMadEdit ) && ( !name.empty() ) ) {
 				wxString wxName( name.c_str(), *wxConvCurrent );
 				g_ActiveMadEdit->SetFont( wxName, size );
@@ -604,7 +635,7 @@ namespace mad_python {
 			return mode;
 		}
 
-		void SetLineSpacing( int percent ) {
+		void SetLineSpacing( long percent ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->SetLineSpacing( percent ); }
 		}
@@ -618,16 +649,16 @@ namespace mad_python {
 			return spacing;
 		}
 
-		void SetEditMode( int mode ) {
+		void SetEditMode( long mode ) {
 			if( g_ActiveMadEdit && ( mode >= emTextMode ) && ( mode <= emHexMode ) )
 			{ g_ActiveMadEdit->SetEditMode( ( MadEditMode )mode ); }
 		}
 
-		int GetEditMode() {
-			int mode = -1;
+		long GetEditMode() {
+			long mode = -1;
 
 			if( g_ActiveMadEdit )
-			{ mode = ( int )g_ActiveMadEdit->GetEditMode(); }
+			{ mode = ( long )g_ActiveMadEdit->GetEditMode(); }
 
 			return mode;
 		}
@@ -692,16 +723,16 @@ namespace mad_python {
 			return res;
 		}
 
-		void SetWordWrapMode( int mode ) {
+		void SetWordWrapMode( long mode ) {
 			if( g_ActiveMadEdit && ( mode >= wwmNoWrap ) && ( mode <= wwmWrapByColumn ) )
 			{ g_ActiveMadEdit->SetWordWrapMode( ( MadWordWrapMode )mode ); }
 		}
 
-		int GetWordWrapMode() {
-			int mode  = -1;
+		long GetWordWrapMode() {
+			long mode  = -1;
 
 			if( g_ActiveMadEdit )
-			{ mode = ( int )g_ActiveMadEdit->GetWordWrapMode(); }
+			{ mode = ( long )g_ActiveMadEdit->GetWordWrapMode(); }
 
 			return mode;
 		}
@@ -831,12 +862,27 @@ namespace mad_python {
 		void SetAutoCompletePair( bool value ) {
 			if( g_ActiveMadEdit )
 				g_ActiveMadEdit->SetAutoCompletePair( value );
-			}
+		}
+
 		bool GetAutoCompletePair() {
 			bool res = false;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetAutoCompletePair(); }
+
+			return res;
+		}
+
+		void SetInsertPairForSelection( bool value ) {
+			if( g_ActiveMadEdit )
+				g_ActiveMadEdit->SetInsertPairForSelection( value );
+		}
+
+		bool GetInsertPairForSelection() {
+			bool res = false;
+
+			if( g_ActiveMadEdit )
+			{ res = g_ActiveMadEdit->GetInsertPairForSelection(); }
 
 			return res;
 		}
@@ -855,7 +901,7 @@ namespace mad_python {
 			return res;
 		}
 
-		void SetCaretType( int type ) {
+		void SetCaretType( long type ) {
 			if( g_ActiveMadEdit  && ( type >= ctVerticalLine ) && ( type <= ctBlock ))
 			{ g_ActiveMadEdit->SetCaretType( ( MadCaretType )type ); }
 		}
@@ -902,8 +948,8 @@ namespace mad_python {
 			{ g_ActiveMadEdit->SetMiddleMouseToPaste( value ); }
 		}
 
-		int GetMaxWordWrapWidth() {
-			int res = 0;
+		long GetMaxWordWrapWidth() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetMaxWordWrapWidth(); }
@@ -911,8 +957,8 @@ namespace mad_python {
 			return res;
 		}
 
-		int GetUCharWidth( int uc ) {
-			int res = 0;
+		long GetUCharWidth( long uc ) {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetUCharWidth( ( ucs4_t )uc ); }
@@ -920,8 +966,8 @@ namespace mad_python {
 			return res;
 		}
 
-		int GetHexUCharWidth( int uc ) {
-			int res = 0;
+		long GetHexUCharWidth( long uc ) {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetHexUCharWidth( ( ucs4_t )uc ); }
@@ -929,8 +975,8 @@ namespace mad_python {
 			return res;
 		}
 
-		int GetUCharType( int uc ) {
-			int res = 0;
+		long GetUCharType( long uc ) {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetUCharType( ( ucs4_t )uc ); }
@@ -946,14 +992,14 @@ namespace mad_python {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->GetCaretPosition( line, subrow, column ); }
 
-			return mad_py::make_tuple( line, subrow, ( int )column );
+			return mad_py::make_tuple( line, subrow, ( long )column );
 		}
 
-		int GetCaretPositionB() {
-			int res = 0;
+		long GetCaretPositionB() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetCaretPosition(); }
+			{ res = ( long )g_ActiveMadEdit->GetCaretPosition(); }
 
 			return res;
 		}
@@ -967,11 +1013,11 @@ namespace mad_python {
 			return std::string( name.mb_str() );
 		}
 
-		int GetFileSize() {
-			int res = 0;
+		long GetFileSize() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetFileSize(); }
+			{ res = ( long )g_ActiveMadEdit->GetFileSize(); }
 
 			return res;
 		}
@@ -985,29 +1031,39 @@ namespace mad_python {
 			return res;
 		}
 
-		int GetSelectionSize() {
-			int res = 0;
+		long GetSelectionSize() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetSelectionSize(); }
+			{ res = ( long )g_ActiveMadEdit->GetSelectionSize(); }
 
 			return res;
 		}
 
-		int GetSelectionBeginPos() {
-			int res = 0;
+		long GetIndentCountByPos( long endpos ) {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetSelectionBeginPos(); }
+			{ res = g_ActiveMadEdit->GetIndentCountByPos( (wxFileOffset) endpos ); }
+
+			return res;
+			
+		}
+
+		long GetSelectionBeginPos() {
+			long res = 0;
+
+			if( g_ActiveMadEdit )
+			{ res = ( long )g_ActiveMadEdit->GetSelectionBeginPos(); }
 
 			return res;
 		}
 
-		int GetSelectionEndPos() {
-			int res = 0;
+		long GetSelectionEndPos() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetSelectionEndPos(); }
+			{ res = ( long )g_ActiveMadEdit->GetSelectionEndPos(); }
 
 			return res;
 		}
@@ -1027,8 +1083,14 @@ namespace mad_python {
 			{ g_ActiveMadEdit->SetSelection( ( wxFileOffset )beginpos, ( wxFileOffset )endpos, bCaretAtBeginPos ); }
 		}
 
-		int GetLineCount() {
-			int res = 0;
+		void SelectWholeLine() {
+
+			if( g_ActiveMadEdit )
+			{ g_ActiveMadEdit->SelectWholeLine(); }
+		}
+
+		long GetLineCount() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
 			{ res = g_ActiveMadEdit->GetLineCount(); }
@@ -1036,29 +1098,29 @@ namespace mad_python {
 			return res;
 		}
 
-		void ConvertNewLineType( int type ) {
+		void ConvertNewLineType( long type ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->ConvertNewLineType( ( MadNewLineType )type ); }
 		}
-		void SetInsertNewLineType( int type ) {
+		void SetInsertNewLineType( long type ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->SetInsertNewLineType( ( MadNewLineType )type ); }
 		}
 
-		int GetNewLineType() {
-			int res = 0;
+		long GetNewLineType() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetNewLineType(); }
+			{ res = ( long )g_ActiveMadEdit->GetNewLineType(); }
 
 			return res;
 		}
 
-		int GetInsertNewLineType() {
-			int res = 0;
+		long GetInsertNewLineType() {
+			long res = 0;
 
 			if( g_ActiveMadEdit )
-			{ res = ( int )g_ActiveMadEdit->GetInsertNewLineType(); }
+			{ res = ( long )g_ActiveMadEdit->GetInsertNewLineType(); }
 
 			return res;
 		}
@@ -1127,7 +1189,7 @@ namespace mad_python {
 
 		// line: zero based
 		// return true for full line, false for partial line
-		mad_py::tuple GetLine( int line, size_t maxlen = 0, bool ignoreBOM = true ) {
+		mad_py::tuple GetLine( long line, size_t maxlen = 0, bool ignoreBOM = true ) {
 			wxString wxWs;
 			bool ret = false;
 
@@ -1137,7 +1199,7 @@ namespace mad_python {
 			return mad_py::make_tuple( std::string( wxWs.mb_str() ), ret );
 		}
 
-		int GetLineByPos( long pos ) {
+		long GetLineByPos( long pos ) {
 			if( g_ActiveMadEdit )
 			{ return g_ActiveMadEdit->GetLineByPos( pos ); }
 			else
@@ -1262,6 +1324,11 @@ namespace mad_python {
 			{ g_ActiveMadEdit->Redo(); }
 		}
 
+		void Goto( long pos ) {
+			if( g_ActiveMadEdit )
+			{ g_ActiveMadEdit->SetCaretPosition( ( wxFileOffset )pos ); }
+		}
+
 		void SetCaretPosition( long pos, long selbeg = -1, long selend = -1 ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->SetCaretPosition( ( wxFileOffset )pos, ( wxFileOffset )selbeg, ( wxFileOffset )selend ); }
@@ -1285,10 +1352,10 @@ namespace mad_python {
 		}
 
 		// search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-		int FindTextNext( const std::string &text,
+		long FindTextNext( const std::string &text,
 						  bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false,
 						  long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = SR_EXPR_ERROR;
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !text.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxText( text.c_str(), *wxConvCurrent );
@@ -1303,10 +1370,10 @@ namespace mad_python {
 		}
 
 		// search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-		int FindTextPrevious( const std::string &text,
+		long FindTextPrevious( const std::string &text,
 							  bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false,
 							  long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = SR_EXPR_ERROR;
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !text.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxText( text.c_str(), *wxConvCurrent );
@@ -1321,8 +1388,8 @@ namespace mad_python {
 		}
 
 		// search in [rangeFrom, rangeTo], default in [CaretPos, EndOfDoc]
-		int FindHexNext( const std::string &hexstr, long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = SR_EXPR_ERROR;
+		long FindHexNext( const std::string &hexstr, long rangeFrom = -1, long rangeTo = -1 ) {
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !hexstr.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxHexExpr( hexstr.c_str(), *wxConvCurrent );
@@ -1334,8 +1401,8 @@ namespace mad_python {
 		}
 
 		// search in [rangeFrom, rangeTo], rangeFrom > rangeTo, default in [CaretPos, BeginOfDoc]
-		int FindHexPrevious( const std::string &hexstr, long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = SR_EXPR_ERROR;
+		long FindHexPrevious( const std::string &hexstr, long rangeFrom = -1, long rangeTo = -1 ) {
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !hexstr.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxHexExpr( hexstr.c_str(), *wxConvCurrent );
@@ -1347,7 +1414,7 @@ namespace mad_python {
 		}
 
 		// replace the selected text that must match expr
-		int ReplaceText( const std::string &expr, const std::string &fmt,
+		long ReplaceText( const std::string &expr, const std::string &fmt,
 						 bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false,
 						 long rangeFrom = -1, long rangeTo = -1 ) {
 			if( expr.empty() )
@@ -1364,7 +1431,7 @@ namespace mad_python {
 			return g_ActiveMadEdit->ReplaceText( wxExpr, wxFmt, bRegex, bCaseSensitive, bWholeWord, bDotMatchNewline, from, to );
 		}
 
-		int ReplaceHex( const std::string &expr, const std::string &fmt,
+		long ReplaceHex( const std::string &expr, const std::string &fmt,
 						long rangeFrom = -1, long rangeTo = -1 ) {
 			if( expr.empty() )
 			{ return RR_EXPR_ERROR; }
@@ -1378,10 +1445,10 @@ namespace mad_python {
 		}
 
 		// return the replaced count or SR_EXPR_ERROR
-		int ReplaceTextAll( const std::string &expr, const std::string &fmt,
+		long ReplaceTextAll( const std::string &expr, const std::string &fmt,
 							bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false, 
 							long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = 0;
+			long ok = 0;
 
 			if( ( !expr.empty() ) && ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) ) {
 				wxString wxExpr( expr.c_str(), *wxConvCurrent ), wxFmt( fmt.c_str(), *wxConvCurrent );
@@ -1395,9 +1462,9 @@ namespace mad_python {
 			return ok;
 		}
 
-		int ReplaceHexAll( const std::string &expr, const std::string &fmt,
+		long ReplaceHexAll( const std::string &expr, const std::string &fmt,
 						   long rangeFrom = -1, long rangeTo = -1 ) {
-			int ok = 0;
+			long ok = 0;
 
 			if( ( !expr.empty() ) && ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) ) {
 				wxString wxExpr( expr.c_str(), *wxConvCurrent ), wxFmt( fmt.c_str(), *wxConvCurrent );
@@ -1410,8 +1477,8 @@ namespace mad_python {
 #ifndef PYMADEDIT_DLL
 		// list the matched data to pbegpos & pendpos
 		// return the found count or SR_EXPR_ERROR
-		int FindTextAll( const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false, bool showresults = true ) {
-			int ok = SR_EXPR_ERROR;
+		long FindTextAll( const std::string &expr, bool bRegex, bool bCaseSensitive, bool bWholeWord, bool bDotMatchNewline = false, bool showresults = true ) {
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !expr.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxExpr( expr.c_str(), *wxConvCurrent ), fmt;
@@ -1425,17 +1492,19 @@ namespace mad_python {
 
 				if( ok >= 0 && showresults ) {
 					static wxString text( _( "Search Results" ) );
-					int pid = g_MainFrame->m_InfoNotebook->GetPageIndex( g_MainFrame->m_FindInFilesResults );
+					long pid = g_MainFrame->m_InfoNotebook->GetPageIndex( g_MainFrame->m_FindInFilesResults );
 					g_MainFrame->m_InfoNotebook->SetPageText( pid, text );
-					DisplayFindAllResult( begpos, endpos, madedit );
+					wxString strtobesearch = _("Search \"") + expr + wxT("\" ") + wxString::Format( _("(%s hits in 1 file)"), ( wxLongLong( ok ).ToString().c_str() ) );
+					wxTreeItemId myroot = g_MainFrame->NewSearchSession(strtobesearch);
+					DisplayFindAllResult( myroot, begpos, endpos, madedit );
 				}
 			}
 
 			return ok;
 		}
 
-		int FindHexAll( const std::string &expr, bool showresults = true ) {
-			int ok = SR_EXPR_ERROR;
+		long FindHexAll( const std::string &expr, bool showresults = true ) {
+			long ok = SR_EXPR_ERROR;
 
 			if( ( !expr.empty() ) && ( g_ActiveMadEdit ) ) {
 				wxString wxExpr( expr.c_str(), *wxConvCurrent ), fmt;
@@ -1446,9 +1515,12 @@ namespace mad_python {
 
 				if( ok >= 0 && showresults ) {
 					static wxString text( _( "Search Results" ) );
-					int pid = g_MainFrame->m_InfoNotebook->GetPageIndex( g_MainFrame->m_FindInFilesResults );
+					long pid = g_MainFrame->m_InfoNotebook->GetPageIndex( g_MainFrame->m_FindInFilesResults );
 					g_MainFrame->m_InfoNotebook->SetPageText( pid, text );
-					DisplayFindAllResult( begpos, endpos, madedit );
+					
+					wxString strtobesearch = _("Search \"") + expr + wxT("\" ") + wxString::Format( _("(%s hits in 1 file)"), ( wxLongLong( ok ).ToString().c_str() ) );
+					wxTreeItemId myroot = g_MainFrame->NewSearchSession(strtobesearch);
+					DisplayFindAllResult( myroot, begpos, endpos, madedit );
 				}
 			}
 
@@ -1492,7 +1564,7 @@ namespace mad_python {
 		}
 
 		// restore pos in Reload(), ConvertEncoding()
-		void RestorePosition( long pos, int toprow ) {
+		void RestorePosition( long pos, long toprow ) {
 			if( g_ActiveMadEdit ) {
 				wxFileOffset wxPos = pos;
 				g_ActiveMadEdit->RestorePosition( wxPos, toprow );
@@ -1502,7 +1574,7 @@ namespace mad_python {
 		// write back to the original FileName
 		// if FileName is empty, ask the user to get filename
 		// return wxID_YES(Saved), wxID_NO(Not Saved), or wxID_CANCEL
-		int Save( bool ask, const std::string &title, bool saveas ) {
+		long Save( bool ask, const std::string &title, bool saveas ) {
 			if( ( g_ActiveMadEdit ) && ( !title.empty() ) && ( !g_ActiveMadEdit->IsReadOnly() ) ) {
 				wxString wxTitle( title.c_str(), *wxConvCurrent );
 				return g_ActiveMadEdit->Save( ask, wxTitle, saveas );
@@ -1528,7 +1600,7 @@ namespace mad_python {
 		}
 
 		//----------
-		void ConvertEncoding( const std::string &newenc, int flag ) {
+		void ConvertEncoding( const std::string &newenc, long flag ) {
 			if( ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) ) {
 				if( newenc.empty() )
 				{ return; }
@@ -1539,7 +1611,7 @@ namespace mad_python {
 			}
 		}
 
-		void ConvertChineseA( int flag ) {
+		void ConvertChineseA( long flag ) {
 			if( ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) )
 			{ g_ActiveMadEdit->ConvertChinese( ( MadConvertEncodingFlag )flag ); }
 		}
@@ -1630,7 +1702,7 @@ namespace mad_python {
 		}
 
 		// startline<0 : sort all lines otherwise sort [beginline, endline]
-		void SortLines( MadSortFlags flags, int beginline, int endline ) {
+		void SortLines( MadSortFlags flags, long beginline, long endline ) {
 			if( ( g_ActiveMadEdit ) && ( !g_ActiveMadEdit->IsReadOnly() ) )
 			{ g_ActiveMadEdit->SortLines( flags, beginline, endline ); }
 		}
@@ -1682,7 +1754,7 @@ namespace mad_python {
 
 			return mad_py::make_tuple( words, chars, spaces, lines, halfwidths, fullwidths, std::string( str.mb_str() ) );
 		}
-		void SetColumnSelection( int startlineid, int startxpos, int hlines, int wlines ) {
+		void SetColumnSelection( long startlineid, long startxpos, long hlines, long wlines ) {
 			if( g_ActiveMadEdit )
 			{ g_ActiveMadEdit->SetColumnSelection( startlineid, startxpos, hlines, wlines ); }
 		}
@@ -1726,7 +1798,20 @@ namespace mad_python {
 			}
 		}
 	};
-}
+
+	int MsgBox(const std::string& message, const std::string& caption = "Message", long style = wxOK | wxCENTRE)
+	{
+		wxString wxMessage( message.c_str(), *wxConvCurrent ), wxCaption( caption.c_str(), *wxConvCurrent );
+		return MadMessageBox( wxMessage, wxCaption, style );
+	}
+
+	const std::string InputBox(const std::string& message, const std::string& caption = "Input Text")
+	{
+		wxString wxMessage( message.c_str(), *wxConvCurrent ), wxCaption( caption.c_str(), *wxConvCurrent );
+		wxString input = wxGetTextFromUser( wxMessage, wxCaption );
+		return std::string( input.mb_str() );
+	}
+};
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( FindTextNext_member_overloads, FindTextNext, 4, 7 )
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( FindTextPrevious_member_overloads, FindTextPrevious, 4, 7 )
@@ -1746,6 +1831,8 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( GetLine_member_overloads, GetLine, 1, 3 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( GetText_member_overloads, GetText, 0, 1 )
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( SetSelection_member_overloads, SetSelection, 2, 3 )
 
+BOOST_PYTHON_FUNCTION_OVERLOADS( InputBox_overloads, mad_python::InputBox, 1, 2 )
+BOOST_PYTHON_FUNCTION_OVERLOADS( MsgBox_overloads, mad_python::MsgBox, 1, 3 )
 
 BOOST_PYTHON_MODULE( madpython ) {
 	using namespace mad_python;
@@ -1806,6 +1893,8 @@ BOOST_PYTHON_MODULE( madpython ) {
 	.def( "SetAutoIndent", &PyMadEdit::SetAutoIndent, "" )
 	.def( "SetAutoCompletePair", &PyMadEdit::SetAutoCompletePair, "" )
 	.def( "GetAutoCompletePair", &PyMadEdit::GetAutoCompletePair, "" )
+	.def( "SetInsertPairForSelection", &PyMadEdit::SetInsertPairForSelection, "" )
+	.def( "GetInsertPairForSelection", &PyMadEdit::GetInsertPairForSelection, "" )
 	.def( "SetInsertMode", &PyMadEdit::SetInsertMode, "" )
 	.def( "GetInsertMode", &PyMadEdit::GetInsertMode, "" )
 	.def( "SetCaretType", &PyMadEdit::SetCaretType, "" )
@@ -1840,6 +1929,7 @@ BOOST_PYTHON_MODULE( madpython ) {
 	.def( "IsTextFile", &PyMadEdit::IsTextFile, "" )
 	.def( "GetSelText", &PyMadEdit::GetSelText, return_value_policy<return_by_value>(), "" )
 	.def( "SetText", &PyMadEdit::SetText, "" )
+	.def( "Goto", &PyMadEdit::Goto, "" )
 	.def( "GetLineByPos", &PyMadEdit::GetLineByPos, "" )
 	.def( "GetSelHexString", &PyMadEdit::GetSelHexString, "" )
 	.def( "GetWordFromCaretPos", &PyMadEdit::GetWordFromCaretPos, return_value_policy<return_by_value>(), "" )
@@ -1910,6 +2000,8 @@ BOOST_PYTHON_MODULE( madpython ) {
 	.def( "XMLFormat", &PyMadEdit::XMLFormat, "" )
 	.def( "Markdown2Html", &PyMadEdit::Markdown2Html, "" )
 	.def( "Html2PlainText", &PyMadEdit::Html2PlainText, "" )
+	.def( "SelectWholeLine", &PyMadEdit::SelectWholeLine, "" )
+	.def( "GetIndentCountByPos", &PyMadEdit::GetIndentCountByPos, "" )
 	.def( "FindTextNext", &PyMadEdit::FindTextNext, FindTextNext_member_overloads( args( "text", "bRegex", "bCaseSensitive", "bWholeWord", "bDotMatchNewline", "rangeFrom", "rangeTo" ), "Doc string" )[return_value_policy<return_by_value>()] )
 	.def( "FindTextPrevious", &PyMadEdit::FindTextPrevious, FindTextPrevious_member_overloads( args( "text", "bRegex", "bCaseSensitive", "bWholeWord", "bDotMatchNewline", "rangeFrom", "rangeTo" ), "Doc string" )[return_value_policy<return_by_value>()] )
 	.def( "FindHexNext", &PyMadEdit::FindHexNext, FindHexNext_member_overloads( args( "hexstr", "rangeFrom", "rangeTo" ), "Doc string" )[return_value_policy<return_by_value>()] )
@@ -2039,8 +2131,8 @@ BOOST_PYTHON_MODULE( madpython ) {
 	.value( "C2JK", cefC2JK ) // Trad&Simp Chinese   ==> Japanese Kanji
 	;
 	enum_<MadNumberingStepType>( "MadNumberingStepType" )
-	.value( "Linear", nstLinear )
-	.value( "Exponential", nstExponential )
+	.value( "Linear", mnstLinear )
+	.value( "Exponential", mnstExponential )
 	;
 	enum_<MadNumberFormat>( "MadNumberFormat" )
 	.value( "DEC", nfDEC )
@@ -2052,5 +2144,30 @@ BOOST_PYTHON_MODULE( madpython ) {
 	.value( "Left", naLeft )
 	.value( "Right", naRight )
 	;
+	enum_<MadMsgBoxStyle>( "MadDlgStyle" )
+	.value( "YES",						MAD_YES 				  )
+	.value( "OK",						MAD_OK					  )
+	.value( "NO",						MAD_NO					  )
+	.value( "CANCEL",					MAD_CANCEL				  )
+	.value( "APPLY",					MAD_APPLY				  )
+	.value( "CLOSE",					MAD_CLOSE				  )
+	.value( "NO_DEFAULT",				MAD_NO_DEFAULT			   )/* only valid with wxYES_NO */ 
+	.value( "CANCEL_DEFAULT",			MAD_CANCEL_DEFAULT		   )/* only valid with wxCANCEL */ 
+	.value( "ICON_WARNING_EXCLAMATION", MAD_ICON_WARNING_EXCLAMATION)
+	.value( "ICON_ERROR_HAND_STOP", 	MAD_ICON_ERROR_HAND_STOP  )
+	.value( "ICON_QUESTION",			MAD_ICON_QUESTION		  )
+	.value( "ICON_INFORMATION", 		MAD_ICON_INFORMATION	  )
+	.value( "ICON_NONE",				MAD_ICON_NONE	)
+	.value( "CENTRE",				    MAD_CENTRE	)
+	;
+	enum_<MadMsgBoxRet>( "MadMsgBoxRet" )
+	.value( "OK", MADRET_OK )
+	.value( "CANCEL", MADRET_CANCEL )
+	.value( "APPLY", MADRET_APPLY )
+	.value( "YES", MADRET_YES )
+	.value( "NO", MADRET_NO )
+	;
+	def( "MsgBox", &MsgBox, MsgBox_overloads( args( "message", "caption", "style" ), "Doc string" ) );
+	def( "InputBox", &InputBox, InputBox_overloads( args( "message", "caption" ), "Doc string" ) );
 }
 #endif //__MADPYTHON__

@@ -18,6 +18,7 @@
 #include <wx/image.h>
 #include <wx/dataobj.h>
 #include <wx/tokenzr.h>
+#include <wx/menu.h>
 
 #ifdef __WXGTK__
 	#   include "clipbrd_gtk.h"
@@ -82,6 +83,7 @@ using std::list;
 static inline int wxChCmp( const wchar_t * wchStr, const wxString & wsStr );
 extern bool IsMacroRecording();
 extern void RecordAsMadMacro( MadEdit *, const wxString&, bool=false);
+
 MadKeyBindings MadEdit::ms_KeyBindings;
 
 const int HexModeMaxColumns = 78;
@@ -777,6 +779,8 @@ MadEdit::MadEdit( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxS
 	m_HScrollBar = new wxScrollBar( this, ID_HSCROLLBAR, wxDefaultPosition, wxDefaultSize, wxSB_HORIZONTAL );
 	m_VScrollBar->GetSize( &m_VSBWidth, &m_VSBHeight );
 	m_HScrollBar->GetSize( &m_HSBWidth, &m_HSBHeight );
+	m_VScrollBar->Bind(wxEVT_RIGHT_UP, &MadEdit::OnVSMouseRightUp, this);
+	m_HScrollBar->Bind(wxEVT_RIGHT_UP, &MadEdit::OnHSMouseRightUp, this);
 
 	if( !ArrowCursor.Ok() )
 	{
@@ -797,6 +801,9 @@ MadEdit::MadEdit( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxS
 	wxString defaultenc;
 	m_Config->Read( wxT( "DefaultEncoding" ), &defaultenc );
 	m_Syntax = MadSyntax::GetSyntaxByTitle( MadPlainTextTitle );
+	wxASSERT( m_Syntax != 0 );
+	if(m_SpellCheckerPtr)
+		m_SpellCheckerPtr->SetSyntaxDictionary(m_Syntax->GetSyntaxDictionary());
 	m_Encoding = new MadEncoding( defaultenc );
 	m_Lines = new MadLines( this );
 	// set default value
@@ -855,13 +862,11 @@ MadEdit::MadEdit( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxS
 	m_SelectionEnd = &m_SelectionPos2;
 	m_RepaintAll = true;
 	m_RepaintSelection = false;
-	m_FixedWidthMode = m_Config->ReadBool( wxT( "FixedWidthMode" ), false );
+	m_FixedWidthMode = m_Config->ReadBool( wxT( "FixedWidthMode" ), true );
 	m_EditMode = emTextMode;
 	m_DoRecountLineWidth = false;
 	m_OldWidth = m_OldHeight = 0;
-	long mode;
-	mode = m_Config->ReadLong( wxT( "WordWrapMode" ), ( long )wwmNoWrap );
-	m_WordWrapMode = ( MadWordWrapMode )mode;
+	m_WordWrapMode = (MadWordWrapMode) m_Config->ReadLong( wxT( "WordWrapMode" ), ( long )wwmNoWrap );
 	m_TopRow = 0;
 	m_DrawingXPos = 0;
 	m_LineSpacing = m_Config->ReadLong( wxT( "LineSpacing" ), 100 );
@@ -883,11 +888,16 @@ MadEdit::MadEdit( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxS
 	m_MarkActiveLine    = m_Config->ReadBool( wxT( "MarkActiveLine" ),     true );
 	m_MarkBracePair     = m_Config->ReadBool( wxT( "MarkBracePair" ),      true );
 	m_AutoCompletePair  = m_Config->ReadBool( wxT( "AutoCompletePair" ),   false );
+	m_InsertPairForSelection = (m_AutoCompletePair && m_Config->ReadBool(wxT("InsertPairForSelction"), false));
 	m_AutoCompleteRightChar = 0;
 	m_AutoCompletePos = 0;
-	m_LeftBrace_rowid   = m_RightBrace_rowid = -1;
+	m_LeftBrace_rowid = m_RightBrace_rowid = -1;
+	m_VSMousePos = 0;
 	m_SpellCheck = false;
 	m_BookmarkInSearch = false;
+	m_TypewriterMode = m_Config->ReadBool( wxT( "TypewriterMode" ),   false );
+	m_LDClickHighlight = m_Config->ReadBool( wxT( "LDoubleClickHighlight" ), true );
+	m_HasBackup = true;
 #ifndef PYMADEDIT_DLL
 	m_Config->Read( wxT( "SpellCheck" ),   &m_SpellCheck, true );
 
@@ -916,12 +926,16 @@ MadEdit::MadEdit( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxS
 	m_HexRowCount = 0;
 	m_HexDigitBitmap = NULL;
 	m_LoadingFile = false;
+	m_ModReloaded = true;
 	m_OnSelectionChanged = NULL;
 	m_OnStatusChanged = NULL;
 	m_OnToggleWindow = NULL;
 	m_OnMouseRightUp = NULL;
+	m_OnVSMouseRightUp = NULL;
+	m_OnHSMouseRightUp = NULL;
 	m_OnActivate = NULL;
 	// set fonts
+	m_TextFontSpaceWidth = 10;
 	memset( m_TextFontWidths, 0, sizeof( m_TextFontWidths ) );
 	memset( m_HexFontWidths, 0, sizeof( m_HexFontWidths ) );
 	wxString fontname;
@@ -1363,7 +1377,7 @@ void MadEdit::UpdateCaret( MadCaretPos &caretPos,
 
 			if( uc == 0x09 )
 			{
-				int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+				int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 				width = rowwidth - xpos;
 				tabwidth -= ( xpos % tabwidth );
 
@@ -1466,7 +1480,7 @@ void MadEdit::UpdateCaretByXPos( int xPos, MadCaretPos &caretPos,
 
 		if( uc == 0x09 )
 		{
-			int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+			int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 			width = rowwidth - xpos;
 			tabwidth -= ( xpos % tabwidth );
 
@@ -1496,7 +1510,7 @@ void MadEdit::UpdateCaretByXPos( int xPos, MadCaretPos &caretPos,
 
 	if( restxpos > 0 && m_EditMode == emColumnMode )
 	{
-		int spacewidth = GetUCharWidth( 0x20 );
+		int spacewidth = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 		caretPos.extraspaces = restxpos / spacewidth;
 		restxpos -= int( caretPos.extraspaces * spacewidth );
 
@@ -1888,7 +1902,7 @@ void MadEdit::PaintText( wxDC *dc, int x, int y, const ucs4_t *text, const int *
 	{
 		wxColour color( 255, 0, 0 ); /*RED*/
 		int delta = 3, yd[2] = {3, 0};
-		dc->SetPen( *wxThePenList->FindOrCreatePen( color, 1, wxSOLID/*wxDOT*/ ) );
+		dc->SetPen( *wxThePenList->FindOrCreatePen( color, 1, wxPENSTYLE_SOLID/*wxDOT*/ ) );
 		int nowleft = ( x > minleft ? x : minleft );
 
 		for( int i = 0; delta < totalwidth; ++i )
@@ -1924,7 +1938,7 @@ int MadEdit::GetIndentCountByPos( wxFileOffset endpos )
 	return count;
 }
 
-void MadEdit::WholeLineSelection()
+void MadEdit::SelectWholeLine()
 {
 	SetSelection( m_SelectionBegin->pos - m_SelectionBegin->linepos, m_SelectionEnd->pos - m_SelectionEnd->linepos + m_SelectionEnd->iter->m_Size );
 }
@@ -2021,7 +2035,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 	int SelLeft, SelRight;
 	int xpos1 = 0, xpos2 = 0;
 	bool reverseLineNum = false;
-	const int wspace = GetUCharWidth( 0x20 );
+	const int wspace = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 
 	if( m_DisplayLineNumber )
 	{
@@ -2030,7 +2044,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 
 		if( m_Syntax->nw_BgColor != bgcolor )
 		{
-			dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+			dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 			dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 			dc->DrawRectangle( rect.GetLeft(), rect.GetTop(), m_LineNumberAreaWidth, rect.GetHeight() );
 		}
@@ -2055,7 +2069,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 				if( c != current_bgcolor )
 				{
 					current_bgcolor = c;
-					dc->SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxSOLID ) );
+					dc->SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxPENSTYLE_SOLID ) );
 					dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( c ) );
 					dc->DrawRectangle( minleft, row_top, rectright - minleft, m_RowHeight );
 				}
@@ -2102,12 +2116,12 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 							if( m_Syntax->nw_BgColor != current_bgcolor )
 							{
 								current_bgcolor = m_Syntax->nw_BgColor;
-								dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+								dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 								dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 								dc->DrawRectangle( ( left > minleft ) ? left : minleft, row_top, rectright - left, m_RowHeight );
 							}
 
-							dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_Color, 1, wxSOLID ) );
+							dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_Color, 1, wxPENSTYLE_SOLID ) );
 							int idx = 0;
 							int x0 = left;
 
@@ -2158,7 +2172,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 							{
 								static wxColour bgColor( 0x0, 0xff, 0xff );
 								current_bgcolor = bgColor;//wxTheColourDatabase->Find(wxString(wxT("PALE GREEN")));
-								dc->SetPen( *wxThePenList->FindOrCreatePen( current_bgcolor, 1, wxSOLID ) );
+								dc->SetPen( *wxThePenList->FindOrCreatePen( current_bgcolor, 1, wxPENSTYLE_SOLID ) );
 								dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( current_bgcolor ) );
 								dc->DrawRectangle( left, row_top, rectright - left, m_RowHeight );
 							}
@@ -2167,7 +2181,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 								if( m_Syntax->nw_BgColor != current_bgcolor )
 								{
 									current_bgcolor = m_Syntax->nw_BgColor;
-									dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+									dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 									dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 									dc->DrawRectangle( left, row_top, rectright - left, m_RowHeight );
 								}
@@ -2263,12 +2277,12 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 				if( m_Syntax->nw_BgColor != current_bgcolor )
 				{
 					current_bgcolor = m_Syntax->nw_BgColor;
-					dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+					dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 					dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 					dc->DrawRectangle( left, row_top, rectright - left, m_RowHeight );
 				}
 
-				dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_Color, 1, wxSOLID ) );
+				dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_Color, 1, wxPENSTYLE_SOLID ) );
 				dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_Color ) );
 
 				switch( m_Lines->GetNewLine( lineiter ) )
@@ -2305,7 +2319,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 				if( c != current_bgcolor )
 				{
 					dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( c ) );
-					dc->SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxSOLID ) );
+					dc->SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxPENSTYLE_SOLID ) );
 					dc->DrawRectangle( left, row_top, rectright - left, m_RowHeight );
 				}
 			}
@@ -2391,7 +2405,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 
 					if( m_DrawingXPos && m_Syntax->nw_BgColor != bgcolor )
 					{
-						dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+						dc->SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 						dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 						dc->DrawRectangle( l, row_top, m_LineNumberAreaWidth, m_RowHeight );
 					}
@@ -2443,7 +2457,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 
 							if( m_DrawingXPos )
 							{
-								dc->SetPen( *wxThePenList->FindOrCreatePen( bm_BgColor, 1, wxSOLID ) );
+								dc->SetPen( *wxThePenList->FindOrCreatePen( bm_BgColor, 1, wxPENSTYLE_SOLID ) );
 								dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( bm_BgColor ) );
 								dc->DrawRectangle( tl + m_LineNumberAreaWidth, row_top, m_BookmarkWidth + 1, m_RowHeight );
 							}
@@ -2451,7 +2465,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 							// add: gogo, 27.09.2009
 							if( m_Lines->m_LineList.IsBookmarked( lineiter ) )
 							{
-								dc->SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxSOLID ) );
+								dc->SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxPENSTYLE_SOLID ) );
 								m_Syntax->SetAttributes( aeBookmark );
 								dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( /*wxColour(0,0,192)*/m_Syntax->nw_Color ) );
 								dc->DrawCircle( tl + m_LineNumberAreaWidth + m_BookmarkWidth / 2, row_top + m_RowHeight  / 2,
@@ -2466,7 +2480,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 					{
 						if( m_DrawingXPos )
 						{
-							dc->SetPen( *wxThePenList->FindOrCreatePen( bm_BgColor, 1, wxSOLID ) );
+							dc->SetPen( *wxThePenList->FindOrCreatePen( bm_BgColor, 1, wxPENSTYLE_SOLID ) );
 							dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( bm_BgColor ) );
 							dc->DrawRectangle( l, row_top, m_BookmarkWidth + 1, m_RowHeight );
 						}
@@ -2474,7 +2488,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 						// add: gogo, 27.09.2009
 						if( m_Lines->m_LineList.IsBookmarked( lineiter ) )
 						{
-							dc->SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxSOLID ) );
+							dc->SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxPENSTYLE_SOLID ) );
 							m_Syntax->SetAttributes( aeBookmark );
 							dc->SetBrush( *wxTheBrushList->FindOrCreateBrush( /*wxColour(0,0,192)*/m_Syntax->nw_Color ) );
 							dc->DrawCircle( l + m_BookmarkWidth / 2, row_top + m_RowHeight / 2,
@@ -2510,7 +2524,7 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 
 		if( m_DisplayLineNumber || m_DisplayBookmark )
 		{
-			dc->SetPen( *wxThePenList->FindOrCreatePen( *wxBLACK, 1, wxSOLID ) );
+			dc->SetPen( *wxThePenList->FindOrCreatePen( *wxBLACK, 1, wxPENSTYLE_SOLID ) );
 
 			// draw a line between LineNumberArea and Text
 			if( m_DisplayLineNumber )
@@ -2524,18 +2538,18 @@ void MadEdit::PaintTextLines( wxDC *dc, const wxRect &rect, int toprow, int rowc
 
 		if( !InPrinting() && m_Display80ColHint )
 		{
-			int width = 80 * wspace;
+			int width = 80 * m_TextFontAveCharWidth;
 			x1 += width + m_LeftMarginWidth - m_DrawingXPos;
 
 			if( x1 > minleft )
 			{
 				if( *wxLIGHT_GREY != bgcolor )
 				{
-					dc->SetPen( *wxThePenList->FindOrCreatePen( *wxLIGHT_GREY, 1, wxSOLID ) );
+					dc->SetPen( *wxThePenList->FindOrCreatePen( *wxLIGHT_GREY, 1, wxPENSTYLE_SOLID ) );
 				}
 				else
 				{
-					dc->SetPen( *wxThePenList->FindOrCreatePen( wxColour( 128, 128, 128 ), 1, wxSOLID ) );
+					dc->SetPen( *wxThePenList->FindOrCreatePen( wxColour( 128, 128, 128 ), 1, wxPENSTYLE_SOLID ) );
 				}
 
 				dc->DrawLine( x1, y, x1, y + rect.GetHeight() );
@@ -2600,7 +2614,7 @@ void MadEdit::PaintHexLines( wxDC *dc, wxRect &rect, int toprow, int rowcount, b
 	dc->SetTextForeground( m_Syntax->nw_Color );
 	dc->SetFont( *m_HexFont );
 	wxColor &markcolor = m_Syntax->GetAttributes( aeActiveLine )->color;
-	dc->SetPen( *wxThePenList->FindOrCreatePen( markcolor, 1, wxSOLID ) );
+	dc->SetPen( *wxThePenList->FindOrCreatePen( markcolor, 1, wxPENSTYLE_SOLID ) );
 
 	if( painthead )
 	{
@@ -3513,7 +3527,7 @@ void MadEdit::UpdateAppearance()
 
 	m_VisibleRowCount = m_CompleteRowCount;
 
-	if( m_VisibleRowCount * m_RowHeight < m_ClientHeight )   ++m_VisibleRowCount;
+	if( m_VisibleRowCount * m_RowHeight < m_ClientHeight ) ++m_VisibleRowCount;
 
 	m_PageRowCount = m_CompleteRowCount;
 
@@ -3586,7 +3600,7 @@ void MadEdit::UpdateScrollBarPos()
 
 		if( m_EditMode == emColumnMode )
 		{
-			m_MaxColumnRowWidth -= GetUCharWidth( 0x20 );
+			m_MaxColumnRowWidth -= m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 			int w = m_ClientWidth - ( m_LineNumberAreaWidth + m_BookmarkWidth + m_LeftMarginWidth + m_RightMarginWidth );
 
 			if( m_MaxColumnRowWidth < w )
@@ -3861,7 +3875,7 @@ wxFileOffset MadEdit::GetColumnSelection( wxString *ws )
 
 				if( uc == 0x09 )
 				{
-					int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+					int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 					ucwidth = rowwidth - nowxpos;
 					tabwidth -= ( nowxpos % tabwidth );
 
@@ -4179,7 +4193,7 @@ void MadEdit::SelectLineFromCaretPos( wxString *ws, bool caretToBegOfSel )
 		startpos = m_CaretPos.pos - m_CaretPos.linepos +
 				   m_CaretPos.iter->m_RowIndices[0].m_Start; // exclude BOM
 		endpos = m_CaretPos.pos - m_CaretPos.linepos +
-				 m_CaretPos.iter->m_RowIndices[1].m_Start; ;
+				 m_CaretPos.iter->m_Size;//m_RowIndices[1].m_Start;
 	}
 
 	m_Selection = true;
@@ -5041,7 +5055,7 @@ void MadEdit::UCStoBlock( const ucs4_t *ucs, size_t count, MadBlock & block )
 	while( --count > 0 );
 }
 
-void MadEdit::InsertString( const ucs4_t *ucs, size_t count, bool bColumnEditing, bool moveCaret, bool bSelText )
+void MadEdit::InsertString( const ucs4_t *ucs, size_t count, bool bColumnEditing, bool moveCaret, bool bSelText, bool insert/* = false*/ )
 {
 	if( IsReadOnly() ) // || (m_EditMode == emHexMode && m_CaretAtHexArea))
 		return;
@@ -5107,9 +5121,18 @@ void MadEdit::InsertString( const ucs4_t *ucs, size_t count, bool bColumnEditing
 		{
 			if( !m_DragDrop )
 			{
+				bool replace = (!(insert && m_InsertMode && m_InsertPairForSelection && m_Selection)), seled = m_Selection;
 				MadOverwriteUndoData *oudata = new MadOverwriteUndoData();
 				oudata->m_Pos = m_SelectionBegin->pos;
-				oudata->m_DelSize = m_SelectionEnd->pos - m_SelectionBegin->pos;
+				if(replace)
+				{
+					oudata->m_DelSize = m_SelectionEnd->pos - m_SelectionBegin->pos;
+				}
+				else
+				{
+					oudata->m_DelSize = 0;
+				}
+
 				UCStoBlock( ucs, count, blk );
 				oudata->m_InsSize = blk.m_Size;
 				oudata->m_InsData.push_back( blk );
@@ -5140,9 +5163,16 @@ void MadEdit::InsertString( const ucs4_t *ucs, size_t count, bool bColumnEditing
 				if( IsTextFile() )
 				{
 					m_Lines->Reformat( lit, lit );
+					int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
 					m_CaretPos.pos = undo->m_CaretPosAfter;
 					UpdateCaretByPos( m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos );
 					AppearCaret();
+					
+					if(m_TypewriterMode && (m_EditMode == emTextMode))
+					{
+						m_TopRow += (m_CaretPos.lineid - oldlineid) + (m_CaretPos.subrowid - oldsubrowid);
+					}
+
 					UpdateScrollBarPos();
 
 					if( m_EditMode == emHexMode )
@@ -5429,12 +5459,17 @@ void MadEdit::InsertString( const ucs4_t *ucs, size_t count, bool bColumnEditing
 			if( IsTextFile() )
 			{
 				size_t count = m_Lines->Reformat( lit, lit );
+				int subrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
 				m_CaretPos.pos = undo->m_CaretPosAfter;
 				UpdateCaretByPos( m_CaretPos, m_ActiveRowUChars, m_ActiveRowWidths, m_CaretRowUCharPos );
 
 				if( m_EditMode == emHexMode || oldrows != m_Lines->m_RowCount
 						|| oldlines != m_Lines->m_LineCount || count > 1 )
 				{
+					if(m_TypewriterMode && (m_EditMode == emTextMode)) //Wrapped
+					{
+						++m_TopRow;
+					}
 					m_RepaintAll = true;
 				}
 				else
@@ -5521,7 +5556,7 @@ wxFileOffset MadEdit::GetRowposXPos( int &xpos, MadLineIterator & lit,
 
 			if( uc == 0x09 )
 			{
-				int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+				int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 				ucwidth = rowwidth - nowxpos;
 				tabwidth -= ( nowxpos % tabwidth );
 
@@ -5622,7 +5657,7 @@ void MadEdit::InsertColumnString( const ucs4_t *ucs, size_t count, int linecount
 		if( xpos > 0 )
 		{
 			int spaces = 0;
-			int sw = GetUCharWidth( 0x20 );
+			int sw = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 			spaces = xpos / sw;
 			xpos -= spaces * sw;
 
@@ -5747,7 +5782,7 @@ void MadEdit::InsertColumnString( const ucs4_t *ucs, size_t count, int linecount
 			if( ulen > 0 && xpos > 0 )
 			{
 				int spaces;
-				int sw = GetUCharWidth( 0x20 );
+				int sw = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 				spaces = xpos / sw;
 				xpos -= spaces * sw;
 
@@ -5834,7 +5869,7 @@ void MadEdit::InsertColumnString( const ucs4_t *ucs, size_t count, int linecount
 			else
 				if( bSelText && lines == 1 )
 				{
-					int sw = GetUCharWidth( 0x20 );
+					int sw = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 					int xpos1 = m_SelLeftXPos, xpos2 = m_SelRightXPos;
 					int spaces1 = 0;
 
@@ -6069,7 +6104,7 @@ void MadEdit::InsertColumnString( const ucs4_t *ucs, size_t count, int linecount
 						if( xpos > 0 )
 						{
 							int spaces = 0;
-							int sw = GetUCharWidth( 0x20 );
+							int sw = m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 							spaces = xpos / sw;
 							xpos -= spaces * sw;
 
@@ -6336,7 +6371,7 @@ MadUndo *MadEdit::DeleteSelection( bool bCorrectCaretPos, vector <int> *rpos, bo
 
 					if( uc == 0x09 )
 					{
-						int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+						int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 						ucwidth = rowwidth - nowxpos;
 						tabwidth -= ( nowxpos % tabwidth );
 
@@ -7574,91 +7609,104 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 	case ecHighlightWords:
 		{
 			HighlightWords();
-			//RecordAsMadMacro(this, wxString(wxT("HighlightWords()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("HighlightWords()")));
 		}
 		break;
 
 	case ecSelectAll:
 		{
 			SelectAll();
-			//RecordAsMadMacro(this, wxString(wxT("SelectAll()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("SelectAll()")));
 		}
 		break;
 
 	case ecCut:
 		{
 			CutToClipboard();
-			//RecordAsMadMacro(this, wxString(wxT("CutToClipboard()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro( this, wxString( wxT( "CutToClipboard()" ) ) );
 		}
 		break;
 
 	case ecCopy:
 		{
 			CopyToClipboard();
-			//RecordAsMadMacro(this, wxString(wxT("CopyToClipboard()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("CopyToClipboard()")));
 		}
 		break;
 
 	case ecPaste:
 		{
 			PasteFromClipboard();
-			//RecordAsMadMacro(this, wxString(wxT("PasteFromClipboard()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("PasteFromClipboard()")));
 		}
 		break;
 
 	case ecTextMode:
 		{
 			SetEditMode( emTextMode );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emTextMode));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emTextMode));
 		}
 		break;
 
 	case ecColumnMode:
 		{
 			SetEditMode( emColumnMode );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emColumnMode));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emColumnMode));
 		}
 		break;
 
 	case ecHexMode:
 		{
 			SetEditMode( emHexMode );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emHexMode));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetEditMode(%d)"), emHexMode));
 		}
 		break;
 
 	case ecNoWrap:
 		{
 			SetWordWrapMode( wwmNoWrap );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmNoWrap));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmNoWrap));
 		}
 		break;
 
 	case ecWrapByWindow:
 		{
 			SetWordWrapMode( wwmWrapByWindow );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByWindow));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByWindow));
 		}
 		break;
 
 	case ecWrapByColumn:
 		{
 			SetWordWrapMode( wwmWrapByColumn );
-			//RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByColumn));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString::Format(wxT("SetWordWrapMode(%d)"), wwmWrapByColumn));
 		}
 		break;
 
 	case ecUndo:
 		{
 			Undo();
-			//RecordAsMadMacro(this, wxString(wxT("Undo()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("Undo()")));
 		}
 		break;
 
 	case ecRedo:
 		{
 			Redo();
-			//RecordAsMadMacro(this, wxString(wxT("Redo()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("Redo()")));
 		}
 		break;
 
@@ -7737,35 +7785,40 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 	case ecToUpperCase:
 		{
 			ToUpperCase();
-			//RecordAsMadMacro(this, wxString(wxT("ToUpperCase()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("ToUpperCase()")));
 		}
 		break;
 
 	case ecToLowerCase:
 		{
 			ToLowerCase();
-			//RecordAsMadMacro(this, wxString(wxT("ToLowerCase()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("ToLowerCase()")));
 		}
 		break;
 
 	case ecInvertCase:
 		{
 			InvertCase();
-			//RecordAsMadMacro(this, wxString(wxT("InvertCase()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("InvertCase()")));
 		}
 		break;
 
 	case ecToHalfWidth:
 		{
 			ToHalfWidth();
-			//RecordAsMadMacro(this, wxString(wxT("ToHalfWidth()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("ToHalfWidth()")));
 		}
 		break;
 
 	case ecToFullWidth:
 		{
 			ToFullWidth();
-			//RecordAsMadMacro(this, wxString(wxT("ToFullWidth()")));
+			if((!m_SingleLineMode) && IsMacroRecording())
+				RecordAsMadMacro(this, wxString(wxT("ToFullWidth()")));
 		}
 		break;
 
@@ -7784,9 +7837,15 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				if( m_AutoCompletePair && m_EditMode==emTextMode && ( idx = m_Syntax->m_AutoCompleteLeftChar.Find( wxChar( uc ) ) ) >= 0 )
 				{
 					// insert the AutoCompleteLeftChar
-					InsertString( &uc, 1, true, true, false );
 					if((!m_SingleLineMode) && IsMacroRecording())
-						RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), command, command ), true );
+						RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), command ), true );
+					bool inssel = (m_Selection && m_InsertPairForSelection);
+					long sellen = 0;
+					if(inssel)
+					{
+						sellen = m_SelectionEnd->pos - m_SelectionBegin->pos;
+					}
+					InsertString( &uc, 1, true, true, false, inssel );
 
 					MadCaretPos *send;
 
@@ -7806,13 +7865,17 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 					MadUCQueue ucqueue;
 					ucs4_t ucb;
 
-					if( ( m_Lines->*NextUChar )( ucqueue ) == false || ( ucb = ucqueue.back().first ) <= 0x20 || m_Syntax->IsDelimiter( ucb ) )
+					if( inssel || ( m_Lines->*NextUChar )( ucqueue ) == false || ( ucb = ucqueue.back().first ) <= 0x20 || m_Syntax->IsDelimiter( ucb ) )
 					{
+						if (inssel)
+						{
+							SetCaretPosition(m_CaretPos.pos + sellen);
+						}
 						NewAutoCompleteRightChar = m_Syntax->m_AutoCompleteRightChar[idx];
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), ( int )NewAutoCompleteRightChar ), true);
 						InsertString( &NewAutoCompleteRightChar, 1, true, false, false );
 						
-						if((!m_SingleLineMode) && IsMacroRecording())
-							RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), ( int )NewAutoCompleteRightChar, ( int )NewAutoCompleteRightChar ), true);
 						m_AutoCompletePos = m_CaretPos.pos;
 					}
 				}
@@ -7874,10 +7937,17 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							m_SelectionBegin->pos = m_SelectionBegin->pos - m_SelectionBegin->linepos + spos;
 							m_SelectionBegin->linepos = spos;
 							spaces.push_back( uc );
+							if((!m_SingleLineMode) && IsMacroRecording())
+							{
+								wxString tp;
+								for(int i = 0; i < spaces.size(); ++i)
+								{
+									tp << wxChar(spaces[i]);
+								}
+								RecordAsMadMacro( this, tp, true );
+							}
 							InsertString( &spaces[0], spaces.size(), true, false, false );
 							
-							if((!m_SingleLineMode) && IsMacroRecording())
-								RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), ( int )spaces[0], ( int )spaces[0] ), true );
 							
 							inserted = true;
 						}
@@ -7885,9 +7955,9 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 
 					if( !inserted )
 					{
-						InsertString( &uc, 1, true, true, false );
 						if((!m_SingleLineMode) && IsMacroRecording())
-							RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), ( int )uc, ( int )uc ), true );
+							RecordAsMadMacro( this, wxString::Format( wxT( "%c" ), ( int )uc ), true );
+						InsertString( &uc, 1, true, true, false );
 					}
 				}
 			}
@@ -7906,7 +7976,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 						if( m_CaretPos.extraspaces != 0 )      // ColumnMode
 						{
 							--m_CaretPos.extraspaces;
-							m_CaretPos.xpos -= GetUCharWidth( 0x20 );
+							m_CaretPos.xpos -= m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 						}
 						else
 						{
@@ -7988,7 +8058,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 									//if(m_CaretPos.subrowid == m_CaretPos.iter->RowCount() - 1)
 									{
 										++m_CaretPos.extraspaces;
-										m_CaretPos.xpos += GetUCharWidth( 0x20 );
+										m_CaretPos.xpos += m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 									}
 								}
 							}
@@ -8173,7 +8243,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecSelEndLine:
 					if( m_CaretPos.extraspaces != 0 )
 					{
-						m_CaretPos.xpos -= int( m_CaretPos.extraspaces * GetUCharWidth( 0x20 ) );
+						m_CaretPos.xpos -= int( m_CaretPos.extraspaces * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/ );
 						m_CaretPos.extraspaces = 0;
 					}
 					else
@@ -8281,7 +8351,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecSelPrevWord:
 					if( m_CaretPos.extraspaces != 0 )
 					{
-						m_CaretPos.xpos -= int( m_CaretPos.extraspaces * GetUCharWidth( 0x20 ) );
+						m_CaretPos.xpos -= int( m_CaretPos.extraspaces * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/ );
 						m_CaretPos.extraspaces = 0;
 					}
 					else
@@ -8481,6 +8551,11 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecReturnNoIndent:
 					if( !IsReadOnly() && !m_SingleLineMode )
 					{
+						if(IsMacroRecording())
+							RecordAsMadMacro( this, wxString(wxT("ProcessCommand( MadEditCommand.Return )")));
+						
+						int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
+
 						if( m_Selection && m_EditMode == emColumnMode )
 						{
 							DeleteSelection( true, NULL, false );
@@ -8512,9 +8587,6 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 								ucs.push_back( 0x0A );
 								break;
 							}
-
-							if((!m_SingleLineMode) && IsMacroRecording())
-								RecordAsMadMacro( this, wxString(wxT("ProcessCommand( MadEditCommand.Return )")));
 
 							if( m_AutoIndent && command == ecReturn )
 							{
@@ -8604,17 +8676,19 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 					{
 						if( m_Selection && ( m_SelectionPos1.lineid != m_SelectionPos2.lineid )  && m_EditMode==emTextMode)
 						{
+							if((!m_SingleLineMode) && IsMacroRecording())
+								RecordAsMadMacro( this, wxString( wxT( "IncreaseDecreaseIndent(True)" ) ) );
 							IncreaseDecreaseIndent( true );
 						}
 						else
 							if( m_InsertSpacesInsteadOfTab )
 							{
-								int tabwidth = m_TabColumns * GetUCharWidth( 0x20 );
+								int tabwidth = m_TabColumns * m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 
 								if( m_Selection ) tabwidth -= ( m_SelectionBegin->xpos % tabwidth );
 								else tabwidth -= ( m_CaretPos.xpos % tabwidth );
 
-								int spaces = tabwidth / GetUCharWidth( 0x20 );
+								int spaces = tabwidth / m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 
 								if( spaces == 0 ) spaces = m_TabColumns;
 
@@ -8622,6 +8696,15 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 
 								for( int i = 0; i < spaces; ++i )
 									sp[i] = 0x20;
+								if((!m_SingleLineMode) && IsMacroRecording())
+								{
+									wxString tp;
+									for(int i = 0; i < spaces; ++i)
+									{
+										tp << wxChar(sp[i]);
+									}
+									RecordAsMadMacro( this, tp, true );
+								}
 
 								InsertString( sp, spaces, true, true, false );
 								delete []sp;
@@ -8629,39 +8712,42 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							else
 							{
 								ucs4_t tab = 0x09;
+								if((!m_SingleLineMode) && IsMacroRecording())
+									RecordAsMadMacro( this, wxString( wxT( "\\t" ) ), true );
 								InsertString( &tab, 1, true, true, false );
 							}
-							
-							if((!m_SingleLineMode) && IsMacroRecording())
-								RecordAsMadMacro( this, wxString( wxT( "\\t" ) ), true );
 					}
 
 					break;
 
 				case ecIncreaseIndent:
 					{
-						//RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(True)")));
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(True)")));
 						IncreaseDecreaseIndent( true );
 					}
 					break;
 
 				case ecDecreaseIndent:
 					{
-						//RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(False)")));
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro(this, wxString(wxT("IncreaseDecreaseIndent(False)")));
 						IncreaseDecreaseIndent( false );
 					}
 					break;
 
 				case ecComment:
 					{
-						//RecordAsMadMacro(this, wxString(wxT("CommentUncomment(True)")));
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro(this, wxString(wxT("CommentUncomment(True)")));
 						CommentUncomment( true );
 					}
 					break;
 
 				case ecUncomment:
 					{
-						//RecordAsMadMacro(this, wxString(wxT("CommentUncomment(False)")));
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro(this, wxString(wxT("CommentUncomment(False)")));
 						CommentUncomment( false );
 					}
 					break;
@@ -8670,10 +8756,10 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 					if( !IsReadOnly() )
 					{
 						ucs4_t tab = 0x09;
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro( this, wxString( wxT( "InsertTabChar()" ) ) );
 						InsertString( &tab, 1, true, true, false );
 						
-						if((!m_SingleLineMode) && IsMacroRecording())
-							RecordAsMadMacro( this, wxString( wxT( "\\t" ) ), true );
 					}
 
 					break;
@@ -8681,6 +8767,8 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecDelete:
 					if( !IsReadOnly() )
 					{
+						if((!m_SingleLineMode) && IsMacroRecording())
+							RecordAsMadMacro( this, wxString( wxT( "Delete()" ) ) );
 						if( m_Selection )
 						{
 							if( m_EditMode == emColumnMode && GetSelectionSize() == 0 )
@@ -8690,7 +8778,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 									if( m_CaretPos.xpos < m_MaxColumnRowWidth )
 									{
 										++m_CaretPos.extraspaces;
-										m_CaretPos.xpos += GetUCharWidth( 0x20 );
+										m_CaretPos.xpos += m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 									}
 								}
 								else
@@ -8705,12 +8793,21 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 								EndUpdateSelection( true );
 							}
 
+							int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
+
 							DeleteSelection( true, NULL, true );
+							
+							if(m_TypewriterMode && (m_EditMode == emTextMode))
+							{
+								m_TopRow += (m_CaretPos.lineid - oldlineid) + (m_CaretPos.subrowid - oldsubrowid);
+								if( m_TopRow < 0 ) m_TopRow = 0;
+							}
 						}
 						else                // no Selection
 						{
 							if( m_CaretPos.pos < m_Lines->m_Size )
 							{
+								int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
 								// at End of Line
 								if( m_CaretPos.extraspaces == 0 &&
 										m_CaretPos.linepos == m_CaretPos.iter->m_Size - m_CaretPos.iter->m_NewLineSize )
@@ -8832,6 +8929,14 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecCutLine:
 					if( !IsReadOnly() )
 					{
+						if((!m_SingleLineMode) && IsMacroRecording())
+						{
+							if(command == ecDeleteLine)
+								RecordAsMadMacro( this, wxString( wxT( "DeleteLine()" ) ) );
+							else //ecCutLine
+								RecordAsMadMacro( this, wxString( wxT( "CutLine()" ) ) );
+						}
+
 						if( !m_Selection )
 						{
 							m_SelectionPos1 = m_CaretPos;
@@ -8871,6 +8976,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							++m_SelectionEnd->subrowid;
 						}
 
+						int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
 						if( m_SelectionBegin->pos == m_SelectionEnd->pos )
 						{
 							m_Selection = false;
@@ -8881,6 +8987,12 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							UpdateScrollBarPos();
 							m_LastCaretXPos = m_CaretPos.xpos;
 							DoSelectionChanged();
+							
+							if(m_TypewriterMode && (m_EditMode == emTextMode))
+							{
+								--m_TopRow;
+								if( m_TopRow < 0 ) m_TopRow = 0;
+							}
 						}
 						else
 						{
@@ -8894,7 +9006,13 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 
 							DeleteSelection( true, NULL, false );
 							m_EditMode = em;
+							if(m_TypewriterMode && (m_EditMode == emTextMode))
+							{
+								m_TopRow += (m_CaretPos.lineid - oldlineid) + (m_CaretPos.subrowid - oldsubrowid);
+								if( m_TopRow < 0 ) m_TopRow = 0;
+							}
 						}
+						
 					}
 
 					break;
@@ -8902,6 +9020,13 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 				case ecBackSpace:
 					if( !IsReadOnly() )
 					{
+						if((!m_SingleLineMode) && IsMacroRecording())
+						{
+							RecordAsMadMacro( this, wxString(wxT("ProcessCommand( MadEditCommand.BackSpace )")));
+						}
+
+						int oldsubrowid = m_CaretPos.subrowid, oldlineid = m_CaretPos.lineid;
+
 						if( m_Selection )
 						{
 							if( m_EditMode == emColumnMode && GetSelectionSize() == 0 && m_SelLeftXPos != 0 )
@@ -8909,7 +9034,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 								if( m_CaretPos.extraspaces != 0 )
 								{
 									--m_CaretPos.extraspaces;
-									m_CaretPos.xpos -= GetUCharWidth( 0x20 );
+									m_CaretPos.xpos -= m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 								}
 								else
 								{
@@ -8927,6 +9052,12 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							}
 
 							DeleteSelection( true, NULL, true );
+							
+							if(m_TypewriterMode && (m_EditMode == emTextMode))
+							{
+								m_TopRow += (m_CaretPos.lineid - oldlineid) + (m_CaretPos.subrowid - oldsubrowid);
+								if( m_TopRow < 0 ) m_TopRow = 0;
+							}
 						}
 						else                // no Selection
 						{
@@ -8935,7 +9066,7 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 								if( m_CaretPos.extraspaces )
 								{
 									--m_CaretPos.extraspaces;
-									m_CaretPos.xpos -= GetUCharWidth( 0x20 );
+									m_CaretPos.xpos -= m_TextFontSpaceWidth/*GetUCharWidth( 0x20 )*/;
 									AppearCaret();
 									UpdateScrollBarPos();
 									m_LastCaretXPos = m_CaretPos.xpos;
@@ -9004,6 +9135,12 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 												DoSelectionChanged();
 												DoStatusChanged();
 											}
+											
+											if(m_TypewriterMode && (m_EditMode == emTextMode))
+											{
+												--m_TopRow;
+												if( m_TopRow < 0 ) m_TopRow = 0;
+											}
 									}
 									else          // in middle of row
 									{
@@ -9031,6 +9168,12 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 										if( oldrows != m_Lines->m_RowCount
 												|| oldlines != m_Lines->m_LineCount || count > 1 )
 										{
+											if(m_TypewriterMode && (m_EditMode == emTextMode))
+											{
+												--m_TopRow;
+												if( m_TopRow < 0 ) m_TopRow = 0;
+											}
+
 											m_RepaintAll = true;
 										}
 										else
@@ -9048,17 +9191,17 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 								}
 							}
 						}
-						
-						if((!m_SingleLineMode) && IsMacroRecording())
-						{
-							RecordAsMadMacro( this, wxString(wxT("ProcessCommand( MadEditCommand.BackSpace )")));
-						}
 					}
 
 					break;
 
 				case ecToggleInsertMode:
 					SetInsertMode( !m_InsertMode );
+					
+					if((!m_SingleLineMode) && IsMacroRecording())
+					{
+						RecordAsMadMacro( this, wxString(( m_InsertMode ? wxT( "SetInsertMode(False)" ) : wxT( "SetInsertMode(True)" ))));
+					}
 					break;
 
 				case ecInsertDateTime:
@@ -9073,6 +9216,11 @@ void MadEdit::ProcessCommand( MadEditCommand command )
 							bool inEnglish = false;
 							m_Config->Read( wxT( "/MadEdit/DateTimeInEnglish" ), &inEnglish );
 
+							if((!m_SingleLineMode) && IsMacroRecording())
+							{
+								RecordAsMadMacro( this, wxString::Format( wxT( "Goto( %s )" ), ( wxLongLong( GetCaretPosition()).ToString() ).c_str() ));
+								RecordAsMadMacro( this, wxString( wxT( "InsertDateTime()" ) ) );
+							}
 							if( inEnglish )
 							{
 								strcpy( oldlocale, setlocale( LC_TIME, NULL ) );
@@ -9654,7 +9802,7 @@ void MadEdit::OnChar( wxKeyEvent& evt )
 				{
 					if( m_Win98LeadByte >= 0 )
 					{
-						wxByte db[2] = {m_Win98LeadByte, ucs4};
+						wxByte db[2] = { wxByte(m_Win98LeadByte), wxByte(ucs4)};
 						ucs4_t uc = enc->DBtoUCS4( db );
 
 						if( uc > 0 )
@@ -9672,7 +9820,7 @@ void MadEdit::OnChar( wxKeyEvent& evt )
 
 					if( !processed )
 					{
-						wxByte db[2] = {ucs4, 0};
+						wxByte db[2] = { wxByte(ucs4), 0};
 						ucs4_t uc = enc->DBtoUCS4( db );
 
 						if( uc != 0 ) // is a valid single-byte char
@@ -9770,8 +9918,8 @@ void MadEdit::OnKeyDown( wxKeyEvent& evt )
 			{
 				Freeze();
 
-				// if   there is a selection, maybe some caret movement have to be done here:
-				// moving   the caret before or after the current selection ?
+				// if there is a selection, maybe some caret movement have to be done here:
+				// moving the caret before or after the current selection ?
 				if( !m_Selection )
 					ProcessCommand( cmd == ecDelPrevWord ? ecSelPrevWord : ecSelNextWord );
 
@@ -9870,9 +10018,7 @@ void MadEdit::OnMouseLeftDown( wxMouseEvent &evt )
 		return;
 	}
 
-	m_MouseLeftDown = true;
 	int row = evt.m_y / m_RowHeight;
-
 	if( m_EditMode == emHexMode && row == 0 )
 	{
 		m_MouseLeftDown = false;
@@ -9881,6 +10027,7 @@ void MadEdit::OnMouseLeftDown( wxMouseEvent &evt )
 	else
 	{
 		CaptureMouse();
+		m_MouseLeftDown = true;
 		const long TRIPLECLICK_LEN = 200; // 0.2 sec after doubleclick
 
 		if( wxGetLocalTimeMillis() - m_lastDoubleClick <= TRIPLECLICK_LEN )
@@ -10108,7 +10255,12 @@ void MadEdit::OnMouseLeftDClick( wxMouseEvent &evt )
 	m_DoubleClickY = evt.m_y;
 	m_MouseLeftDoubleClick = true;
 	m_MouseLeftDown = true;
+	
 	SelectWordFromCaretPos( NULL );
+	if(m_LDClickHighlight)
+	{
+		HighlightWords();
+	}
 	m_lastDoubleClick = wxGetLocalTimeMillis();
 	CaptureMouse();
 
@@ -10286,6 +10438,128 @@ void MadEdit::OnMouseMiddleUp( wxMouseEvent &evt )
 	}
 }
 
+void MadEdit::OnVSMouseRightUp( wxMouseEvent &evt )
+{
+	if (m_OnVSMouseRightUp)
+	{
+		m_VSMousePos = m_VScrollBar->GetRange() * evt.m_y / m_ClientHeight;
+		m_OnVSMouseRightUp(this);
+	}
+	//evt.Skip();
+}
+
+void MadEdit::OnHSMouseRightUp( wxMouseEvent &evt )
+{
+	if(m_OnHSMouseRightUp)
+	{
+		m_HSMousePos = m_HScrollBar->GetRange() * evt.m_x / m_ClientWidth;
+		m_OnHSMouseRightUp(this);
+	}
+	//evt.Skip();
+}
+
+/*No caret activity*/
+void MadEdit::ScrollTo( int scollcmd )
+{
+	wxScrollEvent event;
+	bool vertical = false;
+	int vpos = m_TopRow, hpos = m_DrawingXPos;
+
+	switch(scollcmd)
+	{
+		case VSCROLLHERE:
+		{
+			vpos = m_VSMousePos;
+			vertical = true;
+			break;
+		}
+		case VSCROLLTOP:
+		{
+			vpos = 0;
+			vertical = true;
+			break;
+		}
+		case VSCROLLBOTTOM:
+		{
+			vpos = GetFileSize();
+			vertical = true;
+			break;
+		}
+		case VSCROLLPAGEUP:
+		{
+			vpos -= m_VScrollBar->GetPageSize();
+			vertical = true;
+			break;
+		}
+		case VSCROLLPAGEDOWN:
+		{
+			vpos += m_VScrollBar->GetPageSize();
+			vertical = true;
+			break;
+		}
+		case VSCROLLUP:
+		{
+			--vpos;
+			vertical = true;
+			break;
+		}
+		case VSCROLLDOWN:
+		{
+			++vpos;
+			vertical = true;
+			break;
+		}
+		case HSCROLLHERE:
+		{
+			hpos = m_HSMousePos;
+			break;
+		}
+		case HSCROLLLEFTEDGE:
+		{
+			hpos = 0;
+			break;
+		}
+		case HSCROLLRIGHTEDGE:
+		{
+			hpos = 0x7FFFFFFF; // Max int 32 bits
+			break;
+		}
+		case HSCROLLPAGELEFT:
+		{
+			hpos -= m_HScrollBar->GetPageSize();
+			break;
+		}
+		case HSCROLLPAGERIGHT:
+		{
+			hpos += m_HScrollBar->GetPageSize();
+			break;
+		}
+		case HSCROLLLEFT:
+		{
+			hpos -= (m_TabColumns * m_TextFontSpaceWidth);
+			break;
+		}
+		case HSCROLLRIGHT:
+		{
+			hpos += (m_TabColumns * m_TextFontSpaceWidth);
+			break;
+		}
+		default:
+			return;
+	}
+	if(vertical)
+	{
+		event.SetPosition(vpos);
+		OnVScroll( event );
+	}
+	else
+	{
+		event.SetPosition(hpos);
+		OnHScroll( event );
+	}
+	UpdateScrollBarPos();
+}
+
 void MadEdit::OnSetFocus( wxFocusEvent &evt )
 {
 	//force updating font widths
@@ -10419,7 +10693,7 @@ void MadEdit::OnSize( wxSizeEvent &evt )
 			wxMemoryDC dc1, dc2;
 			dc1.SelectObject( *m_ClientBitmap );
 			dc1.SetBrush( *wxTheBrushList->FindOrCreateBrush( *wxWHITE ) );
-			dc1.SetPen( *wxThePenList->FindOrCreatePen( *wxWHITE, 1, wxSOLID ) );
+			dc1.SetPen( *wxThePenList->FindOrCreatePen( *wxWHITE, 1, wxPENSTYLE_SOLID ) );
 			dc1.DrawRectangle( 0, 0, 10, 10 );
 			dc1.Blit( 0, 0, 10, 10, &dc1, 0, 0, wxINVERT );
 			dc2.SelectObject( *m_MarkBitmap );
@@ -10476,6 +10750,7 @@ void MadEdit::OnSize( wxSizeEvent &evt )
 void MadEdit::OnVScroll( wxScrollEvent &evt )
 {
 	m_TopRow = evt.GetPosition();
+	DBOUT( "OnVScroll:"<<m_TopRow<<"\n" );
 
 	if( m_EditMode != emHexMode )
 	{
@@ -10537,7 +10812,7 @@ void MadEdit::OnMouseWheel( wxMouseEvent &evt )
 	if( m_SingleLineMode )
 		return;
 
-	if( evt.ControlDown() ) // inc/dec font size
+	if( evt.ControlDown() && (! evt.ShiftDown() )) // inc/dec font size
 	{
 		wxString name;
 		int size;
@@ -10550,11 +10825,23 @@ void MadEdit::OnMouseWheel( wxMouseEvent &evt )
 	}
 	else
 	{
-		if( evt.m_wheelRotation < 0 )
-			m_TopRow += 3;
+		if( evt.ShiftDown() )
+		{
+			int scrollsize = m_TextFontSpaceWidth/2; //Half char width
+			if(evt.ControlDown())
+				scrollsize = 80 * m_TextFontSpaceWidth; // almost 80 columns
+			if( evt.m_wheelRotation < 0 )
+				m_DrawingXPos += scrollsize;
+			else
+				m_DrawingXPos -= scrollsize;
+		}
 		else
-			m_TopRow -= 3;
-
+		{
+			if( evt.m_wheelRotation < 0 )
+				m_TopRow += 3;
+			else
+				m_TopRow -= 3;
+		}
 		UpdateScrollBarPos();
 		m_RepaintAll = true;
 		Refresh( false );
@@ -10774,7 +11061,7 @@ void MadEdit::OnPaint( wxPaintEvent &evt )
 				// clear client area
 				wxColor &bgcolor = m_Syntax->GetAttributes( aeText )->bgcolor;
 				memdc.SetBrush( *wxTheBrushList->FindOrCreateBrush( bgcolor ) );
-				memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxSOLID ) );
+				memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxPENSTYLE_SOLID ) );
 				memdc.DrawRectangle( 0, 0, m_ClientWidth, m_ClientHeight );
 				// paint rows
 				wxRect rect( 0, 0, m_ClientWidth, m_ClientHeight );
@@ -10807,7 +11094,7 @@ void MadEdit::OnPaint( wxPaintEvent &evt )
 						rect.height = rows * m_RowHeight;
 						wxColor &bgcolor = m_Syntax->GetAttributes( aeText )->bgcolor;
 						memdc.SetBrush( *wxTheBrushList->FindOrCreateBrush( bgcolor ) );
-						memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxSOLID ) );
+						memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxPENSTYLE_SOLID ) );
 						memdc.DrawRectangle( rect.x, rect.y, rect.width, rect.height );
 						PaintTextLines( &memdc, rect, firstrow, rows, bgcolor );
 					}
@@ -10923,7 +11210,7 @@ void MadEdit::OnPaint( wxPaintEvent &evt )
 				}
 
 				wxColor &c = m_Syntax->GetAttributes( aeActiveLine )->color;
-				markdc.SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxSOLID ) );
+				markdc.SetPen( *wxThePenList->FindOrCreatePen( c, 1, wxPENSTYLE_SOLID ) );
 				markdc.SetBrush( *wxTRANSPARENT_BRUSH );
 				markdc.DrawRectangle( x, y, w, h );
 			}
@@ -10982,7 +11269,7 @@ void MadEdit::OnPaint( wxPaintEvent &evt )
 				// clear client area
 				wxColor &bgcolor = m_Syntax->GetAttributes( aeText )->bgcolor;
 				memdc.SetBrush( *wxTheBrushList->FindOrCreateBrush( bgcolor ) );
-				memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxSOLID ) );
+				memdc.SetPen( *wxThePenList->FindOrCreatePen( bgcolor, 1, wxPENSTYLE_SOLID ) );
 				memdc.DrawRectangle( 0, 0, m_ClientWidth, m_ClientHeight );
 
 				if( m_HexDigitBitmap == NULL )
@@ -11001,7 +11288,7 @@ void MadEdit::OnPaint( wxPaintEvent &evt )
 					PaintText( &memdc, 0, 0, &HexHeader[60], m_WidthBuffer, 17, 0, 9999999 );
 					// second line: aeLineNumberArea hexdigit
 					m_Syntax->SetAttributes( aeLineNumber );
-					memdc.SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxSOLID ) );
+					memdc.SetPen( *wxThePenList->FindOrCreatePen( m_Syntax->nw_BgColor, 1, wxPENSTYLE_SOLID ) );
 					memdc.SetBrush( *wxTheBrushList->FindOrCreateBrush( m_Syntax->nw_BgColor ) );
 					memdc.DrawRectangle( 0, m_RowHeight, m_HexFontMaxDigitWidth * 76, m_RowHeight * 2 );
 					memdc.SetTextForeground( m_Syntax->nw_Color );
@@ -11518,7 +11805,7 @@ int MadEdit::GetMaxWordWrapWidth()
 	{
 	case wwmWrapByWindow:
 		{
-			maxwidth = m_ClientWidth - ( GetLineNumberAreaWidth( m_Lines->m_Size >> 5 ) + m_BookmarkWidth  +
+			maxwidth = m_ClientWidth - ( GetLineNumberAreaWidth( m_Lines->m_Size >> 5 ) + m_BookmarkWidth +
 										 m_LeftMarginWidth + m_RightMarginWidth + m_TextFontAveCharWidth );
 		}
 		break;
@@ -11545,7 +11832,7 @@ int MadEdit::GetUCharWidth( ucs4_t uc )
 
 	if( widths == NULL )
 	{
-		widths = m_TextFontWidths[idx] = FontWidthManager::GetFontWidths( idx, m_TextFont->GetFaceName(), m_TextFont->GetPointSize(),    this );
+		widths = m_TextFontWidths[idx] = FontWidthManager::GetFontWidths( idx, m_TextFont->GetFaceName(), m_TextFont->GetPointSize(), this );
 	}
 
 	idx = uc & 0xFFFF;
@@ -11710,6 +11997,7 @@ void MadEdit::ClearAllBookmarks()
 void MadEdit::OnCheckModificationTime( wxCommandEvent& evt )
 {
 	DBOUT( "OnCheckModificationTime\n" );
-	ReloadByModificationTime();
+	if(m_ModReloaded == false )
+		ReloadByModificationTime();
 }
 

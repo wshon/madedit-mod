@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="MadWinListDialog">
+		<title>Windows</title>
+		<style>wxCAPTION|wxSYSTEM_MENU|wxCLOSE_BOX</style>
+		<handler function="OnMadWinListDialogClose" entry="EVT_CLOSE" />
+		<handler function="OnKeyDown" entry="EVT_KEY_DOWN" />
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizer2" member="no">
+					<object class="sizeritem">
+						<object class="wxListCtrl" name="ID_LISTCTRLMADWINLIST" variable="MadWindowsList" member="yes">
+							<size>400,300</size>
+							<style>wxLC_REPORT|wxSIMPLE_BORDER|wxVSCROLL</style>
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>2</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>2</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONACTIVATE" variable="ButtonActivate" member="yes">
+							<label>Acti&amp;vate</label>
+							<size>110,27</size>
+							<handler function="OnButtonActivateClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONSAVE" variable="ButtonSave" member="yes">
+							<label>&amp;Save</label>
+							<size>110,27</size>
+							<handler function="OnButtonSaveClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONSAVEAS" variable="ButtonSaveAs" member="yes">
+							<label>Save &amp;As...</label>
+							<size>110,27</size>
+							<handler function="OnButtonSaveAsClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONCLOSEWINDOWS" variable="ButtonCloseWindows" member="yes">
+							<label>&amp;Close Window(s)</label>
+							<size>110,27</size>
+							<handler function="OnButtonCloseWindowsClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONSORTTABBYNAME" variable="ButtonSortTabByName" member="yes">
+							<label>Sort Tab(&amp;Name)</label>
+							<size>110,27</size>
+							<handler function="OnButtonSortTabByNameClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="ID_BUTTONSORTTABBYPATH" variable="ButtonSortTabByPath" member="yes">
+							<label>Sort Tab(&amp;Path)</label>
+							<minsize>110,27</minsize>
+							<handler function="OnButtonSortTabByPathClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="wxID_OK" variable="ButtonOk" member="yes">
+							<label>&amp;OK</label>
+							<size>110,27</size>
+							<handler function="OnButtonOkClick" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+			</object>
+		</object>
+	</object>
+</wxsmith>

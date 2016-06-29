@@ -13,12 +13,12 @@
 	#include <wx/wx.h>
 #endif
 
-wxString g_MadEdit_Version( wxString( wxT( "MadEdit-Mod 0.3.10 " ) )
+wxString g_MadEdit_Version( wxString( wxT( "MadEdit-Mod 0.4.4" ) )
 #if defined(__WXMSW__)
 	#ifdef _WIN64
-		+ wxT( "win64" )
+		+ wxT( " win64" )
 	#else
-		+ wxT( "win32" )
+		+ wxT( " win32" )
 	#endif
 	#ifdef _MSC_VER
 		#if _MSC_VER == 1400
@@ -44,7 +44,7 @@ wxString g_MadEdit_Version( wxString( wxT( "MadEdit-Mod 0.3.10 " ) )
 		#endif
 	#endif
 #elif defined(__WXMAC__)
-	+ wxT( "MacOS" )
+	+ wxT( " MacOS" )
 	#ifdef __GNUC__
 		+ wxT( " GCC " ) + wxT( __VERSION__ )
 	#else
@@ -52,9 +52,9 @@ wxString g_MadEdit_Version( wxString( wxT( "MadEdit-Mod 0.3.10 " ) )
 	#endif
 #else //Linux
 	#if defined(__x86_64__) || defined(__LP64__)
-		+ wxT( "x86_x64" )
+		+ wxT( " x86_x64" )
 	#else
-		+ wxT( "i686" )
+		+ wxT( " i686" )
 	#endif
 	#ifdef __GNUC__
 		+ wxT( " GCC " ) + wxT( __VERSION__ )

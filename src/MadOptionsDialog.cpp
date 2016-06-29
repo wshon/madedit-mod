@@ -5,7 +5,6 @@
 // Maintainer:  minggang.li@gmail.com
 // Licence:     GPL
 ///////////////////////////////////////////////////////////////////////////////
-
 #include <vector>
 #include "MadOptionsDialog.h"
 #include <wx/fileconf.h>
@@ -187,8 +186,10 @@ BEGIN_EVENT_TABLE( MadOptionsDialog, wxDialog )
 	EVT_CHECKBOX( ID_WXCHECKBOXMOUSESELECTTOCOPY, MadOptionsDialog::OnMouseAutoCopyClicked )
 	EVT_BUTTON( ID_WXBUTTONDATETIME, MadOptionsDialog::WxButtonDateTimeClick )
 
+	EVT_CHECKBOX( ID_WXCHECKBOXAUTOCOMPLETEPAIR, MadOptionsDialog::OnAutoCompletePairClicked )
 	EVT_RADIOBOX( ID_WXRADIOBOXBRACKETSTYLE, MadOptionsDialog::OnRadioBoxBracketStyleClick )
 	EVT_CHECKBOX( ID_WXCHECKBREAKLINES, MadOptionsDialog::OnFormattingBreakLinesClick )
+	EVT_CHECKBOX( ID_WXCHECKBOXENABLEAUTOSAVE, MadOptionsDialog::OnEnableAutoSaveClick )
 	EVT_CHECKBOX( ID_WXCHECKBREAKBLOCKS, MadOptionsDialog::OnPaddingBreakBlocksClick )
 END_EVENT_TABLE()
 ////Event Table End
@@ -336,6 +337,21 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxCheckBoxPurgeHistory = new wxCheckBox( WxNoteBookPage1, ID_PURGEHISTORY, _( "Purge History while exiting" ), wxPoint( 2, 98 ), wxSize( 400, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxPurgeHistory" ) );
 	WxBoxSizer7->Add( WxCheckBoxPurgeHistory, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
 	SET_CONTROLPARENT( WxCheckBoxPurgeHistory );
+	WxCheckBoxEnableAutoSave = new wxCheckBox( WxNoteBookPage1, ID_WXCHECKBOXENABLEAUTOSAVE, _( "Auto save" ), wxPoint( 2, 122 ), wxSize( 120, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxEnableAutoSave" ) );;
+	WxBoxSizer7->Add( WxCheckBoxEnableAutoSave, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxCheckBoxEnableAutoSave );
+	WxBoxSizer51 = new wxBoxSizer( wxHORIZONTAL );
+	WxBoxSizer7->Add( WxBoxSizer51, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 1 );
+	WxBoxSizer51->Add(10,0,0, wxALL|wxALIGN_CENTER_VERTICAL, 0);
+	WxStaticText30 = new wxStaticText( WxNoteBookPage1, ID_WXSTATICTEXT30, _( "Timeout(M)" ), wxPoint( 125, 2 ), wxSize( 100, 20 ), wxST_NO_AUTORESIZE, wxT( "WxStaticText30" ) );
+	WxBoxSizer51->Add( WxStaticText30, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 5 );
+	WxEditAutoSaveTimeout = new wxTextCtrl( WxNoteBookPage1, ID_WXEDITMAXSIZETOLOAD, wxT( "10" ), wxPoint( 190, 2 ), wxSize( 50, 17 ), 0, wxTextValidator( wxFILTER_NUMERIC ), wxT( "WxEditAutoSaveTimeout" ) );
+	WxBoxSizer51->Add( WxEditAutoSaveTimeout, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxEditAutoSaveTimeout );
+	WxEditAutoSaveTimeout->Enable( false );
+	WxCheckBoxEnableAutoBackup = new wxCheckBox( WxNoteBookPage1, ID_WXCHECKBOXENABLEAUTOBACKUP, _( "Auto backup" ), wxPoint( 2, 146 ), wxSize( 120, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxEnableAutoBackup" ) );;
+	WxBoxSizer7->Add( WxCheckBoxEnableAutoBackup, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxCheckBoxEnableAutoBackup );
 	WxNoteBookPage2 = new wxPanel( WxNotebook1, ID_WXNOTEBOOKPAGE2, wxPoint( 4, 24 ), wxSize( 692, 464 ) );
 	WxNotebook1->AddPage( WxNoteBookPage2, _( "Edit" ) );
 	WxBoxSizer8 = new wxBoxSizer( wxVERTICAL );
@@ -393,6 +409,13 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxCheckBoxAutoCompletePair = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXAUTOCOMPLETEPAIR, _( "Auto complete character pair" ), wxPoint( 24, 50 ), wxSize( 480, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxAutoCompletePair" ) );
 	WxBoxSizer12->Add( WxCheckBoxAutoCompletePair, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
 	SET_CONTROLPARENT( WxCheckBoxAutoCompletePair );
+	WxBoxSizer52 = new wxBoxSizer(wxHORIZONTAL);
+	WxBoxSizer52->Add(10,0,0, wxALL, 0);
+	WxCheckBoxInsertPairForSelection = new wxCheckBox(WxNoteBookPage2, ID_WXCHECKBOXINSERTPAIRFORSELECTION, _("Insert pair instead of replace selection"), wxPoint( 15, 2 ), wxSize( 260, 20 ), 0, wxDefaultValidator, _T("WxCheckBoxInsertPairForSelection"));
+	WxCheckBoxInsertPairForSelection->SetValue(false);
+	WxBoxSizer52->Add(WxCheckBoxInsertPairForSelection, 0, wxALL|wxEXPAND, 2);
+	SET_CONTROLPARENT( WxCheckBoxInsertPairForSelection );
+	WxBoxSizer12->Add(WxBoxSizer52, 0,  wxALIGN_LEFT | wxALL|wxEXPAND, 0);
 	WxBoxSizer28 = new wxBoxSizer( wxHORIZONTAL );
 	WxBoxSizer12->Add( WxBoxSizer28, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 0 );
 	WxCheckBoxMouseSelectToCopy = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXMOUSESELECTTOCOPY, _( "Auto copy the mouse-selected text to clipboard" ), wxPoint( 2, 2 ), wxSize( 260, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxMouseSelectToCopy" ) );
@@ -407,6 +430,15 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxCheckBoxAutoFillColumnPaste = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXAUTOFILLCOLUMN, _( "Auto fill in column paste" ), wxPoint( 24, 122 ), wxSize( 480, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxAutoFillColumnPaste" ) );
 	WxBoxSizer12->Add( WxCheckBoxAutoFillColumnPaste, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
 	SET_CONTROLPARENT( WxCheckBoxAutoFillColumnPaste );
+	WxCheckBoxLDClickHighlight = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXDCLICKHIGHLIGHT, _( "Left double click to highlight" ), wxPoint( 24, 146 ), wxSize( 480, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxLDClickHighlight" ) );
+	WxBoxSizer12->Add( WxCheckBoxLDClickHighlight, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxCheckBoxLDClickHighlight );
+	WxCheckBoxTypewriterMode = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXTYPEWRITERMODE, _( "Typewriter mode" ), wxPoint( 24, 170 ), wxSize( 480, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxTypewriterMode" ) );
+	WxBoxSizer12->Add( WxCheckBoxTypewriterMode, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxCheckBoxTypewriterMode );
+	WxCheckBoxFixWidthMode = new wxCheckBox( WxNoteBookPage2, ID_WXCHECKBOXFIXWIDTHMODE, _( "Fix width mode" ), wxPoint( 24, 194 ), wxSize( 480, 20 ), 0, wxDefaultValidator, wxT( "WxCheckBoxFixWidthMode" ) );
+	WxBoxSizer12->Add( WxCheckBoxFixWidthMode, 0, wxALIGN_LEFT | wxEXPAND | wxALL, 2 );
+	SET_CONTROLPARENT( WxCheckBoxFixWidthMode );
 	WxNoteBookPage3 = new wxPanel( WxNotebook1, ID_WXNOTEBOOKPAGE3, wxPoint( 4, 24 ), wxSize( 692, 464 ) );
 	WxNotebook1->AddPage( WxNoteBookPage3, _( "Print" ) );
 	WxBoxSizer14 = new wxBoxSizer( wxHORIZONTAL );
@@ -737,7 +769,7 @@ void MadOptionsDialog::CreateGUIControls( void )
 	WxTextSample->SetKeyWords( 0, wxT( "if else return for while break continue" ) );
 	WxTextSample->SetKeyWords( 1, wxT( "const int float void char double bool" ) );
 	WxTextSample->SetReadOnly( true );
-	WxTextSample->Connect( wxEVT_STC_MARGINCLICK, wxStyledTextEventHandler( MadOptionsDialog::OnMarginClick ), NULL, this );
+	WxTextSample->Bind( wxEVT_STC_MARGINCLICK, &MadOptionsDialog::OnMarginClick, this );
 #else
 	WxTextSample = new wxTextCtrl( WxAuiNoteBookPage1, ID_WXRICHTEXTSAMPLE, wxT( "" ), wxPoint( 19, 47 ), wxSize( 219, 300 ), wxTE_MULTILINE | wxVSCROLL | wxHSCROLL | wxTE_READONLY, wxDefaultValidator, wxT( "WxTextSample" ) );
 	//WxTextSample->SetMaxLength(0);
@@ -1213,6 +1245,7 @@ void MadOptionsDialog::MadOptionsDialogActivate( wxActivateEvent& event )
 
 void MadOptionsDialog::LoadOptions( void )
 {
+	static bool first_time = true;
 	wxConfigBase *cfg = wxConfigBase::Get( false );
 	wxString oldpath = cfg->GetPath();
 	cfg->SetPath( wxT( "/MadEdit" ) );
@@ -1234,6 +1267,14 @@ void MadOptionsDialog::LoadOptions( void )
 	ss = _( "System Default" );
 	cfg->Read( wxT( "DefaultEncoding" ), &ss );
 	WxComboBoxEncoding->SetValue( ss );
+	cfg->Read( wxT( "AutoSaveTimeout" ), &ll, 0 );
+	bb = ((ll >= 10) && (ll <= 30));
+	WxCheckBoxEnableAutoSave->SetValue( bb );
+	if(!bb) ll = 10;
+	WxEditAutoSaveTimeout->Enable(bb);
+	WxEditAutoSaveTimeout->SetValue( wxString() << ll );
+	cfg->Read( wxT( "AutoBackup" ), &bb, false );
+	WxCheckBoxEnableAutoBackup->SetValue( bb );
 #ifdef __WXMSW__
 	wxRegKey *pRegKey = new wxRegKey( g_MadEditRegkeyPath + wxT( "*\\shell\\MadEdit-Mod\\command" ) );
 
@@ -1263,21 +1304,30 @@ void MadOptionsDialog::LoadOptions( void )
 	WxEditDateTime->SetValue( ss );
 	cfg->Read( wxT( "DateTimeInEnglish" ), &bb, false );
 	WxCheckBoxDateTimeInEnglish->SetValue( bb );
-	cfg->Read( wxT( "InsertSpacesInsteadOfTab" ), &bb );
+	cfg->Read( wxT( "InsertSpacesInsteadOfTab" ), &bb, false );
 	WxCheckBoxTabOrSpaces->SetValue( bb );
-	cfg->Read( wxT( "AutoIndent" ), &bb );
+	cfg->Read( wxT( "AutoIndent" ), &bb, false );
 	WxCheckBoxAutoIndent->SetValue( bb );
-	cfg->Read( wxT( "AutoCompletePair" ), &bb );
+	cfg->Read( wxT( "AutoCompletePair" ), &bb, false );
 	WxCheckBoxAutoCompletePair->SetValue( bb );
-	cfg->Read( wxT( "MouseSelectToCopy" ), &bb );
+	WxCheckBoxInsertPairForSelection->Enable(bb);
+	cfg->Read( wxT( "InsertPairForSelction" ), &bb, true );
+	WxCheckBoxInsertPairForSelection->SetValue( bb );
+	cfg->Read( wxT( "MouseSelectToCopy" ), &bb, false );
 	WxCheckBoxMouseSelectToCopy->SetValue( bb );
 	WxCheckBoxCtrlWithMouseToSelect->Enable( bb );
-	cfg->Read( wxT( "MouseSelectToCopyWithCtrlKey" ), &bb );
+	cfg->Read( wxT( "MouseSelectToCopyWithCtrlKey" ), &bb, true );
 	WxCheckBoxCtrlWithMouseToSelect->SetValue( bb );
-	cfg->Read( wxT( "MiddleMouseToPaste" ), &bb );
+	cfg->Read( wxT( "MiddleMouseToPaste" ), &bb, false );
 	WxCheckBoxMiddleMouseToPaste->SetValue( bb );
 	cfg->Read( wxT( "AutoFillColumnPaste" ), &bb, true );
 	WxCheckBoxAutoFillColumnPaste->SetValue( bb );
+	cfg->Read( wxT( "LDoubleClickHighlight" ), &bb, true );
+	WxCheckBoxLDClickHighlight->SetValue( bb );
+	cfg->Read( wxT( "TypewriterMode" ), &bb, false );
+	WxCheckBoxTypewriterMode->SetValue( bb );
+	cfg->Read( wxT( "FixedWidthMode" ), &bb, false );
+	WxCheckBoxFixWidthMode->SetValue( bb );
 	extern bool g_DoNotSaveSettings;
 	WxCheckBoxDoNotSaveSettings->SetValue( g_DoNotSaveSettings );
 	cfg->Read( wxT( "ReloadFiles" ), &bb, true );
@@ -1391,8 +1441,11 @@ void MadOptionsDialog::LoadOptions( void )
 
 	if( bb )
 	{
-		WxEditSFMaxLineLength->Enable( true );
-		WxCheckBreakAfterLogical->Enable( true );
+		if(!first_time)
+		{
+			WxEditSFMaxLineLength->Enable( true );
+			WxCheckBreakAfterLogical->Enable( true );
+		}
 		WxEditSFMaxLineLength->SetValue( cfg->Read( wxT( "max_line_length" ), wxString( wxT( "200" ) ) ) );
 		WxCheckBreakAfterLogical->SetValue( cfg->ReadBool( wxT( "break_after_mode" ), false ) );
 	}
@@ -1406,7 +1459,10 @@ void MadOptionsDialog::LoadOptions( void )
 
 	if( WxCheckBreakBlocks->GetValue() )
 	{
-		WxCheckBreakBlocksAll->Enable( true );
+		if(!first_time)
+		{
+			WxCheckBreakBlocksAll->Enable( true );
+		}
 		WxCheckBreakBlocksAll->SetValue( cfg->ReadBool( wxT( "break_blocks_all" ), false ) );
 	}
 	else
@@ -1451,6 +1507,7 @@ void MadOptionsDialog::LoadOptions( void )
 	WxEditXmlIndentSize->SetValue( wxString() << cfg->ReadLong( wxT( "indentation" ), 4 ) );
 	WxEditXMLversion->SetValue( cfg->Read( wxT( "version" ), wxString( wxT( "1.0" ) ) ) );
 	cfg->SetPath( oldpath );
+	first_time = false;
 }
 
 /*
@@ -1500,6 +1557,12 @@ void MadOptionsDialog::WxButtonOKClick( wxCommandEvent& event )
 	if( !WxEditIndentColumns->GetValue().ToLong( &lo ) || lo <= 0 )
 	{
 		wxLogError( errtext, WxStaticText6->GetLabel().c_str(), WxEditIndentColumns->GetValue().c_str() );
+		error = true;
+	}
+
+	if( !WxEditAutoSaveTimeout->GetValue().ToLong( &lo ) || ( lo < 10 || lo > 30 ))
+	{
+		wxLogError( errtext+_(": Should be 10~30"), WxStaticText30->GetLabel().c_str(), WxEditAutoSaveTimeout->GetValue().c_str() );
 		error = true;
 	}
 
@@ -1898,6 +1961,11 @@ void MadOptionsDialog::OnMouseAutoCopyClicked( wxCommandEvent& event )
 	WxCheckBoxCtrlWithMouseToSelect->Enable( WxCheckBoxMouseSelectToCopy->GetValue() );
 }
 
+void MadOptionsDialog::OnAutoCompletePairClicked( wxCommandEvent& event )
+{
+	WxCheckBoxInsertPairForSelection->Enable( WxCheckBoxAutoCompletePair->GetValue() );
+}
+
 void MadOptionsDialog::OnRadioBoxBracketStyleClick( wxCommandEvent& event )
 {
 	long style = WxRadioBoxBracketStyle->GetSelection();
@@ -1944,28 +2012,20 @@ void MadOptionsDialog::OnRadioBoxBracketStyleClick( wxCommandEvent& event )
 
 void MadOptionsDialog::OnFormattingBreakLinesClick( wxCommandEvent& event )
 {
-	if( WxCheckBreakLines->GetValue() )
-	{
-		WxEditSFMaxLineLength->Enable( true );
-		WxCheckBreakAfterLogical->Enable( true );
-	}
-	else
-	{
-		WxEditSFMaxLineLength->Enable( false );
-		WxCheckBreakAfterLogical->Enable( false );
-	}
+	bool bb = WxCheckBreakLines->GetValue();
+	WxEditSFMaxLineLength->Enable( bb );
+	WxCheckBreakAfterLogical->Enable( bb );
 }
 
 void MadOptionsDialog::OnPaddingBreakBlocksClick( wxCommandEvent& event )
 {
-	if( WxCheckBreakBlocks->GetValue() )
-	{
-		WxCheckBreakBlocksAll->Enable( true );
-	}
-	else
-	{
-		WxCheckBreakBlocksAll->Enable( false );
-	}
+	bool bb =  WxCheckBreakBlocks->GetValue();
+	WxCheckBreakBlocksAll->Enable( bb );
+}
+
+void MadOptionsDialog::OnEnableAutoSaveClick( wxCommandEvent& event )
+{
+	WxEditAutoSaveTimeout->Enable( WxCheckBoxEnableAutoSave->GetValue() );
 }
 
 #ifdef MADEDIT_ENABLE_STC

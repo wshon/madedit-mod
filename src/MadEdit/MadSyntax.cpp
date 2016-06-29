@@ -16,6 +16,7 @@
 #include <wx/textfile.h>
 #include <wx/filename.h>
 
+#include "PersonalDictionary.h"
 
 #ifdef _DEBUG
 	#include <crtdbg.h>
@@ -23,7 +24,6 @@
 #endif
 
 extern wxString g_MadEditHomeDir;
-
 
 const wxChar *SystemAttributesName[] =
 {
@@ -604,6 +604,8 @@ void MadSyntax::LoadFromFile( const wxString &filename )
 {
 	Reset();    // reset attributes
 	ParseSyntax( filename );
+	if(m_Title == MadPlainTextTitle) m_IsPlainText = true;
+	else m_IsPlainText = false;
 }
 
 void MadSyntax::ParseSyntax( const wxString &filename )
@@ -611,8 +613,10 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 	wxFileConfig syn( wxEmptyString, wxEmptyString, filename, wxEmptyString, wxCONFIG_USE_RELATIVE_PATH | wxCONFIG_USE_NO_ESCAPE_CHARACTERS );
 	wxString entry, value;
 	m_Title = wxT( "No Title" );
+	m_IsPlainText = false;
 	long idx = 0;
 	bool cont = syn.GetNextEntry( entry, idx );
+	wxString s;
 
 	while( cont )
 	{
@@ -640,7 +644,15 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 				else
 					if( entry == wxT( "delimiter" ) )
 					{
-						m_Delimiter = value;
+						//m_Delimiter = value;
+						//m_Delimiter.clear();
+						memset(m_Delimiter, 0, sizeof(m_Delimiter));
+						for( size_t i = 0; i < value.Len(); ++i )
+						{
+							//m_Delimiter.insert((ucs4_t)value[i]);
+							if(value[i] < 0x100)
+							m_Delimiter[(ucs4_t)value[i]] = 1;
+						}
 					}
 					else
 						if( entry == wxT( "escapechar" ) )
@@ -654,7 +666,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 							if( entry == wxT( "stringchar" ) )
 							{
 								wxStringTokenizer tkz( value );
-								wxString s = tkz.GetNextToken();
+								s = tkz.GetNextToken();
 
 								while( !s.IsEmpty() )
 								{
@@ -687,7 +699,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 												if( entry == wxT( "indentchar" ) )
 												{
 													wxStringTokenizer tkz( value );
-													wxString s = tkz.GetNextToken();
+													s = tkz.GetNextToken();
 
 													while( !s.IsEmpty() )
 													{
@@ -699,7 +711,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 													if( entry == wxT( "unindentchar" ) )
 													{
 														wxStringTokenizer tkz( value );
-														wxString s = tkz.GetNextToken();
+														s = tkz.GetNextToken();
 
 														while( !s.IsEmpty() )
 														{
@@ -747,7 +759,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 
 																	while( true )
 																	{
-																		wxString s = tkz.GetNextToken();
+																		s = tkz.GetNextToken();
 
 																		if( !s.ToULong( &ra.id ) ) break;
 
@@ -772,7 +784,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 																		if( entry == wxT( "linecomment" ) )
 																		{
 																			wxStringTokenizer tkz( value );
-																			wxString s = tkz.GetNextToken();
+																			s = tkz.GetNextToken();
 
 																			while( !s.IsEmpty() )
 																			{
@@ -814,14 +826,13 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 
 																							while( tkz.HasMoreTokens() )
 																							{
-																								wxString s = tkz.GetNextToken();
+																								s = tkz.GetNextToken();
 																								m_BlockCommentInRange.push_back( vector<int>() );
 																								SetInRange( s, m_BlockCommentInRange[idx++] );
 																							}
 																						}
 																						else
 																						{
-																							wxString s;
 																							int attr = 0, alen = 5;
 
 																							if( entry.Right( 7 ) == wxT( "bgcolor" ) )
@@ -932,6 +943,7 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 										kw.MakeLower();
 
 									ck->m_Keywords.insert( kw );
+									m_SyntaxKeywordDict->AddWord(kw);
 									kw = tkz.GetNextToken();
 								}
 							}
@@ -1056,11 +1068,22 @@ void MadSyntax::ParseSyntax( const wxString &filename )
 	}
 }
 
+//static ucs4_t DefDelimiter[] = {wxT('~'), wxT('`'), wxT('!'), wxT('@'), wxT('#'), wxT('$'), wxT('%'), wxT('^'), wxT('&'), wxT('*'), wxT('('), wxT(')'), wxT('-'), wxT('+'), wxT('='), wxT('|'), wxT('\\'), wxT('{'), wxT('}'), wxT('['), wxT(']'), wxT(':'), wxT(';'), wxT('"'), wxT('\''), wxT(','), wxT('.'), wxT('<'), wxT('>'), wxT('/'), wxT('?')};
+static unsigned char DefDelimiter[] = {'~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '+', '=', '|', '\\', '{', '}', '[', ']', ':', ';', '"', '\'', ',', '.', '<', '>', '/', '?'};
 void MadSyntax::Reset()
 {
+	size_t i;
 	m_Title = MadPlainTextTitle;
+	m_IsPlainText = true;
 	m_CaseSensitive = false;
-	m_Delimiter = wxT( "~`!@#$%^&*()-+=|\\{}[]:;\"\',.<>/?" );
+	//m_Delimiter = wxT( "~`!@#$%^&*()-+=|\\{}[]:;\"\',.<>/?" );
+	//m_Delimiter.clear();
+	memset(m_Delimiter, 0, sizeof(m_Delimiter));
+	for( i = 0; i < (sizeof(DefDelimiter)/sizeof(unsigned char)); ++i )
+	{
+		//m_Delimiter.insert((ucs4_t)DefDelimiter[i]);
+		m_Delimiter[DefDelimiter[i]] = 1;
+	}
 	m_LineComment.clear();
 	m_BlockCommentOn.clear();
 	m_BlockCommentOff.clear();
@@ -1079,7 +1102,6 @@ void MadSyntax::Reset()
 	nw_EscapeChar = 0xFFFFFFFF;
 	m_StringInRange.clear();
 	m_LineCommentInRange.clear();
-	size_t i;
 
 	for( i = 0; i < m_BlockCommentInRange.size(); ++i )
 	{
@@ -1133,6 +1155,8 @@ void MadSyntax::Reset()
 		pat->style = fsNone;
 		++pat;
 	}
+
+	m_SyntaxKeywordDict.reset(new PersonalDictionary());
 }
 
 MadAttributes *MadSyntax::GetAttributes( const wxString &name )
@@ -1162,6 +1186,7 @@ MadSyntaxKeyword *MadSyntax::GetCustomKeyword( const wxString &name )
 
 	it = m_CustomKeyword.insert( m_CustomKeyword.end(), MadSyntaxKeyword() );
 	it->m_Name = name;
+
 	return &( *it );
 }
 
@@ -1305,7 +1330,7 @@ void MadSyntax::SetAttributes( MadAttributes *attr )
 			attr != &m_SystemAttributes[aeActiveLine] &&
 			attr != &m_SystemAttributes[aeBookmark] )
 	{
-		nw_Font = wxTheFontList->FindOrCreateFont( nw_FontSize, nw_FontFamily,
+		nw_Font = wxTheFontList->FindOrCreateFont( nw_FontSize, (wxFontFamily)nw_FontFamily,
 				  ( attr->style & fsItalic ) == 0 ? wxFONTSTYLE_NORMAL : wxFONTSTYLE_ITALIC,
 				  ( attr->style & fsBold ) == 0 ? wxFONTWEIGHT_NORMAL : wxFONTWEIGHT_BOLD,
 				  ( attr->style & fsUnderline ) != 0,
@@ -1324,7 +1349,7 @@ void MadSyntax::InitNextWord1( MadLines *madlines, ucs4_t *word, int *widths, co
 	nw_FontName = fontname;
 	nw_FontSize = fontsize;
 	nw_FontFamily = fontfamily;
-	nw_Font = wxTheFontList->FindOrCreateFont( nw_FontSize, nw_FontFamily,
+	nw_Font = wxTheFontList->FindOrCreateFont( nw_FontSize, (wxFontFamily)nw_FontFamily,
 			  wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, nw_FontName );
 
 	if( m_CaseSensitive )
@@ -1422,6 +1447,7 @@ int MadSyntax::FindStringCase( MadUCQueue & ucqueue, size_t first,
 	size_t ucsize = ucqueue.size() - first;
 	wxASSERT( ucsize > 0 );
 	bool noNewLine = true;
+	MadUCQueueIterator it;
 
 	if( ucsize > 1 )
 	{
@@ -1463,7 +1489,7 @@ int MadSyntax::FindStringCase( MadUCQueue & ucqueue, size_t first,
 
 			if( ucsize >= len )
 			{
-				MadUCQueueIterator it = ucqueue.begin();
+				it = ucqueue.begin();
 				std::advance( it, first + 1 );
 
 				while( *( ++cstr ) != 0 )
@@ -1512,6 +1538,7 @@ int MadSyntax::FindStringNoCase( MadUCQueue & ucqueue, size_t first,
 	}
 
 	MadLines::NextUCharFuncPtr NextUChar = nw_MadLines->NextUChar;
+	MadUCQueueIterator it;
 
 	do
 	{
@@ -1540,7 +1567,7 @@ int MadSyntax::FindStringNoCase( MadUCQueue & ucqueue, size_t first,
 
 			if( ucsize >= len )
 			{
-				MadUCQueueIterator it = ucqueue.begin();
+				it = ucqueue.begin();
 				std::advance( it, first + 1 );
 
 				while( *( ++cstr ) != 0 )
@@ -1896,6 +1923,7 @@ _NEXTUCHAR_:
 	if( IsSpace( uc ) )
 	{
 		SetAttributes( aeSpace );
+		int tabwidth = nw_MadEdit->m_TabColumns * nw_MadEdit->GetUCharWidth( 0x20 );
 
 		do
 		{
@@ -1905,12 +1933,12 @@ _NEXTUCHAR_:
 
 			if( uc == 0x09 )
 			{
-				int tabwidth = nw_MadEdit->m_TabColumns * nw_MadEdit->GetUCharWidth( 0x20 );
+				int tbwidth = tabwidth;
 				width = nw_RowIndexIter->m_Width - nw_LineWidth;
-				tabwidth -= ( nw_LineWidth % tabwidth );
+				tbwidth -= ( nw_LineWidth % tbwidth );
 
-				if( tabwidth < width )
-					width = tabwidth;
+				if( tbwidth < width )
+					width = tbwidth;
 			}
 
 			nw_Widths[idx] = width;
@@ -1992,6 +2020,8 @@ _NEXTUCHAR_:
 
 							do
 							{
+								if(m_IsPlainText && ( uc < '0' || uc > '9' )) break;
+
 								nw_Word[idx] = uc;
 								nw_ucqueue.pop_front();
 								width = nw_MadEdit->GetUCharWidth( uc );
@@ -2001,17 +2031,16 @@ _NEXTUCHAR_:
 								--nw_FirstIndex;
 							}
 							while( --nw_RestCount && nw_LineWidth < nw_RowIndexIter->m_Width
-									&& IsNotDelimiter( uc = nw_ucqueue.front().first ) );
+									&& IsNotDelimiter( uc = nw_ucqueue.front().first ));
 
 							nw_Word[idx] = 0;
 						}
 						else
 							if( m_SpecialWordPrefix.Find( wxChar( uc ) ) >= 0 )
 							{
-								SetAttributes( aeSpecialWord );
-
 								do
 								{
+									if(m_IsPlainText && ( uc >= '0' && uc <= '9' )) break;
 									nw_Word[idx] = uc;
 									nw_ucqueue.pop_front();
 									width = nw_MadEdit->GetUCharWidth( uc );
@@ -2024,6 +2053,67 @@ _NEXTUCHAR_:
 										&& IsNotDelimiter( uc = nw_ucqueue.front().first ) );
 
 								nw_Word[idx] = 0;
+
+								// check if is Keyword
+								vector < MadSyntaxKeyword >::iterator kit = m_CustomKeyword.begin();
+								vector < MadSyntaxKeyword >::iterator kend = m_CustomKeyword.end();
+								bool bIsKeyword = false;
+
+								if( nw_MaxKeywordLen != 0 && idx <= ( int )nw_MaxKeywordLen && kit != kend )
+								{
+									wxString strorg( wxT( ' ' ), idx ), strlower( wxT( ' ' ), idx );
+									ucs4_t *puc = nw_Word;
+
+									for( int i = 0; i < idx; ++i )
+									{
+										ucs4_t uc = *puc++;
+#ifdef __WXMSW__
+
+										if( uc < 0x10000 )
+#endif
+										{
+											strorg[i] = wxChar( uc );
+
+											if( uc <= ( ucs4_t )wxT( 'Z' ) && uc >= ( ucs4_t )wxT( 'A' ) )
+												strlower[i] = wxChar( uc | 0x20 );
+											else
+												strlower[i] = wxChar( uc );
+										}
+
+#ifdef __WXMSW__
+										else
+										{
+											//to surrogates????
+											strorg[i] = wxChar( 0xFFFF );
+											strlower[i] = wxChar( 0xFFFF );
+										}
+
+#endif
+									}
+
+									MadKeywordSet::iterator it;
+
+									do
+									{
+										if( IsInRange( nw_State.rangeid, kit->m_InRange ) )
+										{
+											if( kit->m_CaseSensitive ) it = kit->m_Keywords.find( strorg );
+											else                     it = kit->m_Keywords.find( strlower );
+
+											if( it != kit->m_Keywords.end() )
+											{
+												bIsKeyword = true;
+												break;
+											}
+										}
+									}
+									while( ++kit != kend );
+								}
+
+								if( bIsKeyword )
+									SetAttributes( &( kit->m_Attr ) );
+								else
+									SetAttributes( aeSpecialWord );
 							}
 							else
 								if( m_KeywordPrefix.Find( wxChar( uc ) ) >= 0 )
@@ -2152,6 +2242,7 @@ _NEXTUCHAR_:
 										// get full word
 										do
 										{
+											if(m_IsPlainText && ( uc >= '0' && uc <= '9' )) break;
 											nw_Word[idx] = uc;
 											nw_ucqueue.pop_front();
 											width = nw_MadEdit->GetUCharWidth( uc );
