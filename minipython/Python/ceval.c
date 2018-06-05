@@ -1446,10 +1446,14 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
         {
             w = POP();
             v = TOP();
-            if (PyString_CheckExact(v))
+            if (PyString_CheckExact(v)
+                && (!PyString_Check(w) || PyString_CheckExact(w))) {
+                /* fast path; string formatting, but not if the RHS is a str subclass
+                   (see issue28598) */
                 x = PyString_Format(v, w);
-            else
+            } else {
                 x = PyNumber_Remainder(v, w);
+            }
             Py_DECREF(v);
             Py_DECREF(w);
             SET_TOP(x);
@@ -2477,14 +2481,16 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
 
         TARGET(BUILD_SET)
         {
+            int i;
             x = PySet_New(NULL);
             if (x != NULL) {
-                for (; --oparg >= 0;) {
-                    w = POP();
+                for (i = oparg; i > 0; i--) {
+                    w = PEEK(i);
                     if (err == 0)
                         err = PySet_Add(x, w);
                     Py_DECREF(w);
                 }
+                STACKADJ(-oparg);
                 if (err != 0) {
                     Py_DECREF(x);
                     break;
@@ -2635,6 +2641,7 @@ PyEval_EvalFrameEx(PyFrameObject *f, int throwflag)
             if ((x = f->f_locals) == NULL) {
                 PyErr_SetString(PyExc_SystemError,
                     "no locals found during 'import *'");
+                Py_DECREF(v);
                 break;
             }
             READ_TIMESTAMP(intr0);
@@ -4360,8 +4367,7 @@ call_function(PyObject ***pp_stack, int oparg
             Py_INCREF(self);
             func = PyMethod_GET_FUNCTION(func);
             Py_INCREF(func);
-            Py_DECREF(*pfunc);
-            *pfunc = self;
+            Py_SETREF(*pfunc, self);
             na++;
             n++;
         } else
@@ -4616,10 +4622,12 @@ ext_do_call(PyObject *func, PyObject ***pp_stack, int flags, int na, int nk)
             PyObject *t = NULL;
             t = PySequence_Tuple(stararg);
             if (t == NULL) {
-                if (PyErr_ExceptionMatches(PyExc_TypeError)) {
+                if (PyErr_ExceptionMatches(PyExc_TypeError) &&
+                        /* Don't mask TypeError raised from a generator */
+                        !PyGen_Check(stararg)) {
                     PyErr_Format(PyExc_TypeError,
                                  "%.200s%.200s argument after * "
-                                 "must be a sequence, not %200s",
+                                 "must be an iterable, not %200s",
                                  PyEval_GetFuncName(func),
                                  PyEval_GetFuncDesc(func),
                                  stararg->ob_type->tp_name);
@@ -4671,7 +4679,7 @@ ext_call_fail:
 /* Extract a slice index from a PyInt or PyLong or an object with the
    nb_index slot defined, and store in *pi.
    Silently reduce values larger than PY_SSIZE_T_MAX to PY_SSIZE_T_MAX,
-   and silently boost values less than -PY_SSIZE_T_MAX-1 to -PY_SSIZE_T_MAX-1.
+   and silently boost values less than PY_SSIZE_T_MIN to PY_SSIZE_T_MIN.
    Return 0 on error, 1 on success.
 */
 /* Note:  If v is NULL, return success without storing into *pi.  This
@@ -4681,7 +4689,7 @@ ext_call_fail:
 int
 _PyEval_SliceIndex(PyObject *v, Py_ssize_t *pi)
 {
-    if (v != NULL) {
+    if (v != NULL && v != Py_None) {
         Py_ssize_t x;
         if (PyInt_Check(v)) {
             /* XXX(nnorwitz): I think PyInt_AS_LONG is correct,
@@ -4705,6 +4713,26 @@ _PyEval_SliceIndex(PyObject *v, Py_ssize_t *pi)
     }
     return 1;
 }
+
+int
+_PyEval_SliceIndexNotNone(PyObject *v, Py_ssize_t *pi)
+{
+    Py_ssize_t x;
+    if (PyIndex_Check(v)) {
+        x = PyNumber_AsSsize_t(v, NULL);
+        if (x == -1 && PyErr_Occurred())
+            return 0;
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError,
+                        "slice indices must be integers or "
+                        "have an __index__ method");
+        return 0;
+    }
+    *pi = x;
+    return 1;
+}
+
 
 #undef ISINDEX
 #define ISINDEX(x) ((x) == NULL || \

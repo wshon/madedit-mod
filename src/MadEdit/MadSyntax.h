@@ -8,6 +8,15 @@
 
 #ifndef _MADSYNTAX_H_
 #define _MADSYNTAX_H_
+#include "../MadUtils.h"
+
+#if CPLUSEPLUSE98
+	#include <boost/shared_ptr.hpp>
+	using boost::shared_ptr;
+#else
+	#include <memory>
+	using std::shared_ptr;
+#endif
 
 #include <wx/wxprec.h>
 
@@ -26,12 +35,6 @@
 
 #include <vector>
 //#include <set>
-
-#if __cplusplus <= 199711L
-#include <boost/shared_ptr.hpp>
-#else
-#include <memory>
-#endif
 
 #include "ucs4_t.h"
 #include "MadLines.h"
@@ -131,7 +134,7 @@ public:
 	static bool LoadScheme( const wxString &schname, MadSyntax *syn ); // apply scheme to syn
 	static bool SaveScheme( const wxString &schname, MadSyntax *syn ); // save scheme from syn
 	static bool DeleteScheme( const wxString &schname );
-#if __cplusplus <= 199711L
+#if CPLUSEPLUSE98
     boost::shared_ptr<PersonalDictionary>& GetSyntaxDictionary() { return m_SyntaxKeywordDict; }
 #else
     std::shared_ptr<PersonalDictionary>& GetSyntaxDictionary() { return m_SyntaxKeywordDict; }
@@ -189,7 +192,7 @@ public:
 
 public:
 	MadSyntax( const wxString &filename, bool loadAttr = true );
-	MadSyntax( bool loadAttr = true );
+	explicit MadSyntax( bool loadAttr = true );
 	~MadSyntax();
 
 	void LoadFromFile( const wxString &filename );
@@ -206,7 +209,7 @@ public:
 	}
 	static wxString GetAttributeName( MadAttributeElement ae );
 
-	bool IsSpace( ucs4_t uc ) {
+	static bool IsSpace( ucs4_t uc ) {
 		return ( uc == 0x20 || ( uc <= 0x0D && uc >= 0x09 ) );
 	}
 
@@ -264,7 +267,7 @@ private: // for NextWord()
 	bool nw_EndOfLine;
 	wxColor nw_Color, nw_BgColor, nw_CurrentBgColor;
 	wxFont *nw_Font;
-#if __cplusplus <= 199711L
+#if CPLUSEPLUSE98
     boost::shared_ptr<PersonalDictionary> m_SyntaxKeywordDict;
 #else
     std::shared_ptr<PersonalDictionary> m_SyntaxKeywordDict;
@@ -301,5 +304,5 @@ private: // for Printing
 };
 
 extern const wxString MadPlainTextTitle;
-
+extern wxColour g_MadDefBmkColor, g_MadDefBmkBgColor;
 #endif

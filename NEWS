@@ -1,28 +1,24 @@
-Mod v0.4.3
-1.New: Use dialog to let user choose one for all instead of annoying one by one dialogs
-2.New: Let the user to do the backup selfly #198
-3.New: Use Icon to replace the checkbox on QuickSearch Bar #181
-4.New: Remember pos of all tool Bars
-5.New: Reset tool bars position
-6.New: Insert to the top instead of append to the bottom of search results, expand the last automatically and collapse the last
-7.New: Add InputBox, MsgBox to MadPython so that user can get input or output some message
-8.New: Confirm Undo at the first time if the changes had been saved to disk
-9.New: Add Scripts list to right click menu
-10.New: Remove file from recentlist if could not be opened
-11.New: An Enhanced "Auto-complete" for selection(Option->Edit) #176
-12.New: Scroll function on Righ click menu of scroll bars #157
-13.New: Support selection replace in Typewriter mode
-14.New: Hope typewrite mode could work when use "Backspace" or "Delete" #203
-15.New: Double click to highlight word
-16.New: Enlarge input area of single mode
-17.New: Enhancement for Post-It mode #182
-18.Fix: 0.4.2.1 can not remember the word wrap setting #201
-19.Fix: The fix width in the Option menu can't Open #199
-20.Fix: Improve windows list code, fix a bug of inner-tab drag/reposition(wxAuiNoteBook)
-21.Fix: Assertion failure of FindInFilesDialog
-22.Fix: Assertion failure of MadMacroDlg
-23.Fix: Improve 80 column indicator
-24.Other code improvement
-25.Upgrade boost to 1.61
-26.Update hunspell to 1.41
-27.Update Chinese translation
+Mod v0.4.13
+1.New: Atyle formatter: Add new option "style=webkit" for the WebKit brace style
+2.New: New API for MadPython:InsertNewline
+3.New: Right click menu enabled for MadMacroDlg and SearchReplaceDialog(more edit functions for input of the dialog)
+4.New: Scripts and spell check for Macro and SearchReplace dialog
+5.New: Reset transparency of SearchReplace dialog
+6.Fix: Deleted stale lock file '/home/username/prog_name-username' bug(Linux) #262
+7.Fix: Code issue of EnableTransparency
+8.Fix: GB18030 not work under Linux
+9.Fix: Regex replace bug, eg, replace "\r\n" with "\\n"
+10.Fix: MadPython Recording issue
+11.Fix: Chars escape for regex recording
+12.Fix: Unbind critical message handlers during OnClose
+13.Fix: High CPU load when move mouse over text lines #258 #265
+14.Fix: Can't replace bookmarked lines with multiple line text
+15.Fix: Patch for possible buffer overflow in GetFontWidths
+16.Fix: Wrong string for K&R style on SourceFormat config Dialog
+17.Fix: Use alphabet order for file name extension in FileAssociation Dialog
+18.Fix: Disable syntax toolbar in Hex mode
+19.Fix: Use GB18030 if wxFONTENCODING_CP936 is not available
+20.Fix: Total pages in print preview is incorrect
+21.Fix: Code improvement
+22.Update Astyle to latest code
+23.Update translations

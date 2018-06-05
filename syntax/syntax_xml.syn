@@ -31,7 +31,7 @@ DelimiterColor=SaddleBrown
 DelimiterBgColor=
 DelimiterStyle=
 
-SpaceColor=Aqua
+SpaceColor=Gray
 SpaceBgColor=
 SpaceStyle=
 
@@ -60,7 +60,8 @@ LineNumberBgColor=A0A0A0
 LineNumberStyle=
 
 ActiveLineColor=Fuchsia
-BookmarkColor=0000FF
+BookmarkColor=DeepSkyBlue
+BookmarkBgColor=MediumBlue
 
 [1.Declearation]
 Color=Black
